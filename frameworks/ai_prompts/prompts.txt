@@ -1,0 +1,19 @@
+Template Prompts:
+    - Given uploaded documents please generate summary for &{framework_A} Framework
+    - How does &{framework_A} compare to &{framework_B}
+    - Provide details on &{framework_A} framework
+    - Provide more detailed analysis
+    - Make more detailed conclusion
+    - Provide more detailed &{framework_A} Design and Structure
+    - Provide short but detailed overview of the &{framework_A} framework in one paragraph
+    - Represent &{section_title_X} as markdown table
+    - Please identify all relevant persona
+    - Please generate RACI matrix for &{framework_A} represented as markdown table using following personas as a table columns: &{persona_a}, &{persona_b}, &{persona_c}, &{persona_d}, etc.
+    - Add &{persona_a}, &{persona_b}, etc.
+    - What guidance is provided by &{framework_A} to AI systems
+    - What is missing in &{framework_A} for defenders of AI systems
+    - Please define &{framework_A} Scoping of AI system and/or cybersecurity purview
+    - Update Scoping AI Systems and Cybersecurity Purview Using the &{framework_A} taking in account generated RACI
+    - Generate markdown tables for sections &{section_N-1}, &{section_N-2}, &{section_N-3}, etc.
+    - Summarize &{section_title_X} in one paragraph
+    - Adjust &{section_title_X} to emphasize on &{criteria_Y}
