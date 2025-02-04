@@ -140,7 +140,7 @@
 
 ## Abstract:
 
-This paper reviews the current frameworks used to secure AI systems, especially on how they assist defenders in addressing cybersecurity challenges specific to AI. It provides an overview of defender frameworks, mapping them to organizational roles and responsibilities to facilitate their application.  The paper also identifies gaps in these frameworks, including AI-specific architectures, vulnerabilities, adversarial attacks, and the integration of AI security into broader cybersecurity practices. These gaps highlight areas what extensions or new standards will effectively safeguard AI systems. The paper aims to provide an open extensible comprehensive guide for defenders, offering detailed framework analysis, responsibilty mapping, and needed improvements to enhance AI system security.
+This paper reviews the current frameworks used to secure AI systems, especially on how they assist defenders in addressing cybersecurity challenges specific to AI. It provides an overview of defender frameworks, mapping them to organizational roles and responsibilities to facilitate their application.  The paper also identifies gaps in these frameworks, including AI-specific architectures, vulnerabilities, adversarial attacks, and the integration of AI security into broader cybersecurity practices. These gaps highlight areas what new extensions or standards will effectively safeguard AI systems. The paper aims to provide an open extensible comprehensive guide for defenders, offering detailed framework analysis, responsibilty mapping, and needed improvements to enhance AI system security.
 
 ## Summary of the technical purpose of the document.
 
