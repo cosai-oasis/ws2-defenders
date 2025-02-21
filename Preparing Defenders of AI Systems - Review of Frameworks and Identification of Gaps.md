@@ -186,9 +186,12 @@
 
 ## Additional artifacts: N/A
 
-## Abstract:
+## Executive Summary
 
-This paper reviews the current frameworks used to secure AI systems, especially on how they assist defenders in addressing cybersecurity challenges specific to AI. It provides an overview of defender frameworks, mapping them to organizational roles and responsibilities to facilitate their application.  The paper also identifies gaps in these frameworks, including AI-specific architectures, vulnerabilities, adversarial attacks, and the integration of AI security into broader cybersecurity practices. These gaps highlight areas where extensions or new standards will effectively safeguard AI systems. The paper aims to provide an open extensible comprehensive guide for defenders, offering detailed framework analysis, responsibility mapping, and needed improvements to enhance AI system security.
+Organizations of all sizes are rapidly integrating artificial intelligence into their operations. Securing AI systems and applications has emerged as a critical cybersecurity challenge. This paper provides a comprehensive review of existing frameworks—including NIST CSF 2.0, NIST RMF, various iterations of the NIST AI RMF, MITRE ATT&CK, MITRE ATLAS, and MITRE CAPEC, OWASP Top 10 for LLM Applications, OWASP GenAI Red Team Guide, and OWASP Agentic AI Threats and Mitigations. This paper evaluates their applicability in defending AI-specific assets. By mapping these frameworks to organizational roles and responsibilities, the paper highlights the strengths and limitations of current approaches in addressing the unique risks posed by AI technologies.
+
+Key gaps identified across the reviewed frameworks include the lack of AI-specific threat intelligence, inadequate controls for adversarial attacks, and insufficient integration of AI risks within traditional cybersecurity practices. These include areas such as adversarial AI/ML, supply chain vulnerabilities, and incident response tailored to AI systems require targeted enhancements. To address these deficiencies, the paper outlines actionable recommendations—ranging from integrating AI-tailored threat models and expanding Zero Trust principles to securing the AI supply chain and establishing dedicated AI incident response playbooks.
+
 
 ## Summary of the technical purpose of the document.
 
