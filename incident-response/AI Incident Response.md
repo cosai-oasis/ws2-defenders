@@ -110,7 +110,15 @@ This paper addresses the topic of incident response in the context of AI systems
 
 ### 1.3.1. What challenges AI Systems pose to incident responders
 
-*[TBD: This section was originally empty in Section 3.1. Content needs to be developed.]*
+As organizations increasingly integrate AI systems into core business processes, traditional incident response approaches prove inadequate for addressing AI-specific security events. This capability gap creates both immediate operational risks and competitive disadvantages, requiring strategic investment in specialized response capabilities that protect business value while enabling continued AI innovation.
+
+**Non-deterministic System Behavior** fundamentally changes incident investigation economics. Traditional forensic approaches fail when AI systems produce different outputs for identical inputs, requiring organizations to invest in new investigation methodologies and specialized personnel. Organizations must allocate resources for extended incident analysis periods and develop new verification protocols that account for AI system variability, directly impacting operational budgets and response team staffing decisions.
+
+**Complex Multi-Component Architectures** amplify incident scope and business impact across interconnected systems. Organizations must prepare for scenarios where a single compromise affects multiple business units simultaneously through AI system dependencies. This reality requires cross-functional incident response capabilities that span traditional security boundaries, influencing organizational structure decisions, resource allocation across business units, and business continuity planning investments.
+
+**Novel Attack Vectors** specific to AI systems require entirely new security infrastructure investments and operational procedures. Traditional security tools and playbooks are not designed to identify threats such as memory injection attacks, RAG poisoning, adversarial prompt chains, or model extraction attempts. These AI-specific attack patterns often appear benign to conventional security monitoring systems, rendering existing security investments inadequate and necessitating additional capital allocation for threat detection capabilities and personnel training to protect against previously unknown attack methodologies.
+
+Organizations that develop robust AI incident response capabilities addressing these challenges position themselves to maintain customer trust, ensure regulatory compliance, and sustain competitive advantages in AI-driven markets. Conversely, organizations that fail to address these challenges face prolonged business disruption, regulatory penalties, and potential loss of market position when AI security incidents occur.
 
 ### 1.3.2. What is Incident Response in Context of AI
 
