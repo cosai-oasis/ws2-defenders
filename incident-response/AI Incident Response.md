@@ -190,9 +190,47 @@ The AI Incident Response Plan described is limited in scope to the:
 
 <br>
 
+The proposed AI telemetry categories are essential to defend against evolving threats targeting AI systems. They enable detection of prompt injection, output manipulation, model abuse, knowledge base poisoning, and unauthorized tool or API usage. By monitoring inference activity, agent workflows, context exchanges, and model integrity, organizations can safeguard AI pipelines from adversarial attacks, ensure content safety and compliance, and support incident response through traceable, structured observability data.
+
+<br>
+
 <p align="left">
   <img src="./images/AI Threat & Incident Detection Telemetry Categories.png" alt="AI Threat & Incident Detection Telemetry Categories" style="width:40%; height:auto;">
 </p>
+
+<br>
+
+To effectively detect security threats and incidents in AI systems, telemetry must capture a wide range of activities, including model inference behavior, prompt and output risks, model drift, agentic workflows, tool usage, and context exchanges. Key telemetry types such as Model Inference Activity, Prompt Injection Detection, and Content Risk Detection ensure visibility into adversarial attacks, misuse, and operational anomalies, while monitoring agent workflows and system lifecycles strengthens incident detection and response in AI-driven environments.
+
+| **Telemetry Type**                    | **Purpose**                                                      | **Relevant Threats Detected**                                |
+|----------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|
+| Model Inference Activity         | Tracks all inference executions including token usage, confidence, latency, and endpoints. | Abuse of model APIs, data exfiltration, inference abuse (e.g., model scraping). |
+| Prompt Injection Detection       | Monitors input prompts for adversarial payloads or jailbreak attempts. | Prompt injection attacks, jailbreaking, prompt leakage.      |
+| Content Risk Detection           | Assesses LLM output for toxicity, bias, PII leakage, and unsafe content generation. | Disinformation, output poisoning, PII/PHI leakage, model misuse. |
+| Model Drift Detection            | Detects distributional shifts in model input/output indicative of adversarial manipulation or operational risk. | Data poisoning, concept drift, model degradation over time.   |
+| Agentic Workflow Execution       | Logs multi-step decision-making by AI agents, including tool calls and retries. | Malicious tool chaining, unauthorized data access, misuse of plugins/APIs. |
+| MCP (Model Context Protocol) Message Activity | Observes protocol-level context exchanges in agentic and retrieval-augmented systems. | Session hijacking, tampering with context/memory, unauthorized prompt modifications. |
+| Agentic RAG Workflow Execution   | Captures the steps of retrieval-augmented generation pipelines including retrievers, LLMs, and validators. | Knowledge base poisoning, unsafe content retrieval, response manipulation. |
+| AI Incident Finding              | Records confirmed or suspected incidents detected across AI systems (e.g., poisoning, unauthorized use). | Incident response triggers — prompt abuse, model misuse, security violations. |
+| Tool Call Execution              | Logs API/tool calls made by agents, including argument inspection and error rates. | Unauthorized external access, misuse of internal or third-party APIs. |
+| AI System Activity               | Lifecycle monitoring of AI systems: deployments, updates, shutdowns, failures. | Unauthorized model deployments, version tampering, system compromise. |
+
+<br>
+
+Effective security monitoring of AI systems requires capturing fine-grained telemetry at both the input, processing, and output stages of AI workflows. Below are the some of the attributes essential for building threat detection use cases, anomaly detection, and incident response for AI-driven environments:
+
+| **Attribute**           | **Detailed Explanation** |
+|--------------------------|----------------------------------------------------------------|
+| `prompt_text`            | Captures the raw input text or structured request sent to the AI model. Monitoring the `prompt_text` is crucial for detecting prompt injection attacks, data exfiltration attempts, or adversarial instructions that could manipulate model behavior. |
+| `completion_text`        | Captures the model's output or response. It is essential to inspect `completion_text` for toxic content, bias, hallucinations, or leakage of sensitive information such as PII, credentials, or internal data. |
+| `model_name/version`     | Logs the name and version of the model used. This ensures that only authorized and validated models are deployed and helps detect unauthorized model swapping or shadow AI deployments. |
+| `token_usage`            | Measures the number of tokens in both input and output. Unusually high or low `token_usage` patterns can signal abusive scraping attempts or denial-of-service (DoS) behavior aimed at exhausting AI model resources. |
+| `latency_ms`             | Measures the inference response time in milliseconds. Sudden spikes or drops in `latency_ms` may indicate resource exhaustion attacks, model misuse, or service degradation due to adversarial workloads. |
+| `retrieved_docs`         | Tracks documents fetched during Retrieval-Augmented Generation (RAG) workflows. It helps detect knowledge base poisoning, unauthorized document access, or retrieval manipulation that could compromise model outputs. |
+| `tool_calls`             | Logs all external or internal tools invoked by AI agents. Monitoring `tool_calls` helps uncover unauthorized access to sensitive APIs, malicious tool chaining, or exfiltration via tool misuse during autonomous agent operations. |
+| `confidence_score`       | Provides the model's confidence in its prediction or generation. Very low confidence scores can signal model uncertainty or adversarial influence, while unusually high confidence on manipulated inputs could reveal model evasion attempts. |
+| `drift_metrics`          | Measures data drift or distribution changes in model inputs/outputs over time. Significant drift could indicate model poisoning, concept drift attacks, or environmental changes that degrade model performance or security. |
+| `trace_id/session_id`    | Correlates activities across sessions and distributed systems. Proper tracking of `trace_id` and `session_id` enables forensic investigations, cross-system correlation, and incident scoping when AI incidents span multiple services or layers. |
 
 <br>
 
