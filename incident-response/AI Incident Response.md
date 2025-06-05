@@ -4,13 +4,15 @@
 
 <!-- TOC Start -->
 
+- [AI Incident Response Framework, V1.0 -- DRAFT](#ai-incident-response-framework-v10----draft)
+  - [OASIS Open Project : Coalition for Secure AI (CoSAI) - Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape](#oasis-open-project--coalition-for-secure-ai-cosai---workstream-2-preparing-defenders-for-a-changing-cybersecurity-landscape)
 - [1. Overview](#1-overview)
   - [1.1. Abstract](#11-abstract)
   - [1.2. How To Use This Document](#12-how-to-use-this-document)
-    - [1.2.1. Quick Start Guide](#121-quick-start-guide) *[TBD]*
-    - [1.2.2. Reader Guidance](#122-reader-guidance) *[TBD]*
+    - [1.2.1. Quick Start Guide](#121-quick-start-guide)
+    - [1.2.3. Reader Guidance](#123-reader-guidance)
   - [1.3. Executive Summary](#13-executive-summary)
-    - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders) *[TBD]*
+    - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders)
     - [1.3.2. What is Incident Response in Context of AI](#132-what-is-incident-response-in-context-of-ai)
 - [2. Understanding AI Security Incidents](#2-understanding-ai-security-incidents)
   - [2.1. Data-Level Incidents](#21-data-level-incidents)
@@ -19,19 +21,19 @@
   - [2.4. Output-Level Incidents](#24-output-level-incidents)
 - [3. Creating an AI Incident Response Plan](#3-creating-an-ai-incident-response-plan)
   - [3.1. Pre-Incident Preparation](#31-pre-incident-preparation)
-  - [3.2. Monitoring and Telemetry](#32-monitoring-and-telemetry) *[TBD]*
+  - [3.2. Monitoring and Telemetry](#32-monitoring-and-telemetry)
   - [3.3. Incident Response Workflow](#33-incident-response-workflow)
     - [3.3.1. Preparation Phase](#331-preparation-phase)
     - [3.3.2. Detection and Analysis Phase](#332-detection-and-analysis-phase)
     - [3.3.3. Containment, Eradication, and Recovery Phase](#333-containment-eradication-and-recovery-phase)
-      - [3.3.3.1. Forensics for AI Systems](#3331-forensics-for-ai-systems) *[TBD]*
+      - [3.3.3.1. Forensics for AI Systems](#3331-forensics-for-ai-systems)
     - [3.3.4. Post-Incident Activity Phase](#334-post-incident-activity-phase)
   - [3.4. Roles and Responsibilities](#34-roles-and-responsibilities)
-    - [3.4.1. Provider vs Consumer Responsibilities](#341-provider-vs-consumer-responsibilities) *[TBD]*
+    - [3.4.1. Provider vs Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
     - [3.4.2. Team Structure and Training](#342-team-structure-and-training)
   - [3.5. Communication and Collaboration](#35-communication-and-collaboration)
-    - [3.5.1. Regulatory Communication](#351-regulatory-communication) *[TBD]*
-    - [3.5.2. Information Sharing with Community](#352-information-sharing-with-community) *[TBD]*
+    - [3.5.1. Regulatory Communication](#351-regulatory-communication)
+    - [3.5.2. Information Sharing with Community](#352-information-sharing-with-community)
 - [4. Frameworks and Playbooks](#4-frameworks-and-playbooks)
   - [4.1. NIST SP 800-61r3 Alignment](#41-nist-sp-800-61r3-alignment)
     - [4.1.1. Key Concept](#411-key-concept)
@@ -41,15 +43,15 @@
     - [4.2.2. Key Features](#422-key-features)
     - [4.2.3. Playbook Types](#423-playbook-types)
     - [4.2.4. Playbook Type vs Activity Matrix](#424-playbook-type-vs-activity-matrix)
-    - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
-    - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
+      - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
+      - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
   - [4.3. Sample Playbook Library](#43-sample-playbook-library)
     - [4.3.1. Detect AI Model Training Data Poisoning](#431-detect-ai-model-training-data-poisoning)
     - [4.3.2. Multi-Channel Prompt Injection Detection and Response](#432-multi-channel-prompt-injection-detection-and-response)
     - [4.3.3. Memory Injection Attack (MINJA) Detection and Response](#433-memory-injection-attack-minja-detection-and-response)
     - [4.3.4. Poison-RAG Detection and Response](#434-poison-rag-detection-and-response)
-    - [4.3.5. SSRF-Based Metadata Credential Abuse](#435-ssrf-based-metadata-credential-abuse)
-    - [4.3.6. AGENTPOISON Memory & RAG Injection Detection](#436-agentpoison-memory-rag-injection-detection)
+    - [4.3.5. SSRF-Based Metadata Credential Abuse in Cloud Infrastructure](#435-ssrf-based-metadata-credential-abuse-in-cloud-infrastructure)
+    - [4.3.6. AGENTPOISON Memory \& RAG Injection Detection and Response](#436-agentpoison-memory--rag-injection-detection-and-response)
 - [5. Case Studies and Lessons Learned](#5-case-studies-and-lessons-learned)
   - [5.1. Breaking the Prompt Wall Case Study](#51-breaking-the-prompt-wall-case-study)
   - [5.2. Memory Injection Attack (MINJA) Case Study](#52-memory-injection-attack-minja-case-study)
@@ -60,33 +62,33 @@
   - [6.1. Architecture Overview](#61-architecture-overview)
     - [6.1.1. Levels of Defense Surface](#611-levels-of-defense-surface)
     - [6.1.2. Technology Stack](#612-technology-stack)
-  - [6.2. Common Patterns and Their Vulnerabilities](#62-common-patterns-and-their-vulnerabilities)
+    - [6.2. Common Patterns and Their Vulnerabilities](#62-common-patterns-and-their-vulnerabilities)
     - [6.2.1. Basic LLM Architecture](#621-basic-llm-architecture)
       - [6.2.1.1. Overview](#6211-overview)
       - [6.2.1.2. ATLAS Techniques and Tactics](#6212-atlas-techniques-and-tactics)
       - [6.2.1.3. Mitigations](#6213-mitigations)
     - [6.2.2. LLM Architecture with Memory](#622-llm-architecture-with-memory)
-      - [6.2.2.1. Overview](#6221-overview)
-      - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
-      - [6.2.2.3. Mitigations](#6223-mitigations)
+        - [6.2.2.1. Overview](#6221-overview)
+        - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
+        - [6.2.2.3. Mitigations](#6223-mitigations)
     - [6.2.3. RAG Architecture](#623-rag-architecture)
-      - [6.2.3.1. Overview](#6231-overview)
-      - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
-      - [6.2.3.3. Mitigations](#6233-mitigations)
+        - [6.2.3.1. Overview](#6231-overview)
+        - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
+        - [6.2.3.3. Mitigations](#6233-mitigations)
     - [6.2.4. Agentic Architecture](#624-agentic-architecture)
-      - [6.2.4.1. Overview](#6241-overview)
-      - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
-      - [6.2.4.3. Mitigations](#6243-mitigations)
+        - [6.2.4.1. Overview](#6241-overview)
+        - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
+        - [6.2.4.3. Mitigations](#6243-mitigations)
     - [6.2.5. Agentic RAG Architecture](#625-agentic-rag-architecture)
-      - [6.2.5.1. Overview](#6251-overview)
-      - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
-      - [6.2.5.3. Mitigations](#6253-mitigations)
+        - [6.2.5.1. Overview](#6251-overview)
+        - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
+        - [6.2.5.3. Mitigations](#6253-mitigations)
 - [7. Acknowledgements](#7-acknowledgements)
   - [7.1. Workstream Leads Chairs](#71-workstream-leads-chairs)
   - [7.2. Editors](#72-editors)
 - [8. Appendices](#8-appendices)
   - [8.1. Integration with Enterprise Security Roadmap](#81-integration-with-enterprise-security-roadmap)
-- [9. Copyright Notice](#9-copyright-notice)
+  - [Copyright Notice](#copyright-notice)
 
 <!-- TOC End -->
 
@@ -186,7 +188,51 @@ The AI Incident Response Plan described is limited in scope to the:
 
 ## 3.2. Monitoring and Telemetry
 
-*[TBD: This section was originally empty in Section 5. Content needs to be developed.]*
+<br>
+
+The proposed AI telemetry categories are essential to defend against evolving threats targeting AI systems. They enable detection of prompt injection, output manipulation, model abuse, knowledge base poisoning, and unauthorized tool or API usage. By monitoring inference activity, agent workflows, context exchanges, and model integrity, organizations can safeguard AI pipelines from adversarial attacks, ensure content safety and compliance, and support incident response through traceable, structured observability data.
+
+<br>
+
+<p align="left">
+  <img src="./images/AI Threat & Incident Detection Telemetry Categories.png" alt="AI Threat & Incident Detection Telemetry Categories" style="width:40%; height:auto;">
+</p>
+
+<br>
+
+To effectively detect security threats and incidents in AI systems, telemetry must capture a wide range of activities, including model inference behavior, prompt and output risks, model drift, agentic workflows, tool usage, and context exchanges. Key telemetry types such as Model Inference Activity, Prompt Injection Detection, and Content Risk Detection ensure visibility into adversarial attacks, misuse, and operational anomalies, while monitoring agent workflows and system lifecycles strengthens incident detection and response in AI-driven environments.
+
+| **Telemetry Type**                    | **Purpose**                                                      | **Relevant Threats Detected**                                |
+|----------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|
+| Model Inference Activity         | Tracks all inference executions including token usage, confidence, latency, and endpoints. | Abuse of model APIs, data exfiltration, inference abuse (e.g., model scraping). |
+| Prompt Injection Detection       | Monitors input prompts for adversarial payloads or jailbreak attempts. | Prompt injection attacks, jailbreaking, prompt leakage.      |
+| Content Risk Detection           | Assesses LLM output for toxicity, bias, PII leakage, and unsafe content generation. | Disinformation, output poisoning, PII/PHI leakage, model misuse. |
+| Model Drift Detection            | Detects distributional shifts in model input/output indicative of adversarial manipulation or operational risk. | Data poisoning, concept drift, model degradation over time.   |
+| Agentic Workflow Execution       | Logs multi-step decision-making by AI agents, including tool calls and retries. | Malicious tool chaining, unauthorized data access, misuse of plugins/APIs. |
+| MCP (Model Context Protocol) Message Activity | Observes protocol-level context exchanges in agentic and retrieval-augmented systems. | Session hijacking, tampering with context/memory, unauthorized prompt modifications. |
+| Agentic RAG Workflow Execution   | Captures the steps of retrieval-augmented generation pipelines including retrievers, LLMs, and validators. | Knowledge base poisoning, unsafe content retrieval, response manipulation. |
+| AI Incident Finding              | Records confirmed or suspected incidents detected across AI systems (e.g., poisoning, unauthorized use). | Incident response triggers — prompt abuse, model misuse, security violations. |
+| Tool Call Execution              | Logs API/tool calls made by agents, including argument inspection and error rates. | Unauthorized external access, misuse of internal or third-party APIs. |
+| AI System Activity               | Lifecycle monitoring of AI systems: deployments, updates, shutdowns, failures. | Unauthorized model deployments, version tampering, system compromise. |
+
+<br>
+
+Effective security monitoring of AI systems requires capturing fine-grained telemetry at both the input, processing, and output stages of AI workflows. Below are the some of the attributes essential for building threat detection use cases, anomaly detection, and incident response for AI-driven environments:
+
+| **Attribute**           | **Explanation** |
+|--------------------------|----------------------------------------------------------------|
+| `prompt_text`            | Captures the raw input text or structured request sent to the AI model. Monitoring the `prompt_text` is crucial for detecting prompt injection attacks, data exfiltration attempts, or adversarial instructions that could manipulate model behavior. |
+| `completion_text`        | Captures the model's output or response. It is essential to inspect `completion_text` for toxic content, bias, hallucinations, or leakage of sensitive information such as PII, credentials, or internal data. |
+| `model_name/version`     | Logs the name and version of the model used. This ensures that only authorized and validated models are deployed and helps detect unauthorized model swapping or shadow AI deployments. |
+| `token_usage`            | Measures the number of tokens in both input and output. Unusually high or low `token_usage` patterns can signal abusive scraping attempts or denial-of-service (DoS) behavior aimed at exhausting AI model resources. |
+| `latency_ms`             | Measures the inference response time in milliseconds. Sudden spikes or drops in `latency_ms` may indicate resource exhaustion attacks, model misuse, or service degradation due to adversarial workloads. |
+| `retrieved_docs`         | Tracks documents fetched during Retrieval-Augmented Generation (RAG) workflows. It helps detect knowledge base poisoning, unauthorized document access, or retrieval manipulation that could compromise model outputs. |
+| `tool_calls`             | Logs all external or internal tools invoked by AI agents. Monitoring `tool_calls` helps uncover unauthorized access to sensitive APIs, malicious tool chaining, or exfiltration via tool misuse during autonomous agent operations. |
+| `confidence_score`       | Provides the model's confidence in its prediction or generation. Very low confidence scores can signal model uncertainty or adversarial influence, while unusually high confidence on manipulated inputs could reveal model evasion attempts. |
+| `drift_metrics`          | Measures data drift or distribution changes in model inputs/outputs over time. Significant drift could indicate model poisoning, concept drift attacks, or environmental changes that degrade model performance or security. |
+| `trace_id/session_id`    | Correlates activities across sessions and distributed systems. Proper tracking of `trace_id` and `session_id` enables forensic investigations, cross-system correlation, and incident scoping when AI incidents span multiple services or layers. |
+
+<br>
 
 ## 3.3. Incident Response Workflow
 
