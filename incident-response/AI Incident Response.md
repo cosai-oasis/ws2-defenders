@@ -219,7 +219,7 @@ To effectively detect security threats and incidents in AI systems, telemetry mu
 
 Effective security monitoring of AI systems requires capturing fine-grained telemetry at both the input, processing, and output stages of AI workflows. Below are the some of the attributes essential for building threat detection use cases, anomaly detection, and incident response for AI-driven environments:
 
-| **Attribute**           | **Detailed Explanation** |
+| **Attribute**           | **Explanation** |
 |--------------------------|----------------------------------------------------------------|
 | `prompt_text`            | Captures the raw input text or structured request sent to the AI model. Monitoring the `prompt_text` is crucial for detecting prompt injection attacks, data exfiltration attempts, or adversarial instructions that could manipulate model behavior. |
 | `completion_text`        | Captures the model's output or response. It is essential to inspect `completion_text` for toxic content, bias, hallucinations, or leakage of sensitive information such as PII, credentials, or internal data. |
