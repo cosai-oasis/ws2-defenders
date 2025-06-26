@@ -162,6 +162,8 @@ AI security incidents can be categorized into four primary domains based on the 
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
+| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Explioiting AI's specifics to provide different outputs for different or  cultures             |
+
 
 # 3. Creating an AI Incident Response Plan
 
