@@ -136,7 +136,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Data Poisoning**            | Deliberate contamination of training data to induce specific model behaviors      | Injecting fake reviews into a dataset to make an AI model favor specific products artificially |
-| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive training data                 | Hackers gaining access to confidential medical records used to train an AI model              |
+| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              |
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
 ## 2.2. Model-Level Incidents
