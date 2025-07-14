@@ -1,8 +1,9 @@
-# **Do Not Edit – This draft is up for review of the PGB**
 
-# Preparing Defenders of AI Systems, V 1.0 -- DRAFT
+# Preparing Defenders of AI Systems, V 1.0
 
 OASIS Open Project: [Coalition for Secure AI (CoSAI)](https://github.com/cosai-oasis), [Workstream 2: Preparing Defenders of AI Systems](https://github.com/cosai-oasis/ws2-defenders)
+
+_Approved by the CoSAI Project Governing Board on 14 July 2025_
 
 
 # Table of contents
