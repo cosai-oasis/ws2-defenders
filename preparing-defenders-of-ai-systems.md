@@ -148,11 +148,11 @@ Using these insights, we analyzed leading frameworks¹ focusing on practical imp
 
 * **MIT AI Risk Repository** catalogs over 1,000 AI risks with sophisticated taxonomies, making it invaluable for comprehensive risk assessment. However, it provides minimal guidance for defenders seeking practical mitigation strategies. The repository works best as a risk discovery tool rather than an implementation guide.
 
-## I System Security - The Fundamental Paradigm Shift
+## AI System Security - The Fundamental Paradigm Shift
 
 A core security principle mandates separation of code and data. AI models, and thus AI systems, fundamentally violate this principle by converging control and data planes within applications and infrastructure. Traditional security architectures maintain clear boundaries between application control logic and processed data—a separation critical for preventing unauthorized access or manipulation.
 
-AI systems dissolve this distinction by integrating control and user-provided data  within the model architecture and exposing inference processes directly to users. . The use of externally hosted models compounds these concerns due to the lack of visibility into the hosting entities security practices and the use of sensitive organization data with these systems. 
+AI systems dissolve this distinction by integrating control and user-provided data  within the model architecture and exposing inference processes directly to users. The use of externally hosted models compounds these concerns due to the lack of visibility into the hosting entities security practices and the use of sensitive organization data with these systems. 
 
 ## AI System Security - Looking Forward*
 
