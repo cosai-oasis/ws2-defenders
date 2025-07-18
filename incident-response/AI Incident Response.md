@@ -124,7 +124,7 @@ Organizations that develop robust AI incident response capabilities addressing t
 
 ### 1.3.2. What is Incident Response in Context of AI
 
-Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typicially non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
+Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration, and responses. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typicially non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
 All of this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occuring in the system. For example in chat bot scenarios all prompts (user and system) as well as AI system output must be logged in order to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
 
 # 2. Understanding AI Security Incidents
@@ -273,7 +273,7 @@ to uncover the whole chain of user input data that could have potentially impact
 AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker, similarly - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
 
 
-Clearly, in this section we describe the expectations when there are no constraints. Howeever, in real-life scenario multiple constraints may impact the
+Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
 possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
 As in traditional security, the best solution for the situation is to identify data retention timeframes at the time when the system is designed, and be able 
 to implement the preservation and data rotation during the implementation and deployment of AI system.
