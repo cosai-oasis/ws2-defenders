@@ -124,7 +124,7 @@ Organizations that develop robust AI incident response capabilities addressing t
 
 ### 1.3.2. What is Incident Response in Context of AI
 
-Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typicially non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
+Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration, and responses. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typicially non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
 All of this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occuring in the system. For example in chat bot scenarios all prompts (user and system) as well as AI system output must be logged in order to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
 
 # 2. Understanding AI Security Incidents
@@ -136,7 +136,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Data Poisoning**            | Deliberate contamination of training data to induce specific model behaviors      | Injecting fake reviews into a dataset to make an AI model favor specific products artificially |
-| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive training data                 | Hackers gaining access to confidential medical records used to train an AI model              |
+| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              |
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
 ## 2.2. Model-Level Incidents
@@ -264,7 +264,40 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 
 #### 3.3.3.1. Forensics for AI Systems
 
-*[TBD: This content was originally in Section 7.5 but the section was empty. Content needs to be developed.]*
+In order to effectively conduct Forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and a user prompt and any other parameters which were used when interractiving with an AI model as well as the response from the system. Clearly, AI model will not produce exactly the same outputs even given the same input parameters,
+therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of incident.
+
+Further, an LLM model can also interface with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interractions and log trail of an external function executions should be preserved and made available to the forensic investigator as well.
+
+Another thing to keep in mind is that the user input could also be used as a part of training data for LLM model, therefore it is essential to be able
+to uncover the whole chain of user input data that could have potentially impacted the training dataset. 
+
+AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker, similarly - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
+
+
+Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
+possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
+As in traditional security, the best solution for the situation is to identify data retention timeframes at the time when the system is designed, and be able 
+to implement the preservation and data rotation during the implementation and deployment of AI system.
+
+
+What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repeatitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatitively sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when log trail of system and user prompts as well as system outputs is available to the investigator.
+
+Once flagged interractions are identified, these can be further investigated and data flow analysed. This can help to assess the impact and consequences of a malicious attack on AI component or the whole system. 
+
+During the investigation the investigator can ask the following questions: were any of the guardrails successfully bypassed? 
+
+were any of the prompts intentionally modified by the attacker?
+
+did system produce unexpected and potentially harmful content?
+
+did content include any sensitive information that could be potentially exfiltrated by an attacker? Did any other manipulation of data take place?
+
+While performing this analysis it also would be useful to outline the following: were any if railguards NOT bypassed? if an LLM was used as railguard, it would be useful to note any of the metrics produced by LLM and see if relevant thresholds for the metric parameters could be reviewed.
+
+Finally, it is essential to understand what were the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
+
+
 
 ### 3.3.4. Post-Incident Activity Phase
 
