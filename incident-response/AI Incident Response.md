@@ -96,17 +96,25 @@
 
 ## 1.1. Abstract
 
-This paper addresses the topic of incident response in the context of AI systems. As with other materials produced by the Coalition for Secure AI, this paper focuses on technological capabilities and gaps that are specific to the field of articifical intelligence and does not address the topic of incident response in other contexts as this has been well-researched and documented by existing frameworks (such as [NIST Computer Security Incident Handling Guide](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf). When AI systems are attacked and compromised, what are the specific steps that a defender should take to maximize auditability, resiliency, recovery, and hardening against the (successful) exploitation workflow? What proactive steps should a defender take to minimize the possibility of successful exploitation to begin with? Does the notion of a forensic investigation carry weight in AI Incident Response? Given that AI systems can put downward pressure on "explainability", does this tend to impact the effectiveness of IR activities? To what extent do agentic AI architectures complicate incident response, and are there specific steps to minimize or account for this complexity? These are examples of the types of questions that this paper will address.
+This paper addresses the topic of incident response in the context of AI systems. As with other materials produced by the Coalition for Secure AI, this paper focuses on technological capabilities and gaps that are specific to the field of artificial intelligence and does not address the topic of incident response in other contexts as this has been well-researched and documented by existing frameworks (such as [NIST Incident Response Recommendations and Considerations for Cybersecurity Risk Management] - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf). This paper should help to guide you through the proactive steps a defender should take to minimize the possibility of successful exploitation. Furthermore, it will investigate how defenders can maintain auditability, resiliency, and rapid recovery when advanced threat actors compromise AI systems. It should also help to guide the relevance of forensic investigation in an AI incident response. The extent that agentic AI architectures complicate AI incident response will also be addressed as well as steps to take to minimize the complexity. 
+
 
 ## 1.2. How To Use This Document
 
 ### 1.2.1. Quick Start Guide
 
-*[TBD: This section is net new]*
+The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases. We will also map the closet SANS PICERL as a reference. 
 
-### 1.2.3. Reader Guidance
+| **NIST SP 800-61 rev 3 lifecycle phase** | **Closest SANS PICERL phase(s)** | **AI relevance** |
+|---|---|---|
+| **Govern (GV)** | Preparation | Set AI-specific policy and roles: e.g., who may push new model weights to production, required update cadence for model cards, and breach-disclosure windows for LLM supply-chain compromises. |
+| **Identify (ID)** | Preparation | Maintain inventories of datasets, model artefacts, prompts, and dependencies; perform AI-threat risk assessments (model-exfiltration, data-poisoning, jailbreaks) and maintain model card library. |
+| **Protect (PR)** | Preparation | Apply safeguards: encrypt checkpoints, enforce least-privilege on inference APIs, implement input-validation/output-filtering guardrails, and add watermarking to deter prompt-injection abuse. |
+| **Detect (DE)** | Identification | Ensure proper Monitoring and Telemetry |
+| **Respond (RS)** | Containment & Eradication | Contain (hot-swap to safe snapshots, throttle APIs, revoke leaked keys), eradicate root causes, and coordinate disclosure to affected users. |
+| **Recover (RC)** | Recovery | Recreate or retrain from trusted baselines, run robustness/bias test suites, and validate checkpoints against performance and fairness thresholds before full go-live. |
+| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future RLHF/adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs|
 
-*[TBD: This section is net new]*
 
 ## 1.3. Executive Summary
 
@@ -124,8 +132,9 @@ Organizations that develop robust AI incident response capabilities addressing t
 
 ### 1.3.2. What is Incident Response in Context of AI
 
-Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration, and responses. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typicially non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
-All of this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occuring in the system. For example in chat bot scenarios all prompts (user and system) as well as AI system output must be logged in order to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
+Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus, in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typically non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
+All this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occurring in the system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
+
 
 # 2. Understanding AI Security Incidents
 
