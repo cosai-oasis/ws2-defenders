@@ -327,9 +327,22 @@ Finally, it is essential to understand what were the external components that we
 
 ### 3.5.1. Regulatory Communication
 
-*[TBD: This content was originally in Section 7.7 but was empty. Content needs to be developed.]*
+Incident reporting has different requirements for different jurisdictions and industry verticals, manifold across levels of government.  In the US the [2022 CIRCIA legislation](https://www.cisa.gov/sites/default/files/2023-01/CIRCIA_07.21.2022_Factsheet_FINAL_508%20c.pdf) provided strict timelines for reporting cyber incidents to critical infrastructure segments tighter than the financial industry's [GLBA](https://www.ftc.gov/legal-library/browse/statutes/gramm-leach-bliley-act) for financial privacy requirements, while [HIPAA requires report of PHI breaches](https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html) over longer timescales.  All 50 US states have their own breach notification laws.  In contrast, the EU is governed by [NIS2](https://www.nis-2-directive.com/NIS_2_Directive_Article_23.html) for critical infrastructure, [DORA](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en) for financial institutions and [GDPR for personal data breaches](https://gdpr-info.eu/art-33-gdpr/) - all on strict timelines.  Legal counsel is needed to fully understand the reporting requirements across jurisdications.
+
+AI Systems bring new challenges to reporting for regulatory compliance:
+* Personal data breaches from PII/PHI leakage from AI systems, applicable to US states’ data laws and GDPR
+* Model confidentiality, integrity and accessibility attacks are breaches, even if affected indirectly
+* AI service providers may be considered critical infrastructure, or be required to disclose incidents affecting customer use of AI services
 
 ### 3.5.2. Information Sharing with Community
+
+One of defenders’ greatest advantages against attackers is information sharing, as timely well-structured information about attacks enables defenders to prevent similar attacks.  Incident information sharing is evolving from sector based [ISAC](https://www.nationalisacs.org/about-isacs) reporting to more strict national and supranational reporting requirements from CIRCIA, CISA in the US and ENISA in the EU.  There are many fragmented and boutique reporting mechanisms too, including the [AI Incident Database](https://incidentdatabase.ai/), for community-driven reporting.  Cross-border open groups such as [FIRST](https://www.first.org/) offer best practices and standards for sharing IOCs, TTPs and for Coordinated Vulnerability Disclosure.  The security community supports the use of OASIS [STIX 2.1](https://docs.oasis-open.org/cti/stix/v2.1/csprd01/stix-v2.1-csprd01.html) to share information widely, with OpenCTI the intended target open source tool for managing threat intelligence within or across organizations.  Open sharing of threat intelligence is still a challenge for enterprises and even the security community, often because complying with data privacy regulation discourages additional anonymization work required.
+
+AI incident reporting will often require:
+* Data scrubbing to remove PII from incident report, possibly data used by AI system
+* Associating IOCs and TTPs with attacks against the AI system
+* Responsible disclosure of AI vulnerabilities to AI providers
+
 
 *[TBD: This content was originally in Section 7.8 but was empty. Content needs to be developed.]*
 
