@@ -287,30 +287,25 @@ to uncover the whole chain of user input data that could have potentially impact
 
 AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker, similarly - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
 
-
 Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
 possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
 As in traditional security, the best solution for the situation is to identify data retention timeframes at the time when the system is designed, and be able 
 to implement the preservation and data rotation during the implementation and deployment of AI system.
 
-
-What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repeatitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatitively sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when log trail of system and user prompts as well as system outputs is available to the investigator.
+What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repetitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatitively sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when log trail of system and user prompts as well as system outputs is available to the investigator.
 
 Once flagged interractions are identified, these can be further investigated and data flow analysed. This can help to assess the impact and consequences of a malicious attack on AI component or the whole system. 
 
-During the investigation the investigator can ask the following questions: were any of the guardrails successfully bypassed? 
+During the investigation the investigator can ask the following questions:
+* Were any of the guardrails successfully bypassed?
+* Were any of the prompts intentionally modified by the attacker?
+* Did the system produce unexpected and potentially harmful content?
+* Did content include any sensitive information that could be potentially exfiltrated by an attacker?
+* Did any other manipulation of data take place?
 
-were any of the prompts intentionally modified by the attacker?
-
-did system produce unexpected and potentially harmful content?
-
-did content include any sensitive information that could be potentially exfiltrated by an attacker? Did any other manipulation of data take place?
-
-While performing this analysis it also would be useful to outline the following: were any if railguards NOT bypassed? if an LLM was used as railguard, it would be useful to note any of the metrics produced by LLM and see if relevant thresholds for the metric parameters could be reviewed.
+While performing this analysis it also would be useful to determine whether any of the guardrails *weren't* bypassed. If an LLM was used as guardrail, it might be useful to note whether any of the metrics produced by the LLM exceeded relevant thresholds or if they could be adjusted to thwart future attacks.
 
 Finally, it is essential to understand what were the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
-
-
 
 ### 3.3.4. Post-Incident Activity Phase
 
