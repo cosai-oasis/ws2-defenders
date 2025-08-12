@@ -117,6 +117,15 @@ The incident response life cycle has several versions from varying sources. For 
 
 ### 1.2.2. Reader Guidance
 
+This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. Below, we outline which parts of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. If you are new to this document, you may start with the Quick Start Guide (Section 1.2.1) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.
+
+| Audience                           | Start                                             | Core Sections to Read                                                    | Reference / Standards                           |
+| ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
+| **CISO / Security leader**         | 1.3 Executive Summary                             | 3.4 Roles & Responsibilities<br/>3.5 Communication (incl. 3.5.1 Regulatory) | 4.1 NIST SP 800-61r3 Alignment                  |
+| **Engineer / AI Developer**        | 3.1 Pre-Incident Prep<br/>3.2 Monitoring & Telemetry | 3.3 IR Workflow                                                          | 6 Technical Architecture Patterns               |
+| **Incident Responder (SOC/CSIRT)** | 2 Understanding AI Incidents                      | 3.3 IR Workflow (incl. 3.3.3.1 Forensics)<br/>4.3 Playbooks                 | 3.4 Roles & Responsibilities<br/>3.5 Communication |
+| **Policymaker / Compliance**       | 1.3 Executive Summary                             | 3.1 Prep (policies, third-party)<br/>3.5.1 Regulatory                       | 4.1 NIST Alignment                              |
+| **Technical PM / Project Lead**    | 1.3 Executive Summary<br/>2 Incident Types           | 3.1<br/>3.2<br/>3.3 (what to build & run)                                      | 3.4 Who does what                               |
 
 
 ## 1.3. Executive Summary
@@ -202,17 +211,11 @@ The AI Incident Response Plan described is limited in scope to the:
 
 ## 3.2. Monitoring and Telemetry
 
-<br>
-
 The proposed AI telemetry categories are essential to defend against evolving threats targeting AI systems. They enable detection of prompt injection, output manipulation, model abuse, knowledge base poisoning, and unauthorized tool or API usage. By monitoring inference activity, agent workflows, context exchanges, and model integrity, organizations can safeguard AI pipelines from adversarial attacks, ensure content safety and compliance, and support incident response through traceable, structured observability data.
-
-<br>
 
 <p align="left">
   <img src="./images/AI Threat & Incident Detection Telemetry Categories.png" alt="AI Threat & Incident Detection Telemetry Categories" style="width:40%; height:auto;">
 </p>
-
-<br>
 
 To effectively detect security threats and incidents in AI systems, telemetry must capture a wide range of activities, including model inference behavior, prompt and output risks, model drift, agentic workflows, tool usage, and context exchanges. Key telemetry types such as Model Inference Activity, Prompt Injection Detection, and Content Risk Detection ensure visibility into adversarial attacks, misuse, and operational anomalies, while monitoring agent workflows and system lifecycles strengthens incident detection and response in AI-driven environments.
 
