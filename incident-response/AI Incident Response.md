@@ -470,7 +470,7 @@ The Collaborative Automated Course of Action Operations (CACAO) Security Playboo
 | execute-operation             |              |           |                |            |            |             |        | **M**      |
 | analyze-engagement-results    |              |           |                |            |            |             |        | **M**      |
 
-#### 4.2.5. RACI Matrix in a SOC Context
+### 4.2.5. RACI Matrix in a SOC Context
 
 ***Legend:***
 - **R** = Responsible (Performs the task/work)
@@ -490,7 +490,7 @@ The Collaborative Automated Course of Action Operations (CACAO) Security Playboo
 | Share Playbooks Across Trust Groups        | R                   | A              | -              | -                  | -          | C                |
 | Apply Digital Signatures and Data Markings | R                   | C              | I              | -                  | -          | -                |
 
-#### 4.2.6. CACAO Workflow Step Types
+### 4.2.6. CACAO Workflow Step Types
 
 | Step Type         | Description                                                                                   |
 |-------------------|-----------------------------------------------------------------------------------------------|
