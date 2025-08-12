@@ -10,7 +10,7 @@
   - [1.1. Abstract](#11-abstract)
   - [1.2. How To Use This Document](#12-how-to-use-this-document)
     - [1.2.1. Quick Start Guide](#121-quick-start-guide)
-    - [1.2.3. Reader Guidance](#123-reader-guidance)
+    - [1.2.2. Reader Guidance](#122-reader-guidance)
   - [1.3. Executive Summary](#13-executive-summary)
     - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders)
     - [1.3.2. What is Incident Response in Context of AI](#132-what-is-incident-response-in-context-of-ai)
@@ -29,7 +29,7 @@
       - [3.3.3.1. Forensics for AI Systems](#3331-forensics-for-ai-systems)
     - [3.3.4. Post-Incident Activity Phase](#334-post-incident-activity-phase)
   - [3.4. Roles and Responsibilities](#34-roles-and-responsibilities)
-    - [3.4.1. Provider vs Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
+    - [3.4.1. Provider vs. Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
     - [3.4.2. Team Structure and Training](#342-team-structure-and-training)
   - [3.5. Communication and Collaboration](#35-communication-and-collaboration)
     - [3.5.1. Regulatory Communication](#351-regulatory-communication)
@@ -113,7 +113,10 @@ The incident response life cycle has several versions from varying sources. For 
 | **Detect (DE)** | Identification | Ensure proper Monitoring and Telemetry |
 | **Respond (RS)** | Containment & Eradication | Contain (hot-swap to safe snapshots, throttle APIs, revoke leaked keys), eradicate root causes, and coordinate disclosure to affected users. |
 | **Recover (RC)** | Recovery | Recreate or retrain from trusted baselines, run robustness/bias test suites, and validate checkpoints against performance and fairness thresholds before full go-live. |
-| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future RLHF/adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs|
+| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future Reinforcement Learning from Human Feedback (RLHF) or adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs |
+
+### 1.2.2. Reader Guidance
+
 
 
 ## 1.3. Executive Summary
@@ -171,7 +174,7 @@ AI security incidents can be categorized into four primary domains based on the 
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
-| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Explioiting AI's specifics to provide different outputs for different or  cultures             |
+| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
 
 
 # 3. Creating an AI Incident Response Plan
@@ -318,7 +321,7 @@ Finally, it is essential to understand what were the external components that we
 
 ## 3.4. Roles and Responsibilities
 
-### 3.4.1. Provider vs Consumer Responsibilities
+### 3.4.1. Provider vs. Consumer Responsibilities
 
 *[TBD: This content was originally in Section 7.1 but was empty. Content needs to be developed.]*
 
