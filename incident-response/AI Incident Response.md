@@ -145,7 +145,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Data Poisoning**            | Deliberate contamination of training data to induce specific model behaviors      | Injecting fake reviews into a dataset to make an AI model favor specific products artificially |
-| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              |
+| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              | 
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
 ## 2.2. Model-Level Incidents
@@ -155,20 +155,31 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Model Theft/Extraction**    | Unauthorized duplication or stealing of model weights and architecture            | Reverse engineering a proprietary chatbot's model to replicate its behavior                   |
 | **Model Inversion**           | Extracting private training data from model responses                             | Using an AI model's outputs to reconstruct sensitive user data, like medical histories         |
 | **Backdoor Attacks**          | Hidden functionality implanted in models that activates under specific conditions | Adding a secret trigger phrase to make an AI classify harmful content as safe                 |
+| **Model Fooling**             | Fooling models by slight modifications                                    |  Placing a tape over a 85 mph sign, causing an autopilot AI to read it as 35 mph                            |
 
 ## 2.3. Deployment-Level Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Prompt Injection**          | Manipulating model inputs to bypass safeguards or alter system behavior           | Sending a specially crafted prompt to make an AI assistant disclose restricted information     |
+| **Indirect Prompt Injection**          | Manipulating external data that the model references          | Planting malicious content in locations that an AI uses    |
 | **Jailbreaking**              | Circumventing model safety measures to access restricted functionality            | Using creative prompts to make a chatbot generate unethical or harmful content                |
-| **Unauthorized Access**       | Gaining privileged access to AI infrastructure                                    | Exploiting a vulnerability to gain admin access to an AI-powered recommendation system         |
-| **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
+| **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
 
-## 2.4. Output-Level Incidents
+## 2.4. Infrastructure-Level Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| **Unauthorized Access**       | Gaining privileged access to AI infrastructure                                    | Exploiting a vulnerability to gain admin access to an AI-powered recommendation system         |
+| **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
+| **Dependency Exploitation** | Attacking AI dependency libraries                                         |  Exploiting vulnerabilities in the libraries an AI is built upon  |
+
+## 2.5. User Interaction-Level Incidents
+
+| ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
+|-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| **Malicious Code Generation** | Leveraging AI to produce functional malware | Using an AI to create polymorphic malware bypassing detection |
+| **Phishing Content Generation** | Leveraging AI crafting high-quality, convincing phishing content | Cybercriminals using an AI to craft flawless phishing emails |
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
 | **Regional or cultural bias**| Not acceptable output of the model in some regions or cultures                      | Explioiting AI's specifics to provide different outputs for different or  cultures             |
