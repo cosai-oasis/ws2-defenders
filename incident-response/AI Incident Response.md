@@ -103,7 +103,7 @@ This paper addresses the topic of incident response in the context of AI systems
 
 ### 1.2.1. Quick Start Guide
 
-The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases. We will also map the closet SANS PICERL as a reference. 
+The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases. We will also map the closest SANS PICERL as a reference. 
 
 | **NIST SP 800-61 rev 3 lifecycle phase** | **Closest SANS PICERL phase(s)** | **AI relevance** |
 |---|---|---|
@@ -157,7 +157,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Data Poisoning**            | Deliberate contamination of training data to induce specific model behaviors      | Injecting fake reviews into a dataset to make an AI model favor specific products artificially |
-| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              |
+| **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              | 
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
 ## 2.2. Model-Level Incidents
@@ -167,20 +167,31 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Model Theft/Extraction**    | Unauthorized duplication or stealing of model weights and architecture            | Reverse engineering a proprietary chatbot's model to replicate its behavior                   |
 | **Model Inversion**           | Extracting private training data from model responses                             | Using an AI model's outputs to reconstruct sensitive user data, like medical histories         |
 | **Backdoor Attacks**          | Hidden functionality implanted in models that activates under specific conditions | Adding a secret trigger phrase to make an AI classify harmful content as safe                 |
+| **Model Fooling**             | Fooling models by slight modifications                                    |  Placing a tape over a 85 mph sign, causing an autopilot AI to read it as 35 mph                            |
 
 ## 2.3. Deployment-Level Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Prompt Injection**          | Manipulating model inputs to bypass safeguards or alter system behavior           | Sending a specially crafted prompt to make an AI assistant disclose restricted information     |
+| **Indirect Prompt Injection**          | Manipulating external data that the model references          | Planting malicious content in locations that an AI uses    |
 | **Jailbreaking**              | Circumventing model safety measures to access restricted functionality            | Using creative prompts to make a chatbot generate unethical or harmful content                |
-| **Unauthorized Access**       | Gaining privileged access to AI infrastructure                                    | Exploiting a vulnerability to gain admin access to an AI-powered recommendation system         |
-| **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
+| **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
 
-## 2.4. Output-Level Incidents
+## 2.4. Infrastructure-Level Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| **Unauthorized Access**       | Gaining privileged access to AI infrastructure                                    | Exploiting a vulnerability to gain admin access to an AI-powered recommendation system         |
+| **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
+| **Dependency Exploitation** | Attacking AI dependency libraries                                         |  Exploiting vulnerabilities in the libraries an AI is built upon  |
+
+## 2.5. User Interaction-Level Incidents
+
+| ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
+|-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| **Malicious Code Generation** | Leveraging AI to produce functional malware | Using an AI to create polymorphic malware bypassing detection |
+| **Phishing Content Generation** | Leveraging AI crafting high-quality, convincing phishing content | Cybercriminals using an AI to craft flawless phishing emails |
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
 | **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
@@ -234,7 +245,7 @@ To effectively detect security threats and incidents in AI systems, telemetry mu
 
 <br>
 
-Effective security monitoring of AI systems requires capturing fine-grained telemetry at both the input, processing, and output stages of AI workflows. Below are the some of the attributes essential for building threat detection use cases, anomaly detection, and incident response for AI-driven environments:
+Effective security monitoring of AI systems requires capturing fine-grained telemetry at each of the input, processing, and output stages of AI workflows. Below are the some of the attributes essential for building threat detection use cases, anomaly detection, and incident response for AI-driven environments:
 
 | **Attribute**           | **Explanation** |
 |--------------------------|----------------------------------------------------------------|
@@ -277,15 +288,15 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 
 #### 3.3.3.1. Forensics for AI Systems
 
-In order to effectively conduct Forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and a user prompt and any other parameters which were used when interractiving with an AI model as well as the response from the system. Clearly, AI model will not produce exactly the same outputs even given the same input parameters,
-therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of incident.
+In order to effectively conduct Forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and a user prompt and any other parameters which were used when interacting with an AI model as well as the response from the system. Clearly, AI model will not produce exactly the same outputs even given the same input parameters,
+therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of the incident.
 
-Further, an LLM model can also interface with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interractions and log trail of an external function executions should be preserved and made available to the forensic investigator as well.
+Further, an LLM model can also interface with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interractions and a log trail of external function executions should be preserved and made available to the forensic investigator as well.
 
 Another thing to keep in mind is that the user input could also be used as a part of training data for LLM model, therefore it is essential to be able
 to uncover the whole chain of user input data that could have potentially impacted the training dataset. 
 
-AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker, similarly - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
+AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
 
 Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
 possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
@@ -305,7 +316,7 @@ During the investigation the investigator can ask the following questions:
 
 While performing this analysis it also would be useful to determine whether any of the guardrails *weren't* bypassed. If an LLM was used as guardrail, it might be useful to note whether any of the metrics produced by the LLM exceeded relevant thresholds or if they could be adjusted to thwart future attacks.
 
-Finally, it is essential to understand what were the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
+Finally, it is essential to understand and investigate the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
 
 ### 3.3.4. Post-Incident Activity Phase
 
@@ -335,7 +346,7 @@ Finally, it is essential to understand what were the external components that we
 
 ### 3.5.1. Regulatory Communication
 
-Incident reporting has different requirements for different jurisdictions and industry verticals, manifold across levels of government.  In the US the [2022 CIRCIA legislation](https://www.cisa.gov/sites/default/files/2023-01/CIRCIA_07.21.2022_Factsheet_FINAL_508%20c.pdf) provided strict timelines for reporting cyber incidents to critical infrastructure segments tighter than the financial industry's [GLBA](https://www.ftc.gov/legal-library/browse/statutes/gramm-leach-bliley-act) for financial privacy requirements, while [HIPAA requires report of PHI breaches](https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html) over longer timescales.  All 50 US states have their own breach notification laws.  In contrast, the EU is governed by [NIS2](https://www.nis-2-directive.com/NIS_2_Directive_Article_23.html) for critical infrastructure, [DORA](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en) for financial institutions and [GDPR for personal data breaches](https://gdpr-info.eu/art-33-gdpr/) - all on strict timelines.  Legal counsel is needed to fully understand the reporting requirements across jurisdications.
+Incident reporting has different requirements for different jurisdictions and industry verticals, manifold across levels of government.  In the US the [2022 CIRCIA legislation](https://www.cisa.gov/sites/default/files/2023-01/CIRCIA_07.21.2022_Factsheet_FINAL_508%20c.pdf) provided strict timelines for reporting cyber incidents to critical infrastructure segments even tighter than the financial industry's [GLBA](https://www.ftc.gov/legal-library/browse/statutes/gramm-leach-bliley-act) for financial privacy requirements, while [HIPAA requires report of PHI breaches](https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html) over longer timescales.  All 50 US states have their own breach notification laws.  In contrast, the EU is governed by [NIS2](https://www.nis-2-directive.com/NIS_2_Directive_Article_23.html) for critical infrastructure, [DORA](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en) for financial institutions and [GDPR for personal data breaches](https://gdpr-info.eu/art-33-gdpr/) - all on strict timelines.  Legal counsel is needed to fully understand the reporting requirements across jurisdictions.
 
 AI Systems bring new challenges to reporting for regulatory compliance:
 * Personal data breaches from PII/PHI leakage from AI systems, applicable to US states’ data laws and GDPR
@@ -359,13 +370,13 @@ AI incident reporting will often require:
 
 ***Reference:*** [NIST SP 800-61r3](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)
 
-The NIST SP 800-61 Revision 3 (2025) modernizes incident response by embedding it within the broader context of cybersecurity risk management through alignment with the NIST Cybersecurity Framework (CSF) 2.0. Unlike its predecessor, which focused on procedural guidance, this version adopts a flexible, outcome-driven approach using the six CSF Functions—Govern, Identify, Protect, Detect, Respond, and Recover—to guide organizations in managing, mitigating, and learning from cybersecurity incidents. The framework emphasizes continuous improvement, cross-functional coordination, and real-time learning across incident stages, integrating threat intelligence, asset visibility, and policy enforcement into an adaptive lifecycle. For AI systems and GenAI applications, the framework is especially applicable as it supports incident response for AI-specific threats such as prompt injection, model inversion, hallucinations, data leakage, adversarial misuse of toolchains (e.g., LangChain agents), and retrieval augmentation abuse. It enables organizations to adapt incident handling playbooks, define AI-relevant response roles, log and monitor AI inputs/outputs, and apply continuous learning to secure model behavior and data exposure. Through its flexible and modular structure, SP 800-61r3 provides a resilient foundation for defending dynamic, intelligent, and increasingly autonomous AI ecosystems.
+The NIST SP 800-61 Revision 3 (2025) modernizes incident response by embedding it within the broader context of cybersecurity risk management through alignment with the NIST Cybersecurity Framework (CSF) 2.0. Unlike its predecessor, which focused on procedural guidance, this version adopts a flexible, outcome-driven approach using the six CSF Functions—Govern, Identify, Protect, Detect, Respond, and Recover—to guide organizations in managing, mitigating, and learning from cybersecurity incidents. The framework emphasizes continuous improvement, cross-functional coordination, and real-time learning across incident stages, integrating threat intelligence, asset visibility, and policy enforcement into an adaptive lifecycle. For AI systems and generative AI applications, the framework is especially applicable as it supports incident response for AI-specific threats such as prompt injection, model inversion, hallucinations, data leakage, adversarial misuse of toolchains (e.g., LangChain agents), and retrieval augmentation abuse. It enables organizations to adapt incident handling playbooks, define AI-relevant response roles, log and monitor AI inputs/outputs, and apply continuous learning to secure model behavior and data exposure. Through its flexible and modular structure, SP 800-61r3 provides a resilient foundation for defending dynamic, intelligent, and increasingly autonomous AI ecosystems.
 
 ### 4.1.1. Key Concept
 
 SP 800-61r3 shifts from static procedural guidance to a flexible, CSF 2.0-aligned risk management profile, suitable for dynamic, evolving technologies like AI systems.
 
-It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 Functions: Govern, Identify, Protect, Detect, Respond, and Recover — all of which are critical for GenAI environments where risks emerge through prompt injection, model behavior, data flow, and tool orchestration.
+It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 Functions: Govern, Identify, Protect, Detect, Respond, and Recover — all of which are critical for generative AI environments where risks emerge through prompt injection, model behavior, data flow, and tool orchestration.
 
 | CSF Function | AI-Specific Considerations |
 |--------------|-----------------------------|
@@ -386,7 +397,7 @@ It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 F
 | **Shared Responsibility**       | Contracts must clearly define incident roles/responsibilities across cloud services, model providers, and orchestration tools. |
 | **Telemetry & Forensics**      | Log prompt/response pairs, tool execution traces, embeddings, and system prompts for investigation. |
 | **Automated detection**                 | Leverage metrics from LLM guardrails, behavioral scoring, and RAG pipeline telemetry to detect attacks (e.g., prompt-based exfiltration). |
-| **Incident Response Playbooks** | Define specific playbooks for GenAI issues: misuse of agents, hallucination of critical data, unauthorized RAG retrieval. |
+| **Incident Response Playbooks** | Define specific playbooks for generative AI issues: misuse of agents, hallucination of critical data, unauthorized RAG retrieval. |
 | **Information sharing**                 | Coordinate with external AI incident hubs (like responsible AI research communities or regulatory bodies) for emerging attack techniques. |
 | **Continuous Improvement (ID.IM)** | Post-incident lessons should inform prompt engineering updates, model fine-tuning policies, and toolchain governance. |
 
@@ -394,18 +405,18 @@ It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 F
 
 ***Reference:*** ([OASIS CACAO Security Playbooks Version 2.0](https://docs.oasis-open.org/cacao/security-playbooks/v2.0/cs01/security-playbooks-v2.0-cs01.html))
 
-The Collaborative Automated Course of Action Operations (CACAO) Security Playbooks Version 2.0 specification defines a standardized schema and taxonomy for representing cybersecurity playbooks. These playbooks are structured workflows that define sequences of security actions—detection, prevention, mitigation, remediation, etc.—which can be executed manually or automatically across different tools and systems. CACAO enables the creation, sharing, and execution of these playbooks across organizational and technological boundaries, improving collaboration, incident response, and cyber defense automation.
+The Collaborative Automated Course of Action Operations (CACAO) Security Playbooks Version 2.0 specification defines a standardized schema and taxonomy for representing cybersecurity playbooks. These playbooks are structured workflows that define sequences of security actions — detection, prevention, mitigation, remediation, etc. — which can be executed manually or automatically across different tools and systems. CACAO enables the creation, sharing, and execution of these playbooks across organizational and technological boundaries, improving collaboration, incident response, and cyber defense automation.
 
 ### 4.2.1. Key Components
 
-- ***Playbooks:*** - Represent orchestrated actions in response to threats (e.g., investigate, notify, isolate).<br>
-- ***Workflows:*** - Structured steps including conditional logic, parallel actions, and sub-playbook invocation.<br>
-- ***Commands:*** - Encapsulate specific executable operations (e.g., Bash, PowerShell, OpenC2, Yara).<br>
-- ***Agents & Targets:*** - Define who executes the actions and the affected systems/entities.<br>
-- ***Authentication Info:*** - Standardizes credentials used for automation.<br>
-- ***Data Markings & Digital Signatures:*** - Ensure access control, trust, and data integrity.<br>
-- ***Versioning:*** - Built-in mechanism to track and revoke playbooks with strict creator ownership rules.<br>
-- ***Extension Support:*** - Allows future customization and modular augmentation.<br>
+- ***Playbooks:*** - Represent orchestrated actions in response to threats (e.g., investigate, notify, isolate).
+- ***Workflows:*** - Structured steps including conditional logic, parallel actions, and sub-playbook invocation.
+- ***Commands:*** - Encapsulate specific executable operations (e.g., Bash, PowerShell, OpenC2, Yara).
+- ***Agents & Targets:*** - Define who executes the actions and the affected systems/entities.
+- ***Authentication Info:*** - Standardizes credentials used for automation.
+- ***Data Markings & Digital Signatures:*** - Ensure access control, trust, and data integrity.
+- ***Versioning:*** - Built-in mechanism to track and revoke playbooks with strict creator ownership rules.
+- ***Extension Support:*** - Allows future customization and modular augmentation.
 
 ### 4.2.2. Key Features
 
