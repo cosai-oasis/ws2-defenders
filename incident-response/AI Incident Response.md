@@ -10,7 +10,7 @@
   - [1.1. Abstract](#11-abstract)
   - [1.2. How To Use This Document](#12-how-to-use-this-document)
     - [1.2.1. Quick Start Guide](#121-quick-start-guide)
-    - [1.2.3. Reader Guidance](#123-reader-guidance)
+    - [1.2.2. Reader Guidance](#122-reader-guidance)
   - [1.3. Executive Summary](#13-executive-summary)
     - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders)
     - [1.3.2. What is Incident Response in Context of AI](#132-what-is-incident-response-in-context-of-ai)
@@ -29,7 +29,7 @@
       - [3.3.3.1. Forensics for AI Systems](#3331-forensics-for-ai-systems)
     - [3.3.4. Post-Incident Activity Phase](#334-post-incident-activity-phase)
   - [3.4. Roles and Responsibilities](#34-roles-and-responsibilities)
-    - [3.4.1. Provider vs Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
+    - [3.4.1. Provider vs. Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
     - [3.4.2. Team Structure and Training](#342-team-structure-and-training)
   - [3.5. Communication and Collaboration](#35-communication-and-collaboration)
     - [3.5.1. Regulatory Communication](#351-regulatory-communication)
@@ -113,7 +113,19 @@ The incident response life cycle has several versions from varying sources. For 
 | **Detect (DE)** | Identification | Ensure proper Monitoring and Telemetry |
 | **Respond (RS)** | Containment & Eradication | Contain (hot-swap to safe snapshots, throttle APIs, revoke leaked keys), eradicate root causes, and coordinate disclosure to affected users. |
 | **Recover (RC)** | Recovery | Recreate or retrain from trusted baselines, run robustness/bias test suites, and validate checkpoints against performance and fairness thresholds before full go-live. |
-| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future RLHF/adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs|
+| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future Reinforcement Learning from Human Feedback (RLHF) or adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs |
+
+### 1.2.2. Reader Guidance
+
+This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. Below, we outline which parts of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. If you are new to this document, you may start with the Quick Start Guide (Section 1.2.1) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.
+
+| Audience                           | Start                                             | Core Sections to Read                                                    | Reference / Standards                           |
+| ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
+| **CISO / Security leader**         | 1.3 Executive Summary                             | 3.4 Roles & Responsibilities<br/>3.5 Communication (incl. 3.5.1 Regulatory) | 4.1 NIST SP 800-61r3 Alignment                  |
+| **Engineer / AI Developer**        | 3.1 Pre-Incident Prep<br/>3.2 Monitoring & Telemetry | 3.3 IR Workflow                                                          | 6 Technical Architecture Patterns               |
+| **Incident Responder (SOC/CSIRT)** | 2 Understanding AI Incidents                      | 3.3 IR Workflow (incl. 3.3.3.1 Forensics)<br/>4.3 Playbooks                 | 3.4 Roles & Responsibilities<br/>3.5 Communication |
+| **Policymaker / Compliance**       | 1.3 Executive Summary                             | 3.1 Prep (policies, third-party)<br/>3.5.1 Regulatory                       | 4.1 NIST Alignment                              |
+| **Technical PM / Project Lead**    | 1.3 Executive Summary<br/>2 Incident Types           | 3.1<br/>3.2<br/>3.3 (what to build & run)                                      | 3.4 Who does what                               |
 
 
 ## 1.3. Executive Summary
@@ -182,7 +194,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Phishing Content Generation** | Leveraging AI crafting high-quality, convincing phishing content | Cybercriminals using an AI to craft flawless phishing emails |
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
-| **Regional or cultural bias**| Not acceptable output of the model in some regions or cultures                      | Explioiting AI's specifics to provide different outputs for different or  cultures             |
+| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
 
 
 # 3. Creating an AI Incident Response Plan
@@ -210,17 +222,11 @@ The AI Incident Response Plan described is limited in scope to the:
 
 ## 3.2. Monitoring and Telemetry
 
-<br>
-
 The proposed AI telemetry categories are essential to defend against evolving threats targeting AI systems. They enable detection of prompt injection, output manipulation, model abuse, knowledge base poisoning, and unauthorized tool or API usage. By monitoring inference activity, agent workflows, context exchanges, and model integrity, organizations can safeguard AI pipelines from adversarial attacks, ensure content safety and compliance, and support incident response through traceable, structured observability data.
-
-<br>
 
 <p align="left">
   <img src="./images/AI Threat & Incident Detection Telemetry Categories.png" alt="AI Threat & Incident Detection Telemetry Categories" style="width:40%; height:auto;">
 </p>
-
-<br>
 
 To effectively detect security threats and incidents in AI systems, telemetry must capture a wide range of activities, including model inference behavior, prompt and output risks, model drift, agentic workflows, tool usage, and context exchanges. Key telemetry types such as Model Inference Activity, Prompt Injection Detection, and Content Risk Detection ensure visibility into adversarial attacks, misuse, and operational anomalies, while monitoring agent workflows and system lifecycles strengthens incident detection and response in AI-driven environments.
 
@@ -253,8 +259,6 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 | `confidence_score`       | Provides the model's confidence in its prediction or generation. Very low confidence scores can signal model uncertainty or adversarial influence, while unusually high confidence on manipulated inputs could reveal model evasion attempts. |
 | `drift_metrics`          | Measures data drift or distribution changes in model inputs/outputs over time. Significant drift could indicate model poisoning, concept drift attacks, or environmental changes that degrade model performance or security. |
 | `trace_id/session_id`    | Correlates activities across sessions and distributed systems. Proper tracking of `trace_id` and `session_id` enables forensic investigations, cross-system correlation, and incident scoping when AI incidents span multiple services or layers. |
-
-<br>
 
 ## 3.3. Incident Response Workflow
 
@@ -294,28 +298,25 @@ to uncover the whole chain of user input data that could have potentially impact
 
 AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
 
-
 Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
-possibility of data preservation of AI system. In some cases it could be the system performance, in other cases - just plain availability of network storage. 
-As in traditional security, the best solution is to identify data retention timeframes when the system is designed, and be able 
-to apply preservation and data rotation during the implementation and deployment of AI system.
+possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
+As in traditional security, the best solution for the situation is to identify data retention timeframes at the time when the system is designed, and be able 
+to implement the preservation and data rotation during the implementation and deployment of AI system.
 
+What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repetitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatitively sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when log trail of system and user prompts as well as system outputs is available to the investigator.
 
-What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repetitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatedly sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when the log trail of system and user prompts as well as system outputs are available to the investigator.
+Once flagged interractions are identified, these can be further investigated and data flow analysed. This can help to assess the impact and consequences of a malicious attack on AI component or the whole system. 
 
-Once flagged interractions are identified, these can be further investigated and the data flow analysed. This can help to assess the impact and consequences of a malicious attack on an AI component or the whole system. 
+During the investigation the investigator can ask the following questions:
+* Were any of the guardrails successfully bypassed?
+* Were any of the prompts intentionally modified by the attacker?
+* Did the system produce unexpected and potentially harmful content?
+* Did content include any sensitive information that could be potentially exfiltrated by an attacker?
+* Did any other manipulation of data take place?
 
-During the investigation the investigator can ask the following questions: 
-* were any of the guardrails successfully bypassed? 
-* were any of the prompts intentionally modified by the attacker?
-* did system produce unexpected and potentially harmful content?
-* did content include any sensitive information that could be potentially exfiltrated by an attacker? Did any other manipulation of data take place?
-
-While performing this analysis it also would be useful to outline the following: were any railguards NOT bypassed? if an LLM was used as railguard, it would be useful to note any of the metrics produced by LLM and see if relevant thresholds for the metric parameters could be reviewed.
+While performing this analysis it also would be useful to determine whether any of the guardrails *weren't* bypassed. If an LLM was used as guardrail, it might be useful to note whether any of the metrics produced by the LLM exceeded relevant thresholds or if they could be adjusted to thwart future attacks.
 
 Finally, it is essential to understand and investigate the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
-
-
 
 ### 3.3.4. Post-Incident Activity Phase
 
@@ -327,7 +328,7 @@ Finally, it is essential to understand and investigate the external components t
 
 ## 3.4. Roles and Responsibilities
 
-### 3.4.1. Provider vs Consumer Responsibilities
+### 3.4.1. Provider vs. Consumer Responsibilities
 
 *[TBD: This content was originally in Section 7.1 but was empty. Content needs to be developed.]*
 
@@ -360,7 +361,6 @@ AI incident reporting will often require:
 * Data scrubbing to remove PII from incident report, possibly data used by AI system
 * Associating IOCs and TTPs with attacks against the AI system
 * Responsible disclosure of AI vulnerabilities to AI providers
-
 
 *[TBD: This content was originally in Section 7.8 but was empty. Content needs to be developed.]*
 
@@ -481,7 +481,7 @@ The Collaborative Automated Course of Action Operations (CACAO) Security Playboo
 | execute-operation             |              |           |                |            |            |             |        | **M**      |
 | analyze-engagement-results    |              |           |                |            |            |             |        | **M**      |
 
-#### 4.2.5. RACI Matrix in a SOC Context
+### 4.2.5. RACI Matrix in a SOC Context
 
 ***Legend:***
 - **R** = Responsible (Performs the task/work)
@@ -501,7 +501,7 @@ The Collaborative Automated Course of Action Operations (CACAO) Security Playboo
 | Share Playbooks Across Trust Groups        | R                   | A              | -              | -                  | -          | C                |
 | Apply Digital Signatures and Data Markings | R                   | C              | I              | -                  | -          | -                |
 
-#### 4.2.6. CACAO Workflow Step Types
+### 4.2.6. CACAO Workflow Step Types
 
 | Step Type         | Description                                                                                   |
 |-------------------|-----------------------------------------------------------------------------------------------|
@@ -1028,8 +1028,6 @@ The case study demonstrates a prompt injection attacks against ChatGPT, exposing
 | **Scalability**          | Injection methods are low-cost, scalable, and effective across multiple LLMs (GPT-3.5, GPT-4, Claude, LLaMA).                                |
 | **Stealth & Persistence**| Prompt injection persists across sessions, is invisible to users, and effective in multi-turn agent contexts.   
 
-<br>
-
 ***Real World Cases***
 
 | **Case**    | **Attack Path**                  | **Outcome**  |
@@ -1038,8 +1036,6 @@ The case study demonstrates a prompt injection attacks against ChatGPT, exposing
 | Case 2      | Web Search Context Injection      | Poisoned web content biases LLM toward fictional product in unrelated academic information query. |
 | Case 3      | GPT System Instruction (Agent)    | GPT agent persistently recommends a specific brand (Xiangyu's Shoes) due to hidden instructions.|
 
-<br>
-
 ***Implications***
 
 | **Area**                     | **Impact**                                                                                                  |
@@ -1047,8 +1043,6 @@ The case study demonstrates a prompt injection attacks against ChatGPT, exposing
 | Safety Alignment Bypass      | Rule-based and probabilistic safety filters can be evaded using stealthy template constructions.            |
 | Risk to RAG and Agentic LLMs | Retrieved context and system instructions are high-risk vectors, especially in autonomous LLM agents.       |
 | Organizational Exposure      | Threatens user trust, brand integrity, and compliance—especially in finance, education, and customer support.|
-
-<br>
 
 ***Taxonomy mapping: MITRE ATLAS***
 
@@ -1075,8 +1069,6 @@ MINJA (Memory INJection Attack) is a novel and practical memory poisoning attack
 | **Payload Structure**   | (Victim Query, [Bridging Steps, Malicious Reasoning])                                                                 |
 | **Trigger**             | A victim query containing a pre-selected entity (e.g., patient ID, product ID, sensitive term).                       |
 
-<br>
-
 ***Real World Cases***
 
 | **Case**         | **Agent Environment**            | **Attack Scenario**   | **Outcome**   |
@@ -1084,8 +1076,6 @@ MINJA (Memory INJection Attack) is a novel and practical memory poisoning attack
 | **Medical Agent**| EHR-like memory (MIMIC-III/eICU) | Injected fabricated treatment reasoning linked to a patient ID.                                           | Agent retrieved poisoned memory and recommended incorrect treatment rationale for future patient queries. |
 | **Shopping Agent**| Product advisor with persistent memory | Injected biased product reasoning into memory through templated prompts.                              | Later, unrelated shoppers received manipulated recommendations tied to attacker's injected memory.     |
 | **QA Agent**     | General-purpose QA + memory      | Injected target reasoning into stored answers via indirect prompts.                                       | Agent recalled false logic as reference in unrelated educational or professional queries.              |
-
-<br>
 
 ***Implications***
 
@@ -1111,8 +1101,6 @@ MINJA (Memory INJection Attack) is a novel and practical memory poisoning attack
 | Safety Bypass              | Safety Evasion via Semantic Framing (AT1040)    | Malicious content is framed as helpful or routine to bypass content filters and moderation.                 |
 | Inference Exploitation     | Output Manipulation (AT1080)                   | Poisoned records influence model output during unrelated inference, misleading end users.                   |
 
-<br>
-
 ## 5.3. Poison-RAG Case Study
 
 [Poison-RAG: Adversarial Data Poisoning Attacks on Retrieval-Augmented Generation in Recommender Systems](https://arxiv.org/pdf/2501.11759)
@@ -1127,7 +1115,6 @@ The Poison-RAG attack demonstrates how adversaries can manipulate Retrieval-Augm
 | Local attacks outperform global ones         | Personalized (local) tag poisoning is more precise and successful than global tag reuse strategies.         |
 | Long-tail promotion is difficult             | Even successful attacks fail to push long-tail items significantly in ranking, especially with reranking.   |
 
-
 ***Real World Cases***
 
 | **Domain**         | **Scenario**                                                                                  | **Impact**                                                                                           |
@@ -1135,7 +1122,6 @@ The Poison-RAG attack demonstrates how adversaries can manipulate Retrieval-Augm
 | E-Commerce         | Competitor injects biased tags to demote rival products and promote obscure alternatives.     | Manipulated product rankings, suppressed visibility, consumer trust erosion.                          |
 | Content Platforms  | Malicious actors tag misinformation-rich videos with popular neutral tags.                   | Search relevance is corrupted; users are led to low-quality or unsafe content.                        |
 | Personalized News  | Political content gets tagged to appear in non-political feeds (e.g., sports, finance).      | Indirect content injection into unintended interest domains, leading to misinformation exposure.       |
-
 
 ***Implications***
 
@@ -1146,8 +1132,6 @@ The Poison-RAG attack demonstrates how adversaries can manipulate Retrieval-Augm
 | Subtle bias and exposure control | Attackers can suppress or boost item visibility in ways that evade standard moderation.                |
 | Defense is non-trivial        | Tag enrichment and scoring pipelines can unintentionally amplify or mask attacks.                       |
 | Evaluation blind spots        | Attacks are hard to detect in relevance-only metrics, requiring popularity/exposure-based monitoring.    |
-
-<br>
 
 ***Taxonomy mapping: MITRE ATLAS***
 
@@ -1165,8 +1149,6 @@ The Poison-RAG attack demonstrates how adversaries can manipulate Retrieval-Augm
 
 In March 2019, a former AWS employee exploited a misconfigured Web Application Firewall (WAF) and a Server-Side Request Forgery (SSRF) vulnerability to access Capital One's cloud-based AWS environment. The attacker retrieved temporary credentials from the instance metadata service and used them to access over 700 S3 buckets, exfiltrating personal data of over 106 million individuals. The breach occurred despite Capital One's formal adoption of the NIST Cybersecurity Framework and compliance with multiple financial regulations. The incident revealed critical gaps in access control, vulnerability scanning, outbound traffic monitoring, and incident detection—emphasizing the need for real-time compliance enforcement, security automation, and cloud configuration auditing.
 
-<br>
-
 | **Aspect**        | **Summary**       |
 |---------------------|----------------------------------|
 | SSRF Exploited via WAF Misconfiguration          | The attacker used a WAF flaw to run SSRF and obtain credentials via the AWS metadata service.          |
@@ -1176,8 +1158,6 @@ In March 2019, a former AWS employee exploited a misconfigured Web Application F
 | Incomplete Implementation of NIST Controls       | Capital One adopted the NIST CSF but did not enforce controls like PR.AC-4, DE.CM-7, and PR.PT-1.       |
 | Discovery Triggered by External Disclosure       | The incident was discovered via an external responsible disclosure, not internal defenses.              |
 
-<br>
-
 ***Real World Cases***
 
 | **Domain**          | **Scenario**      | **Outcome**         |
@@ -1185,8 +1165,6 @@ In March 2019, a former AWS employee exploited a misconfigured Web Application F
 | Financial Services  | Capital One stored credit application data in AWS; attacker exploited WAF misconfig to access it. | Over 106 million records exfiltrated; class action lawsuit and significant stock market reaction.      |
 | Public Cloud Usage  | Cloud misconfig enabled AWS metadata access via SSRF.                                             | Temporary IAM credentials used to access and sync S3 bucket data.                                     |
 | Insider Knowledge   | Attacker was a former cloud employee who understood system vulnerabilities.                       | Demonstrates insider threat potential even after employment ends.                                     |
-
-<br>
 
 ***Implications***
 
@@ -1198,8 +1176,6 @@ In March 2019, a former AWS employee exploited a misconfigured Web Application F
 | IAM Mismanagement              | The use of powerful credentials tied to non-isolated roles significantly increased attack impact.       |
 | Trust and Financial Repercussions| 15% stock drop and class action lawsuits followed; reputational loss was immediate and substantial.     |
 | Regulatory Inadequacy          | Existing laws and guidelines failed to anticipate SSRF and cloud-specific misconfigurations.             |
-
-<br>
 
 ***Taxonomy mapping: MITRE ATLAS***
 
@@ -1227,8 +1203,6 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | Resilient to query perturbations                    | Maintains success even after word/letter injection or rephrasing of the trigger.                         |
 | Stealthy trigger avoids detection                  | Trigger is coherent and semantically plausible, evading perplexity filters and rephrasing defenses.      |
 
-<br>
-
 ***Real World Cases***
 
 | **Domain**  | **Scenario**    | **Outcome**   |
@@ -1236,8 +1210,6 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | Autonomous Driving | Malicious trigger causes agent to retrieve STOP instructions, leading to unsafe braking.       | Deviation in trajectory and potential collision.                                                    |
 | Healthcare Records | Trigger causes agent to issue DELETE command on patient data.                                   | Unsafe deletion of electronic health record (EHR) information.                                      |
 | Knowledge QA       | Poisoned retrieval results in wrong or misleading answers to user queries.                     | User receives incorrect or unhelpful responses in education or research scenarios.                  |
-
-<br>
 
 ***Implications***
 
@@ -1249,8 +1221,6 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | Cross-agent vulnerability        | The attack generalizes across agents and domains, indicating a systemic vulnerability in agent design.   |
 | Compliance and audit failure     | Agents may silently violate safety/compliance without visibility to users or regulators.                |
 
-<br>
-
 ***Taxonomy mapping: MITRE ATLAS***
 
 | **ATLAS Tactic**         | **ATLAS Technique**   | **AGENTPOISON Behavior**     |
@@ -1261,21 +1231,15 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | Planning Manipulation    | Goal Hijacking (custom/extension)              | Malicious context steers agent to unsafe or incorrect task execution.                              |
 | Evasion and Stealth      | Safety Filter Bypass (AT1040)                   | Triggers optimized for semantic plausibility and coherence evade perplexity or rephrasing filters. |
 
-<br>
-
 # 6. Technical Reference: AI Architecture Patterns
 
 ## 6.1. Architecture Overview
 
 ### 6.1.1. Levels of Defense Surface
 
-<br>
-
 <p align="center">
   <img src="./images/agentic-rag-layers.png" alt="Agentic RAG Levels of Defense Surface" style="width:80%; height:auto;">
 </p>
-
-<br>
 
 | ***Level***                      | ***Description and Security Considerations***                                                                                             |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1296,13 +1260,9 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 ### 6.1.2. Technology Stack
 
-<br>
-
 <p align="center">
   <img src="./images/Technology Stack.png" alt="Technology Stack" style="width:100%; height:auto;">
 </p>
-
-<br>
 
 | ***Stack Area***        | ***Description***             | ***Potential Security Risks***    |
 |-------------------------|-------------------------------|-----------------------------------|
@@ -1318,13 +1278,9 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 ### 6.2.1. Basic LLM Architecture
 
-<br>
-
 <p align="center">
   <img src="./images/Basic LLM application.png" alt="Basic LLM application" style="width:80%; height:auto;">
 </p>
-
-<br>
 
 #### 6.2.1.1. Overview
 
@@ -1348,8 +1304,6 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **5. LLM Tools and Frameworks**      | Execution (TA1007), Manipulation (TA1005)            | Tool Abuse (AT1090), Agent Manipulation (AT1091), API Abuse (AT1100)                                                | Compromise integrated tools or frameworks for unauthorized actions or misaligned outputs.       |
 | **6. Application Interfaces**        | Manipulation (TA1005), Initial Access (TA1008)       | Prompt Injection (AT1070), UI Redress Attacks (AT1110), Input Manipulation (AT1060)                                 | Exploit user interfaces to inject malicious prompts or hijack interactions.                     |
 
-<br>
-
 #### 6.2.1.3. Mitigations
 
 | ***Component***   | ***Threat Summary***  | ***Key Mitigations*** |
@@ -1361,17 +1315,13 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **5. LLM Tools and Frameworks**   | May be exploited through plugin misuse or agent misalignment.                          | Least privilege tool execution, command tracing, policy enforcement.                                |
 | **6. Application Interfaces**     | Entry point for prompt injection, redress, and social engineering.                     | UI input validation, safe prompt templates, user guidance and training.                             |
 
-<br>
-
 ### 6.2.2. LLM Architecture with Memory
-
-<br>
 
 <p align="center">
   <img src="./images/LLM application with memory.png" alt="LLM application with memory" style="width:80%; height:auto;">
 </p>
 
-##### 6.2.2.1. Overview
+#### 6.2.2.1. Overview
 
 | ***Component***                  | ***Description***                                                                                      |
 |-------------------------------|--------------------------------------------------------------------------------------------------------|
@@ -1384,7 +1334,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **7. Memory Storage**            | Persistent or session-based memory where contextual elements or user interaction history are stored.     |
 | **8. Memory Retrieval** | Logic or tools responsible for selecting relevant past information and injecting it into new prompts.  |
 
-##### 6.2.2.2. ATLAS Techniques and Tactics
+#### 6.2.2.2. ATLAS Techniques and Tactics
 
 | ***LLM Architecture Component***     | ***ATLAS Tactics***   | ***Relevant ATLAS Techniques***  | ***Impact Summary***  |
 |--------------------------------|-----------------|----------------------------|-----------------|
@@ -1399,7 +1349,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 <br>
 
-##### 6.2.2.3. Mitigations
+#### 6.2.2.3. Mitigations
 
 | ***Component***   | ***Threat Summary***  | ***Key Mitigations*** |
 |-------------|-----------------|-----------------|
@@ -1412,19 +1362,13 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **7. Memory Storage**             | Exposed to poisoning or exfiltration of long-term stored information.                 | Session expiration, access controls, integrity and consistency checks.                              |
 | **8. Memory Retrieval** | Exploitable to retrieve sensitive history or bias model outputs.                      | Query filtering, access monitoring, memory auditing, anonymization.                                 |
 
-<br>
-
 ### 6.2.3. RAG Architecture
-
-<br>
 
 <p align="center">
   <img src="./images/RAG architecture.png" alt="RAG architecture" style="width:80%; height:auto;">
 </p>
 
-<br>
-
-##### 6.2.3.1. Overview
+#### 6.2.3.1. Overview
 
 | ***Component***                  | ***Description***                                                                                          |
 |-------------------------------|----------------------------------------------------------------------------------------------------------|
@@ -1440,7 +1384,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **10. LLM & RAG Tools**              | Supporting SDKs, APIs, libraries (e.g., LangChain, Transformers, Neo4j) enabling prompt and RAG building and handling.           |
 | **11. RAG Indexing**               | Pipeline for extracting, chunking, and embedding raw content; may also construct knowledge graphs.            |
 
-##### 6.2.3.2. ATLAS Techniques and Tactics
+#### 6.2.3.2. ATLAS Techniques and Tactics
 
 | ***LLM Architecture Component***     | ***ATLAS Tactics***   | ***Relevant ATLAS Techniques***  | ***Impact Summary***  |
 |--------------------------------|-----------------|----------------------------|-----------------|
@@ -1456,9 +1400,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **10. LLM & RAG Tools**               | Execution (TA1007), Manipulation (TA1005)          | Tool Abuse (AT1090), API Abuse (AT1100), Agent Manipulation (AT1091)                      | Misuse orchestration or plugin tools to execute unintended commands or bypass validation.       |
 | **11. RAG Indexing**                  | Poisoning (TA1003), Manipulation (TA1005)          | Data Injection (AT1051), Prompt Injection (AT1070), Output Manipulation (AT1080)          | Poison document content or embedding structure during preprocessing and chunking stages.        |
 
-<br>
-
-##### 6.2.3.3. Mitigations
+#### 6.2.3.3. Mitigations
 
 | ***Component***   | ***Threat Summary***  | ***Key Mitigations*** |
 |-------------|-----------------|-----------------|
@@ -1474,17 +1416,13 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **10. LLM & RAG Tools**        | Tool plugins or orchestration layers may be hijacked or misused by prompt injection.  | Tool access control, sandboxing, execution monitoring, scope restriction. |
 | **11. RAG Indexing**           | Poisoned during document chunking, embedding, or graph construction.                   | Input validation, semantic filters, isolated indexing pipelines, human-in-the-loop vetting.        |
 
-<br>
-
 ### 6.2.4. Agentic Architecture
-
-<br>
 
 <p align="center">
   <img src="./images/Agentic architecture.png" alt="Agentic architecture" style="width:80%; height:auto;">
 </p>
 
-##### 6.2.4.1. Overview
+#### 6.2.4.1. Overview
 
 | ***Component***                   | ***Description***                                                                                              |
 |--------------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -1499,7 +1437,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **9. Application Interface**| User interface or communication layer enabling users to interact with, supervise, or guide the agent.         |
 | **10. Generated Output & Feedback** | Final LLM-generated response and optional user feedback loop used to refine future responses.           |
 
-##### 6.2.4.2. ATLAS Techniques and Tactics
+#### 6.2.4.2. ATLAS Techniques and Tactics
 
 | ***LLM Architecture Component***     | ***ATLAS Tactics***   | ***Relevant ATLAS Techniques***  | ***Impact Summary***  |
 |--------------------------------|-----------------|----------------------------|-----------------|
@@ -1516,7 +1454,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 <br>
 
-##### 6.2.4.3. Mitigations
+#### 6.2.4.3. Mitigations
 
 | ***Component***   | ***Threat Summary***  | ***Key Mitigations*** |
 |-------------|-----------------|-----------------|
@@ -1531,18 +1469,13 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **9. Application Interfaces** | Entry point for prompt injection, social engineering, and agent hijack attempts.        | UI redress defense, prompt hardening, secure templates, user education.                             |
 | **10. Generated Output & Feedback** | Subject to hallucination amplification or feedback loop manipulation.             | Post-generation filtering, output feedback audits, semantic anomaly detection.                     |
 
-
 ### 6.2.5. Agentic RAG Architecture
-
-<br>
 
 <p align="center">
   <img src="./images/Agentic RAG architecture.png" alt="Agentic RAG architecture" style="width:80%; height:auto;">
 </p>
 
-<br>
-
-##### 6.2.5.1. Overview
+#### 6.2.5.1. Overview
 
 | ***Component***                   | ***Description***                                                                                              |
 |--------------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -1562,7 +1495,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **14. RAG Tools**              | Supporting SDKs, APIs, libraries (e.g., Neo4j, Chroma) enabling RAG building and handling.  |
 | **15. RAG Indexing**               | Pipeline for extracting, chunking, and embedding raw content; may also construct knowledge graphs.            |
 
-##### 6.2.5.2. ATLAS Techniques and Tactics
+#### 6.2.5.2. ATLAS Techniques and Tactics
 
 | ***LLM Architecture Component***     | ***ATLAS Tactics***   | ***Relevant ATLAS Techniques***  | ***Impact Summary***  |
 |--------------------------------|-----------------|----------------------------|-----------------|
@@ -1582,9 +1515,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | **14. RAG Tools**               | Execution (TA1007), Manipulation (TA1005)          | Tool Abuse (AT1090), API Abuse (AT1100), Agent Manipulation (AT1091)                      | Misuse orchestration or plugin tools to execute unintended commands or bypass validation.       |
 | **15. RAG Indexing**                  | Poisoning (TA1003), Manipulation (TA1005)          | Data Injection (AT1051), Prompt Injection (AT1070), Output Manipulation (AT1080)          | Poison document content or embedding structure during preprocessing and chunking stages.        |
 
-<br>
-
-##### 6.2.5.3. Mitigations
+#### 6.2.5.3. Mitigations
 
 | ***Component***   | ***Threat Summary***  | ***Key Mitigations*** |
 |-------------|-----------------|-----------------|
