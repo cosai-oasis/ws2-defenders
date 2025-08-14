@@ -62,7 +62,7 @@
   - [6.1. Architecture Overview](#61-architecture-overview)
     - [6.1.1. Levels of Defense Surface](#611-levels-of-defense-surface)
     - [6.1.2. Technology Stack](#612-technology-stack)
-    - [6.2. Common Patterns and Their Vulnerabilities](#62-common-patterns-and-their-vulnerabilities)
+  - [6.2. Common Patterns and Their Vulnerabilities](#62-common-patterns-and-their-vulnerabilities)
     - [6.2.1. Basic LLM Architecture](#621-basic-llm-architecture)
       - [6.2.1.1. Overview](#6211-overview)
       - [6.2.1.2. ATLAS Techniques and Tactics](#6212-atlas-techniques-and-tactics)
@@ -177,6 +177,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Indirect Prompt Injection**          | Manipulating external data that the model references          | Planting malicious content in locations that an AI uses    |
 | **Jailbreaking**              | Circumventing model safety measures to access restricted functionality            | Using creative prompts to make a chatbot generate unethical or harmful content                |
 | **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
+| **Rogue Agentic AI** | Agentic AI taking unexpected actions | Closing a curtain when the user says a harmless "thanks" in response to a chat message | 
 
 ## 2.4. Infrastructure-Level Incidents
 
@@ -216,7 +217,7 @@ The AI Incident Response Plan described is limited in scope to the:
 
 | **Component** | **Key Elements** |
 |---------------|------------------|
-| **Risk Assessment** | • AI system components and security posture<br>• Critical data assets processed by AI systems<br>• Potential attack vectors based on ATLAS framework<br>• Compliance requirements<br>• Business impact of potential compromise |
+| **Risk Assessment** | • Secure AI system components and architecture<br>• Critical data assets processed by AI systems<br>• Potential attack vectors based on ATLAS framework<br>• Compliance requirements<br>• Business impact of potential compromise |
 | **IR Team Composition** | • AI/ML engineers with model expertise<br>• Data scientists for pipeline understanding<br>• Security analysts with AI knowledge<br>• Legal and compliance experts<br>• Business stakeholders<br>• Communications specialists |
 | **Baseline Telemetry** | • Input/output logging for all interactions<br>• System prompt and configuration versioning<br>• Tool usage tracking (agentic systems)<br>• Authentication and authorization events<br>• Embedding and vector database query patterns<br>• Resource utilization metrics |
 
@@ -274,8 +275,8 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 | **Activity** | **AI-Specific Considerations** | **Key Considerations** |
 |--------------|--------------------------|------------------------|
 | **Detection Mechanisms** | **Automated Monitoring:**<br>• LLM-based classifiers for suspicious interactions<br>• Semantic similarity checks<br>• Token usage anomaly detection<br>• User feedback signal monitoring<br><br>**Manual Review:**<br>• Human review procedures for flagged interactions<br>• Sampling of high-risk operations<br>• Security dashboards<br>• Escalation triggers<br><br>**Integration Points:**<br>• SIEM integration<br>• Correlation with network security<br>• Authentication event linking | • Balance automated detection with human oversight<br>• Establish clear thresholds for alerts<br>• Avoid false positives through baseline calibration<br>• Ensure privacy considerations in monitoring<br>• Correlate AI system events with broader security telemetry |
-| **Initial Triage** | **Incident Verification:**<br>• Confirm security incident status<br>• Classify per AI attack categories (Section 2)<br>• Determine affected components<br><br>**Impact Assessment:**<br>• Estimate compromise scope<br>• Identify affected users/data<br>• Assess data exposure issues<br>• Determine business impact<br><br>**Priority Assignment:**<br>• Assign priority based on impact<br>• Implement notification procedures<br>• Mobilize specialized resources | • Validate whether anomalous behavior constitutes a security incident<br>• Use categories from Section 2 for classification<br>• Focus on potential data exposure through AI systems<br>• Consider regulatory implications<br>• Ensure escalation procedures match incident severity |
-| **Investigation Procedures** | **Evidence Collection:**<br>• Interaction logs<br>• System configurations<br>• Model versions and parameters<br>• Network traffic and API calls<br>• Vector database queries<br><br>**Forensic Analysis:**<br>• Malicious prompt patterns<br>• Data retrieval sequences<br>• Tool usage analysis<br>• Memory manipulation assessment<br>• Data poisoning evaluation<br><br>**Attribution Assessment:**<br>• Targeted vs. opportunistic analysis<br>• Actor identification<br>• Threat intelligence correlation<br>• Attribution documentation | • Preserve evidence in a forensically sound manner<br>• Focus on the unique aspects of AI system compromise<br>• Analyze both the explicit content and implicit patterns<br>• Consider the non-deterministic nature of AI systems<br>• Document investigation methodology thoroughly |
+| **Initial Triage** | **Incident Verification:**<br>• Confirm security incident status<br>• Classify per AI attack categories (Section 2)<br>• Determine affected components<br><br>**Impact Assessment:**<br>• Estimate compromise scope<br>• Identify affected users/data<br>• Assess data exposure issues<br>• Determine business impact<br><br>**Priority Assignment:**<br>• Assign priority based on impact<br>• Implement notification procedures<br>• Mobilize specialized resources | • Leverage AI to aggregate data needed for initial assessment of incident<br> • Validate whether anomalous behavior constitutes a security incident<br>• Use categories from Section 2 for classification<br>• Focus on potential data exposure through AI systems<br>• Consider regulatory implications<br>• Ensure escalation procedures match incident severity |
+| **Investigation Procedures** | **Evidence Collection:**<br>• Interaction logs<br>• System configurations<br>• Model versions and parameters<br>• Network traffic and API calls<br>• Vector database queries<br><br>**Forensic Analysis:**<br>• Malicious prompt patterns<br>• Data retrieval sequences<br>• Tool usage analysis<br>• Memory manipulation assessment<br>• Data poisoning evaluation<br><br>**Attribution Assessment:**<br>• Targeted vs. opportunistic analysis<br>• Actor identification<br>• Threat intelligence correlation<br>• Attribution documentation | • Use AI to assist in analyzing and summarizing evidence documents<br> • Preserve evidence in a forensically sound manner<br>• Focus on the unique aspects of AI system compromise<br>• Analyze both the explicit content and implicit patterns<br>• Consider the non-deterministic nature of AI systems<br>• Document investigation methodology thoroughly |
 
 ### 3.3.3. Containment, Eradication, and Recovery Phase
 
@@ -323,15 +324,15 @@ Finally, it is essential to understand and investigate the external components t
 |--------------|-------------------|----------------------------|
 | **Lessons Learned** | **Post-Incident Review:**<br>• Timely meeting scheduling<br>• Cross-team representation<br>• Event timeline documentation<br>• Response effectiveness analysis<br><br>**Root Cause Analysis:**<br>• Underlying vulnerability investigation<br>• Determination of causation:<br> • Architectural design flaws<br> • Security control implementation errors<br> • Operational failures<br> • Novel attack techniques<br><br>**Response Evaluation:**<br>• Detection effectiveness assessment<br>• Containment strategy evaluation<br>• Recovery efficiency analysis<br>• Business impact measurement | • Schedule reviews within 1-2 weeks of resolution<br>• Focus on systemic improvements, not blame<br>• Document timeline from detection through resolution<br>• Identify gaps in tools, processes, and training<br>• Analyze whether incident resulted from known or novel techniques<br>• Measure response metrics against defined objectives |
 | **Security Enhancement** | **Architectural Improvements:**<br>• System architecture updates<br>• Additional security layers<br>• Integration point strengthening<br>• Component separation enhancement<br><br>**Control Enhancements:**<br>• New/improved security controls<br>• Prompt engineering updates<br>• Monitoring capability enhancement<br>• Access control strengthening<br><br>**Process Refinement:**<br>• Playbook updates<br>• Role/responsibility revision<br>• Communication protocol improvement<br>• Documentation enhancement | • Implement architectural changes to address root causes<br>• Strengthen controls at the affected system level<br>• Update detection mechanisms for similar threats<br>• Revise processes based on response effectiveness<br>• Document all improvements for future reference<br>• Assign clear ownership for enhancement implementation |
-| **Knowledge Sharing** | **Internal Transfer:**<br>• Case study documentation<br>• Lesson-sharing workshops<br>• Security awareness updates<br>• Executive briefings<br><br>**External Sharing:**<br>• Industry knowledge contribution<br>• Information-sharing participation<br>• MITRE ATLAS submissions<br>• Standards organization engagement<br><br>**Regulatory Reporting:**<br>• Required notifications<br>• Compliance documentation<br>• Security measure evidence<br>• Audit record maintenance | • Create training materials from incident findings<br>• Share lessons across security and AI teams<br>• Contribute to industry knowledge responsibly<br>• Complete all regulatory reporting requirements<br>• Balance transparency with security considerations<br>• Document compliance with relevant regulations |
+| **Knowledge Sharing** | **Internal Transfer:**<br>• Case study documentation<br>• Lesson-sharing workshops<br>• Security awareness updates<br>• Executive briefings<br><br>**External Sharing:**<br>• Industry knowledge contribution<br>• Information-sharing participation<br>• MITRE ATLAS submissions<br>• Standards organization engagement<br><br>**Regulatory Reporting:**<br>• Required notifications<br>• Compliance documentation<br>• Security measure evidence<br>• Audit record maintenance | • Leverage AI in drafting incident reports<br>• Create training materials from incident findings<br>• Share lessons across security and AI teams<br>• Contribute to industry knowledge responsibly<br>• Complete all regulatory reporting requirements<br>• Balance transparency with security considerations<br>• Document compliance with relevant regulations |
 
 ## 3.4. Roles and Responsibilities
 
 ### 3.4.1. Provider vs. Consumer Responsibilities
 
-*[TBD: This content was originally in Section 7.1 but was empty. Content needs to be developed.]*
+A shared responsibility model between providers and consumers is essential to establish clear accountability and separation of duties in order to safeguard AI systems effectively. Providers—including base model developers and API hosts—should be responsible for ensuring foundational model robustness, implementing safety alignment, securing inference infrastructure, and embedding standardized guardrails. Consumers—comprising application developers and end organizations—must manage prompt and context control, application-level filtering, compliance monitoring, and incident detection.
 
-### 3.4.2. Team Structure and Training
+### 3.4.2. Team Assessment and Training
 
 | **Activity** | **Description** | **Implementation Guidance** |
 |--------------|----------------|----------------------------|
@@ -1536,13 +1537,21 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 ## 7.1. Workstream Leads Chairs
 
-WS Lead Chair Name ([Chair.Name@example.com](mailto:Chair.Name@example.com)), Example Corp. (mailto: link for email address; http:// link for affiliation web site) (remove "s" from Chairs if one)
+- Josiah Hagen, Trend Micro
+- Vinay Bansal, Cisco
 
 ## 7.2. Editors
 
-Editor Name ([Editor.Name@example.com](mailto:Editor.Name@example.com)), Example Corp. (mailto: link for email address; http:// for affiliation web site) (remove "s" from Editors if just one)
-
-List of active contributors.
+- Irakle Dzneladze, IBM
+- Taha Mehdi, Cisco
+- Michael Scovetta, Microsoft
+- Siddhartha Rao, Cisco
+- Ryan Cosgrove, Thomson Reuters
+- Fyodor Yarochkin, Trend Micro
+- Vladimir Kropotov, Trend Micro
+- Rob Michel, Lenovo
+- Michael Rash
+- Sarah Novotny
 
 # 8. Appendices
 
