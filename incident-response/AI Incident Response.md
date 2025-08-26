@@ -155,9 +155,10 @@ The larger scope of AI system context creates additional requirements for loggin
 
 # 2. Understanding AI Security Incidents
 
+AI security incidents can be categorized into five primary domains based on the attack vector and impact area:
+
 ## 2.1. Data Incidents
 
-AI security incidents can be categorized into four primary domains based on the attack vector and impact area:
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -179,7 +180,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Prompt Injection**          | Manipulating model inputs to bypass safeguards or alter system behavior           | Sending a specially crafted prompt to make an AI assistant disclose restricted information     |
-| **Indirect Prompt Injection**          | Manipulating external data that the model references          | Planting malicious content in locations that an AI uses    |
+| **Indirect Prompt Injection**          | Manipulating external data that the model references to bypass safeguards or alter system behavior         | Planting malicious content in locations that an AI uses to make an AI assistant disclose restricted information    |
 | **Jailbreaking**              | Circumventing model safety measures to access restricted functionality            | Using creative prompts to make a chatbot generate unethical or harmful content                |
 | **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
 | **Rogue Agentic AI** | Agentic AI taking unexpected actions | Closing a curtain when the user says a harmless "thanks" in response to a chat message | 
@@ -201,6 +202,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
 | **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
+
 
 
 # 3. Creating an AI Incident Response Plan
