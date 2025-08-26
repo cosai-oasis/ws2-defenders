@@ -15,10 +15,11 @@
     - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders)
     - [1.3.2. What is Incident Response in Context of AI](#132-what-is-incident-response-in-context-of-ai)
 - [2. Understanding AI Security Incidents](#2-understanding-ai-security-incidents)
-  - [2.1. Data-Level Incidents](#21-data-level-incidents)
-  - [2.2. Model-Level Incidents](#22-model-level-incidents)
-  - [2.3. Deployment-Level Incidents](#23-deployment-level-incidents)
-  - [2.4. Output-Level Incidents](#24-output-level-incidents)
+  - [2.1. Data Incidents](#21-data-incidents)
+  - [2.2. Model Incidents](#22-model-incidents)
+  - [2.3. Deployment Incidents](#23-deployment-incidents)
+  - [2.4. Infrastructure Incidents](#24-infrastructure-incidents)
+  - [2.5. User Interaction Incidents](#25-user-interaction-incidents)
 - [3. Creating an AI Incident Response Plan](#3-creating-an-ai-incident-response-plan)
   - [3.1. Pre-Incident Preparation](#31-pre-incident-preparation)
   - [3.2. Monitoring and Telemetry](#32-monitoring-and-telemetry)
@@ -30,7 +31,7 @@
     - [3.3.4. Post-Incident Activity Phase](#334-post-incident-activity-phase)
   - [3.4. Roles and Responsibilities](#34-roles-and-responsibilities)
     - [3.4.1. Provider vs. Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
-    - [3.4.2. Team Structure and Training](#342-team-structure-and-training)
+    - [3.4.2. Team Assessment and Training](#342-team-assessment-and-training)
   - [3.5. Communication and Collaboration](#35-communication-and-collaboration)
     - [3.5.1. Regulatory Communication](#351-regulatory-communication)
     - [3.5.2. Information Sharing with Community](#352-information-sharing-with-community)
@@ -43,8 +44,8 @@
     - [4.2.2. Key Features](#422-key-features)
     - [4.2.3. Playbook Types](#423-playbook-types)
     - [4.2.4. Playbook Type vs Activity Matrix](#424-playbook-type-vs-activity-matrix)
-      - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
-      - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
+    - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
+    - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
   - [4.3. Sample Playbook Library](#43-sample-playbook-library)
     - [4.3.1. Detect AI Model Training Data Poisoning](#431-detect-ai-model-training-data-poisoning)
     - [4.3.2. Multi-Channel Prompt Injection Detection and Response](#432-multi-channel-prompt-injection-detection-and-response)
@@ -68,21 +69,21 @@
       - [6.2.1.2. ATLAS Techniques and Tactics](#6212-atlas-techniques-and-tactics)
       - [6.2.1.3. Mitigations](#6213-mitigations)
     - [6.2.2. LLM Architecture with Memory](#622-llm-architecture-with-memory)
-        - [6.2.2.1. Overview](#6221-overview)
-        - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
-        - [6.2.2.3. Mitigations](#6223-mitigations)
+      - [6.2.2.1. Overview](#6221-overview)
+      - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
+      - [6.2.2.3. Mitigations](#6223-mitigations)
     - [6.2.3. RAG Architecture](#623-rag-architecture)
-        - [6.2.3.1. Overview](#6231-overview)
-        - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
-        - [6.2.3.3. Mitigations](#6233-mitigations)
+      - [6.2.3.1. Overview](#6231-overview)
+      - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
+      - [6.2.3.3. Mitigations](#6233-mitigations)
     - [6.2.4. Agentic Architecture](#624-agentic-architecture)
-        - [6.2.4.1. Overview](#6241-overview)
-        - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
-        - [6.2.4.3. Mitigations](#6243-mitigations)
+      - [6.2.4.1. Overview](#6241-overview)
+      - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
+      - [6.2.4.3. Mitigations](#6243-mitigations)
     - [6.2.5. Agentic RAG Architecture](#625-agentic-rag-architecture)
-        - [6.2.5.1. Overview](#6251-overview)
-        - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
-        - [6.2.5.3. Mitigations](#6253-mitigations)
+      - [6.2.5.1. Overview](#6251-overview)
+      - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
+      - [6.2.5.3. Mitigations](#6253-mitigations)
 - [7. Acknowledgements](#7-acknowledgements)
   - [7.1. Workstream Leads Chairs](#71-workstream-leads-chairs)
   - [7.2. Editors](#72-editors)
@@ -150,7 +151,7 @@ All this context creates additional set of requirements for logging and recordin
 
 # 2. Understanding AI Security Incidents
 
-## 2.1. Data-Level Incidents
+## 2.1. Data Incidents
 
 AI security incidents can be categorized into four primary domains based on the attack vector and impact area:
 
@@ -160,7 +161,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              | 
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
-## 2.2. Model-Level Incidents
+## 2.2. Model Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -169,7 +170,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Backdoor Attacks**          | Hidden functionality implanted in models that activates under specific conditions | Adding a secret trigger phrase to make an AI classify harmful content as safe                 |
 | **Model Fooling**             | Fooling models by slight modifications                                    |  Placing a tape over a 85 mph sign, causing an autopilot AI to read it as 35 mph                            |
 
-## 2.3. Deployment-Level Incidents
+## 2.3. Deployment Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -179,7 +180,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
 | **Rogue Agentic AI** | Agentic AI taking unexpected actions | Closing a curtain when the user says a harmless "thanks" in response to a chat message | 
 
-## 2.4. Infrastructure-Level Incidents
+## 2.4. Infrastructure Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -187,7 +188,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
 | **Dependency Exploitation** | Attacking AI dependency libraries                                         |  Exploiting vulnerabilities in the libraries an AI is built upon  |
 
-## 2.5. User Interaction-Level Incidents
+## 2.5. User Interaction Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
