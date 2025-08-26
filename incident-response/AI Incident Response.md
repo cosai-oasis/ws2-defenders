@@ -103,7 +103,7 @@ This paper addresses the topic of incident response in the context of AI systems
 
 ### 1.2.1. Quick Start Guide
 
-The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases. We will also map the closest SANS PICERL as a reference. 
+The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases and provide a mapping to the closest [SANS PICERL](https://www.sans.org/media/score/504-incident-response-cycle.pdf) phases as a reference. 
 
 | **NIST SP 800-61 rev 3 lifecycle phase** | **Closest SANS PICERL phase(s)** | **AI relevance** |
 |---|---|---|
@@ -117,15 +117,17 @@ The incident response life cycle has several versions from varying sources. For 
 
 ### 1.2.2. Reader Guidance
 
-This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. Below, we outline which parts of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. If you are new to this document, you may start with the Quick Start Guide (Section 1.2.1) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.
+This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. We outline which sections of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. 
 
-| Audience                           | Start                                             | Core Sections to Read                                                    | Reference / Standards                           |
+*Note: If you are new to this document, you may start with the Quick Start Guide (Section [1.2.1](#121-quick-start-guide)) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.*
+
+| Audience                           | Introduction                                             | Details | Reference / Standards                           |
 | ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
-| **CISO / Security leader**         | 1.3 Executive Summary                             | 3.4 Roles & Responsibilities<br/>3.5 Communication (incl. 3.5.1 Regulatory) | 4.1 NIST SP 800-61r3 Alignment                  |
-| **Engineer / AI Developer**        | 3.1 Pre-Incident Prep<br/>3.2 Monitoring & Telemetry | 3.3 IR Workflow                                                          | 6 Technical Architecture Patterns               |
-| **Incident Responder (SOC/CSIRT)** | 2 Understanding AI Incidents                      | 3.3 IR Workflow (incl. 3.3.3.1 Forensics)<br/>4.3 Playbooks                 | 3.4 Roles & Responsibilities<br/>3.5 Communication |
-| **Policymaker / Compliance**       | 1.3 Executive Summary                             | 3.1 Prep (policies, third-party)<br/>3.5.1 Regulatory                       | 4.1 NIST Alignment                              |
-| **Technical PM / Project Lead**    | 1.3 Executive Summary<br/>2 Incident Types           | 3.1<br/>3.2<br/>3.3 (what to build & run)                                      | 3.4 Who does what                               |
+| **CISO / Security leader**         | [1.3](#13-executive-summary) Executive Summary                             | [3.4](#34-roles-and-responsibilities) Roles & Responsibilities<br/>[3.5](#35-communication-and-collaboration) Communication (incl. 3.5.1 Regulatory) | [4.1](#41-nist-sp-800-61r3-alignment) NIST SP 800-61r3 Alignment                  |
+| **Engineer / AI Developer**        | [3.1](#31-pre-incident-preparation) Pre-Incident Prep<br/>[3.2](#32-monitoring-and-telemetry) Monitoring & Telemetry | [3.3](#33-incident-response-workflow) IR Workflow                                                          | [6](#6-technical-reference-ai-architecture-patterns) Technical Architecture Patterns               |
+| **Incident Responder (SOC/CSIRT)** | [2](#2-understanding-ai-security-incidents) Understanding AI Incidents                      | [3.3](#33-incident-response-workflow) IR Workflow (incl. 3.3.3.1 Forensics)<br/>[4.3](#43-sample-playbook-library) Playbooks                 | [3.4](#34-roles-and-responsibilities) Roles & Responsibilities<br/>[3.5](#35-communication-and-collaboration) Communication |
+| **Policymaker / Compliance**       | [1.3](#13-executive-summary) Executive Summary                             | [3.1](#31-pre-incident-preparation) Prep (policies, third-party)<br/>[3.5.1](#351-regulatory-communication) Regulatory                       | [4.1](#41-nist-sp-800-61r3-alignment) NIST Alignment                              |
+| **Technical PM / Project Lead**    | [1.3](#13-executive-summary) Executive Summary<br/>[2](#2-understanding-ai-security-incidents) Incident Types           | [3.1](#31-pre-incident-preparation)<br/>[3.2](#32-monitoring-and-telemetry)<br/>[3.3](#33-incident-response-workflow) (what to build & run)                                      | [3.4](#34-roles-and-responsibilities) Who does what                               |
 
 
 ## 1.3. Executive Summary
@@ -144,8 +146,11 @@ Organizations that develop robust AI incident response capabilities addressing t
 
 ### 1.3.2. What is Incident Response in Context of AI
 
-Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus, in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typically non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
-All this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occurring in the system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
+AI system incident response requires the analysis of the AI-enabled application's context including user prompts, system prompts, and system configuration. Current generation AI systems are defined by the co-mingling of executable instructions (user and system prompts) and user or attacker supplied data. The prompt injection vulnerability, a novel AI system risk, is based in this lack of separation of control and user data and security incident response needs to focus on identifying attack points where an actor could leverage this vulnerability. 
+
+Additionally, generative AI systems are typically non-deterministic systems rendering code validation and verification controls necessary but insufficent as the AI system can generate different outputs for the same inputs. 
+
+The larger scope of AI system context creates additional requirements for logging and recording of AI system states. Securty event processing needs to be enhanced with new logic for interpreting events occurring in an AI system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
 
 
 # 2. Understanding AI Security Incidents
