@@ -15,10 +15,11 @@
     - [1.3.1. What challenges AI Systems pose to incident responders](#131-what-challenges-ai-systems-pose-to-incident-responders)
     - [1.3.2. What is Incident Response in Context of AI](#132-what-is-incident-response-in-context-of-ai)
 - [2. Understanding AI Security Incidents](#2-understanding-ai-security-incidents)
-  - [2.1. Data-Level Incidents](#21-data-level-incidents)
-  - [2.2. Model-Level Incidents](#22-model-level-incidents)
-  - [2.3. Deployment-Level Incidents](#23-deployment-level-incidents)
-  - [2.4. Output-Level Incidents](#24-output-level-incidents)
+  - [2.1. Data Incidents](#21-data-incidents)
+  - [2.2. Model Incidents](#22-model-incidents)
+  - [2.3. Deployment Incidents](#23-deployment-incidents)
+  - [2.4. Infrastructure Incidents](#24-infrastructure-incidents)
+  - [2.5. User Interaction Incidents](#25-user-interaction-incidents)
 - [3. Creating an AI Incident Response Plan](#3-creating-an-ai-incident-response-plan)
   - [3.1. Pre-Incident Preparation](#31-pre-incident-preparation)
   - [3.2. Monitoring and Telemetry](#32-monitoring-and-telemetry)
@@ -30,7 +31,7 @@
     - [3.3.4. Post-Incident Activity Phase](#334-post-incident-activity-phase)
   - [3.4. Roles and Responsibilities](#34-roles-and-responsibilities)
     - [3.4.1. Provider vs. Consumer Responsibilities](#341-provider-vs-consumer-responsibilities)
-    - [3.4.2. Team Structure and Training](#342-team-structure-and-training)
+    - [3.4.2. Team Assessment and Training](#342-team-assessment-and-training)
   - [3.5. Communication and Collaboration](#35-communication-and-collaboration)
     - [3.5.1. Regulatory Communication](#351-regulatory-communication)
     - [3.5.2. Information Sharing with Community](#352-information-sharing-with-community)
@@ -43,8 +44,8 @@
     - [4.2.2. Key Features](#422-key-features)
     - [4.2.3. Playbook Types](#423-playbook-types)
     - [4.2.4. Playbook Type vs Activity Matrix](#424-playbook-type-vs-activity-matrix)
-      - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
-      - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
+    - [4.2.5. RACI Matrix in a SOC Context](#425-raci-matrix-in-a-soc-context)
+    - [4.2.6. CACAO Workflow Step Types](#426-cacao-workflow-step-types)
   - [4.3. Sample Playbook Library](#43-sample-playbook-library)
     - [4.3.1. Detect AI Model Training Data Poisoning](#431-detect-ai-model-training-data-poisoning)
     - [4.3.2. Multi-Channel Prompt Injection Detection and Response](#432-multi-channel-prompt-injection-detection-and-response)
@@ -68,21 +69,21 @@
       - [6.2.1.2. ATLAS Techniques and Tactics](#6212-atlas-techniques-and-tactics)
       - [6.2.1.3. Mitigations](#6213-mitigations)
     - [6.2.2. LLM Architecture with Memory](#622-llm-architecture-with-memory)
-        - [6.2.2.1. Overview](#6221-overview)
-        - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
-        - [6.2.2.3. Mitigations](#6223-mitigations)
+      - [6.2.2.1. Overview](#6221-overview)
+      - [6.2.2.2. ATLAS Techniques and Tactics](#6222-atlas-techniques-and-tactics)
+      - [6.2.2.3. Mitigations](#6223-mitigations)
     - [6.2.3. RAG Architecture](#623-rag-architecture)
-        - [6.2.3.1. Overview](#6231-overview)
-        - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
-        - [6.2.3.3. Mitigations](#6233-mitigations)
+      - [6.2.3.1. Overview](#6231-overview)
+      - [6.2.3.2. ATLAS Techniques and Tactics](#6232-atlas-techniques-and-tactics)
+      - [6.2.3.3. Mitigations](#6233-mitigations)
     - [6.2.4. Agentic Architecture](#624-agentic-architecture)
-        - [6.2.4.1. Overview](#6241-overview)
-        - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
-        - [6.2.4.3. Mitigations](#6243-mitigations)
+      - [6.2.4.1. Overview](#6241-overview)
+      - [6.2.4.2. ATLAS Techniques and Tactics](#6242-atlas-techniques-and-tactics)
+      - [6.2.4.3. Mitigations](#6243-mitigations)
     - [6.2.5. Agentic RAG Architecture](#625-agentic-rag-architecture)
-        - [6.2.5.1. Overview](#6251-overview)
-        - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
-        - [6.2.5.3. Mitigations](#6253-mitigations)
+      - [6.2.5.1. Overview](#6251-overview)
+      - [6.2.5.2. ATLAS Techniques and Tactics](#6252-atlas-techniques-and-tactics)
+      - [6.2.5.3. Mitigations](#6253-mitigations)
 - [7. Acknowledgements](#7-acknowledgements)
   - [7.1. Workstream Leads Chairs](#71-workstream-leads-chairs)
   - [7.2. Editors](#72-editors)
@@ -96,14 +97,13 @@
 
 ## 1.1. Abstract
 
-This paper addresses the topic of incident response in the context of AI systems. As with other materials produced by the Coalition for Secure AI, this paper focuses on technological capabilities and gaps that are specific to the field of artificial intelligence and does not address the topic of incident response in other contexts as this has been well-researched and documented by existing frameworks (such as [NIST Incident Response Recommendations and Considerations for Cybersecurity Risk Management] - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf). This paper should help to guide you through the proactive steps a defender should take to minimize the possibility of successful exploitation. Furthermore, it will investigate how defenders can maintain auditability, resiliency, and rapid recovery when advanced threat actors compromise AI systems. It should also help to guide the relevance of forensic investigation in an AI incident response. The extent that agentic AI architectures complicate AI incident response will also be addressed as well as steps to take to minimize the complexity. 
-
+This paper addresses the topic of incident response in the context of AI systems. As with other materials produced by the Coalition for Secure AI, this paper focuses on technological capabilities and gaps that are specific to the field of artificial intelligence and does not address the topic of incident response in other contexts as this has been well-researched and documented by existing frameworks (such as [NIST Incident Response Recommendations and Considerations for Cybersecurity Risk Management](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)). This paper guides defenders on proactively minimizing the impact of  AI system exploitation. It details how to maintain auditability, resiliency, and rapid recovery even when a system is compromised by advanced threat actors. The guide also explores the unique challenges of AI incident response, emphasizing the role of forensic investigation and the complications introduced by agentic architectures, while providing concrete steps to manage this new complexity. 
 
 ## 1.2. How To Use This Document
 
 ### 1.2.1. Quick Start Guide
 
-The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases. We will also map the closest SANS PICERL as a reference. 
+The incident response life cycle has several versions from varying sources. For the purposes of this paper we will focus on NIST 800-61r3’s life cycle phases and provide a mapping to the closest [SANS PICERL](https://www.sans.org/media/score/504-incident-response-cycle.pdf) phases as a reference. 
 
 | **NIST SP 800-61 rev 3 lifecycle phase** | **Closest SANS PICERL phase(s)** | **AI relevance** |
 |---|---|---|
@@ -117,15 +117,17 @@ The incident response life cycle has several versions from varying sources. For 
 
 ### 1.2.2. Reader Guidance
 
-This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. Below, we outline which parts of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. If you are new to this document, you may start with the Quick Start Guide (Section 1.2.1) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.
+This framework is designed for a diverse audience, from technical teams to executive leaders. Not every reader will need every section in equal depth. We outline which sections of the document each audience should prioritize, followed by recommendations on how to use the framework in practice. 
 
-| Audience                           | Start                                             | Core Sections to Read                                                    | Reference / Standards                           |
+*Note: If you are new to this document, you may start with the Quick Start Guide (Section [1.2.1](#121-quick-start-guide)) for a brief overview of the AI incident response lifecycle. This guidance will help you navigate efficiently, whether you’re skimming for a high-level overview or planning an in-depth implementation.*
+
+| Audience                           | Introduction                                             | Details | Reference / Standards                           |
 | ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
-| **CISO / Security leader**         | 1.3 Executive Summary                             | 3.4 Roles & Responsibilities<br/>3.5 Communication (incl. 3.5.1 Regulatory) | 4.1 NIST SP 800-61r3 Alignment                  |
-| **Engineer / AI Developer**        | 3.1 Pre-Incident Prep<br/>3.2 Monitoring & Telemetry | 3.3 IR Workflow                                                          | 6 Technical Architecture Patterns               |
-| **Incident Responder (SOC/CSIRT)** | 2 Understanding AI Incidents                      | 3.3 IR Workflow (incl. 3.3.3.1 Forensics)<br/>4.3 Playbooks                 | 3.4 Roles & Responsibilities<br/>3.5 Communication |
-| **Policymaker / Compliance**       | 1.3 Executive Summary                             | 3.1 Prep (policies, third-party)<br/>3.5.1 Regulatory                       | 4.1 NIST Alignment                              |
-| **Technical PM / Project Lead**    | 1.3 Executive Summary<br/>2 Incident Types           | 3.1<br/>3.2<br/>3.3 (what to build & run)                                      | 3.4 Who does what                               |
+| **CISO / Security leader**         | [1.3](#13-executive-summary) Executive Summary                             | [3.4](#34-roles-and-responsibilities) Roles & Responsibilities<br/>[3.5](#35-communication-and-collaboration) Communication (incl. 3.5.1 Regulatory) | [4.1](#41-nist-sp-800-61r3-alignment) NIST SP 800-61r3 Alignment                  |
+| **Engineer / AI Developer**        | [3.1](#31-pre-incident-preparation) Pre-Incident Prep<br/>[3.2](#32-monitoring-and-telemetry) Monitoring & Telemetry | [3.3](#33-incident-response-workflow) IR Workflow                                                          | [6](#6-technical-reference-ai-architecture-patterns) Technical Architecture Patterns               |
+| **Incident Responder (SOC/CSIRT)** | [2](#2-understanding-ai-security-incidents) Understanding AI Incidents                      | [3.3](#33-incident-response-workflow) IR Workflow (incl. 3.3.3.1 Forensics)<br/>[4.3](#43-sample-playbook-library) Playbooks                 | [3.4](#34-roles-and-responsibilities) Roles & Responsibilities<br/>[3.5](#35-communication-and-collaboration) Communication |
+| **Policymaker / Compliance**       | [1.3](#13-executive-summary) Executive Summary                             | [3.1](#31-pre-incident-preparation) Prep (policies, third-party)<br/>[3.5.1](#351-regulatory-communication) Regulatory                       | [4.1](#41-nist-sp-800-61r3-alignment) NIST Alignment                              |
+| **Technical PM / Project Lead**    | [1.3](#13-executive-summary) Executive Summary<br/>[2](#2-understanding-ai-security-incidents) Incident Types           | [3.1](#31-pre-incident-preparation)<br/>[3.2](#32-monitoring-and-telemetry)<br/>[3.3](#33-incident-response-workflow) (what to build & run)                                      | [3.4](#34-roles-and-responsibilities) Who does what                               |
 
 
 ## 1.3. Executive Summary
@@ -144,15 +146,19 @@ Organizations that develop robust AI incident response capabilities addressing t
 
 ### 1.3.2. What is Incident Response in Context of AI
 
-Incident response in context of AI includes analysis of context of AI-enabled application, including user prompts, system prompts, configuration. The key security issue with AI systems is that the executable instructions and user supplied data are in the same blob. Thus, in any security incident we need to focus on identifying attack points where this could have possibly been exploited. Further, AI systems are typically non-deterministic systems, thus a simple code validation and verification does not work, the AI system can generate different outputs for the same inputs. Small variations in input data can lead to larger changes in the AI system output that could lead to potential bypass scenarios of implemented verification rules and restrictions.
-All this context creates additional set of requirements for logging and recording of AI system states. We also need completely new logic for interpreting security events occurring in the system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
+AI system incident response requires the analysis of the AI-enabled application's context including user prompts, system prompts, and system configuration. Current generation AI systems are defined by the co-mingling of executable instructions (user and system prompts) and user or attacker supplied data. The prompt injection vulnerability, a novel AI system risk, is based in this lack of separation of control and user data and security incident response needs to focus on identifying attack points where an actor could leverage this vulnerability. 
+
+Additionally, generative AI systems are typically non-deterministic systems rendering code validation and verification controls necessary but insufficent as the AI system can generate different outputs for the same inputs. 
+
+The larger scope of AI system context creates additional requirements for logging and recording of AI system states. Securty event processing needs to be enhanced with new logic for interpreting events occurring in an AI system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
 
 
 # 2. Understanding AI Security Incidents
 
-## 2.1. Data-Level Incidents
+AI security incidents can be categorized into five primary domains based on the attack vector and impact area:
 
-AI security incidents can be categorized into four primary domains based on the attack vector and impact area:
+## 2.1. Data Incidents
+
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -160,7 +166,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Data Leakage**              | Unauthorized access to or exfiltration of sensitive data                          | Hackers gaining access to confidential medical records used to train an AI model              | 
 | **Data Integrity Violations** | Tampering with AI system inputs to manipulate outcomes                            | Modifying sensor data in a self-driving car to make it misinterpret road signs                 |
 
-## 2.2. Model-Level Incidents
+## 2.2. Model Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -169,17 +175,17 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Backdoor Attacks**          | Hidden functionality implanted in models that activates under specific conditions | Adding a secret trigger phrase to make an AI classify harmful content as safe                 |
 | **Model Fooling**             | Fooling models by slight modifications                                    |  Placing a tape over a 85 mph sign, causing an autopilot AI to read it as 35 mph                            |
 
-## 2.3. Deployment-Level Incidents
+## 2.3. Deployment Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | **Prompt Injection**          | Manipulating model inputs to bypass safeguards or alter system behavior           | Sending a specially crafted prompt to make an AI assistant disclose restricted information     |
-| **Indirect Prompt Injection**          | Manipulating external data that the model references          | Planting malicious content in locations that an AI uses    |
+| **Indirect Prompt Injection**          | Manipulating external data that the model references to bypass safeguards or alter system behavior         | Planting malicious content in locations that an AI uses to make an AI assistant disclose restricted information    |
 | **Jailbreaking**              | Circumventing model safety measures to access restricted functionality            | Using creative prompts to make a chatbot generate unethical or harmful content                |
 | **Abuse Generation**| Harmless prompts trigger harmful output                                | Benign prompts causing profane and inappropriate responses                     |
 | **Rogue Agentic AI** | Agentic AI taking unexpected actions | Closing a curtain when the user says a harmless "thanks" in response to a chat message | 
 
-## 2.4. Infrastructure-Level Incidents
+## 2.4. Infrastructure Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -187,7 +193,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **API/Service Abuse**         | Excessive or malicious use of AI services                                         | Overloading an AI translation service with excessive requests to disrupt its functionality     |
 | **Dependency Exploitation** | Attacking AI dependency libraries                                         |  Exploiting vulnerabilities in the libraries an AI is built upon  |
 
-## 2.5. User Interaction-Level Incidents
+## 2.5. User Interaction Incidents
 
 | ***Incident Type***          | ***Description***                                                                 | ***Example***                                                                                   |
 |-------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -198,6 +204,7 @@ AI security incidents can be categorized into four primary domains based on the 
 | **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
 
 
+
 # 3. Creating an AI Incident Response Plan
 
 The **core objectives** of an AI Incident Response Plan are to:
@@ -206,12 +213,12 @@ The **core objectives** of an AI Incident Response Plan are to:
 - Maintain regulatory compliance
 - Preserve evidence for forensic analysis
 - Identify root causes for prevention
-- Restore AI system functionality securely
+- Restore secure AI system functionality
 - Share actionable intelligence with security community
 
 The AI Incident Response Plan described is limited in scope to the:
-- AI systems covered (LLMs, RAG systems, agentic architectures; further discussed in Section 6)
-- Integration points with traditional IR procedures and frameworks (further discussed in Section 4)
+- AI systems covered (LLMs, RAG systems, agentic architectures; further discussed in [Section 6](#6-technical-reference-ai-architecture-patterns))
+- Integration points with traditional IR procedures and frameworks (further discussed in [Section 4](#4-frameworks-and-playbooks))
 
 ## 3.1. Pre-Incident Preparation
 
@@ -274,47 +281,36 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 
 | **Activity** | **AI-Specific Considerations** | **Key Considerations** |
 |--------------|--------------------------|------------------------|
-| **Detection Mechanisms** | **Automated Monitoring:**<br>• LLM-based classifiers for suspicious interactions<br>• Semantic similarity checks<br>• Token usage anomaly detection<br>• User feedback signal monitoring<br><br>**Manual Review:**<br>• Human review procedures for flagged interactions<br>• Sampling of high-risk operations<br>• Security dashboards<br>• Escalation triggers<br><br>**Integration Points:**<br>• SIEM integration<br>• Correlation with network security<br>• Authentication event linking | • Balance automated detection with human oversight<br>• Establish clear thresholds for alerts<br>• Avoid false positives through baseline calibration<br>• Ensure privacy considerations in monitoring<br>• Correlate AI system events with broader security telemetry |
-| **Initial Triage** | **Incident Verification:**<br>• Confirm security incident status<br>• Classify per AI attack categories (Section 2)<br>• Determine affected components<br><br>**Impact Assessment:**<br>• Estimate compromise scope<br>• Identify affected users/data<br>• Assess data exposure issues<br>• Determine business impact<br><br>**Priority Assignment:**<br>• Assign priority based on impact<br>• Implement notification procedures<br>• Mobilize specialized resources | • Leverage AI to aggregate data needed for initial assessment of incident<br> • Validate whether anomalous behavior constitutes a security incident<br>• Use categories from Section 2 for classification<br>• Focus on potential data exposure through AI systems<br>• Consider regulatory implications<br>• Ensure escalation procedures match incident severity |
+| **Detection Mechanisms** | **Automated Monitoring:**<br>• LLM-based classifiers for suspicious interactions<br>• Semantic similarity checks<br>• Token usage anomaly detection<br>• User feedback signal monitoring<br><br>**Manual Review:**<br>• Human review procedures for flagged interactions<br>• Sampling of high-risk operations<br>• Security dashboards<br>• Escalation triggers<br><br>**Integration Points:**<br>• SIEM integration<br>• Correlation with network security<br>• Authentication event linking | • Balance automated detection with human oversight<br>• Establish clear thresholds for alerts<br>• Avoid false positives through baseline calibration<br>• Ensure privacy considerations in monitoring<br>• Correlate AI system events with broader security telemetry<br>• Implement strong AI security controls for all LLM-based monitoring solutions |
+| **Initial Triage** | **Incident Verification:**<br>• Confirm security incident status<br>• Classify per AI attack categories ([Section 2](#2-understanding-ai-security-incidents))<br>• Determine affected components<br><br>**Impact Assessment:**<br>• Estimate compromise scope<br>• Identify affected users/data<br>• Assess data exposure issues<br>• Determine business impact<br><br>**Priority Assignment:**<br>• Assign priority based on impact<br>• Implement notification procedures<br>• Mobilize specialized resources | • Leverage AI to aggregate data needed for initial assessment of incident<br> • Validate whether anomalous behavior constitutes a security incident<br>• Use categories from Section 2 for classification<br>• Focus on potential data exposure through AI systems<br>• Consider regulatory implications<br>• Ensure escalation procedures match incident severity |
 | **Investigation Procedures** | **Evidence Collection:**<br>• Interaction logs<br>• System configurations<br>• Model versions and parameters<br>• Network traffic and API calls<br>• Vector database queries<br><br>**Forensic Analysis:**<br>• Malicious prompt patterns<br>• Data retrieval sequences<br>• Tool usage analysis<br>• Memory manipulation assessment<br>• Data poisoning evaluation<br><br>**Attribution Assessment:**<br>• Targeted vs. opportunistic analysis<br>• Actor identification<br>• Threat intelligence correlation<br>• Attribution documentation | • Use AI to assist in analyzing and summarizing evidence documents<br> • Preserve evidence in a forensically sound manner<br>• Focus on the unique aspects of AI system compromise<br>• Analyze both the explicit content and implicit patterns<br>• Consider the non-deterministic nature of AI systems<br>• Document investigation methodology thoroughly |
 
 ### 3.3.3. Containment, Eradication, and Recovery Phase
 
 | **Activity** | **AI-Specific Considerations** | **Implementation Guidance** |
 |--------------|--------------------------------------|----------------------------|
-| **Containment Strategies** | **Short-term Containment:**<br>• Emergency prompt filters<br>• Rate limiting/access restrictions<br>• Component isolation<br>• User/IP blocking<br><br>**Architecture-Specific Containment:**<br>**Basic LLM:** Input validation, reduced temperature, content filtering<br>**LLM with Memory:** Reset memory, session isolation, conversation history purging<br>**RAG:** Data source quarantine, validation of retrieval results<br>**Agentic:** Disable tools, enhance authorization checks<br>**Agentic RAG:** Combined strategies with interface security focus<br><br>**Evidence Preservation:**<br>• Forensic copies before containment<br>• Documented containment actions<br>• Vector database state preservation<br>• Model weight copies | • Implement containment without destroying evidence<br>• Consider each architectural pattern's unique vulnerabilities<br>• Focus containment on the specific attack vector<br>• Document all containment actions thoroughly<br>• Maintain chain of custody for forensic evidence<br>• Consider business impact of containment measures |
-| **Eradication Procedures** | **Root Cause Elimination:**<br>• Vulnerability addressing<br>• Enhanced input validation<br>• System prompt updates<br>• Framework patches<br><br>**Component Remediation:**<br>**Data-Level:** Remove poisoned data, reconstruct embeddings<br>**Model-Level:** Roll back to secure versions, enhance guardrails<br>**Deployment-Level:** Update prompts, strengthen controls<br>**Output-Level:** Implement filtering, content moderation<br><br>**Verification Testing:**<br>• Penetration testing<br>• Attack reproduction attempts<br>• Red-team exercises<br>• Issue verification | • Address fundamental vulnerabilities, not just symptoms<br>• Apply remediations specific to the compromised level<br>• Test thoroughly before returning to production<br>• Document all changes for future reference<br>• Maintain audit trail of remediation actions<br>• Verify effectiveness through testing |
+| **Containment Strategies** | **Short-term Containment:**<br>• Emergency prompt filters<br>• Rate limiting/access restrictions<br>• Component isolation<br>• User/IP blocking<br><br>**Architecture-Specific Containment:**<br>• **Basic LLM:** Input validation, reduced temperature, content filtering<br>• **LLM with Memory:** Reset memory, session isolation, conversation history purging<br>• **RAG:** Data source quarantine, validation of retrieval results<br>• **Agentic:** Disable tools, enhance authorization checks<br>• **Agentic RAG:** Combined strategies with interface security focus<br><br>**Evidence Preservation:**<br>• Forensic copies before containment<br>• Documented containment actions<br>• Vector database state preservation<br>• Model weight copies | • Implement containment without destroying evidence<br>• Consider each architectural pattern's unique vulnerabilities<br>• Focus containment on the specific attack vector<br>• Document all containment actions thoroughly<br>• Maintain chain of custody for forensic evidence<br>• Consider business impact of containment measures |
+| **Eradication Procedures** | **Root Cause Elimination:**<br>• Vulnerability addressing<br>• Enhanced input validation<br>• System prompt updates<br>• Framework patches<br><br>**Component Remediation:**<br>• **Data-Level:** Remove poisoned data, reconstruct embeddings<br>• **Model-Level:** Roll back to secure versions, enhance guardrails<br>• **Deployment-Level:** Update prompts, strengthen controls<br>• **Output-Level:** Implement filtering, content moderation<br><br>**Verification Testing:**<br>• Penetration testing<br>• Attack reproduction attempts<br>• Red-team exercises<br>• Issue verification | • Address fundamental vulnerabilities, not just symptoms<br>• Apply remediations specific to the compromised level<br>• Test thoroughly before returning to production<br>• Document all changes for future reference<br>• Maintain audit trail of remediation actions<br>• Verify effectiveness through testing |
 | **Recovery Procedures** | **Service Restoration:**<br>• Capability prioritization<br>• Phased approach planning<br>• Verification criteria<br>• Required approvals<br><br>**Enhanced Monitoring:**<br>• Heightened monitoring deployment<br>• Normal/abnormal metrics<br>• Additional logging<br>• Scheduled reviews<br><br>**User Communication:**<br>• Communication templates<br>• Transparency guidelines<br>• Communication protocols<br>• User feedback mechanisms<br><br>**Business Continuity:**<br>• Alternative system activation<br>• Restoration prioritization<br>• Stakeholder expectation setting<br>• Impact documentation | • Implement a gradual, verified restoration process<br>• Maintain heightened monitoring during recovery<br>• Communicate clearly with affected users<br>• Document business impact throughout recovery<br>• Ensure leadership approval at key recovery stages<br>• Balance security with operational needs |
 
 #### 3.3.3.1. Forensics for AI Systems
 
-In order to effectively conduct Forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and a user prompt and any other parameters which were used when interacting with an AI model as well as the response from the system. Clearly, AI model will not produce exactly the same outputs even given the same input parameters,
-therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of the incident.
+In order to effectively conduct forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) a sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and user prompts and any other parameters which were used when interacting with an AI model as well as the model output. AI-based systems may not produce exactly the same outputs given the same input parameters, therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of the incident.
 
-Further, an LLM model can also interface with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interractions and a log trail of external function executions should be preserved and made available to the forensic investigator as well.
+AI systems can also interface and integrate with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interactions and a log trail of external function executions should be preserved and made available to the forensic investigator.
 
-Another thing to keep in mind is that the user input could also be used as a part of training data for LLM model, therefore it is essential to be able
-to uncover the whole chain of user input data that could have potentially impacted the training dataset. 
+User inputs may be used as a part of training data for an AI system, therefore it is essential to be able to track user input inclusion and impact on training datasets. 
 
-AI tools themselves also can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. Therefore any analysis should be conducted in a sandboxed, isolated environment. The system activity should be carefully monitored.
+AI-based tools can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. The risks of AI-based tool analysis should be evaluated based upon your organizations risk tolerances and mitigations should be leveraged including the use of sandboxed, isolated environments. 
 
-Clearly, in this section we describe the expectations when there are no constraints. However, in real-life scenario multiple constraints may impact the
-possibility of data preservation of AI system. In some cases it could be the system performance, in other - just plain availability of network storage. 
-As in traditional security, the best solution for the situation is to identify data retention timeframes at the time when the system is designed, and be able 
-to implement the preservation and data rotation during the implementation and deployment of AI system.
+In real world AI system implementations resources are finite and system constraints may impact the scope and scale of data preservation. As in traditional systems, the best practice is to identify data retention objectives at design time and to address resource constraints via data preservation techniques and data rotation during the implementation and deployment of AI system.
 
-What are the practical tips for investigating incidents in AI systems? One of the useful one is to look for repetitive prompts  pattern. Many successful exploitation cases of AI systems are usually done by repeatitively sending and modifying prompts until expected behavior is achieved. Such patterns are relatively easy to stop when log trail of system and user prompts as well as system outputs is available to the investigator.
-
-Once flagged interractions are identified, these can be further investigated and data flow analysed. This can help to assess the impact and consequences of a malicious attack on AI component or the whole system. 
-
-During the investigation the investigator can ask the following questions:
+Key questions for the investigator:
 * Were any of the guardrails successfully bypassed?
 * Were any of the prompts intentionally modified by the attacker?
 * Did the system produce unexpected and potentially harmful content?
 * Did content include any sensitive information that could be potentially exfiltrated by an attacker?
 * Did any other manipulation of data take place?
-
-While performing this analysis it also would be useful to determine whether any of the guardrails *weren't* bypassed. If an LLM was used as guardrail, it might be useful to note whether any of the metrics produced by the LLM exceeded relevant thresholds or if they could be adjusted to thwart future attacks.
 
 Finally, it is essential to understand and investigate the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
 
@@ -330,13 +326,13 @@ Finally, it is essential to understand and investigate the external components t
 
 ### 3.4.1. Provider vs. Consumer Responsibilities
 
-A shared responsibility model between providers and consumers is essential to establish clear accountability and separation of duties in order to safeguard AI systems effectively. Providers—including base model developers and API hosts—should be responsible for ensuring foundational model robustness, implementing safety alignment, securing inference infrastructure, and embedding standardized guardrails. Consumers—comprising application developers and end organizations—must manage prompt and context control, application-level filtering, compliance monitoring, and incident detection.
+A shared responsibility model between providers and consumers is essential to establish clear accountability and separation of duties in order to safeguard AI systems effectively. Providers—including base model developers, agent developers, and API hosts—should be responsible for ensuring foundational model robustness, implementing safety alignment, securing inference infrastructure, and embedding standardized guardrails. Consumers—comprising application developers and end organizations—must manage prompt and context control, application-level filtering, compliance monitoring, and incident detection.
 
 ### 3.4.2. Team Assessment and Training
 
 | **Activity** | **Description** | **Implementation Guidance** |
 |--------------|----------------|----------------------------|
-| **Tabletop Exercises** | Scenario-based discussions using AI attack cases from Section 2 | • Conduct quarterly exercises<br>• Rotate scenario types<br>• Include cross-functional teams<br>• Document lessons learned |
+| **Tabletop Exercises** | Scenario-based discussions using AI attack cases from [Section 2](#2-understanding-ai-security-incidents) | • Conduct quarterly exercises<br>• Rotate scenario types<br>• Include cross-functional teams<br>• Document lessons learned |
 | **Technical Drills** | Hands-on exercises focused on specific AI incident response tasks | • Practice log analysis<br>• Test containment procedures<br>• Validate recovery processes<br>• Measure response times |
 | **Cross-Functional Exercises** | Full-team simulations involving all relevant stakeholders | • Include business representatives<br>• Test communications channels<br>• Validate escalation procedures<br>• Practice regulatory notifications |
 | **Adversarial Simulations** | Red-team exercises based on ATLAS techniques | • Simulate prompt injection attacks<br>• Test data poisoning scenarios<br>• Practice response to model extraction<br>• Evaluate detection capabilities |
