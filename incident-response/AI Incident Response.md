@@ -212,7 +212,7 @@ The **core objectives** of an AI Incident Response Plan are to:
 - Protect sensitive data from AI system exploitation
 - Maintain regulatory compliance
 - Preserve evidence for forensic analysis
-- Identify root causes for prevention
+- Identify root causes for prevention and response
 - Restore secure AI system functionality
 - Share actionable intelligence with security community
 
@@ -230,7 +230,7 @@ The AI Incident Response Plan described is limited in scope to the:
 
 ## 3.2. Monitoring and Telemetry
 
-To protect AI systems from evolving threats, telemetry must capture a comprehensive set of signals spanning model inference behavior, prompt and output risks, content safety, and model integrity. This includes monitoring for prompt injection, output manipulation, knowledge base poisoning, model drift, unauthorized tool or API usage, and other adversarial activities. Tracking agent workflows, context exchanges, and system lifecycles provides visibility into misuse, operational anomalies, and attacks, enabling organizations to safeguard AI pipelines, ensure compliance, and strengthen incident detection and response with traceable, structured observability data.
+To protect AI systems from evolving threats, telemetry must capture a comprehensive set of signals spanning model inference behavior, prompt and output risks, content safety, and model integrity. This includes monitoring for prompt injection, output manipulation, knowledge base poisoning, model drift, unauthorized tool or API usage, and other adversarial activities. Tracking agent workflows, context exchanges, and system lifecycles provides visibility into misuse, operational anomalies, and attacks. This data enables organizations to safeguard AI pipelines, ensure compliance, and strengthen incident detection and response with traceable, structured observability data.
 
 <p align="left">
   <img src="./images/AI Threat & Incident Detection Telemetry Categories.png" alt="AI Threat & Incident Detection Telemetry Categories" style="width:40%; height:auto;">
@@ -246,7 +246,7 @@ To protect AI systems from evolving threats, telemetry must capture a comprehens
 | Agentic Workflow Execution       | Logs multi-step decision-making by AI agents, including tool calls and retries. | Malicious tool chaining, unauthorized data access, misuse of plugins/APIs. |
 | MCP (Model Context Protocol) Message Activity | Observes protocol-level context exchanges in agentic and retrieval-augmented systems. | Session hijacking, tampering with context/memory, unauthorized prompt modifications. |
 | Agentic RAG Workflow Execution   | Captures the steps of retrieval-augmented generation pipelines including retrievers, LLMs, and validators. | Knowledge base poisoning, unsafe content retrieval, response manipulation. |
-| AI Incident Finding              | Records confirmed or suspected incidents detected across AI systems (e.g., poisoning, unauthorized use). | Incident response triggers — prompt abuse, model misuse, security violations. |
+| AI Incident Finding              | Records confirmed or suspected incidents detected across AI systems (e.g., poisoning, unauthorized use, guardrail events). | Incident response triggers — prompt abuse, model misuse, security violations. |
 | Tool Call Execution              | Logs API/tool calls made by agents, including argument inspection and error rates. | Unauthorized external access, misuse of internal or third-party APIs. |
 | AI System Activity               | Lifecycle monitoring of AI systems: deployments, updates, shutdowns, failures. | Unauthorized model deployments, version tampering, system compromise. |
 
@@ -256,6 +256,8 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 
 | **Attribute**           | **Explanation** |
 |--------------------------|----------------------------------------------------------------|
+| `timestamp`            | Tracks the time of activity performed. Proper recording of time enables investigators to piece a timeline together especially when AI incidents span multiple services or layers. |
+| `identity`            | Tracks the identity that performed an action. This could be a user or machine identity. |
 | `prompt_text`            | Captures the raw input text or structured request sent to the AI model. Monitoring the `prompt_text` is crucial for detecting prompt injection attacks, data exfiltration attempts, or adversarial instructions that could manipulate model behavior. |
 | `completion_text`        | Captures the model's output or response. It is essential to inspect `completion_text` for toxic content, bias, hallucinations, or leakage of sensitive information such as PII, credentials, or internal data. |
 | `model_name/version`     | Logs the name and version of the model used. This ensures that only authorized and validated models are deployed and helps detect unauthorized model swapping or shadow AI deployments. |
@@ -289,28 +291,28 @@ Effective security monitoring of AI systems requires capturing fine-grained tele
 
 | **Activity** | **AI-Specific Considerations** | **Implementation Guidance** |
 |--------------|--------------------------------------|----------------------------|
-| **Containment Strategies** | **Short-term Containment:**<br>• Emergency prompt filters<br>• Rate limiting/access restrictions<br>• Component isolation<br>• User/IP blocking<br><br>**Architecture-Specific Containment:**<br>• **Basic LLM:** Input validation, reduced temperature, content filtering<br>• **LLM with Memory:** Reset memory, session isolation, conversation history purging<br>• **RAG:** Data source quarantine, validation of retrieval results<br>• **Agentic:** Disable tools, enhance authorization checks<br>• **Agentic RAG:** Combined strategies with interface security focus<br><br>**Evidence Preservation:**<br>• Forensic copies before containment<br>• Documented containment actions<br>• Vector database state preservation<br>• Model weight copies | • Implement containment without destroying evidence<br>• Consider each architectural pattern's unique vulnerabilities<br>• Focus containment on the specific attack vector<br>• Document all containment actions thoroughly<br>• Maintain chain of custody for forensic evidence<br>• Consider business impact of containment measures |
+| **Containment Strategies** | **Short-term Containment:**<br>• Emergency prompt filters<br>• Rate limiting/access restrictions<br>• Component isolation<br>• User/IP blocking<br><br>**Architecture-Specific Containment:**<br>• **Basic LLM:** Input validation, reduced temperature, content filtering<br>• **LLM with Memory:** Reset memory, session isolation, conversation history purging<br>• **RAG:** Data source quarantine, validation of retrieval results<br>• **Agentic:** Disable tools, enhance authorization, least privilege checks<br>• **Agentic RAG:** Combined strategies with interface security focus<br><br>**Evidence Preservation:**<br>• Forensic copies before containment<br>• Documented containment actions<br>• Vector database state preservation<br>• Model weight copies | • Implement containment without destroying evidence<br>• Consider each architectural pattern's unique vulnerabilities<br>• Focus containment on the specific attack vector<br>• Document all containment actions thoroughly<br>• Maintain chain of custody for forensic evidence<br>• Consider business impact of containment measures |
 | **Eradication Procedures** | **Root Cause Elimination:**<br>• Vulnerability addressing<br>• Enhanced input validation<br>• System prompt updates<br>• Framework patches<br><br>**Component Remediation:**<br>• **Data-Level:** Remove poisoned data, reconstruct embeddings<br>• **Model-Level:** Roll back to secure versions, enhance guardrails<br>• **Deployment-Level:** Update prompts, strengthen controls<br>• **Output-Level:** Implement filtering, content moderation<br><br>**Verification Testing:**<br>• Penetration testing<br>• Attack reproduction attempts<br>• Red-team exercises<br>• Issue verification | • Address fundamental vulnerabilities, not just symptoms<br>• Apply remediations specific to the compromised level<br>• Test thoroughly before returning to production<br>• Document all changes for future reference<br>• Maintain audit trail of remediation actions<br>• Verify effectiveness through testing |
 | **Recovery Procedures** | **Service Restoration:**<br>• Capability prioritization<br>• Phased approach planning<br>• Verification criteria<br>• Required approvals<br><br>**Enhanced Monitoring:**<br>• Heightened monitoring deployment<br>• Normal/abnormal metrics<br>• Additional logging<br>• Scheduled reviews<br><br>**User Communication:**<br>• Communication templates<br>• Transparency guidelines<br>• Communication protocols<br>• User feedback mechanisms<br><br>**Business Continuity:**<br>• Alternative system activation<br>• Restoration prioritization<br>• Stakeholder expectation setting<br>• Impact documentation | • Implement a gradual, verified restoration process<br>• Maintain heightened monitoring during recovery<br>• Communicate clearly with affected users<br>• Document business impact throughout recovery<br>• Ensure leadership approval at key recovery stages<br>• Balance security with operational needs |
 
 #### 3.3.3.1. Forensics for AI Systems
 
-In order to effectively conduct forensic analysis of security incidents on AI systems, the AI system should be able to provide (and record) a sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and user prompts and any other parameters which were used when interacting with an AI model as well as the model output. AI-based systems may not produce exactly the same outputs given the same input parameters, therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of the incident.
+In order to effectively conduct forensic analysis of security incidents on AI systems, the AI system should be able to record (and provide) sufficient amount of information for the investigator. For example, it is essential to be able to retrieve both system prompt and user prompts and any other parameters which were used when interacting with an AI model as well as the response from the system. In general AI model will not produce exactly the same outputs even given the same input and system prompt, therefore it is essential to preserve raw output details from the AI model in order to be able to reconstruct the whole picture of the incident.
 
 AI systems can also interface and integrate with external functions and components (such as MCP servers). As with traditional security, accurate logging of these interactions and a log trail of external function executions should be preserved and made available to the forensic investigator.
 
-User inputs may be used as a part of training data for an AI system, therefore it is essential to be able to track user input inclusion and impact on training datasets. 
+User inputs may be used as a part of future training data for an AI system, therefore it is essential to be able to track user input inclusion and impact on training datasets. 
 
-AI-based tools can be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. The risks of AI-based tool analysis should be evaluated based upon your organizations risk tolerances and mitigations should be leveraged including the use of sandboxed, isolated environments. 
+AI-based tools can also be used for effective analysis of forensic trails after an incident. However, similar to how traditional forensic tools can be attacked and exploited by malicious attacker - the investigator should be aware that AI-enabled analysis and forensic tools can also become a target of malicious activity. The risks of AI-based tool analysis should be evaluated based upon your organizations risk tolerances and mitigations should be leveraged including the use of sandboxed, isolated environments. 
 
-In real world AI system implementations resources are finite and system constraints may impact the scope and scale of data preservation. As in traditional systems, the best practice is to identify data retention objectives at design time and to address resource constraints via data preservation techniques and data rotation during the implementation and deployment of AI system.
+Clearly, in this section we describe the expectations when there are no constraints. However, in real world AI system implementation resources can be finite and system constraints may impact the scope and scale of data preservation. As in traditional systems, the best practice is to identify data retention objectives at design time and to address resource constraints via data preservation techniques and data rotation during the implementation and deployment of AI system.
 
-Key questions for the investigator:
+During analysts the investigator can ask the following questions:
 * Were any of the guardrails successfully bypassed?
 * Were any of the prompts intentionally modified by the attacker?
 * Did the system produce unexpected and potentially harmful content?
 * Did content include any sensitive information that could be potentially exfiltrated by an attacker?
-* Did any other manipulation of data take place?
+* Did any other manipulation of data or system take place?
 
 Finally, it is essential to understand and investigate the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
 
@@ -364,7 +366,7 @@ AI incident reporting will often require:
 
 ***Reference:*** [NIST SP 800-61r3](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)
 
-The NIST SP 800-61 Revision 3 (2025) modernizes incident response by embedding it within the broader context of cybersecurity risk management through alignment with the NIST Cybersecurity Framework (CSF) 2.0. Unlike its predecessor, which focused on procedural guidance, this version adopts a flexible, outcome-driven approach using the six CSF Functions—Govern, Identify, Protect, Detect, Respond, and Recover—to guide organizations in managing, mitigating, and learning from cybersecurity incidents. The framework emphasizes continuous improvement, cross-functional coordination, and real-time learning across incident stages, integrating threat intelligence, asset visibility, and policy enforcement into an adaptive lifecycle. For AI systems and generative AI applications, the framework is especially applicable as it supports incident response for AI-specific threats such as prompt injection, model inversion, hallucinations, data leakage, adversarial misuse of toolchains (e.g., LangChain agents), and retrieval augmentation abuse. It enables organizations to adapt incident handling playbooks, define AI-relevant response roles, log and monitor AI inputs/outputs, and apply continuous learning to secure model behavior and data exposure. Through its flexible and modular structure, SP 800-61r3 provides a resilient foundation for defending dynamic, intelligent, and increasingly autonomous AI ecosystems.
+The NIST SP 800-61 Revision 3 (2025) modernizes incident response by embedding it within the broader context of cybersecurity risk management through alignment with the NIST Cybersecurity Framework (CSF) 2.0. Unlike its predecessor, which focused on procedural guidance, this version adopts a flexible, outcome-driven approach using the six CSF Functions—Govern, Identify, Protect, Detect, Respond, and Recover—to guide organizations in managing, mitigating, and learning from cybersecurity incidents. The framework emphasizes continuous improvement, cross-functional coordination, and real-time learning across incident stages, integrating threat intelligence, asset visibility, and policy enforcement into an adaptive lifecycle. For AI systems and generative AI applications, the framework is especially applicable as it supports incident response for AI-specific threats such as prompt injection, model inversion, hallucinations, data leakage, adversarial misuse of toolchains (e.g., LangChain agents), and retrieval augmentation abuse. It enables organizations to adapt incident handling playbooks, define AI-relevant response roles, log and monitor AI inputs/outputs, and apply continuous learning to secure model and agent behaviors and limit data exposures. Through its flexible and modular structure, SP 800-61r3 provides a resilient foundation for defending dynamic, intelligent, and increasingly autonomous AI ecosystems.
 
 ### 4.1.1. Key Concept
 
@@ -375,7 +377,7 @@ It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 F
 | CSF Function | AI-Specific Considerations |
 |--------------|-----------------------------|
 | **Govern (GV)** | Establish AI-specific IR policies: include prompt injection, misuse of RAG pipelines, and training data exposures. Ensure third-party responsibilities (e.g., model vendors or SaaS orchestration) are contractually defined. |
-| **Identify (ID)** | Inventory LLM tools, APIs, model endpoints, and external connectors. Capture attack surfaces such as embeddings, memory modules, toolchains (LangChain, ReAct). Threat modeling must include jailbreaking and adversarial prompts. |
+| **Identify (ID)** | Inventory LLM tools, APIs, model endpoints, external connectors and data sources. Capture attack surfaces such as embeddings, memory modules, toolchains (LangChain, ReAct). Threat modeling must include jailbreaking and adversarial prompts. |
 | **Protect (PR)** | Implement robust input/output guardrails, system prompts, and behavioral constraints. Ensure LLM telemetry, prompt logs, and PII filters are enabled. Validate training pipelines to prevent data poisoning or unintentional PII ingestion. |
 | **Detect (DE)** | Continuously monitor prompt patterns, output anomalies, and system behavior. Correlate logs from LLM APIs, tool executions, and chat sessions. Integrate LLM-as-a-Judge metrics and fine-tuned filters to detect AI-targeted abuse. |
 | **Respond (RS)** | Coordinate across AI/ML teams, SREs, legal, and security to investigate and contain AI-specific incidents like data leakage or unauthorized tool invocation. Update response plans to reflect LLM threats and recovery protocols. |
@@ -393,7 +395,7 @@ It replaces the old linear IR lifecycle with a model mapped to the six CSF 2.0 F
 | **Automated detection**                 | Leverage metrics from LLM guardrails, behavioral scoring, and RAG pipeline telemetry to detect attacks (e.g., prompt-based exfiltration). |
 | **Incident Response Playbooks** | Define specific playbooks for generative AI issues: misuse of agents, hallucination of critical data, unauthorized RAG retrieval. |
 | **Information sharing**                 | Coordinate with external AI incident hubs (like responsible AI research communities or regulatory bodies) for emerging attack techniques. |
-| **Continuous Improvement (ID.IM)** | Post-incident lessons should inform prompt engineering updates, model fine-tuning policies, and toolchain governance. |
+| **Continuous Improvement (ID.IM)** | Post-incident lessons should inform prompt engineering updates, detection engineering improvements, model fine-tuning policies, and toolchain governance. |
 
 ## 4.2. OASIS CACAO Security Playbooks
 
@@ -417,13 +419,13 @@ The Collaborative Automated Course of Action Operations (CACAO) Security Playboo
 | Feature                      | Description                                                                                     |
 |-----------------------------|-------------------------------------------------------------------------------------------------|
 | **Workflow Logic**          | Enables orchestration of actions using structured steps including conditions and parallelism.  |
-| **Playbook Types**          | Supports 8 defined types (e.g., detection, mitigation, engagement) for diverse response needs. |
+| **Playbook Types**          | Supports 8 defined types (see 4.2.3 below) for diverse response needs. |
 | **Activity Vocabulary**     | Defines granular actions tied to playbook types, enhancing clarity and automation.              |
 | **Command Abstraction**     | Supports multiple command formats (e.g., Bash, PowerShell, OpenC2, Jupyter Notebooks).          |
 | **Agents and Targets**      | Identifies executors and affected entities, enhancing contextual execution.                    |
 | **Authentication Info**     | Separates auth definitions from agents/targets, enabling reuse and secure handling.             |
 | **Versioning**              | Built-in lifecycle control, allowing updates and revocations of playbooks by original creator.  |
-| **Data Markings**           | Provides TLP, IEP, and custom markings to enforce usage and sharing policies.                   |
+| **Data Markings**           | Provides Traffic Light Protocol(TLP), Information Exchange Protocol(IEP), and custom markings to enforce usage and sharing policies.                   |
 | **Digital Signatures**      | Supports JSON Signature Scheme for integrity, non-repudiation, and trust validation.            |
 | **Playbook Referencing**    | Allows modular composition via playbook-to-playbook invocation.                                |
 | **STIX Integration**        | Leverages STIX 2.1 objects (e.g., Identity, Relationship) for compatibility with CTI platforms. |
@@ -1238,7 +1240,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 | ***Level***                      | ***Description and Security Considerations***                                                                                             |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
 | **1. User**                      | End-users initiate queries and receive responses. Attackers may exploit social engineering, prompt injection, or feedback manipulation.   |
-| **2. Apps / CLI**                | Interfaces like web UIs, chat apps, or CLI tools mediate user interaction. Requires input validation and UI hardening.                    |
+| **2. Apps / CLI**                | Interfaces like web UIs, chat apps, or CLI tools mediate user and agent interaction. Requires input validation and UI hardening.                    |
 | **3. Data Sources**              | Document repositories, APIs, or third-party feeds. Poisoned/unvetted data can corrupt retrieval and generation.                           |
 | **4. Network Protocols**         | Transport layer (e.g., TCP, HTTP, gRPC) for internal and external communication. Needs encryption and rate-limiting.                           |
 | **5. Cloud Infrastructure**      | Underlying compute, storage, and orchestration platform. Risk of API exposure and misconfiguration.                                       |
