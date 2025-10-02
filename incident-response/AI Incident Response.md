@@ -132,64 +132,62 @@ This framework is designed for a diverse audience, from technical teams to execu
 
 ## 1.3. Executive Summary
 
-# AI Incident Response Framework: Executive Summary
-
 The increasing integration of Artificial Intelligence (AI) into business processes presents a new frontier of risks. AI systems, with their inherent complexity and autonomy, can have significant consequences, ranging from reputational damage and financial loss to legal and ethical liabilities. To navigate this evolving landscape, a specialized AI Incident Response Framework is a necessity. This document provides an executive summary of the AI Incident Response Framework developed by COSAI, designed to equip security teams with the necessary capabilities to effectively manage AI-specific incidents. This framework provides a structured approach to preparing for, detecting, responding to, and learning from AI incidents, ensuring organizational resilience in the age of AI.
 
-## Types of AI Incidents
+### Types of AI Incidents
 A shared taxonomy sharpens detection, triage, ownership, and playbook design.
 
-### A. Performance & Robustness Failures
+#### A. Performance & Robustness Failures
 - **Model Drift:** Accuracy or calibration declines as data distribution shifts.
 - **Adversarial Evasion:** Crafted inputs bypass filters or controls.
 - **Unexpected/Harmful Outputs:** Nonsensical, policy-violating, or unsafe generations.
 
-### B. Security Vulnerabilities (ML Pipeline & Model)
+#### B. Security Vulnerabilities (ML Pipeline & Model)
 - **Data Poisoning:** Training data manipulation alters model behavior.
 - **Model Inversion / Membership Inference:** Sensitive training data leakage via queries.
 - **Model Theft / Extraction:** Unauthorized replication of proprietary models.
 
-### C. Ethics, Fairness & Bias Incidents
+#### C. Ethics, Fairness & Bias Incidents
 - **Algorithmic Bias:** Systematic disparate impacts across protected classes.
 - **Opacity / Lack of Explainability:** Decisions cannot be justified in regulated contexts.
 - **Unintended Social Consequences:** Downstream harm to users or society.
 
-### D. Misuse & Abuse
+#### D. Misuse & Abuse
 - **Deepfakes/Disinformation:** Synthetic media for fraud or manipulation.
 - **AI-Assisted Attacks:** AI leveraged to scale phishing, malware, and fraud.
 
 
-## AI Incident Response Plan
+### AI Incident Response Plan
 Adapts the traditional incident response lifecycle to the specific challenges of AI. It provides a structured, repeatable process to ensure timely and effective management of AI incidents. The plan is organized into five key phases:
 
-### 1. Preparation
+#### 1. Preparation
 - Complete production model inventory (owners, data, risks, criticality).
 - Define AI-IR roles, authorities, and decision thresholds.
 - Maintain AI-specific playbooks (bias, drift, adversarial, data leakage).
 - Run training & simulations (tabletops, red/blue prompt exercises).
 
-### 2. Detection & Analysis
+#### 2. Detection & Analysis
 - Monitor performance, safety, fairness, and security signals (e.g., drift stats, toxicity, jailbreak patterns, data exfiltration indicators).
 - Enable intake channels (internal reports, user complaints, vendor alerts).
 - Triage by severity, blast radius, regulatory exposure, and patient/customer impact.
 
-### 3. Containment
+#### 3. Containment
 - Disable tools or rollback to prior model; gate high-risk features.
 - Isolate systems; rate-limit or block malicious inputs.
 - Activate temporary guardrails (stricter content filters, human-in-the-loop).
 
-### 4. Eradication & Recovery
+#### 4. Eradication & Recovery
 - Root cause analysis (data, model, infra, policy).
 - Retrain/patch models; cleanse data; rotate keys/tokens.
 - Validate performance, safety, and compliance before redeploy.
 
-### 5. Post-Incident Activities
+#### 5. Post-Incident Activities
 - Blameless post-mortem, timeline, and effectiveness review.
 - Action items with owners and deadlines; update playbooks, policies, and training.
 - Feed lessons into ML governance, risk registers, and CI/CD controls.
 
 
-## Key Roles & RACI
+### Key Roles & RACI
 Clear accountability avoids delay and rework. Example matrix below; tailor to your org.
 
 | Activity | Incident Commander | AI/ML Engineer | Legal & Compliance | Communications |
@@ -203,7 +201,7 @@ Clear accountability avoids delay and rework. Example matrix below; tailor to yo
 **Legend:** `R` = Responsible, `A` = Accountable, `C` = Consulted, `I` = Informed.
 
 
-## Incident Response Playbooks
+### Incident Response Playbooks
 Playbooks translate policy into actionable detections. Each should include the following structure:
 
 - **Incident Type:** A clear description of the specific AI incident the playbook addresses.
@@ -213,11 +211,11 @@ Playbooks translate policy into actionable detections. Each should include the f
 - **Eradication and Recovery Procedures:** Detailed technical steps for resolving the issue and restoring the system.
 - **Communication Plan:** Pre-approved communication templates for internal and external stakeholders.
 
-#### Some example playbooks:
+##### Some example playbooks:
 - Adversarial Evasion (Prompt/Content Bypass)
 - Model/Data Exfiltration or Leakage
 
-## Key Lessons Learned
+### Key Lessons Learned
 - Run blameless post-mortems within SLA; capture timeline, root causes, and control gaps.
 - Produce measurable actions (owners, deadlines) and track to closure.
 - Instrument governance: add fairness/safety KPIs to production SLOs; expand telemetry (prompt logs, content filters, tooling traces); integrate security scanning for AI/ML in CI/CD.
