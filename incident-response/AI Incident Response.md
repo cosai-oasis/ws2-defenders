@@ -132,25 +132,94 @@ This framework is designed for a diverse audience, from technical teams to execu
 
 ## 1.3. Executive Summary
 
-### 1.3.1. What challenges AI Systems pose to incident responders
+The increasing integration of Artificial Intelligence (AI) into business processes presents a new frontier of risks. AI systems, with their inherent complexity and autonomy, can have significant consequences, ranging from reputational damage and financial loss to legal and ethical liabilities. To navigate this evolving landscape, a specialized AI Incident Response Framework is a necessity. This document provides an executive summary of the AI Incident Response Framework developed by COSAI, designed to equip security teams with the necessary capabilities to effectively manage AI-specific incidents. This framework provides a structured approach to preparing for, detecting, responding to, and learning from AI incidents, ensuring organizational resilience in the age of AI.
 
-As organizations increasingly integrate AI systems into core business processes, traditional incident response approaches prove inadequate for addressing AI-specific security events. This capability gap creates both immediate operational risks and competitive disadvantages, requiring strategic investment in specialized response capabilities that protect business value while enabling continued AI innovation.
+### Types of AI Incidents
+A shared taxonomy sharpens detection, triage, ownership, and playbook design.
 
-**Non-deterministic System Behavior** fundamentally changes incident investigation economics. Traditional forensic approaches fail when AI systems produce different outputs for identical inputs, requiring organizations to invest in new investigation methodologies and specialized personnel. Organizations must allocate resources for extended incident analysis periods and develop new verification protocols that account for AI system variability, directly impacting operational budgets and response team staffing decisions.
+#### A. Performance & Robustness Failures
+- **Model Drift:** Accuracy or calibration declines as data distribution shifts.
+- **Adversarial Evasion:** Crafted inputs bypass filters or controls.
+- **Unexpected/Harmful Outputs:** Nonsensical, policy-violating, or unsafe generations.
 
-**Complex Multi-Component Architectures** amplify incident scope and business impact across interconnected systems. Organizations must prepare for scenarios where a single compromise affects multiple business units simultaneously through AI system dependencies. This reality requires cross-functional incident response capabilities that span traditional security boundaries, influencing organizational structure decisions, resource allocation across business units, and business continuity planning investments.
+#### B. Security Vulnerabilities (ML Pipeline & Model)
+- **Data Poisoning:** Training data manipulation alters model behavior.
+- **Model Inversion / Membership Inference:** Sensitive training data leakage via queries.
+- **Model Theft / Extraction:** Unauthorized replication of proprietary models.
 
-**Novel Attack Vectors** specific to AI systems require entirely new security infrastructure investments and operational procedures. Traditional security tools and playbooks are not designed to identify threats such as memory injection attacks, RAG poisoning, adversarial prompt chains, or model extraction attempts. These AI-specific attack patterns often appear benign to conventional security monitoring systems, rendering existing security investments inadequate and necessitating additional capital allocation for threat detection capabilities and personnel training to protect against previously unknown attack methodologies.
+#### C. Ethics, Fairness & Bias Incidents
+- **Algorithmic Bias:** Systematic disparate impacts across protected classes.
+- **Opacity / Lack of Explainability:** Decisions cannot be justified in regulated contexts.
+- **Unintended Social Consequences:** Downstream harm to users or society.
 
-Organizations that develop robust AI incident response capabilities addressing these challenges position themselves to maintain customer trust, ensure regulatory compliance, and sustain competitive advantages in AI-driven markets. Conversely, organizations that fail to address these challenges face prolonged business disruption, regulatory penalties, and potential loss of market position when AI security incidents occur.
+#### D. Misuse & Abuse
+- **Deepfakes/Disinformation:** Synthetic media for fraud or manipulation.
+- **AI-Assisted Attacks:** AI leveraged to scale phishing, malware, and fraud.
 
-### 1.3.2. What is Incident Response in Context of AI
 
-AI system incident response requires the analysis of the AI-enabled application's context including user prompts, system prompts, and system configuration. Current generation AI systems are defined by the co-mingling of executable instructions (user and system prompts) and user or attacker supplied data. The prompt injection vulnerability, a novel AI system risk, is based in this lack of separation of control and user data and security incident response needs to focus on identifying attack points where an actor could leverage this vulnerability. 
+### AI Incident Response Plan
+Adapts the traditional incident response lifecycle to the specific challenges of AI. It provides a structured, repeatable process to ensure timely and effective management of AI incidents. The plan is organized into five key phases:
 
-Additionally, generative AI systems are typically non-deterministic systems rendering code validation and verification controls necessary but insufficent as the AI system can generate different outputs for the same inputs. 
+#### 1. Preparation
+- Complete production model inventory (owners, data, risks, criticality).
+- Define AI-IR roles, authorities, and decision thresholds.
+- Maintain AI-specific playbooks (bias, drift, adversarial, data leakage).
+- Run training & simulations (tabletops, red/blue prompt exercises).
 
-The larger scope of AI system context creates additional requirements for logging and recording of AI system states. Securty event processing needs to be enhanced with new logic for interpreting events occurring in an AI system. For example, in chat bot scenarios all prompts (user and system) as well as AI system output must be logged to facilitate effective Incident Response process. We also need to be able to understand how these prompts led to specific AI system responses.
+#### 2. Detection & Analysis
+- Monitor performance, safety, fairness, and security signals (e.g., drift stats, toxicity, jailbreak patterns, data exfiltration indicators).
+- Enable intake channels (internal reports, user complaints, vendor alerts).
+- Triage by severity, blast radius, regulatory exposure, and patient/customer impact.
+
+#### 3. Containment
+- Disable tools or rollback to prior model; gate high-risk features.
+- Isolate systems; rate-limit or block malicious inputs.
+- Activate temporary guardrails (stricter content filters, human-in-the-loop).
+
+#### 4. Eradication & Recovery
+- Root cause analysis (data, model, infra, policy).
+- Retrain/patch models; cleanse data; rotate keys/tokens.
+- Validate performance, safety, and compliance before redeploy.
+
+#### 5. Post-Incident Activities
+- Blameless post-mortem, timeline, and effectiveness review.
+- Action items with owners and deadlines; update playbooks, policies, and training.
+- Feed lessons into ML governance, risk registers, and CI/CD controls.
+
+
+### Key Roles & RACI
+Clear accountability avoids delay and rework. Example matrix below; tailor to your org.
+
+| Activity | Incident Commander | AI/ML Engineer | Legal & Compliance | Communications |
+| :--- | :---: | :---: | :---: | :---: |
+| **Declare Incident** | A | R | I | I |
+| **Technical Investigation** | C | A/R | I | I |
+| **Take Model Offline** | A | R | C | I |
+| **External Communications** | C | I | A | R |
+| **Post-Mortem Report** | A | R | C | C |
+
+**Legend:** `R` = Responsible, `A` = Accountable, `C` = Consulted, `I` = Informed.
+
+
+### Incident Response Playbooks
+Playbooks translate policy into actionable detections. Each should include the following structure:
+
+- **Incident Type:** A clear description of the specific AI incident the playbook addresses.
+- **Detection:** How to identify that this type of incident is occurring, including specific monitoring alerts and reporting channels.
+- **Triage and Severity:** Criteria for assessing the severity of the incident and the key stakeholders to notify.
+- **Containment Steps:** A checklist of immediate actions to take to contain the incident.
+- **Eradication and Recovery Procedures:** Detailed technical steps for resolving the issue and restoring the system.
+- **Communication Plan:** Pre-approved communication templates for internal and external stakeholders.
+
+##### Some example playbooks:
+- Adversarial Evasion (Prompt/Content Bypass)
+- Model/Data Exfiltration or Leakage
+
+### Key Lessons Learned
+- Run blameless post-mortems within SLA; capture timeline, root causes, and control gaps.
+- Produce measurable actions (owners, deadlines) and track to closure.
+- Instrument governance: add fairness/safety KPIs to production SLOs; expand telemetry (prompt logs, content filters, tooling traces); integrate security scanning for AI/ML in CI/CD.
+- Prevent recurrences: clarify authority to disable/rollback; expand adversarial testing; standardize fallback modes and comms templates.
 
 
 # 2. Understanding AI Security Incidents
