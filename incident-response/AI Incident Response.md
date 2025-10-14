@@ -270,7 +270,7 @@ AI security incidents can be categorized into five primary domains based on the 
 | **Phishing Content Generation** | Leveraging AI crafting high-quality, convincing phishing content | Cybercriminals using an AI to craft flawless phishing emails |
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
-| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
+| **Regional or cultural bias**| Not acceptable output of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
 
 
 
