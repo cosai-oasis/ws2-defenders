@@ -107,8 +107,8 @@ The incident response life cycle has several versions from varying sources. For 
 
 | **NIST SP 800-61 rev 3 lifecycle phase** | **Closest SANS PICERL phase(s)** | **AI relevance** |
 |---|---|---|
-| **Govern (GV)** | Preparation | Set AI-specific policy and roles: e.g., who may push new model weights to production, required update cadence for model cards, and breach-disclosure windows for LLM supply-chain compromises. |
-| **Identify (ID)** | Preparation | Maintain inventories of datasets, model artefacts, prompts, and dependencies; perform AI-threat risk assessments (model-exfiltration, data-poisoning, jailbreaks) and maintain model card library. |
+| **Govern (GV)** | Preparation | Set AI-specific policy and roles: e.g., who may push new model weights to production, required update cadence for AI system cards and model cards, and breach-disclosure windows for LLM supply-chain compromises. |
+| **Identify (ID)** | Preparation | Maintain inventories of datasets, model artefacts, prompts, and dependencies; perform AI-threat risk assessments (model-exfiltration, data-poisoning, jailbreaks) and maintain AI system card and model card library. |
 | **Protect (PR)** | Preparation | Apply safeguards: encrypt checkpoints, enforce least-privilege on inference APIs, implement input-validation/output-filtering guardrails, and add watermarking to deter prompt-injection abuse. |
 | **Detect (DE)** | Identification | Ensure proper Monitoring and Telemetry |
 | **Respond (RS)** | Containment & Eradication | Contain (hot-swap to safe snapshots, throttle APIs, revoke leaked keys), eradicate root causes, and coordinate disclosure to affected users. |
