@@ -1,11 +1,11 @@
-# AI Incident Response Framework, V1.0 -- DRAFT
+# AI Incident Response Framework, V1.0 
+
+Approved by the CoSAI Project Governing Board on 27 October 2026
 
 ## OASIS Open Project : [Coalition for Secure AI (CoSAI)](https://github.com/cosai-oasis) - [Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape](https://github.com/cosai-oasis/ws2-defenders)
 
 <!-- TOC Start -->
 
-- [AI Incident Response Framework, V1.0 -- DRAFT](#ai-incident-response-framework-v10----draft)
-  - [OASIS Open Project : Coalition for Secure AI (CoSAI) - Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape](#oasis-open-project--coalition-for-secure-ai-cosai---workstream-2-preparing-defenders-for-a-changing-cybersecurity-landscape)
 - [1. Overview](#1-overview)
   - [1.1. Abstract](#11-abstract)
   - [1.2. How To Use This Document](#12-how-to-use-this-document)
