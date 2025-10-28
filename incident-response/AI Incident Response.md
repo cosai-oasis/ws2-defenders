@@ -134,7 +134,7 @@ This framework is designed for a diverse audience, from technical teams to execu
 
 The increasing integration of Artificial Intelligence (AI) into business processes presents a new frontier of risks. AI systems, with their inherent complexity and autonomy, can have significant consequences, ranging from reputational damage and financial loss to legal and ethical liabilities. To navigate this evolving landscape, a specialized AI Incident Response Framework is a necessity. This document provides an executive summary of the AI Incident Response Framework developed by COSAI, designed to equip security teams with the necessary capabilities to effectively manage AI-specific incidents. This framework provides a structured approach to preparing for, detecting, responding to, and learning from AI incidents, ensuring organizational resilience in the age of AI.
 
-### Types of AI Incidents
+### 1.3.1 Types of AI Incidents
 A shared taxonomy sharpens detection, triage, ownership, and playbook design.
 
 #### A. Performance & Robustness Failures
@@ -157,7 +157,7 @@ A shared taxonomy sharpens detection, triage, ownership, and playbook design.
 - **AI-Assisted Attacks:** AI leveraged to scale phishing, malware, and fraud.
 
 
-### AI Incident Response Plan
+### 1.3.2 AI Incident Response Plan
 Adapts the traditional incident response lifecycle to the specific challenges of AI. It provides a structured, repeatable process to ensure timely and effective management of AI incidents. The plan is organized into five key phases:
 
 #### 1. Preparation
@@ -187,7 +187,7 @@ Adapts the traditional incident response lifecycle to the specific challenges of
 - Feed lessons into ML governance, risk registers, and CI/CD controls.
 
 
-### Key Roles & RACI
+### 1.3.3 Key Roles & RACI
 Clear accountability avoids delay and rework. Example matrix below; tailor to your org.
 
 | Activity | Incident Commander | AI/ML Engineer | Legal & Compliance | Communications |
@@ -201,7 +201,7 @@ Clear accountability avoids delay and rework. Example matrix below; tailor to yo
 **Legend:** `R` = Responsible, `A` = Accountable, `C` = Consulted, `I` = Informed.
 
 
-### Incident Response Playbooks
+### 1.3.4 Incident Response Playbooks
 Playbooks translate policy into actionable detections. Each should include the following structure:
 
 - **Incident Type:** A clear description of the specific AI incident the playbook addresses.
@@ -215,7 +215,7 @@ Playbooks translate policy into actionable detections. Each should include the f
 - Adversarial Evasion (Prompt/Content Bypass)
 - Model/Data Exfiltration or Leakage
 
-### Key Lessons Learned
+### 1.3.5 Key Lessons Learned
 - Run blameless post-mortems within SLA; capture timeline, root causes, and control gaps.
 - Produce measurable actions (owners, deadlines) and track to closure.
 - Instrument governance: add fairness/safety KPIs to production SLOs; expand telemetry (prompt logs, content filters, tooling traces); integrate security scanning for AI/ML in CI/CD.
