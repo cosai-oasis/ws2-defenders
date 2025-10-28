@@ -1605,7 +1605,7 @@ AGENTPOISON is the first red-teaming framework that targets RAG-based LLM agents
 
 # 7. Acknowledgements
 
-## 7.1. Workstream Leads Chairs
+## 7.1. Workstream Leads
 
 - Josiah Hagen, Trend Micro
 - Vinay Bansal, Cisco
