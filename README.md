@@ -15,7 +15,7 @@ This repository is for the work of the CoSAI Workstream 2, Preparing Defenders f
 The goal of this workstream is to develop a defender’s framework to identify needed investments to address the security impacts of AI use by business applications, attackers, and defenders as well as mitigations techniques and best practices. The Defender’s framework aims to scale investments and mitigation strategies with the emergence of pivotal offensive cybersecurity advancements in AI models. Further information can be found [here](https://github.com/cosai-oasis/oasis-open-project/blob/main/WORKSTREAMS.md).
 
 ### Workstream Leads
-* Josiah Hagen, Trend Micro
+* Josiah Hagen
 * Vinay Bansal, Cisco
 
 <!-- ## Badges [optional – TBD]
