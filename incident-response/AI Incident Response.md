@@ -1,7 +1,7 @@
 ---
 title: AI Incident Response Framework, V1.0 
 author: "Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape"
-date: 27 October 2026
+date: 27 October 2025
 ---
 
 # AI Incident Response Framework, V1.0 
