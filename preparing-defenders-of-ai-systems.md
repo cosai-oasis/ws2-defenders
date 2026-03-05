@@ -1,4 +1,8 @@
-
+---
+title: Preparing Defenders of AI Systems, V 1.0
+author: "Workstream 2: Preparing Defenders of AI Systems"
+date: 14 July 2025
+---
 # Preparing Defenders of AI Systems, V 1.0
 
 OASIS Open Project: [Coalition for Secure AI (CoSAI)](https://github.com/cosai-oasis), [Workstream 2: Preparing Defenders of AI Systems](https://github.com/cosai-oasis/ws2-defenders)
@@ -180,7 +184,7 @@ In conclusion, the emerging security realities of AI systems and the findings fr
 
 **Contributors**
 
-* Irakle Dzneladze (irakledprof@gmail.com]
+* Irakle Dzneladze (irakledprof@gmail.com)
 * Shrey Bagga (sbagga@cisco.com )  
 * Matt Saner (msaner@amazon.com)  
 * Michael Rash (Michael.Rash1@Dell.com)  
@@ -193,7 +197,7 @@ In conclusion, the emerging security realities of AI systems and the findings fr
 
 **Editors**
 
-* Akila Srinivasan, Anthropic (akila@anthropic.com)  
+* Akila Srinivasan, Anthropic (akila@anthropic.com)
 * J.R. Rao, IBM (jrrao@us.ibm.com)
 
 **Reviewers**
