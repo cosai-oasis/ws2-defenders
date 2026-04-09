@@ -6,7 +6,7 @@ date: 27 October 2025
 
 # AI Incident Response Framework, V1.0 
 
-Approved by the CoSAI Project Governing Board on 27 October 2026
+Approved by the CoSAI Project Governing Board on 27 October 2025
 
 ## OASIS Open Project : [Coalition for Secure AI (CoSAI)](https://github.com/cosai-oasis) - [Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape](https://github.com/cosai-oasis/ws2-defenders)
 
@@ -122,7 +122,7 @@ The incident response life cycle has several versions from varying sources. For 
 | **Detect (DE)** | Identification | Ensure proper Monitoring and Telemetry |
 | **Respond (RS)** | Containment & Eradication | Contain (hot-swap to safe snapshots, throttle APIs, revoke leaked keys), eradicate root causes, and coordinate disclosure to affected users. |
 | **Recover (RC)** | Recovery | Recreate or retrain from trusted baselines, run robustness/bias test suites, and validate checkpoints against performance and fairness thresholds before full go-live. |
-| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future Reinforcement Learning from Human Feedback (RLHF) or adversarial-training cycles and relevent montior tools, SIEMs, etc., update threat models and playbooks, share anonymised TTPs |
+| **Identify.IM – Improvement** | Lessons Learned | Feed incident artefacts into future Reinforcement Learning from Human Feedback (RLHF) or adversarial-training cycles and relevant monitor tools, SIEMs, etc., update threat models and playbooks, share anonymized TTPs |
 
 ### 1.2.2. Reader Guidance
 
@@ -141,7 +141,7 @@ This framework is designed for a diverse audience, from technical teams to execu
 
 ## 1.3. Executive Summary
 
-The increasing integration of Artificial Intelligence (AI) into business processes presents a new frontier of risks. AI systems, with their inherent complexity and autonomy, can have significant consequences, ranging from reputational damage and financial loss to legal and ethical liabilities. To navigate this evolving landscape, a specialized AI Incident Response Framework is a necessity. This document provides an executive summary of the AI Incident Response Framework developed by COSAI, designed to equip security teams with the necessary capabilities to effectively manage AI-specific incidents. This framework provides a structured approach to preparing for, detecting, responding to, and learning from AI incidents, ensuring organizational resilience in the age of AI.
+The increasing integration of Artificial Intelligence (AI) into business processes presents a new frontier of risks. AI systems, with their inherent complexity and autonomy, can have significant consequences, ranging from reputational damage and financial loss to legal and ethical liabilities. To navigate this evolving landscape, a specialized AI Incident Response Framework is a necessity. This document provides an executive summary of the AI Incident Response Framework developed by CoSAI, designed to equip security teams with the necessary capabilities to effectively manage AI-specific incidents. This framework provides a structured approach to preparing for, detecting, responding to, and learning from AI incidents, ensuring organizational resilience in the age of AI.
 
 ### 1.3.1 Types of AI Incidents
 A shared taxonomy sharpens detection, triage, ownership, and playbook design.
@@ -279,7 +279,7 @@ AI security incidents can be categorized into five primary domains based on the 
 | **Phishing Content Generation** | Leveraging AI crafting high-quality, convincing phishing content | Cybercriminals using an AI to craft flawless phishing emails |
 | **Output Manipulation**       | Forcing harmful or misleading outputs from AI systems                             | Crafting inputs to make an AI generate false financial forecasts                              |
 | **Hallucination Exploitation**| Leveraging model inaccuracies for harmful purposes                                | Using an AI's hallucinated data to spread misinformation in public forums                     |
-| **Regional or cultural bias**| Not acceptable otput of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
+| **Regional or cultural bias**| Not acceptable output of the model in some regions or cultures                      | Exploiting AI's specifics to provide different outputs for different or cultures             |
 
 
 
@@ -390,7 +390,7 @@ During analysts the investigator can ask the following questions:
 * Did content include any sensitive information that could be potentially exfiltrated by an attacker?
 * Did any other manipulation of data or system take place?
 
-Finally, it is essential to understand and investigate the external components that were interracting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
+Finally, it is essential to understand and investigate the external components that were interacting with AI systems. Log trails of these components (such as web server logs, database query logs and so on) could also be extremely helpful in being able to reconstruct and understand the full picture of an AI security incident.
 
 ### 3.3.4. Post-Incident Activity Phase
 
