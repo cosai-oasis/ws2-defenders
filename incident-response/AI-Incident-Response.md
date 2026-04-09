@@ -384,6 +384,7 @@ AI-based tools can also be used for effective analysis of forensic trails after 
 Clearly, in this section we describe the expectations when there are no constraints. However, in real world AI system implementation resources can be finite and system constraints may impact the scope and scale of data preservation. As in traditional systems, the best practice is to identify data retention objectives at design time and to address resource constraints via data preservation techniques and data rotation during the implementation and deployment of AI system.
 
 During analysts the investigator can ask the following questions:
+
 * Were any of the guardrails successfully bypassed?
 * Were any of the prompts intentionally modified by the attacker?
 * Did the system produce unexpected and potentially harmful content?
@@ -423,6 +424,7 @@ A shared responsibility model between providers and consumers is essential to es
 Incident reporting has different requirements for different jurisdictions and industry verticals, manifold across levels of government.  In the US the [2022 CIRCIA legislation](https://www.cisa.gov/sites/default/files/2023-01/CIRCIA_07.21.2022_Factsheet_FINAL_508%20c.pdf) provided strict timelines for reporting cyber incidents to critical infrastructure segments even tighter than the financial industry's [GLBA](https://www.ftc.gov/legal-library/browse/statutes/gramm-leach-bliley-act) for financial privacy requirements, while [HIPAA requires report of PHI breaches](https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html) over longer timescales.  All 50 US states have their own breach notification laws.  In contrast, the EU is governed by [NIS2](https://www.nis-2-directive.com/NIS_2_Directive_Article_23.html) for critical infrastructure, [DORA](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en) for financial institutions and [GDPR for personal data breaches](https://gdpr-info.eu/art-33-gdpr/) - all on strict timelines.  Legal counsel is needed to fully understand the reporting requirements across jurisdictions.
 
 AI Systems bring new challenges to reporting for regulatory compliance:
+
 * Personal data breaches from PII/PHI leakage from AI systems, applicable to US states’ data laws and GDPR
 * Model confidentiality, integrity and accessibility attacks are breaches, even if affected indirectly
 * AI service providers may be considered critical infrastructure, or be required to disclose incidents affecting customer use of AI services
@@ -432,6 +434,7 @@ AI Systems bring new challenges to reporting for regulatory compliance:
 One of defenders’ greatest advantages against attackers is information sharing, as timely well-structured information about attacks enables defenders to prevent similar attacks.  Incident information sharing is evolving from sector based [ISAC](https://www.nationalisacs.org/about-isacs) reporting to more strict national and supranational reporting requirements from CIRCIA, CISA in the US and ENISA in the EU.  There are many fragmented and boutique reporting mechanisms too, including the [AI Incident Database](https://incidentdatabase.ai/), for community-driven reporting.  Cross-border open groups such as [FIRST](https://www.first.org/) offer best practices and standards for sharing IOCs, TTPs and for Coordinated Vulnerability Disclosure.  The security community supports the use of OASIS [STIX 2.1](https://docs.oasis-open.org/cti/stix/v2.1/csprd01/stix-v2.1-csprd01.html) to share information widely, with OpenCTI the intended target open source tool for managing threat intelligence within or across organizations.  Open sharing of threat intelligence is still a challenge for enterprises and even the security community, often because complying with data privacy regulation discourages additional anonymization work required.
 
 AI incident reporting will often require:
+
 * Data scrubbing to remove PII from incident report, possibly data used by AI system
 * Associating IOCs and TTPs with attacks against the AI system
 * Responsible disclosure of AI vulnerabilities to AI providers
@@ -1679,6 +1682,7 @@ tl;dr: CoSAI contributions are actions performed by humans, who are responsible 
 * Transparency: CoSAI’s goal will be to maintain transparency throughout the process by documenting substantial use of AI systems whenever possible (e.g., the prompts and the AI system used), and to ensure that all content, regardless of production by human or AI systems, was reviewed and edited by human experts. This helps build trust in the standards development process and ensures accountability.  
 * Human-edited content and quality control: CoSAI mandates human-reviewed or \-edited results for any final outputs. A robust quality control process should be in place, involving careful review of the generated content for accuracy, relevance, and alignment with CoSAI's goals and principles. Human experts should scrutinize the output of AI systems to identify any errors, inconsistencies, or potential biases.  
 * Iterative refinement: The use of AI systems in drafting standards should be seen as an iterative process, with the generated content serving as a starting point for further refinement and improvement by human experts. Multiple rounds of review and editing may be necessary to ensure the final standards meet the required quality and reliability thresholds.
+
 ---
 
 ## Copyright Notice
