@@ -1,0 +1,365 @@
+` AITF Agent Behavioral Analysis - Splunk SPL Queries
+` ====================================================
+`
+` SPL queries for deep behavioral analysis of AI agent sessions.
+` These queries detect anomalous agent patterns including loops,
+` unauthorized delegations, session hijacking, and tool abuse.
+`
+` Prerequisites:
+`   - AITF agent telemetry indexed in "aitf" index
+`   - Agent session spans with aitf.agent.* attributes
+`   - MCP tool invocation spans with aitf.mcp.* attributes
+`
+` Recommended refresh: Every 1-5 minutes for real-time monitoring
+
+
+` ===========================================================================
+` PANEL 1: Active Agent Sessions Overview (Single Value + Table)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.session.id=*
+| stats dc(aitf.agent.session.id) AS active_sessions
+    dc(aitf.agent.name) AS unique_agents
+    avg(aitf.agent.session.turn_count) AS avg_turns
+    max(aitf.agent.session.turn_count) AS max_turns
+    sum(gen_ai.usage.input_tokens) AS total_input_tokens
+    sum(gen_ai.usage.output_tokens) AS total_output_tokens
+    sum(aitf.cost.total_cost) AS total_cost
+
+
+` ===========================================================================
+` PANEL 2: Agent Session Timeline (Gantt/Timeline)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.session.id=*
+| stats earliest(_time) AS session_start
+    latest(_time) AS session_end
+    count AS event_count
+    dc(aitf.agent.step.type) AS step_diversity
+    values(aitf.agent.step.type) AS step_types
+    max(aitf.agent.session.turn_count) AS turns
+    BY aitf.agent.name aitf.agent.session.id
+| eval duration_sec=session_end - session_start
+| eval duration_min=round(duration_sec/60, 1)
+| eval session_start_fmt=strftime(session_start, "%Y-%m-%d %H:%M:%S")
+| sort -session_start
+| rename aitf.agent.name AS "Agent"
+    aitf.agent.session.id AS "Session ID"
+    duration_min AS "Duration (min)"
+    turns AS "Turns"
+    step_diversity AS "Step Diversity"
+
+
+` ===========================================================================
+` PANEL 3: Agent Loop Detection (Table - High Priority)
+` ===========================================================================
+` Detects sessions with repetitive patterns suggesting infinite loops
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.step.action=*
+| streamstats count AS step_num
+    current=t
+    window=10
+    BY aitf.agent.session.id
+| eventstats dc(aitf.agent.step.action) AS action_diversity_10
+    BY aitf.agent.session.id
+| stats max(step_num) AS total_steps
+    dc(aitf.agent.step.action) AS unique_actions
+    values(aitf.agent.step.action) AS all_actions
+    avg(action_diversity_10) AS avg_diversity_window
+    BY aitf.agent.session.id aitf.agent.name
+| eval diversity_ratio=unique_actions / total_steps
+| eval is_looping=if(diversity_ratio < 0.1 AND total_steps > 20, "YES", "NO")
+| where is_looping="YES" OR total_steps > 50
+| eval alert_level=case(
+    diversity_ratio < 0.05 AND total_steps > 50, "CRITICAL",
+    diversity_ratio < 0.1 AND total_steps > 30, "HIGH",
+    total_steps > 50, "MEDIUM",
+    1=1, "LOW"
+  )
+| sort -total_steps
+| rename aitf.agent.session.id AS "Session ID"
+    aitf.agent.name AS "Agent"
+    total_steps AS "Total Steps"
+    unique_actions AS "Unique Actions"
+    diversity_ratio AS "Diversity Ratio"
+    alert_level AS "Alert Level"
+
+
+` ===========================================================================
+` PANEL 4: Consecutive Repeated Actions (Table)
+` ===========================================================================
+` Finds sequences of the same action repeated consecutively
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.step.action=*
+| sort aitf.agent.session.id _time
+| streamstats count AS seq_num BY aitf.agent.session.id
+| autoregress aitf.agent.step.action AS prev_action p=1
+| eval is_repeat=if(aitf.agent.step.action=prev_action, 1, 0)
+| streamstats sum(is_repeat) AS consecutive_repeats
+    reset_on_change=true
+    BY aitf.agent.session.id
+| where consecutive_repeats >= 4
+| stats max(consecutive_repeats) AS max_consecutive
+    values(aitf.agent.step.action) AS repeated_action
+    BY aitf.agent.session.id aitf.agent.name
+| sort -max_consecutive
+| rename aitf.agent.session.id AS "Session"
+    aitf.agent.name AS "Agent"
+    max_consecutive AS "Max Consecutive Repeats"
+    repeated_action AS "Repeated Action"
+
+
+` ===========================================================================
+` PANEL 5: Agent Delegation Analysis (Sankey Diagram Data)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.delegation.target_agent=*
+| stats count
+    values(aitf.agent.delegation.reason) AS reasons
+    values(aitf.agent.delegation.strategy) AS strategies
+    values(aitf.agent.delegation.task) AS tasks
+    BY aitf.agent.name aitf.agent.delegation.target_agent
+| sort -count
+| rename aitf.agent.name AS "Source Agent"
+    aitf.agent.delegation.target_agent AS "Target Agent"
+    count AS "Delegations"
+    reasons AS "Reasons"
+    strategies AS "Strategies"
+
+
+` ===========================================================================
+` PANEL 6: Unauthorized Delegations (Table - Critical)
+` ===========================================================================
+` Detects delegations to agents not in the team roster
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.delegation.target_agent=*
+    aitf.agent.team.name=*
+| eval team_members=split(aitf.agent.team.members, ",")
+| eval is_authorized=if(
+    aitf.agent.delegation.target_agent=mvfind(team_members, aitf.agent.delegation.target_agent),
+    "YES", "NO"
+  )
+| where is_authorized="NO"
+| table _time
+    aitf.agent.name
+    aitf.agent.delegation.target_agent
+    aitf.agent.team.name
+    aitf.agent.team.members
+    aitf.agent.delegation.reason
+    aitf.agent.delegation.task
+    aitf.agent.session.id
+| sort -_time
+| rename _time AS "Time"
+    aitf.agent.name AS "Source Agent"
+    aitf.agent.delegation.target_agent AS "Unauthorized Target"
+    aitf.agent.team.name AS "Team"
+    aitf.agent.team.members AS "Allowed Members"
+
+
+` ===========================================================================
+` PANEL 7: Session Hijack Indicators (Table - Critical)
+` ===========================================================================
+` Detects sessions where agent identity or framework changes mid-session
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.session.id=*
+| sort aitf.agent.session.id _time
+| streamstats values(aitf.agent.name) AS seen_agents
+    values(aitf.agent.framework) AS seen_frameworks
+    BY aitf.agent.session.id
+| stats dc(aitf.agent.name) AS agent_changes
+    dc(aitf.agent.framework) AS framework_changes
+    values(aitf.agent.name) AS agents_in_session
+    values(aitf.agent.framework) AS frameworks_in_session
+    max(aitf.agent.session.turn_count) AS max_turn
+    min(aitf.agent.session.turn_count) AS min_turn
+    range(_time) AS session_duration_sec
+    BY aitf.agent.session.id
+| where agent_changes > 1 OR framework_changes > 1
+| eval hijack_indicators=mvappend(
+    if(agent_changes > 1, "agent_identity_change", null()),
+    if(framework_changes > 1, "framework_change", null())
+  )
+| eval severity=case(
+    agent_changes > 1 AND framework_changes > 1, "CRITICAL",
+    agent_changes > 1, "HIGH",
+    1=1, "MEDIUM"
+  )
+| sort -agent_changes
+| rename aitf.agent.session.id AS "Session ID"
+    agents_in_session AS "Agents Observed"
+    frameworks_in_session AS "Frameworks Observed"
+    hijack_indicators AS "Indicators"
+    severity AS "Severity"
+
+
+` ===========================================================================
+` PANEL 8: Tool Usage per Session (Bubble Chart Data)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.mcp.tool.name=*
+    aitf.agent.session.id=*
+| stats count AS tool_calls
+    dc(aitf.mcp.tool.name) AS unique_tools
+    values(aitf.mcp.tool.name) AS tools_used
+    sum(aitf.cost.total_cost) AS session_cost
+    BY aitf.agent.session.id aitf.agent.name
+| eval cost_per_tool_call=if(tool_calls>0, session_cost/tool_calls, 0)
+| sort -tool_calls
+| head 50
+| rename aitf.agent.session.id AS "Session"
+    aitf.agent.name AS "Agent"
+    tool_calls AS "Tool Calls"
+    unique_tools AS "Unique Tools"
+    session_cost AS "Total Cost ($)"
+
+
+` ===========================================================================
+` PANEL 9: Excessive Tool Calls Alert (Table)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.mcp.tool.name=*
+    aitf.agent.session.id=*
+| stats count AS tool_count
+    dc(aitf.mcp.tool.name) AS unique_tools
+    values(aitf.mcp.tool.name) AS tools
+    values(aitf.agent.name) AS agent
+    BY aitf.agent.session.id
+| where tool_count > 30
+| eval alert=case(
+    tool_count > 100, "CRITICAL: Extreme tool usage",
+    tool_count > 50, "HIGH: Excessive tool usage",
+    tool_count > 30, "MEDIUM: Elevated tool usage"
+  )
+| sort -tool_count
+| rename aitf.agent.session.id AS "Session"
+    tool_count AS "Tool Invocations"
+    unique_tools AS "Unique Tools"
+    alert AS "Alert Level"
+
+
+` ===========================================================================
+` PANEL 10: Agent Step Type Distribution (Stacked Bar)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.step.type=*
+| timechart span=15m count BY aitf.agent.step.type
+
+
+` ===========================================================================
+` PANEL 11: Agent Performance Baseline (Line Chart)
+` ===========================================================================
+` Tracks key agent performance metrics over time for baseline comparison
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.session.id=*
+| bin _time span=1h
+| stats avg(aitf.agent.session.turn_count) AS avg_turns
+    avg(gen_ai.usage.input_tokens) AS avg_input_tokens
+    avg(gen_ai.usage.output_tokens) AS avg_output_tokens
+    dc(aitf.agent.session.id) AS sessions_per_hour
+    sum(aitf.cost.total_cost) AS hourly_cost
+    BY _time
+| eventstats avg(avg_turns) AS baseline_turns
+    stdev(avg_turns) AS stdev_turns
+| eval turns_z_score=if(stdev_turns>0, (avg_turns - baseline_turns)/stdev_turns, 0)
+| eval turns_anomaly=if(abs(turns_z_score) > 3, "ANOMALY", "NORMAL")
+
+
+` ===========================================================================
+` PANEL 12: Multi-Agent Team Coordination (Table)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.team.name=*
+| stats dc(aitf.agent.name) AS active_members
+    values(aitf.agent.name) AS member_names
+    dc(aitf.agent.delegation.target_agent) AS delegation_targets
+    count AS total_events
+    sum(aitf.cost.total_cost) AS team_cost
+    BY aitf.agent.team.name aitf.agent.team.topology
+| eval expected_members=aitf.agent.team.members
+| sort -total_events
+| rename aitf.agent.team.name AS "Team"
+    aitf.agent.team.topology AS "Topology"
+    active_members AS "Active Members"
+    member_names AS "Members"
+    team_cost AS "Total Cost ($)"
+
+
+` ===========================================================================
+` PANEL 13: Tool Approval Compliance (Pie Chart + Table)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.mcp.tool.approval_required=true
+| eval approval_status=case(
+    aitf.mcp.tool.approved="true" OR aitf.mcp.tool.approved=true, "Approved",
+    aitf.mcp.tool.approved="false" OR aitf.mcp.tool.approved=false, "DENIED/BYPASSED",
+    1=1, "MISSING APPROVAL"
+  )
+| stats count BY approval_status aitf.mcp.tool.name
+| sort -count
+
+
+` ===========================================================================
+` PANEL 14: Agent Action Markov Chain (Transition Matrix)
+` ===========================================================================
+` Builds a transition frequency matrix for agent actions
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.step.action=*
+| sort aitf.agent.session.id _time
+| autoregress aitf.agent.step.action AS prev_action p=1
+| where isnotnull(prev_action)
+| stats count BY prev_action aitf.agent.step.action
+| eventstats sum(count) AS total_from BY prev_action
+| eval probability=round(count/total_from, 3)
+| where probability < 0.02
+| eval alert="Rare transition detected"
+| sort probability
+| rename prev_action AS "From Action"
+    aitf.agent.step.action AS "To Action"
+    count AS "Occurrences"
+    probability AS "Probability"
+    total_from AS "Total From"
+
+
+` ===========================================================================
+` ALERT: Agent Loop Detected (Scheduled Search - Every 2 minutes)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.step.action=*
+    earliest=-5m
+| stats count AS step_count
+    dc(aitf.agent.step.action) AS unique_actions
+    BY aitf.agent.session.id aitf.agent.name
+| eval diversity=unique_actions/step_count
+| where step_count > 20 AND diversity < 0.15
+| eval alert="Agent loop detected: " . aitf.agent.name . " in session " . aitf.agent.session.id . " (" . step_count . " steps, " . round(diversity*100,1) . "% diversity)"
+
+
+` ===========================================================================
+` ALERT: Session Hijack Detected (Scheduled Search - Every 1 minute)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.agent.session.id=*
+    earliest=-2m
+| stats dc(aitf.agent.name) AS unique_agents
+    dc(aitf.agent.framework) AS unique_frameworks
+    values(aitf.agent.name) AS agents
+    values(aitf.agent.framework) AS frameworks
+    BY aitf.agent.session.id
+| where unique_agents > 1 OR unique_frameworks > 1
+| eval alert="SESSION HIJACK: Session " . aitf.agent.session.id . " shows " . unique_agents . " agent(s) and " . unique_frameworks . " framework(s)"

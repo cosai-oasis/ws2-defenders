@@ -1,0 +1,162 @@
+# AITF OTel Collector Configuration
+#
+# This configuration extends the standard OTel Collector with
+# AITF-specific receivers, processors, and exporters for AI telemetry.
+#
+# Dual Pipeline Architecture:
+#   The main traces/ai pipeline exports to BOTH:
+#     - otlp      → Standard OTel backends (Jaeger, Grafana Tempo, Datadog)
+#     - file/ocsf → OCSF Category 7 events for SIEM/XDR
+#   This means the same AI spans are available for observability AND security
+#   from a single collector pipeline. See service.pipelines.traces/ai below.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    send_batch_size: 512
+    timeout: 5s
+
+  # Memory limiter to prevent OOM
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 2048
+
+  # AITF Security Processor
+  # Detects OWASP LLM Top 10 threats in AI spans
+  attributes/aitf_security:
+    actions:
+      - key: aitf.processor.security
+        value: enabled
+        action: upsert
+
+  # AITF PII Processor
+  # Detects and redacts PII in AI content
+  attributes/aitf_pii:
+    actions:
+      - key: aitf.processor.pii
+        value: enabled
+        action: upsert
+
+  # AITF Compliance Processor
+  # Maps AI events to compliance frameworks
+  attributes/aitf_compliance:
+    actions:
+      - key: aitf.processor.compliance
+        value: enabled
+        action: upsert
+
+  # Filter for AI-specific spans only
+  filter/ai_spans:
+    spans:
+      include:
+        match_type: regexp
+        attributes:
+          - key: gen_ai.system
+            value: ".*"
+        span_names:
+          - "^(chat|embeddings|text_completion|agent\\.|mcp\\.|skill\\.|rag\\.|doca\\.) .*"
+
+  # Filter for DOCA/DPU spans
+  filter/doca_spans:
+    spans:
+      include:
+        match_type: regexp
+        span_names:
+          - "^doca\\. .*"
+
+exporters:
+  # Standard OTLP export (Jaeger, Grafana Tempo, etc.)
+  otlp:
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:-localhost:4317}
+    tls:
+      insecure: ${OTEL_EXPORTER_OTLP_INSECURE:-true}
+
+  # Console export for debugging
+  debug:
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 200
+
+  # File export for OCSF events
+  file/ocsf:
+    path: /var/log/aitf/ocsf_events.jsonl
+    rotation:
+      max_megabytes: 100
+      max_days: 30
+      max_backups: 10
+
+  # Prometheus metrics export
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: aitf
+
+  # CEF syslog export for non-OCSF SIEMs (ArcSight, QRadar, LogRhythm, etc.)
+  syslog/cef:
+    endpoint: ${AITF_CEF_SYSLOG_ENDPOINT:-siem.example.com:6514}
+    protocol: rfc5424
+    tls:
+      insecure: ${AITF_CEF_SYSLOG_TLS_INSECURE:-false}
+
+  # NVIDIA DOCA DTS receiver (BlueField DPU hardware telemetry)
+  # DTS exports OTLP on port 9502 by default
+  otlp/doca_dts:
+    endpoint: ${AITF_DOCA_DTS_ENDPOINT:-bluefield-dpu:9502}
+    tls:
+      insecure: ${AITF_DOCA_DTS_TLS_INSECURE:-true}
+
+  # Immutable audit log (hash-chained, append-only)
+  file/immutable_audit:
+    path: /var/log/aitf/immutable_audit.jsonl
+    rotation:
+      max_megabytes: 1024
+      max_days: 365
+      max_backups: 50
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+service:
+  extensions: [health_check, zpages]
+  pipelines:
+    # Main AI telemetry pipeline (DUAL: OTel + OCSF simultaneously)
+    # Spans flow to: OTLP (Jaeger/Tempo) + OCSF file (SIEM) + Immutable audit log
+    traces/ai:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/aitf_security, attributes/aitf_pii, attributes/aitf_compliance, batch]
+      exporters: [otlp, file/ocsf, file/immutable_audit]
+
+    # CEF syslog pipeline for non-OCSF SIEMs
+    traces/cef_syslog:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/aitf_security, batch]
+      exporters: [syslog/cef]
+
+    # NVIDIA DOCA DTS hardware telemetry pipeline
+    # Receives OTLP from BlueField DPU and correlates with AI spans
+    traces/doca:
+      receivers: [otlp/doca_dts]
+      processors: [memory_limiter, batch]
+      exporters: [otlp, file/ocsf]
+
+    # Debug pipeline (optional)
+    traces/debug:
+      receivers: [otlp]
+      processors: [memory_limiter, filter/ai_spans, batch]
+      exporters: [debug]
+
+    # Metrics pipeline
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]

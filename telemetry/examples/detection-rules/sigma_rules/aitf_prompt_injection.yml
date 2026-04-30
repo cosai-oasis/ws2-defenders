@@ -1,0 +1,107 @@
+title: AITF Prompt Injection Detection
+id: aitf-sigma-001
+status: stable
+level: high
+description: |
+    Detects prompt injection attempts in AITF telemetry by matching known
+    injection patterns in gen_ai.prompt and tool I/O fields. Covers both
+    direct injection (user prompt manipulation) and indirect injection
+    (malicious content embedded in MCP tool outputs or retrieved documents).
+
+    Maps to OWASP LLM01 (Prompt Injection) and MITRE ATLAS AML.T0051.
+
+references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0051
+    - https://github.com/AITF-Framework/AITF/blob/main/sdk/python/src/aitf/processors/security_processor.py
+
+author: AITF Framework Contributors
+date: 2026/02/15
+modified: 2026/02/15
+
+tags:
+    - attack.initial_access
+    - attack.t0051
+    - owasp.llm01
+    - aitf.inference
+    - cve.n/a
+
+logsource:
+    category: ai_telemetry
+    product: aitf
+    service: gen_ai
+
+detection:
+    # Direct prompt injection patterns
+    selection_direct_ignore:
+        gen_ai.prompt|contains:
+            - 'ignore all previous instructions'
+            - 'ignore previous instructions'
+            - 'ignore all above instructions'
+            - 'disregard all previous'
+            - 'disregard previous'
+            - 'forget all your instructions'
+            - 'forget your instructions'
+            - 'forget previous instructions'
+    selection_direct_override:
+        gen_ai.prompt|contains:
+            - 'override your instructions'
+            - 'override instructions'
+            - 'new instructions:'
+            - 'you are now a'
+            - 'you are now an'
+            - 'pretend you are'
+            - 'act as if you'
+            - 'act as though you'
+    selection_direct_system:
+        gen_ai.prompt|contains:
+            - 'system: you are'
+            - '[SYSTEM]'
+            - '<|im_start|>system'
+            - 'BEGININSTRUCTION'
+            - 'ENDINSTRUCTION'
+
+    # Indirect injection via tool outputs
+    selection_indirect_tool_output:
+        aitf.mcp.tool.output|contains:
+            - 'ignore all previous instructions'
+            - 'ignore previous instructions'
+            - 'new instructions:'
+            - 'you are now a'
+            - '[SYSTEM]'
+            - '### Instruction'
+    selection_indirect_tool_input:
+        aitf.mcp.tool.input|contains:
+            - 'ignore all previous instructions'
+            - 'system: you are'
+            - '<|im_start|>system'
+
+    # Jailbreak variants embedded in prompts (cross-reference with jailbreak rule)
+    selection_jailbreak_injection:
+        gen_ai.prompt|contains:
+            - 'DAN mode'
+            - 'developer mode enabled'
+            - 'bypass safety'
+            - 'bypass content filter'
+            - 'without any restrictions'
+            - 'unfiltered mode'
+            - 'unfiltered response'
+
+    condition: selection_direct_ignore or selection_direct_override or selection_direct_system or selection_indirect_tool_output or selection_indirect_tool_input or selection_jailbreak_injection
+
+falsepositives:
+    - Legitimate AI safety research and red teaming exercises
+    - Automated testing of guardrail systems
+    - Security scanning tools testing prompt injection defenses
+    - Training examples that contain injection patterns in educational contexts
+
+fields:
+    - gen_ai.prompt
+    - gen_ai.request.model
+    - gen_ai.system
+    - aitf.agent.session.id
+    - aitf.mcp.tool.name
+    - aitf.mcp.tool.output
+    - aitf.security.risk_score
+    - aitf.security.threat_type
+    - timestamp

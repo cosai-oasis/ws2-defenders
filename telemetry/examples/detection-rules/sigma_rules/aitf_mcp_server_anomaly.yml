@@ -1,0 +1,119 @@
+title: AITF MCP Server Anomaly Detection
+id: aitf-sigma-005
+status: stable
+level: critical
+description: |
+    Detects anomalous MCP (Model Context Protocol) server connections and
+    behaviors. Covers unknown server connections, transport mismatches,
+    protocol version anomalies, tool approval bypasses, and suspicious
+    tool names that could indicate server impersonation or compromise.
+
+    Maps to OWASP LLM03 (Supply Chain Vulnerabilities) and
+    MITRE ATLAS AML.T0010/AML.T0050.
+
+references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0010
+    - https://atlas.mitre.org/techniques/AML.T0050
+    - https://spec.modelcontextprotocol.io/specification/2025-03-26/
+
+author: AITF Framework Contributors
+date: 2026/02/15
+modified: 2026/02/15
+
+tags:
+    - attack.command_and_control
+    - attack.initial_access
+    - attack.t0010
+    - attack.t0050
+    - owasp.llm03
+    - aitf.mcp
+    - supply_chain
+
+logsource:
+    category: ai_telemetry
+    product: aitf
+    service: mcp
+
+detection:
+    # Unknown/unexpected MCP server names
+    # Note: configure your known servers in the allow-list below
+    selection_unknown_server:
+        aitf.mcp.server.name|is_not:
+            - 'filesystem'
+            - 'postgres'
+            - 'brave-search'
+            - 'github'
+            - 'slack'
+            # Add your approved MCP servers here
+
+    # MCP server connecting via unexpected transport
+    selection_transport_mismatch:
+        aitf.mcp.server.transport|is_not:
+            - 'stdio'
+            - 'sse'
+            - 'streamable_http'
+
+    # External MCP server URLs (non-localhost)
+    selection_external_server:
+        aitf.mcp.server.url|re: 'https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])'
+    filter_allowed_external:
+        aitf.mcp.server.url|contains:
+            - 'internal.company.com'
+            # Add your approved external URLs here
+
+    # Suspicious tool names that suggest impersonation
+    selection_suspicious_tools:
+        aitf.mcp.tool.name|contains:
+            - 'exec'
+            - 'shell'
+            - 'eval'
+            - 'system'
+            - 'run_command'
+            - 'reverse_shell'
+            - 'inject'
+            - 'exploit'
+
+    # Tool executing with error status (may indicate fuzzing)
+    selection_tool_errors:
+        aitf.mcp.tool.is_error: true
+
+    # Multiple tool errors from the same server (fuzzing/probing)
+    selection_error_burst:
+        aitf.mcp.tool.is_error: true
+    filter_error_burst:
+        aitf.mcp.tool.is_error|count|gte: 5
+
+    # Protocol version mismatch or downgrade
+    selection_old_protocol:
+        aitf.mcp.protocol.version|is_not:
+            - '2025-03-26'
+            - '2024-11-05'
+
+    # Approval bypass on any MCP tool
+    selection_approval_bypass:
+        aitf.mcp.tool.approval_required: true
+        aitf.mcp.tool.approved: false
+
+    condition: selection_unknown_server or selection_transport_mismatch or (selection_external_server and not filter_allowed_external) or selection_suspicious_tools or (selection_error_burst and filter_error_burst) or selection_old_protocol or selection_approval_bypass
+
+falsepositives:
+    - Newly deployed MCP servers not yet added to the allow-list
+    - Development and testing environments with dynamic servers
+    - MCP servers behind reverse proxies with non-standard URLs
+    - Protocol version updates during rollout
+
+fields:
+    - aitf.mcp.server.name
+    - aitf.mcp.server.version
+    - aitf.mcp.server.transport
+    - aitf.mcp.server.url
+    - aitf.mcp.protocol.version
+    - aitf.mcp.tool.name
+    - aitf.mcp.tool.names
+    - aitf.mcp.tool.is_error
+    - aitf.mcp.tool.approval_required
+    - aitf.mcp.tool.approved
+    - aitf.agent.session.id
+    - aitf.agent.name
+    - timestamp

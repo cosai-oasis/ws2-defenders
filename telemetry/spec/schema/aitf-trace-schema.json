@@ -1,0 +1,494 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aitf.io/schema/trace/v1",
+  "title": "AITF Trace Schema",
+  "description": "JSON Schema for AITF trace span attributes. These attributes are set on standard OpenTelemetry spans and carry full security context (security.* attributes including threat detection, risk scores, and OWASP classifications). Spans can be exported via OTLP (for observability and security analytics backends like Jaeger, Grafana Tempo, Datadog, Elastic Security) and/or converted to OCSF Category 7 events (for OCSF-native SIEMs like Splunk, AWS Security Lake, QRadar) using the OCSFMapper.",
+  "type": "object",
+  "definitions": {
+    "gen_ai_attributes": {
+      "type": "object",
+      "properties": {
+        "gen_ai.provider.name": {
+          "type": "string",
+          "description": "AI system provider (OTel standard)",
+          "enum": ["openai", "anthropic", "bedrock", "azure", "gcp_vertex", "cohere", "mistral", "meta", "google", "custom"]
+        },
+        "gen_ai.operation.name": {
+          "type": "string",
+          "description": "Operation name",
+          "enum": ["chat", "text_completion", "embeddings", "image_generation", "audio"]
+        },
+        "gen_ai.request.model": { "type": "string", "description": "Requested model ID" },
+        "gen_ai.request.max_tokens": { "type": "integer", "minimum": 1 },
+        "gen_ai.request.temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "gen_ai.request.top_p": { "type": "number", "minimum": 0, "maximum": 1 },
+        "gen_ai.request.top_k": { "type": "integer", "minimum": 1 },
+        "gen_ai.request.stream": { "type": "boolean" },
+        "gen_ai.request.tools": { "type": "string", "description": "JSON-encoded tools" },
+        "gen_ai.request.tool_choice": { "type": "string" },
+        "gen_ai.request.response_format": { "type": "string" },
+        "gen_ai.response.id": { "type": "string" },
+        "gen_ai.response.model": { "type": "string" },
+        "gen_ai.response.finish_reasons": { "type": "array", "items": { "type": "string" } },
+        "gen_ai.usage.input_tokens": { "type": "integer", "minimum": 0 },
+        "gen_ai.usage.output_tokens": { "type": "integer", "minimum": 0 },
+        "gen_ai.usage.cached_tokens": { "type": "integer", "minimum": 0 },
+        "gen_ai.usage.reasoning_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "agent_attributes": {
+      "type": "object",
+      "properties": {
+        "gen_ai.agent.name": { "type": "string" },
+        "gen_ai.agent.id": { "type": "string" },
+        "gen_ai.agent.type": {
+          "type": "string",
+          "enum": ["conversational", "autonomous", "reactive", "proactive"]
+        },
+        "gen_ai.agent.framework": {
+          "type": "string",
+          "enum": ["langchain", "crewai", "autogen", "semantic_kernel", "langgraph", "custom"]
+        },
+        "gen_ai.agent.version": { "type": "string" },
+        "gen_ai.conversation.id": { "type": "string" },
+        "gen_ai.agent.session.turn_count": { "type": "integer", "minimum": 0 },
+        "gen_ai.agent.step.type": {
+          "type": "string",
+          "enum": ["planning", "reasoning", "tool_use", "delegation", "response", "reflection", "memory_access", "guardrail_check", "human_in_loop", "error_recovery"]
+        },
+        "gen_ai.agent.step.index": { "type": "integer", "minimum": 0 },
+        "gen_ai.agent.step.thought": { "type": "string" },
+        "gen_ai.agent.step.action": { "type": "string" },
+        "gen_ai.agent.step.observation": { "type": "string" },
+        "gen_ai.agent.delegation.target_agent": { "type": "string" },
+        "gen_ai.agent.delegation.target_agent_id": { "type": "string" },
+        "gen_ai.agent.delegation.reason": { "type": "string" },
+        "gen_ai.agent.delegation.strategy": {
+          "type": "string",
+          "enum": ["round_robin", "capability", "hierarchical", "vote"]
+        },
+        "gen_ai.agent.team.name": { "type": "string" },
+        "gen_ai.agent.team.topology": {
+          "type": "string",
+          "enum": ["hierarchical", "peer", "pipeline", "consensus", "debate", "swarm"]
+        },
+        "gen_ai.agent.team.members": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "mcp_attributes": {
+      "type": "object",
+      "properties": {
+        "mcp.server.name": { "type": "string" },
+        "mcp.server.version": { "type": "string" },
+        "mcp.server.transport": {
+          "type": "string",
+          "enum": ["stdio", "sse", "streamable_http"]
+        },
+        "mcp.server.url": { "type": "string", "format": "uri" },
+        "mcp.protocol.version": { "type": "string" },
+        "gen_ai.tool.name": { "type": "string" },
+        "mcp.tool.server": { "type": "string" },
+        "gen_ai.tool.call.arguments": { "type": "string" },
+        "gen_ai.tool.call.result": { "type": "string" },
+        "mcp.tool.is_error": { "type": "boolean" },
+        "mcp.tool.duration_ms": { "type": "number", "minimum": 0 },
+        "mcp.tool.approval_required": { "type": "boolean" },
+        "mcp.tool.approved": { "type": "boolean" },
+        "mcp.resource.uri": { "type": "string" },
+        "mcp.resource.name": { "type": "string" },
+        "mcp.resource.mime_type": { "type": "string" },
+        "mcp.prompt.name": { "type": "string" },
+        "mcp.sampling.model": { "type": "string" },
+        "mcp.sampling.max_tokens": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "skill_attributes": {
+      "type": "object",
+      "properties": {
+        "skill.name": { "type": "string" },
+        "skill.id": { "type": "string" },
+        "skill.version": { "type": "string" },
+        "skill.provider": {
+          "type": "string",
+          "enum": ["builtin", "marketplace", "custom", "mcp"]
+        },
+        "skill.category": {
+          "type": "string",
+          "enum": ["search", "code", "data", "communication", "analysis", "generation", "knowledge", "security", "integration", "workflow"]
+        },
+        "skill.input": { "type": "string" },
+        "skill.output": { "type": "string" },
+        "skill.status": {
+          "type": "string",
+          "enum": ["success", "error", "timeout", "denied", "retry"]
+        },
+        "skill.duration_ms": { "type": "number", "minimum": 0 },
+        "skill.source": { "type": "string" },
+        "skill.permissions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "security_attributes": {
+      "type": "object",
+      "properties": {
+        "security.risk_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "security.risk_level": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low", "info"]
+        },
+        "security.threat_detected": { "type": "boolean" },
+        "security.threat_type": { "type": "string" },
+        "security.owasp_category": {
+          "type": "string",
+          "pattern": "^LLM(0[1-9]|10)$"
+        },
+        "security.blocked": { "type": "boolean" },
+        "security.confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "security.pii.detected": { "type": "boolean" },
+        "security.pii.types": { "type": "array", "items": { "type": "string" } },
+        "security.guardrail.name": { "type": "string" },
+        "security.guardrail.result": {
+          "type": "string",
+          "enum": ["pass", "fail", "warn"]
+        }
+      }
+    },
+    "cost_attributes": {
+      "type": "object",
+      "properties": {
+        "cost.input_cost": { "type": "number", "minimum": 0 },
+        "cost.output_cost": { "type": "number", "minimum": 0 },
+        "cost.total_cost": { "type": "number", "minimum": 0 },
+        "cost.currency": { "type": "string", "default": "USD" },
+        "cost.attribution.user": { "type": "string" },
+        "cost.attribution.team": { "type": "string" },
+        "cost.attribution.project": { "type": "string" }
+      }
+    },
+    "rag_attributes": {
+      "type": "object",
+      "properties": {
+        "rag.pipeline.name": { "type": "string" },
+        "rag.pipeline.stage": {
+          "type": "string",
+          "enum": ["retrieve", "rerank", "generate", "evaluate"]
+        },
+        "gen_ai.data_source.id": { "type": "string" },
+        "rag.retrieve.top_k": { "type": "integer", "minimum": 1 },
+        "rag.retrieve.results_count": { "type": "integer", "minimum": 0 },
+        "rag.retrieve.min_score": { "type": "number" },
+        "rag.retrieve.max_score": { "type": "number" },
+        "rag.quality.context_relevance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rag.quality.faithfulness": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "model_ops_attributes": {
+      "type": "object",
+      "properties": {
+        "model_ops.training.run_id": { "type": "string" },
+        "model_ops.training.type": {
+          "type": "string",
+          "enum": ["pre_training", "fine_tuning", "rlhf", "dpo", "lora", "qlora", "distillation", "continued_pre_training"]
+        },
+        "model_ops.training.base_model": { "type": "string" },
+        "model_ops.training.framework": { "type": "string" },
+        "model_ops.training.dataset.id": { "type": "string" },
+        "model_ops.training.dataset.version": { "type": "string" },
+        "model_ops.training.dataset.size": { "type": "integer", "minimum": 0 },
+        "model_ops.training.hyperparameters": { "type": "string" },
+        "model_ops.training.epochs": { "type": "integer", "minimum": 1 },
+        "model_ops.training.loss_final": { "type": "number" },
+        "model_ops.training.val_loss_final": { "type": "number" },
+        "model_ops.training.compute.gpu_type": { "type": "string" },
+        "model_ops.training.compute.gpu_count": { "type": "integer", "minimum": 1 },
+        "model_ops.training.compute.gpu_hours": { "type": "number", "minimum": 0 },
+        "model_ops.training.output_model.id": { "type": "string" },
+        "model_ops.training.output_model.hash": { "type": "string" },
+        "model_ops.training.code_commit": { "type": "string" },
+        "model_ops.training.status": {
+          "type": "string",
+          "enum": ["running", "completed", "failed", "cancelled"]
+        },
+        "model_ops.evaluation.run_id": { "type": "string" },
+        "model_ops.evaluation.model_id": { "type": "string" },
+        "model_ops.evaluation.type": {
+          "type": "string",
+          "enum": ["benchmark", "llm_judge", "human_eval", "safety", "regression", "a_b_test", "red_team", "rag_eval"]
+        },
+        "model_ops.evaluation.pass": { "type": "boolean" },
+        "model_ops.evaluation.regression_detected": { "type": "boolean" },
+        "model_ops.evaluation.metrics": { "type": "string" },
+        "model_ops.registry.operation": {
+          "type": "string",
+          "enum": ["register", "promote", "demote", "archive", "rollback", "alias_set", "alias_remove", "delete"]
+        },
+        "model_ops.registry.model_id": { "type": "string" },
+        "model_ops.registry.stage": {
+          "type": "string",
+          "enum": ["experimental", "staging", "production", "archived"]
+        },
+        "model_ops.deployment.id": { "type": "string" },
+        "model_ops.deployment.model_id": { "type": "string" },
+        "model_ops.deployment.strategy": {
+          "type": "string",
+          "enum": ["rolling", "canary", "blue_green", "shadow", "a_b_test", "immediate"]
+        },
+        "model_ops.deployment.environment": { "type": "string" },
+        "model_ops.deployment.canary_percent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "model_ops.deployment.status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "completed", "failed", "rolled_back"]
+        },
+        "model_ops.serving.operation": {
+          "type": "string",
+          "enum": ["route", "fallback", "cache_lookup", "cache_store", "circuit_breaker", "load_balance", "rate_limit"]
+        },
+        "model_ops.serving.route.selected_model": { "type": "string" },
+        "model_ops.serving.fallback.trigger": {
+          "type": "string",
+          "enum": ["error", "timeout", "rate_limit", "circuit_breaker"]
+        },
+        "model_ops.serving.cache.hit": { "type": "boolean" },
+        "model_ops.serving.cache.type": {
+          "type": "string",
+          "enum": ["exact", "semantic", "hybrid"]
+        },
+        "model_ops.serving.circuit_breaker.state": {
+          "type": "string",
+          "enum": ["closed", "open", "half_open"]
+        },
+        "model_ops.monitoring.check_type": {
+          "type": "string",
+          "enum": ["data_drift", "prediction_drift", "concept_drift", "embedding_drift", "feature_drift", "performance_degradation", "latency_regression", "error_rate", "cost_anomaly", "throughput", "sla_compliance"]
+        },
+        "model_ops.monitoring.model_id": { "type": "string" },
+        "model_ops.monitoring.drift_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "model_ops.monitoring.drift_type": {
+          "type": "string",
+          "enum": ["data", "prediction", "concept", "embedding", "feature"]
+        },
+        "model_ops.monitoring.result": {
+          "type": "string",
+          "enum": ["normal", "warning", "alert", "critical"]
+        },
+        "model_ops.prompt.name": { "type": "string" },
+        "model_ops.prompt.operation": {
+          "type": "string",
+          "enum": ["create", "update", "promote", "rollback", "evaluate", "a_b_test_start", "a_b_test_end", "deprecate"]
+        },
+        "model_ops.prompt.version": { "type": "string" },
+        "model_ops.prompt.label": { "type": "string" }
+      }
+    },
+    "identity_attributes": {
+      "type": "object",
+      "properties": {
+        "identity.agent_id": { "type": "string" },
+        "identity.agent_name": { "type": "string" },
+        "identity.type": {
+          "type": "string",
+          "enum": ["persistent", "ephemeral", "delegated", "federated", "workload"]
+        },
+        "identity.provider": { "type": "string" },
+        "identity.owner": { "type": "string" },
+        "identity.owner_type": {
+          "type": "string",
+          "enum": ["human", "service", "organization"]
+        },
+        "identity.credential_type": {
+          "type": "string",
+          "enum": ["api_key", "oauth_token", "jwt", "mtls_cert", "spiffe_svid", "did"]
+        },
+        "identity.status": {
+          "type": "string",
+          "enum": ["active", "suspended", "revoked", "expired"]
+        },
+        "identity.scope": { "type": "array", "items": { "type": "string" } },
+        "identity.ttl_seconds": { "type": "integer", "minimum": 0 },
+        "identity.lifecycle.operation": {
+          "type": "string",
+          "enum": ["create", "register", "activate", "rotate", "suspend", "reactivate", "revoke", "expire", "update"]
+        },
+        "identity.auth.method": {
+          "type": "string",
+          "enum": ["api_key", "oauth2", "oauth2_pkce", "jwt_bearer", "mtls", "spiffe_svid", "did_vc", "http_signature", "token_exchange", "saml"]
+        },
+        "identity.auth.result": {
+          "type": "string",
+          "enum": ["success", "failure", "denied", "expired", "revoked"]
+        },
+        "identity.auth.scope_requested": { "type": "array", "items": { "type": "string" } },
+        "identity.auth.scope_granted": { "type": "array", "items": { "type": "string" } },
+        "identity.authz.decision": {
+          "type": "string",
+          "enum": ["allow", "deny", "conditional"]
+        },
+        "identity.authz.resource": { "type": "string" },
+        "identity.authz.action": { "type": "string" },
+        "identity.authz.policy_engine": {
+          "type": "string",
+          "enum": ["opa", "cedar", "casbin", "custom"]
+        },
+        "identity.authz.risk_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "identity.delegation.delegator": { "type": "string" },
+        "identity.delegation.delegatee": { "type": "string" },
+        "identity.delegation.type": {
+          "type": "string",
+          "enum": ["on_behalf_of", "token_exchange", "credential_forwarding", "impersonation", "capability_grant", "scoped_proxy"]
+        },
+        "identity.delegation.chain": { "type": "array", "items": { "type": "string" } },
+        "identity.delegation.chain_depth": { "type": "integer", "minimum": 0 },
+        "identity.delegation.scope_delegated": { "type": "array", "items": { "type": "string" } },
+        "identity.delegation.scope_attenuated": { "type": "boolean" },
+        "identity.delegation.result": {
+          "type": "string",
+          "enum": ["success", "failure", "denied", "expired"]
+        },
+        "identity.trust.operation": {
+          "type": "string",
+          "enum": ["establish", "verify", "present_credential", "verify_credential", "federation_join", "federation_leave", "boundary_cross", "revoke_trust"]
+        },
+        "identity.trust.peer_agent": { "type": "string" },
+        "identity.trust.result": {
+          "type": "string",
+          "enum": ["established", "failed", "rejected", "revoked"]
+        },
+        "identity.trust.method": {
+          "type": "string",
+          "enum": ["mtls", "spiffe", "did_vc", "http_signature", "pki"]
+        },
+        "identity.trust.trust_level": {
+          "type": "string",
+          "enum": ["none", "basic", "verified", "high", "full"]
+        },
+        "identity.trust.cross_domain": { "type": "boolean" },
+        "identity.session.id": { "type": "string" },
+        "identity.session.operation": {
+          "type": "string",
+          "enum": ["create", "refresh", "validate", "terminate", "timeout", "hijack_detected"]
+        }
+      }
+    },
+    "asset_inventory_attributes": {
+      "type": "object",
+      "properties": {
+        "asset.id": { "type": "string" },
+        "asset.name": { "type": "string" },
+        "asset.type": {
+          "type": "string",
+          "enum": ["model", "dataset", "prompt_template", "vector_db", "mcp_server", "agent", "pipeline", "guardrail", "embedding_model", "knowledge_base"]
+        },
+        "asset.version": { "type": "string" },
+        "asset.hash": { "type": "string" },
+        "asset.owner": { "type": "string" },
+        "asset.deployment_environment": {
+          "type": "string",
+          "enum": ["production", "staging", "development", "shadow"]
+        },
+        "asset.risk_classification": {
+          "type": "string",
+          "enum": ["unacceptable", "high_risk", "limited_risk", "minimal_risk", "systemic", "not_classified"]
+        },
+        "asset.tags": { "type": "array", "items": { "type": "string" } },
+        "asset.discovery.scope": {
+          "type": "string",
+          "enum": ["cluster", "namespace", "environment", "organization"]
+        },
+        "asset.discovery.method": {
+          "type": "string",
+          "enum": ["api_scan", "network_scan", "registry_sync", "log_analysis", "manual"]
+        },
+        "asset.discovery.assets_found": { "type": "integer", "minimum": 0 },
+        "asset.discovery.shadow_assets": { "type": "integer", "minimum": 0 },
+        "asset.audit.type": {
+          "type": "string",
+          "enum": ["integrity", "compliance", "access_review", "drift", "security", "lineage", "full"]
+        },
+        "asset.audit.result": {
+          "type": "string",
+          "enum": ["pass", "fail", "warning", "not_applicable"]
+        },
+        "asset.audit.framework": {
+          "type": "string",
+          "enum": ["eu_ai_act", "nist_ai_rmf", "iso_42001", "soc2", "internal"]
+        },
+        "asset.audit.risk_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "asset.audit.compliance_status": {
+          "type": "string",
+          "enum": ["compliant", "non_compliant", "partially_compliant"]
+        },
+        "asset.classification.framework": { "type": "string" },
+        "asset.classification.autonomous_decision": { "type": "boolean" },
+        "asset.decommission.reason": {
+          "type": "string",
+          "enum": ["replaced", "deprecated", "security_risk", "compliance", "end_of_life"]
+        }
+      }
+    },
+    "drift_detection_attributes": {
+      "type": "object",
+      "properties": {
+        "drift.model_id": { "type": "string" },
+        "drift.type": {
+          "type": "string",
+          "enum": ["data_distribution", "concept", "performance", "calibration", "embedding", "feature", "prediction", "label"]
+        },
+        "drift.score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "drift.result": {
+          "type": "string",
+          "enum": ["normal", "warning", "alert", "critical"]
+        },
+        "drift.detection_method": {
+          "type": "string",
+          "enum": ["psi", "ks_test", "chi_squared", "js_divergence", "kl_divergence", "wasserstein", "mmd", "adwin", "ddm", "page_hinkley", "custom"]
+        },
+        "drift.baseline_metric": { "type": "number" },
+        "drift.current_metric": { "type": "number" },
+        "drift.metric_name": { "type": "string" },
+        "drift.threshold": { "type": "number" },
+        "drift.p_value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "drift.reference_dataset": { "type": "string" },
+        "drift.reference_period": { "type": "string" },
+        "drift.affected_segments": { "type": "array", "items": { "type": "string" } },
+        "drift.action_triggered": {
+          "type": "string",
+          "enum": ["none", "alert", "retrain", "rollback", "quarantine"]
+        },
+        "drift.baseline.operation": {
+          "type": "string",
+          "enum": ["create", "refresh", "validate"]
+        },
+        "drift.investigation.root_cause_category": {
+          "type": "string",
+          "enum": ["data_quality", "upstream_change", "seasonal", "adversarial", "model_degradation", "unknown"]
+        },
+        "drift.investigation.blast_radius": {
+          "type": "string",
+          "enum": ["isolated", "segment", "widespread", "global"]
+        },
+        "drift.remediation.action": {
+          "type": "string",
+          "enum": ["retrain", "rollback", "recalibrate", "feature_gate", "traffic_shift", "alert_only", "quarantine"]
+        },
+        "drift.remediation.automated": { "type": "boolean" },
+        "drift.remediation.status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "completed", "failed"]
+        },
+        "drift.remediation.validation_passed": { "type": "boolean" }
+      }
+    },
+    "memory_security_attributes": {
+      "type": "object",
+      "properties": {
+        "memory.security.content_hash": { "type": "string" },
+        "memory.security.content_size": { "type": "integer", "minimum": 0 },
+        "memory.security.integrity_hash": { "type": "string" },
+        "memory.security.provenance_verified": { "type": "boolean" },
+        "memory.security.poisoning_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "memory.security.cross_session": { "type": "boolean" },
+        "memory.security.isolation_verified": { "type": "boolean" },
+        "memory.security.mutation_count": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

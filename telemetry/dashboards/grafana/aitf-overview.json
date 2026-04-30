@@ -1,0 +1,134 @@
+{
+  "dashboard": {
+    "title": "AITF - AI Telemetry Overview",
+    "description": "AI Telemetry Framework overview dashboard with inference, agent, MCP, security, and cost metrics",
+    "tags": ["aitf", "ai", "telemetry", "genai"],
+    "timezone": "browser",
+    "refresh": "30s",
+    "panels": [
+      {
+        "title": "Inference Requests / min",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
+        "targets": [{"expr": "rate(aitf_inference_requests_total[1m])*60", "legendFormat": "req/min"}]
+      },
+      {
+        "title": "Active Agent Sessions",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
+        "targets": [{"expr": "aitf_agent_sessions_total", "legendFormat": "sessions"}]
+      },
+      {
+        "title": "MCP Tool Invocations",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
+        "targets": [{"expr": "rate(aitf_mcp_tool_invocations_total[5m])*60", "legendFormat": "invocations/min"}]
+      },
+      {
+        "title": "Security Threats Detected",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 12, "y": 0},
+        "targets": [{"expr": "aitf_security_threats_detected_total", "legendFormat": "threats"}],
+        "fieldConfig": {"defaults": {"thresholds": {"steps": [{"value": 0, "color": "green"}, {"value": 1, "color": "red"}]}}}
+      },
+      {
+        "title": "Total Cost (USD)",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
+        "targets": [{"expr": "aitf_cost_total", "legendFormat": "USD"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "PII Detections",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 4, "x": 20, "y": 0},
+        "targets": [{"expr": "aitf_security_pii_detected_total", "legendFormat": "detections"}]
+      },
+      {
+        "title": "Token Usage Over Time",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "targets": [
+          {"expr": "rate(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m])", "legendFormat": "Input tokens/s"},
+          {"expr": "rate(gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m])", "legendFormat": "Output tokens/s"}
+        ]
+      },
+      {
+        "title": "Inference Latency (p50, p95, p99)",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "targets": [
+          {"expr": "histogram_quantile(0.50, rate(gen_ai_client_operation_duration_bucket[5m]))", "legendFormat": "p50"},
+          {"expr": "histogram_quantile(0.95, rate(gen_ai_client_operation_duration_bucket[5m]))", "legendFormat": "p95"},
+          {"expr": "histogram_quantile(0.99, rate(gen_ai_client_operation_duration_bucket[5m]))", "legendFormat": "p99"}
+        ],
+        "fieldConfig": {"defaults": {"unit": "s"}}
+      },
+      {
+        "title": "Requests by Model",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 12},
+        "targets": [{"expr": "sum by (gen_ai_request_model) (aitf_inference_requests_total)", "legendFormat": "{{gen_ai_request_model}}"}]
+      },
+      {
+        "title": "Cost by Model",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 12},
+        "targets": [{"expr": "sum by (gen_ai_request_model) (aitf_cost_total)", "legendFormat": "{{gen_ai_request_model}}"}],
+        "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+      },
+      {
+        "title": "Security Threats by Type",
+        "type": "barchart",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 12},
+        "targets": [{"expr": "sum by (aitf_security_threat_type) (aitf_security_threats_detected_total)", "legendFormat": "{{aitf_security_threat_type}}"}]
+      },
+      {
+        "title": "Agent Steps by Type",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
+        "targets": [{"expr": "rate(aitf_agent_steps_total[5m])*60", "legendFormat": "{{aitf_agent_step_type}}"}]
+      },
+      {
+        "title": "MCP Tools by Server",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
+        "targets": [{"expr": "rate(aitf_mcp_tool_invocations_total[5m])*60", "legendFormat": "{{aitf_mcp_tool_server}}/{{aitf_mcp_tool_name}}"}]
+      },
+      {
+        "title": "Skill Invocations by Category",
+        "type": "barchart",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28},
+        "targets": [{"expr": "sum by (aitf_skill_category) (aitf_skill_invocations_total)", "legendFormat": "{{aitf_skill_category}}"}]
+      },
+      {
+        "title": "RAG Retrieval Results",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28},
+        "targets": [
+          {"expr": "histogram_quantile(0.50, rate(aitf_rag_retrieval_results_bucket[5m]))", "legendFormat": "p50 docs"},
+          {"expr": "histogram_quantile(0.95, rate(aitf_rag_retrieval_results_bucket[5m]))", "legendFormat": "p95 docs"}
+        ]
+      },
+      {
+        "title": "Guardrail Check Results",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 36},
+        "targets": [{"expr": "sum by (aitf_security_guardrail_result) (aitf_security_guardrail_checks_total)", "legendFormat": "{{aitf_security_guardrail_result}}"}]
+      },
+      {
+        "title": "Budget Utilization",
+        "type": "gauge",
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 36},
+        "targets": [{"expr": "aitf_cost_budget_utilization", "legendFormat": "Budget %"}],
+        "fieldConfig": {"defaults": {"unit": "percent", "max": 100, "thresholds": {"steps": [{"value": 0, "color": "green"}, {"value": 75, "color": "yellow"}, {"value": 90, "color": "red"}]}}}
+      },
+      {
+        "title": "Agent Delegations",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 36},
+        "targets": [{"expr": "rate(aitf_agent_delegations_total[5m])*60", "legendFormat": "{{aitf_agent_name}} → {{aitf_agent_delegation_target_agent}}"}]
+      }
+    ]
+  }
+}
