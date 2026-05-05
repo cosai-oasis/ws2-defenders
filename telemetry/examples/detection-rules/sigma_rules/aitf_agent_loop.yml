@@ -1,0 +1,75 @@
+title: AITF Agent Execution Loop Detection
+id: aitf-sigma-002
+status: stable
+level: high
+description: |
+    Detects AI agents stuck in repetitive execution loops by correlating
+    high step counts, low action diversity, and repeated tool invocations
+    within a single session. An agent in an infinite loop wastes compute
+    resources and may indicate a prompt injection trapping the agent.
+
+    Maps to OWASP LLM06 (Excessive Agency) and MITRE ATLAS AML.T0048.
+
+references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0048
+
+author: AITF Framework Contributors
+date: 2026/02/15
+modified: 2026/02/15
+
+tags:
+    - attack.impact
+    - attack.t0048
+    - owasp.llm06
+    - aitf.agent
+    - resource_abuse
+
+logsource:
+    category: ai_telemetry
+    product: aitf
+    service: agent
+
+detection:
+    # High turn count for a single session
+    selection_high_turns:
+        aitf.agent.session.turn_count|gte: 50
+
+    # Repeated identical tool calls within a session
+    selection_repeated_tool:
+        aitf.agent.step.type: 'tool_use'
+    filter_repeated_tool:
+        aitf.agent.step.action|count_distinct|lte: 2
+
+    # Excessive total tool invocations
+    selection_excessive_tools:
+        aitf.mcp.tool.count|gte: 30
+
+    # Same step action repeated consecutively
+    selection_consecutive_same:
+        aitf.agent.step.action|repeat_count|gte: 5
+
+    # Agent session duration anomaly (very long sessions)
+    selection_long_session:
+        aitf.agent.session.duration_ms|gte: 600000  # 10 minutes
+
+    condition: selection_high_turns or (selection_repeated_tool and filter_repeated_tool) or selection_excessive_tools or selection_consecutive_same or selection_long_session
+
+falsepositives:
+    - Legitimate long-running batch processing agents
+    - Agents designed for iterative refinement with many steps
+    - Load testing scenarios
+    - Research agents performing exhaustive search
+
+fields:
+    - aitf.agent.name
+    - aitf.agent.session.id
+    - aitf.agent.session.turn_count
+    - aitf.agent.step.type
+    - aitf.agent.step.action
+    - aitf.agent.framework
+    - aitf.mcp.tool.name
+    - aitf.mcp.tool.count
+    - gen_ai.usage.input_tokens
+    - gen_ai.usage.output_tokens
+    - timestamp

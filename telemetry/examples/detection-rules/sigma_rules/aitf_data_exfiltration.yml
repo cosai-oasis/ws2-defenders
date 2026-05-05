@@ -1,0 +1,120 @@
+title: AITF Data Exfiltration via AI Tools
+id: aitf-sigma-003
+status: stable
+level: critical
+description: |
+    Detects data exfiltration attempts through AI tool invocations. Covers
+    three vectors: (1) tool outputs containing URLs or encoded data,
+    (2) read-then-send patterns where data is read from internal sources
+    then sent externally, and (3) PII accumulation chains across multiple
+    requests.
+
+    Maps to OWASP LLM02 (Sensitive Information Disclosure) and
+    MITRE ATLAS AML.T0024.
+
+references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0024
+
+author: AITF Framework Contributors
+date: 2026/02/15
+modified: 2026/02/15
+
+tags:
+    - attack.exfiltration
+    - attack.t0024
+    - owasp.llm02
+    - aitf.mcp
+    - aitf.security
+    - data_loss
+
+logsource:
+    category: ai_telemetry
+    product: aitf
+    service: mcp
+
+detection:
+    # Pattern 1: Exfiltration patterns in tool I/O
+    selection_exfil_output:
+        aitf.mcp.tool.output|contains:
+            - 'curl '
+            - 'wget '
+            - 'fetch('
+            - 'base64 encode'
+            - 'exfiltrat'
+    selection_exfil_input:
+        aitf.mcp.tool.input|re: '(send|post|transmit|upload)\s+.*(to|at)\s+https?://'
+
+    # Pattern 2: URL patterns in tool output (data being sent externally)
+    selection_url_in_output:
+        aitf.mcp.tool.output|re: 'https?://[^\s]+'
+        aitf.mcp.tool.name:
+            - 'write_file'
+            - 'send_email'
+            - 'post_message'
+            - 'upload'
+            - 'http_request'
+            - 'webhook'
+
+    # Pattern 3: Read-then-send sequence within same session
+    selection_read_action:
+        aitf.mcp.tool.name:
+            - 'read_file'
+            - 'search_files'
+            - 'query'
+            - 'read_database'
+            - 'fetch_data'
+    selection_send_action:
+        aitf.mcp.tool.name:
+            - 'write_file'
+            - 'send_email'
+            - 'upload'
+            - 'http_request'
+            - 'webhook'
+            - 'send_notification'
+
+    # Pattern 4: PII exposure accumulation
+    selection_pii:
+        aitf.security.pii.detected: true
+        aitf.security.pii.count|gte: 3
+
+    # Pattern 5: Large data volumes read
+    selection_large_read:
+        aitf.mcp.resource.size_bytes|gte: 1048576  # 1 MB
+        aitf.mcp.tool.name:
+            - 'read_file'
+            - 'query'
+            - 'read_database'
+
+    # Pattern 6: Tool bypassing approval for data operations
+    selection_unapproved_data_tool:
+        aitf.mcp.tool.approval_required: true
+        aitf.mcp.tool.approved: false
+        aitf.mcp.tool.name:
+            - 'send_email'
+            - 'upload'
+            - 'http_request'
+            - 'write_file'
+
+    condition: selection_exfil_output or selection_exfil_input or selection_url_in_output or (selection_read_action and selection_send_action) or selection_pii or (selection_large_read and selection_send_action) or selection_unapproved_data_tool
+
+falsepositives:
+    - Legitimate file export or sharing workflows
+    - Agents designed to send notifications or reports
+    - Authorized data pipeline operations
+    - CI/CD agents performing build artifact uploads
+
+fields:
+    - aitf.mcp.tool.name
+    - aitf.mcp.tool.input
+    - aitf.mcp.tool.output
+    - aitf.mcp.server.name
+    - aitf.agent.session.id
+    - aitf.agent.name
+    - aitf.security.pii.detected
+    - aitf.security.pii.types
+    - aitf.security.pii.count
+    - aitf.mcp.resource.size_bytes
+    - aitf.mcp.tool.approval_required
+    - aitf.mcp.tool.approved
+    - timestamp

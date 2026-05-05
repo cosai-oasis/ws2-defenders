@@ -1,0 +1,308 @@
+` AITF AI Threat Dashboard - Splunk SPL Queries
+` ================================================
+`
+` A collection of SPL queries designed for an AI security threat monitoring
+` dashboard. These queries operate on AITF telemetry data indexed in Splunk,
+` using the AITF semantic convention attribute names.
+`
+` Prerequisites:
+`   - AITF OCSF events indexed in the "aitf" or "ai_telemetry" index
+`   - Fields extracted following AITF semantic conventions (gen_ai.*, aitf.*)
+`   - Time range set to at least the last 24 hours for meaningful baselines
+`
+` Recommended dashboard layout:
+`   Row 1: Key metrics (total events, threat count, cost, active sessions)
+`   Row 2: Threat breakdown charts
+`   Row 3: Detailed investigation panels
+`   Row 4: Trend analysis
+
+
+` ===========================================================================
+` PANEL 1: AI Threat Overview (Single Value + Trend)
+` ===========================================================================
+` Total AI security findings in the selected time range
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+| stats count AS total_threats
+    dc(aitf.agent.session.id) AS affected_sessions
+    dc(gen_ai.request.model) AS models_involved
+    max(aitf.security.risk_score) AS max_risk_score
+    values(aitf.security.threat_type) AS threat_types
+| eval severity_label=case(
+    max_risk_score >= 90, "CRITICAL",
+    max_risk_score >= 70, "HIGH",
+    max_risk_score >= 40, "MEDIUM",
+    1=1, "LOW"
+  )
+
+
+` ===========================================================================
+` PANEL 2: Threats by Category (Pie Chart)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+| stats count BY aitf.security.threat_type
+| sort -count
+| rename aitf.security.threat_type AS "Threat Type"
+    count AS "Detection Count"
+
+
+` ===========================================================================
+` PANEL 3: OWASP LLM Top 10 Heat Map (Heat Map)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.owasp_category=*
+| eval owasp_label=case(
+    aitf.security.owasp_category="LLM01", "LLM01: Prompt Injection",
+    aitf.security.owasp_category="LLM02", "LLM02: Sensitive Info Disclosure",
+    aitf.security.owasp_category="LLM03", "LLM03: Supply Chain",
+    aitf.security.owasp_category="LLM04", "LLM04: Data Poisoning",
+    aitf.security.owasp_category="LLM05", "LLM05: Improper Output Handling",
+    aitf.security.owasp_category="LLM06", "LLM06: Excessive Agency",
+    aitf.security.owasp_category="LLM07", "LLM07: System Prompt Leakage",
+    aitf.security.owasp_category="LLM08", "LLM08: Vector/Embedding Weakness",
+    aitf.security.owasp_category="LLM09", "LLM09: Misinformation",
+    aitf.security.owasp_category="LLM10", "LLM10: Unbounded Consumption",
+    1=1, aitf.security.owasp_category
+  )
+| timechart span=1h count BY owasp_label
+
+
+` ===========================================================================
+` PANEL 4: Prompt Injection Attempts Timeline (Line Chart)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    (aitf.security.threat_type=prompt_injection OR aitf.security.threat_type=jailbreak)
+| eval attack_type=case(
+    aitf.security.threat_type="prompt_injection", "Prompt Injection",
+    aitf.security.threat_type="jailbreak", "Jailbreak",
+    1=1, "Other"
+  )
+| timechart span=15m count BY attack_type
+
+
+` ===========================================================================
+` PANEL 5: Top Targeted Models (Bar Chart)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+| stats count
+    dc(aitf.security.threat_type) AS unique_threats
+    avg(aitf.security.risk_score) AS avg_risk
+    BY gen_ai.request.model
+| sort -count
+| head 10
+| rename gen_ai.request.model AS "Model"
+    count AS "Attacks"
+    unique_threats AS "Unique Threat Types"
+    avg_risk AS "Avg Risk Score"
+
+
+` ===========================================================================
+` PANEL 6: Real-time Cost Monitoring (Area Chart)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.cost.total_cost=*
+| timechart span=5m
+    sum(aitf.cost.total_cost) AS total_cost
+    avg(aitf.cost.total_cost) AS avg_cost_per_request
+    max(aitf.cost.total_cost) AS peak_cost
+| eval cost_alert=if(total_cost > 10, "ALERT: High cost window", "Normal")
+
+
+` ===========================================================================
+` PANEL 7: Cost Spike Detection (Table with Alerts)
+` ===========================================================================
+` Identifies cost spikes by comparing current window against rolling baseline
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.cost.total_cost > 0
+| bin _time span=5m
+| stats sum(aitf.cost.total_cost) AS window_cost
+    count AS request_count
+    avg(aitf.cost.total_cost) AS avg_request_cost
+    max(aitf.cost.total_cost) AS max_request_cost
+    values(gen_ai.request.model) AS models_used
+    BY _time
+| eventstats avg(window_cost) AS baseline_cost stdev(window_cost) AS cost_stdev
+| eval z_score=if(cost_stdev>0, (window_cost - baseline_cost) / cost_stdev, 0)
+| eval is_spike=if(z_score > 3, "YES", "NO")
+| where is_spike="YES"
+| sort -_time
+| rename _time AS "Time"
+    window_cost AS "Window Cost ($)"
+    baseline_cost AS "Baseline ($)"
+    z_score AS "Z-Score"
+    request_count AS "Requests"
+    models_used AS "Models"
+
+
+` ===========================================================================
+` PANEL 8: MCP Server Connection Map (Sankey / Force-Directed)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.mcp.server.name=*
+| stats count
+    values(aitf.mcp.server.transport) AS transports
+    values(aitf.mcp.server.url) AS urls
+    dc(aitf.mcp.tool.name) AS tool_count
+    values(aitf.mcp.tool.name) AS tools
+    BY aitf.mcp.server.name aitf.agent.name
+| sort -count
+| rename aitf.mcp.server.name AS "MCP Server"
+    aitf.agent.name AS "Agent"
+    count AS "Invocations"
+    tool_count AS "Unique Tools"
+
+
+` ===========================================================================
+` PANEL 9: Unauthorized MCP Servers (Table - Critical)
+` ===========================================================================
+` Flag MCP servers not in the approved list (customize the NOT clause)
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.mcp.server.name=*
+    NOT (aitf.mcp.server.name=filesystem
+         OR aitf.mcp.server.name=postgres
+         OR aitf.mcp.server.name="brave-search"
+         OR aitf.mcp.server.name=github
+         OR aitf.mcp.server.name=slack)
+| stats count
+    earliest(_time) AS first_seen
+    latest(_time) AS last_seen
+    values(aitf.mcp.server.url) AS server_urls
+    values(aitf.mcp.server.transport) AS transports
+    values(aitf.mcp.tool.name) AS exposed_tools
+    dc(aitf.agent.session.id) AS sessions_affected
+    BY aitf.mcp.server.name
+| eval first_seen=strftime(first_seen, "%Y-%m-%d %H:%M:%S")
+| eval last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
+| sort -count
+| rename aitf.mcp.server.name AS "Unknown Server"
+
+
+` ===========================================================================
+` PANEL 10: PII Exposure Tracking (Stacked Bar Chart)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.pii.detected=true
+| eval pii_list=split(aitf.security.pii.types, ",")
+| mvexpand pii_list
+| eval pii_type=trim(pii_list)
+| timechart span=1h count BY pii_type
+
+
+` ===========================================================================
+` PANEL 11: Supply Chain Integrity (Table)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.supply_chain.model.hash=*
+| stats dc(aitf.supply_chain.model.hash) AS unique_hashes
+    values(aitf.supply_chain.model.hash) AS observed_hashes
+    values(aitf.supply_chain.model.source) AS sources
+    values(aitf.supply_chain.model.signer) AS signers
+    latest(aitf.supply_chain.model.signed) AS is_signed
+    count AS observations
+    BY gen_ai.request.model
+| where unique_hashes > 1
+| eval alert="HASH CHANGE DETECTED"
+| sort -unique_hashes
+| rename gen_ai.request.model AS "Model"
+    unique_hashes AS "Hash Variants"
+    observations AS "Total Observations"
+
+
+` ===========================================================================
+` PANEL 12: Threat Investigation Drilldown (Table)
+` ===========================================================================
+` Detailed view of all threats with full context for investigation
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+| table _time
+    aitf.security.threat_type
+    aitf.security.owasp_category
+    aitf.security.risk_score
+    aitf.security.risk_level
+    aitf.security.confidence
+    aitf.security.detection_method
+    aitf.security.blocked
+    gen_ai.request.model
+    gen_ai.system
+    aitf.agent.name
+    aitf.agent.session.id
+    aitf.mcp.server.name
+    aitf.mcp.tool.name
+| sort -_time
+| rename _time AS "Time"
+    aitf.security.threat_type AS "Threat"
+    aitf.security.owasp_category AS "OWASP"
+    aitf.security.risk_score AS "Risk Score"
+    aitf.security.risk_level AS "Risk Level"
+    aitf.security.blocked AS "Blocked"
+    gen_ai.request.model AS "Model"
+    aitf.agent.name AS "Agent"
+    aitf.agent.session.id AS "Session"
+    aitf.mcp.server.name AS "MCP Server"
+    aitf.mcp.tool.name AS "Tool"
+
+
+` ===========================================================================
+` PANEL 13: Token Usage Distribution (Box Plot Data)
+` ===========================================================================
+` Provides data for box plot visualization of token distributions per model
+
+index=aitf sourcetype=aitf:ocsf
+    gen_ai.usage.input_tokens=*
+| stats avg(gen_ai.usage.input_tokens) AS avg_input
+    median(gen_ai.usage.input_tokens) AS median_input
+    perc25(gen_ai.usage.input_tokens) AS p25_input
+    perc75(gen_ai.usage.input_tokens) AS p75_input
+    perc95(gen_ai.usage.input_tokens) AS p95_input
+    max(gen_ai.usage.input_tokens) AS max_input
+    avg(gen_ai.usage.output_tokens) AS avg_output
+    median(gen_ai.usage.output_tokens) AS median_output
+    perc95(gen_ai.usage.output_tokens) AS p95_output
+    count AS total_requests
+    BY gen_ai.request.model
+| eval iqr_input=p75_input - p25_input
+| eval upper_fence=p75_input + 1.5 * iqr_input
+| sort -total_requests
+
+
+` ===========================================================================
+` PANEL 14: Hourly Threat Heatmap (Heatmap by Hour and Day)
+` ===========================================================================
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+| eval hour=strftime(_time, "%H")
+| eval day=strftime(_time, "%A")
+| stats count BY day hour
+| sort day hour
+
+
+` ===========================================================================
+` ALERT: Critical AI Security Alert (Scheduled Search)
+` ===========================================================================
+` Configure this as a Splunk scheduled alert (run every 5 minutes)
+
+index=aitf sourcetype=aitf:ocsf
+    aitf.security.threat_detected=true
+    (aitf.security.risk_level=critical OR aitf.security.risk_score>=90)
+    earliest=-5m
+| stats count AS critical_count
+    values(aitf.security.threat_type) AS threat_types
+    values(aitf.agent.session.id) AS sessions
+    values(gen_ai.request.model) AS models
+| where critical_count > 0
+| eval alert_message="CRITICAL: " . critical_count . " critical AI threats detected: " . mvjoin(threat_types, ", ")

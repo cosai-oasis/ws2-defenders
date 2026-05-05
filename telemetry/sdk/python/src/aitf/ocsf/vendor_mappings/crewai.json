@@ -1,0 +1,202 @@
+{
+  "$schema": "https://aitf.dev/schemas/vendor-mapping-v1.json",
+  "vendor": "crewai",
+  "version": "0.100",
+  "description": "Maps CrewAI telemetry attributes to AITF semantic conventions and OCSF event classes. CrewAI emits OTel spans via its built-in telemetry module.",
+  "homepage": "https://docs.crewai.com/concepts/telemetry",
+
+  "span_name_patterns": {
+    "inference": [
+      "^LLM Call ",
+      "^CrewAI\\.LLM\\.",
+      "^LiteLLM\\."
+    ],
+    "agent": [
+      "^Crew Execution$",
+      "^Crew Kickoff$",
+      "^Agent Execution$",
+      "^Task Execution$",
+      "^CrewAI\\.Agent\\.",
+      "^CrewAI\\.Task\\.",
+      "^CrewAI\\.Crew\\."
+    ],
+    "tool": [
+      "^Tool Usage$",
+      "^Tool Execution ",
+      "^CrewAI\\.Tool\\."
+    ],
+    "delegation": [
+      "^Task Delegation$",
+      "^Delegation:",
+      "^CrewAI\\.Delegation"
+    ]
+  },
+
+  "attribute_mappings": {
+    "inference": {
+      "vendor_to_aitf": {
+        "crewai.llm.model": "gen_ai.request.model",
+        "crewai.llm.provider": "gen_ai.provider.name",
+        "crewai.llm.temperature": "gen_ai.request.temperature",
+        "crewai.llm.max_tokens": "gen_ai.request.max_tokens",
+        "crewai.llm.top_p": "gen_ai.request.top_p",
+
+        "crewai.llm.input_tokens": "gen_ai.usage.input_tokens",
+        "crewai.llm.output_tokens": "gen_ai.usage.output_tokens",
+        "crewai.llm.total_tokens": "gen_ai.usage.total_tokens",
+        "crewai.llm.response_time_ms": "latency.total_ms",
+
+        "crewai.llm.prompt": "gen_ai.input.messages",
+        "crewai.llm.completion": "gen_ai.output.messages",
+        "crewai.llm.finish_reason": "gen_ai.response.finish_reasons",
+        "crewai.llm.response_id": "gen_ai.response.id",
+
+        "litellm.model": "gen_ai.request.model",
+        "litellm.provider": "gen_ai.provider.name",
+        "litellm.input_tokens": "gen_ai.usage.input_tokens",
+        "litellm.output_tokens": "gen_ai.usage.output_tokens",
+        "litellm.response_time": "latency.total_ms"
+      },
+      "ocsf_class_uid": 7001,
+      "ocsf_activity_id_map": {
+        "chat": 1,
+        "text_completion": 2,
+        "embeddings": 3,
+        "default": 1
+      },
+      "defaults": {
+        "gen_ai.operation.name": "chat"
+      }
+    },
+
+    "agent": {
+      "vendor_to_aitf": {
+        "crewai.crew.name": "agent.team.name",
+        "crewai.crew.id": "agent.team.id",
+        "crewai.crew.process": "agent.team.topology",
+        "crewai.crew.verbose": "agent.verbose",
+        "crewai.crew.memory": "agent.memory_enabled",
+        "crewai.crew.max_rpm": "agent.rate_limit",
+        "crewai.crew.agents": "agent.team.members",
+        "crewai.crew.tasks": "agent.team.tasks",
+
+        "crewai.agent.role": "gen_ai.agent.name",
+        "crewai.agent.goal": "agent.goal",
+        "crewai.agent.backstory": "gen_ai.agent.description",
+        "crewai.agent.id": "gen_ai.agent.id",
+        "crewai.agent.allow_delegation": "agent.delegation_enabled",
+        "crewai.agent.verbose": "agent.verbose",
+        "crewai.agent.max_iter": "agent.max_iterations",
+        "crewai.agent.max_rpm": "agent.rate_limit",
+        "crewai.agent.llm": "agent.model",
+        "crewai.agent.tools": "agent.tools",
+
+        "crewai.task.description": "agent.step.type",
+        "crewai.task.expected_output": "agent.expected_output",
+        "crewai.task.agent": "gen_ai.agent.name",
+        "crewai.task.id": "agent.step_id",
+        "crewai.task.output": "agent.step.observation",
+        "crewai.task.context": "agent.step_context",
+        "crewai.task.async_execution": "agent.async"
+      },
+      "ocsf_class_uid": 7002,
+      "ocsf_activity_id_map": {
+        "crew_execution": 1,
+        "agent_execution": 3,
+        "task_execution": 3,
+        "delegation": 4,
+        "memory_access": 5,
+        "default": 3
+      },
+      "crew_process_to_topology": {
+        "sequential": "sequential",
+        "hierarchical": "hierarchical",
+        "consensual": "mesh"
+      },
+      "defaults": {
+        "agent.framework": "crewai",
+        "agent.type": "autonomous"
+      }
+    },
+
+    "tool": {
+      "vendor_to_aitf": {
+        "crewai.tool.name": "gen_ai.tool.name",
+        "crewai.tool.description": "gen_ai.tool.description",
+        "crewai.tool.input": "gen_ai.tool.call.arguments",
+        "crewai.tool.output": "gen_ai.tool.call.result",
+        "crewai.tool.error": "mcp.tool.is_error",
+        "crewai.tool.agent": "gen_ai.agent.name",
+        "crewai.tool.duration_ms": "mcp.tool.duration_ms",
+        "crewai.tool.cache_hit": "mcp.tool.cache_hit"
+      },
+      "ocsf_class_uid": 7003,
+      "ocsf_activity_id_map": {
+        "function_call": 1,
+        "search": 1,
+        "file_read": 1,
+        "code_execution": 1,
+        "default": 1
+      },
+      "defaults": {
+        "tool_type": "function"
+      }
+    },
+
+    "delegation": {
+      "vendor_to_aitf": {
+        "crewai.delegation.from_agent": "gen_ai.agent.name",
+        "crewai.delegation.to_agent": "agent.delegation.target_agent",
+        "crewai.delegation.task": "agent.delegation.task",
+        "crewai.delegation.reason": "agent.delegation.reason",
+        "crewai.delegation.strategy": "agent.delegation.strategy"
+      },
+      "ocsf_class_uid": 7002,
+      "ocsf_activity_id_map": {
+        "default": 4
+      },
+      "defaults": {
+        "agent.framework": "crewai",
+        "agent.delegation.strategy": "capability"
+      }
+    }
+  },
+
+  "provider_detection": {
+    "attribute_keys": ["crewai.llm.provider", "litellm.provider", "gen_ai.provider.name"],
+    "model_prefix_to_provider": {
+      "gpt-": "openai",
+      "o1": "openai",
+      "o3": "openai",
+      "claude-": "anthropic",
+      "gemini-": "google",
+      "mistral-": "mistral",
+      "command-": "cohere",
+      "llama-": "meta",
+      "groq/": "groq",
+      "ollama/": "ollama",
+      "together_ai/": "together"
+    }
+  },
+
+  "severity_mapping": {
+    "crewai.task.status": {
+      "completed": 1,
+      "error": 4,
+      "timeout": 3
+    },
+    "crewai.delegation.status": {
+      "accepted": 1,
+      "rejected": 3,
+      "error": 4
+    }
+  },
+
+  "metadata": {
+    "ocsf_product": {
+      "name": "CrewAI",
+      "vendor_name": "CrewAI Inc.",
+      "version": "0.100"
+    }
+  }
+}

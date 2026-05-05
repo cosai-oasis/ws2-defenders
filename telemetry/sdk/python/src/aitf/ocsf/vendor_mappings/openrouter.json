@@ -1,0 +1,125 @@
+{
+  "$schema": "https://aitf.dev/schemas/vendor-mapping-v1.json",
+  "vendor": "openrouter",
+  "version": "1.0",
+  "description": "Maps OpenRouter telemetry attributes to AITF semantic conventions and OCSF event classes. OpenRouter is an LLM routing service that provides a unified OpenAI-compatible API across 200+ models from multiple providers.",
+  "homepage": "https://openrouter.ai/docs",
+
+  "span_name_patterns": {
+    "inference": [
+      "^openrouter\\.",
+      "^OpenRouter\\.",
+      "^chat openrouter/",
+      "^chat anthropic/",
+      "^chat openai/",
+      "^chat google/",
+      "^chat meta-llama/",
+      "^chat mistralai/",
+      "^chat cohere/",
+      "^chat deepseek/",
+      "^chat qwen/"
+    ]
+  },
+
+  "attribute_mappings": {
+    "inference": {
+      "vendor_to_aitf": {
+        "openrouter.model": "gen_ai.request.model",
+        "openrouter.provider": "gen_ai.provider.name",
+        "openrouter.route.provider": "openrouter.route_provider",
+        "openrouter.route.model": "openrouter.route_model",
+        "openrouter.route.id": "gen_ai.response.id",
+        "openrouter.api_base": "gen_ai.server.address",
+
+        "openrouter.request.temperature": "gen_ai.request.temperature",
+        "openrouter.request.max_tokens": "gen_ai.request.max_tokens",
+        "openrouter.request.top_p": "gen_ai.request.top_p",
+        "openrouter.request.top_k": "gen_ai.request.top_k",
+        "openrouter.request.frequency_penalty": "gen_ai.request.frequency_penalty",
+        "openrouter.request.presence_penalty": "gen_ai.request.presence_penalty",
+        "openrouter.request.transforms": "openrouter.transforms",
+        "openrouter.request.route": "openrouter.route_preference",
+
+        "openrouter.usage.prompt_tokens": "gen_ai.usage.input_tokens",
+        "openrouter.usage.completion_tokens": "gen_ai.usage.output_tokens",
+        "openrouter.usage.total_tokens": "gen_ai.usage.total_tokens",
+
+        "openrouter.cost.prompt": "cost.input_cost",
+        "openrouter.cost.completion": "cost.output_cost",
+        "openrouter.cost.total": "cost.total_cost",
+
+        "openrouter.latency.total_ms": "latency.total_ms",
+        "openrouter.latency.tokens_per_second": "latency.tokens_per_second",
+        "openrouter.latency.time_to_first_token_ms": "latency.time_to_first_token_ms",
+
+        "openrouter.response.finish_reason": "gen_ai.response.finish_reasons",
+        "openrouter.response.id": "gen_ai.response.id",
+        "openrouter.response.model": "gen_ai.response.model",
+        "openrouter.response.streaming": "gen_ai.request.streaming",
+
+        "openrouter.prompt": "gen_ai.input.messages",
+        "openrouter.completion": "gen_ai.output.messages",
+
+        "gen_ai.provider.name": "gen_ai.provider.name",
+        "gen_ai.request.model": "gen_ai.request.model",
+        "gen_ai.usage.input_tokens": "gen_ai.usage.input_tokens",
+        "gen_ai.usage.output_tokens": "gen_ai.usage.output_tokens",
+        "gen_ai.response.finish_reasons": "gen_ai.response.finish_reasons"
+      },
+      "ocsf_class_uid": 7001,
+      "ocsf_activity_id_map": {
+        "chat": 1,
+        "text_completion": 2,
+        "embeddings": 3,
+        "image_generation": 4,
+        "default": 1
+      },
+      "defaults": {
+        "gen_ai.operation.name": "chat"
+      }
+    }
+  },
+
+  "provider_detection": {
+    "attribute_keys": ["openrouter.route.provider", "openrouter.provider", "gen_ai.provider.name"],
+    "model_prefix_to_provider": {
+      "anthropic/": "anthropic",
+      "openai/": "openai",
+      "google/": "google",
+      "meta-llama/": "meta",
+      "mistralai/": "mistral",
+      "cohere/": "cohere",
+      "deepseek/": "deepseek",
+      "qwen/": "qwen",
+      "microsoft/": "microsoft",
+      "nvidia/": "nvidia",
+      "perplexity/": "perplexity",
+      "x-ai/": "xai",
+      "amazon/": "amazon",
+      "gpt-": "openai",
+      "claude-": "anthropic",
+      "gemini-": "google",
+      "llama-": "meta",
+      "mistral-": "mistral",
+      "command-": "cohere"
+    }
+  },
+
+  "severity_mapping": {
+    "openrouter.response.status": {
+      "success": 1,
+      "rate_limited": 3,
+      "error": 4,
+      "timeout": 4,
+      "moderation_blocked": 3
+    }
+  },
+
+  "metadata": {
+    "ocsf_product": {
+      "name": "OpenRouter",
+      "vendor_name": "OpenRouter Inc.",
+      "version": "1.0"
+    }
+  }
+}

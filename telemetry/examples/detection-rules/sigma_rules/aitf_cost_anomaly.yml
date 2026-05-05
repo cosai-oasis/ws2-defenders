@@ -1,0 +1,92 @@
+title: AITF AI Cost Anomaly Detection
+id: aitf-sigma-004
+status: stable
+level: medium
+description: |
+    Detects abnormal cost patterns in AI inference operations, including
+    single-request cost spikes, budget threshold breaches, and sustained
+    elevated spend over time windows. Cost anomalies may indicate leaked
+    API keys, automated abuse, or run-away batch processing.
+
+    Maps to OWASP LLM10 (Unbounded Consumption) and MITRE ATLAS AML.T0034.
+
+references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0034
+
+author: AITF Framework Contributors
+date: 2026/02/15
+modified: 2026/02/15
+
+tags:
+    - attack.impact
+    - attack.t0034
+    - owasp.llm10
+    - aitf.cost
+    - resource_abuse
+
+logsource:
+    category: ai_telemetry
+    product: aitf
+    service: gen_ai
+
+detection:
+    # Single request with high cost
+    selection_high_single_cost:
+        aitf.cost.total_cost|gte: 1.00  # $1.00 per request
+
+    # Very high token counts (potential token stuffing)
+    selection_high_tokens:
+        gen_ai.usage.input_tokens|gte: 100000
+
+    selection_high_output_tokens:
+        gen_ai.usage.output_tokens|gte: 50000
+
+    # Budget threshold breach
+    selection_budget_breach:
+        aitf.cost.budget.remaining|lte: 0
+
+    # Budget nearly exhausted (less than 10% remaining)
+    selection_budget_warning:
+        aitf.cost.budget.remaining|lte: 1.0
+        aitf.cost.budget.limit|gte: 10.0
+
+    # Expensive model used unexpectedly
+    selection_expensive_model:
+        gen_ai.request.model|contains:
+            - 'gpt-4-32k'
+            - 'claude-opus'
+            - 'gemini-ultra'
+        gen_ai.request.max_tokens|gte: 8192
+
+    # High cost with no attribution (potential leaked key)
+    selection_unattributed_cost:
+        aitf.cost.total_cost|gte: 0.10
+    filter_unattributed:
+        aitf.cost.attribution.user|exists: false
+        aitf.cost.attribution.project|exists: false
+
+    condition: selection_high_single_cost or selection_high_tokens or selection_high_output_tokens or selection_budget_breach or selection_budget_warning or selection_expensive_model or (selection_unattributed_cost and filter_unattributed)
+
+falsepositives:
+    - Legitimate large-context operations (code analysis, document summarization)
+    - Batch processing jobs with expected high token usage
+    - Training and fine-tuning operations
+    - One-time data migration tasks
+
+fields:
+    - gen_ai.request.model
+    - gen_ai.system
+    - gen_ai.usage.input_tokens
+    - gen_ai.usage.output_tokens
+    - gen_ai.request.max_tokens
+    - aitf.cost.input_cost
+    - aitf.cost.output_cost
+    - aitf.cost.total_cost
+    - aitf.cost.budget.limit
+    - aitf.cost.budget.used
+    - aitf.cost.budget.remaining
+    - aitf.cost.attribution.user
+    - aitf.cost.attribution.team
+    - aitf.cost.attribution.project
+    - timestamp
