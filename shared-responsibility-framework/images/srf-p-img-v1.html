@@ -1,0 +1,426 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Security Responsibility - CoSAI Five-Layer Framework</title>
+</head>
+<body id="artifacts-component-root-html">
+  <div style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #eceff1; color: #263238; box-sizing: border-box; margin: 0; padding: 0;">
+  <!-- Header -->
+  <div style="margin-bottom: 24px;">
+    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">
+      Prompt Responsibility Model
+      <span style="font-size: 14px; font-weight: normal; margin-left: 12px; color: #607d8b;">CoSAI Five-Layer Framework</span>
+    </h1>
+    <p style="font-size: 14px; color: #546e7a;">
+      Who is accountable for prompts executed against AI models? This includes user inputs, 
+      system prompts, RAG context, and <strong>agent-generated prompts</strong> during autonomous execution.
+    </p>
+  </div>
+  <!-- Legend -->
+  <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; padding: 16px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #e3f2fd; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>Customer/Business</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #c8e6c9; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>AI App Developer</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #fff3e0; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>Agentic Provider (NEW)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #fce4ec; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>AI Platform Provider</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #fff9c4; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>Cloud Provider</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #ffccbc; border: 1px solid #37474f; border-radius: 3px;"></div>
+      <span>Model Provider</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+      <div style="width: 20px; height: 20px; background: #d32f2f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">🛡</div>
+      <span>Prompt Injection Defense Point</span>
+    </div>
+  </div>
+  <!-- Models Grid -->
+  <div style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px;">
+    <!-- IaaS Column -->
+    <div style="flex: 1; min-width: 380px;">
+      <div style="background: #1565c0; color: white; padding: 12px 16px; text-align: center; font-weight: bold; font-size: 16px; border-radius: 8px 8px 0 0;">IaaS</div>
+      <div style="background: #1976d2; color: white; padding: 6px; text-align: center; font-size: 11px;">Infrastructure as a Service (BYO Model)</div>
+      <div style="border: 2px solid #37474f; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 20px 20px 90px; background: #fafafa; position: relative;">
+        <!-- Actor -->
+        <div style="text-align: center; margin-bottom: 8px;">
+          <svg viewBox="0 0 40 50" style="width: 40px; height: 50px;">
+            <circle cx="20" cy="10" r="8" fill="none" stroke="#37474f" stroke-width="2"></circle>
+            <line x1="20" y1="18" x2="20" y2="35" stroke="#37474f" stroke-width="2"></line>
+            <line x1="5" y1="25" x2="35" y2="25" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="8" y2="48" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="32" y2="48" stroke="#37474f" stroke-width="2"></line>
+          </svg>
+          <div style="font-size: 11px; font-weight: 600;">Actor</div>
+        </div>
+        <div style="text-align: center; margin: 4px 0;">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M10 0 L10 14 M4 10 L10 16 L16 10" fill="none" stroke="#37474f" stroke-width="2"></path>
+          </svg>
+        </div>
+        <!-- Business Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #e3f2fd;">Business</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(227, 242, 253, 0.4);">
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Actor</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L01</span>
+                <span style="font-size: 12px;">User input, data &amp; business intent</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Application</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L02</span>
+                <span style="font-size: 12px;">Guardrails, system prompts, instructions</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Agentic Layer<span style="position: absolute; top: 2px; right: 4px; font-size: 8px; background: #ff5722; color: white; padding: 1px 4px; border-radius: 3px; font-weight: bold;">NEW</span></div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L03</span>
+                <span style="font-size: 12px;">Agent reasoning &amp; tool-calling prompts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- AI Provider Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #fce4ec;">AI Provider</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(252, 228, 236, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fce4ec;">LLM Platform</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L04</span>
+                <span style="font-size: 12px;">Prompt execution &amp; model routing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Cloud Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #fff9c4;">Cloud</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 249, 196, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fff9c4;">Infrastructure</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L05</span>
+                <span style="font-size: 12px;">CPU/GPU processing &amp; isolation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Model Zone -->
+        <div style="position: relative;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #ffccbc;">Model</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 204, 188, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #ffccbc;">Model</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L06</span>
+                <span style="font-size: 12px;">Inference, reasoning &amp; base safeguards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- PaaS Column -->
+    <div style="flex: 1; min-width: 380px;">
+      <div style="background: #1565c0; color: white; padding: 12px 16px; text-align: center; font-weight: bold; font-size: 16px; border-radius: 8px 8px 0 0;">PaaS</div>
+      <div style="background: #1976d2; color: white; padding: 6px; text-align: center; font-size: 11px;">Platform as a Service (Azure AI, Bedrock)</div>
+      <div style="border: 2px solid #37474f; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 20px 20px 90px; background: #fafafa; position: relative;">
+        <!-- Actor -->
+        <div style="text-align: center; margin-bottom: 8px;">
+          <svg viewBox="0 0 40 50" style="width: 40px; height: 50px;">
+            <circle cx="20" cy="10" r="8" fill="none" stroke="#37474f" stroke-width="2"></circle>
+            <line x1="20" y1="18" x2="20" y2="35" stroke="#37474f" stroke-width="2"></line>
+            <line x1="5" y1="25" x2="35" y2="25" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="8" y2="48" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="32" y2="48" stroke="#37474f" stroke-width="2"></line>
+          </svg>
+          <div style="font-size: 11px; font-weight: 600;">Actor</div>
+        </div>
+        <div style="text-align: center; margin: 4px 0;">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M10 0 L10 14 M4 10 L10 16 L16 10" fill="none" stroke="#37474f" stroke-width="2"></path>
+          </svg>
+        </div>
+        <!-- Business Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #e3f2fd;">Business</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(227, 242, 253, 0.4);">
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Actor</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L01</span>
+                <span style="font-size: 12px;">User input, data &amp; business intent</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Application</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L02</span>
+                <span style="font-size: 12px;">Guardrails, system prompts, instructions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- AI Provider Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #fce4ec;">AI Provider</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(252, 228, 236, 0.4);">
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fff3e0;">Agentic Layer<span style="position: absolute; top: 2px; right: 4px; font-size: 8px; background: #ff5722; color: white; padding: 1px 4px; border-radius: 3px; font-weight: bold;">NEW</span></div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L03</span>
+                <span style="font-size: 12px;">Agent reasoning &amp; tool-calling prompts</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fce4ec;">LLM Platform</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L04</span>
+                <span style="font-size: 12px;">Prompt execution &amp; model routing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Cloud Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #fff9c4;">Cloud</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 249, 196, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fff9c4;">Infrastructure</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L05</span>
+                <span style="font-size: 12px;">CPU/GPU processing &amp; isolation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Model Zone -->
+        <div style="position: relative;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #ffccbc;">Model</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 204, 188, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #ffccbc;">Model</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L06</span>
+                <span style="font-size: 12px;">Inference, reasoning &amp; base safeguards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SaaS Column -->
+    <div style="flex: 1; min-width: 380px;">
+      <div style="background: #1565c0; color: white; padding: 12px 16px; text-align: center; font-weight: bold; font-size: 16px; border-radius: 8px 8px 0 0;">SaaS</div>
+      <div style="background: #1976d2; color: white; padding: 6px; text-align: center; font-size: 11px;">Software as a Service (Copilot, ServiceNow AI)</div>
+      <div style="border: 2px solid #37474f; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 20px 20px 90px; background: #fafafa; position: relative;">
+        <!-- Actor -->
+        <div style="text-align: center; margin-bottom: 8px;">
+          <svg viewBox="0 0 40 50" style="width: 40px; height: 50px;">
+            <circle cx="20" cy="10" r="8" fill="none" stroke="#37474f" stroke-width="2"></circle>
+            <line x1="20" y1="18" x2="20" y2="35" stroke="#37474f" stroke-width="2"></line>
+            <line x1="5" y1="25" x2="35" y2="25" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="8" y2="48" stroke="#37474f" stroke-width="2"></line>
+            <line x1="20" y1="35" x2="32" y2="48" stroke="#37474f" stroke-width="2"></line>
+          </svg>
+          <div style="font-size: 11px; font-weight: 600;">Actor</div>
+        </div>
+        <div style="text-align: center; margin: 4px 0;">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M10 0 L10 14 M4 10 L10 16 L16 10" fill="none" stroke="#37474f" stroke-width="2"></path>
+          </svg>
+        </div>
+        <!-- Business Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #e3f2fd;">Business</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(227, 242, 253, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #e3f2fd;">Actor</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L01</span>
+                <span style="font-size: 12px;">User input, data &amp; business intent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- AI App Developer Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #c8e6c9;">AI App Developer</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(200, 230, 201, 0.4);">
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #c8e6c9;">Application</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L02</span>
+                <span style="font-size: 12px;">Guardrails, system prompts, instructions</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; margin-bottom: 2px; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fff3e0;">Agentic Layer<span style="position: absolute; top: 2px; right: 4px; font-size: 8px; background: #ff5722; color: white; padding: 1px 4px; border-radius: 3px; font-weight: bold;">NEW</span></div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L03</span>
+                <span style="font-size: 12px;">Agent reasoning &amp; tool-calling prompts</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #c8e6c9;">LLM Platform</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L04</span>
+                <span style="font-size: 12px;">Prompt execution &amp; model routing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Cloud Zone -->
+        <div style="position: relative; margin-bottom: 4px;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #fff9c4;">Cloud</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 249, 196, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #fff9c4;">Infrastructure</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L05</span>
+                <span style="font-size: 12px;">CPU/GPU processing &amp; isolation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Model Zone -->
+        <div style="position: relative;">
+          <div style="position: absolute; left: -70px; top: 0; bottom: 0; width: 60px; border: 1px solid #37474f; border-radius: 4px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-size: 10px; font-weight: 600; padding: 4px; background: #ffccbc;">Model</div>
+          <div style="border-radius: 4px; padding: 4px 0; background: rgba(255, 204, 188, 0.4);">
+            <div style="display: flex; align-items: stretch; position: relative;">
+              <div style="position: absolute; left: -24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: #d32f2f; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">🛡</div>
+              <div style="flex: 0 0 140px; border: 2px solid #37474f; border-right: none; padding: 12px 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; background: #ffccbc;">Model</div>
+              <div style="flex: 1; background: #fffde7; border: 2px solid #37474f; padding: 12px; display: flex; align-items: center;">
+                <span style="font-weight: bold; margin-right: 8px; color: #1565c0; font-size: 12px; white-space: nowrap;">L06</span>
+                <span style="font-size: 12px;">Inference, reasoning &amp; base safeguards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Key Insights -->
+  <div style="margin-top: 24px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 16px; font-size: 16px;">Key Changes from Original Model</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div style="padding: 12px; border-radius: 6px; border-left: 4px solid #ff9800; background: #fff3e0;">
+        <strong style="font-size: 13px;">🆕 Agentic Layer (L03) Added</strong>
+        <p style="margin-top: 8px; font-size: 12px; color: #5d4037;">
+          Agent-generated prompts during planning, tool selection, and multi-step reasoning 
+          are now explicitly owned by the Agentic AI Provider—not the customer or app developer.
+        </p>
+      </div>
+      <div style="padding: 12px; border-radius: 6px; border-left: 4px solid #d32f2f; background: #ffebee;">
+        <strong style="font-size: 13px;">🛡 Prompt Injection Defense Points</strong>
+        <p style="margin-top: 8px; font-size: 12px; color: #5d4037;">
+          Defense occurs at L02 (input sanitization), L03 (agent prompt validation), 
+          and L06 (model-level jailbreak resistance). Defense is layered, not single-point.
+        </p>
+      </div>
+      <div style="padding: 12px; border-radius: 6px; border-left: 4px solid #4caf50; background: #e8f5e9;">
+        <strong style="font-size: 13px;">📋 Fixed Layer Numbering (L01-L06)</strong>
+        <p style="margin-top: 8px; font-size: 12px; color: #1b5e20;">
+          Infrastructure and Model now have distinct codes (L05, L06). 
+          Agentic layer inserted as L03, with downstream renumbering.
+        </p>
+      </div>
+      <div style="padding: 12px; border-radius: 6px; border-left: 4px solid #1565c0; background: #e3f2fd;">
+        <strong style="font-size: 13px;">⚖️ SaaS Accountability Clarity</strong>
+        <p style="margin-top: 8px; font-size: 12px; color: #0d47a1;">
+          In SaaS, the AI App Developer owns L02-L04 including the Agentic layer. 
+          Customer owns only L01 (input) and governance policies.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- Prompt Types Matrix -->
+  <div style="margin-top: 24px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 16px; font-size: 16px;">Prompt Type Accountability Matrix</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+      <thead>
+        <tr>
+          <th style="background: #1565c0; color: white; padding: 10px; text-align: left; border-radius: 4px 0 0 0;">Prompt Type</th>
+          <th style="background: #1565c0; color: white; padding: 10px; text-align: center;">IaaS</th>
+          <th style="background: #1565c0; color: white; padding: 10px; text-align: center;">PaaS</th>
+          <th style="background: #1565c0; color: white; padding: 10px; text-align: center; border-radius: 0 4px 0 0;">SaaS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>User Input</strong> (raw query/data)</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">Customer</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; background: #f5f5f5;"><strong>System Prompt</strong> (instructions, persona)</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">AI App Developer</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>RAG Context</strong> (retrieved documents)</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">Shared</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">AI App Developer</td>
+        </tr>
+        <tr style="background: rgba(255, 243, 224, 0.6);">
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; background: rgba(255, 243, 224, 0.6) !important;"><strong>🆕 Agent Planning Prompts</strong></td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Agentic Provider</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">AI App Developer</td>
+        </tr>
+        <tr style="background: rgba(255, 243, 224, 0.6);">
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; background: rgba(255, 243, 224, 0.6) !important;"><strong>🆕 Tool-Calling Prompts</strong></td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Agentic Provider</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">AI App Developer</td>
+        </tr>
+        <tr style="background: rgba(255, 243, 224, 0.6);">
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; background: rgba(255, 243, 224, 0.6) !important;"><strong>🆕 Multi-Step Orchestration</strong></td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Customer</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">Agentic Provider</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: rgba(255, 243, 224, 0.6) !important;">AI App Developer</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; background: #f5f5f5;"><strong>Model Safety Prompts</strong> (built-in guardrails)</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">Model Provider</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">Model Provider</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center; background: #f5f5f5;">Model Provider</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Footer -->
+  <div style="margin-top: 24px; padding: 12px; background: #37474f; color: white; border-radius: 6px; font-size: 11px; text-align: center;">
+    CoSAI Five-Layer Framework — Prompt Security Responsibility Model
+  </div>
+  </div>
+</body></html>
