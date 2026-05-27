@@ -1,3 +1,9 @@
+---
+title: AI Shared Responsibility Framework, V1.0 
+author: "Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape"
+date: 26 May 2026
+---
+
 # AI Shared Responsibility Framework, V1.0
 
 OASIS Open Project : [Coalition for Secure AI (CoSAI)](https://github.com/cosai-oasis) [Workstream 2: AI Shared Responsibility Framework](https://github.com/cosai-oasis/ws2-defenders/tree/main/shared-responsibility-framework)
