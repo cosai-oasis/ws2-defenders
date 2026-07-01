@@ -1,0 +1,39 @@
+{
+  "_comment": "Microsoft Intune custom configuration policy for AgentDR on Windows. Import as a Custom Settings Catalog policy. Values target the AgentDR service which reads %ProgramData%\\AgentDR\\config.toml; this policy delivers a managed config file via a Win32 app or PowerShell remediation. Pair with the signed .msi shipped from CI.",
+  "displayName": "AgentDR — Windows Endpoint Configuration",
+  "description": "CoSAI AgentDR endpoint telemetry agent (Tier 1 OTLP + MCP capture)",
+  "platforms": "windows10",
+  "technologies": "mdm,configManager",
+  "settings": [
+    {
+      "id": "agentdr.config.toml",
+      "settingInstance": {
+        "@odata.type": "#microsoft.graph.deviceManagementConfigurationSimpleSettingInstance",
+        "settingDefinitionId": "device_vendor_msft_policy_config_agentdr_configtoml",
+        "simpleSettingValue": {
+          "@odata.type": "#microsoft.graph.deviceManagementConfigurationStringSettingValue",
+          "value": "watch_directories = [\"C:\\\\Users\"]\n\n[otlp]\nenabled = true\nbind = \"127.0.0.1:4318\"\nredact_content = true\n\n[mcp]\ninventory_on_start = true\nrescan_seconds = 600\n\n[server_push]\nenabled = true\nendpoint = \"https://agentdr.example.com/api/sync\"\napi_key = \"INTUNE-MANAGED-KEY\"\nbatch_size = 50\nflush_interval_seconds = 10\n"
+        }
+      }
+    },
+    {
+      "id": "agentdr.service.startupType",
+      "settingInstance": {
+        "@odata.type": "#microsoft.graph.deviceManagementConfigurationChoiceSettingInstance",
+        "settingDefinitionId": "device_vendor_msft_policy_config_services_agentdr_starttype",
+        "choiceSettingValue": {
+          "@odata.type": "#microsoft.graph.deviceManagementConfigurationChoiceSettingValue",
+          "value": "automatic"
+        }
+      }
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.allDevicesAssignmentTarget"
+      }
+    }
+  ],
+  "remediation_script": "$cfg = '$(settings[0].settingInstance.simpleSettingValue.value)'; New-Item -ItemType Directory -Force -Path 'C:\\ProgramData\\AgentDR' | Out-Null; Set-Content -Path 'C:\\ProgramData\\AgentDR\\config.toml' -Value $cfg -Encoding ASCII; Restart-Service AgentDR -Force"
+}

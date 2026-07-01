@@ -1,0 +1,131 @@
+name: "AgentDR Policy Gate"
+description: >-
+  Evaluate AgentDR CoSAI/AITF detection rules against a JSONL event log
+  produced during the CI job (e.g. by `adr-agent start` or by an MCP wrap
+  session) and fail the build if any alert exceeds the configured
+  severity threshold.
+
+author: "CoSAI Community"
+branding:
+  icon: "shield"
+  color: "blue"
+
+inputs:
+  events:
+    description: "Glob (or path) to JSONL files containing AgentDR events."
+    required: false
+    default: "**/events.jsonl"
+  fail-on-severity:
+    description: "Minimum severity that fails the build: low|medium|high|critical."
+    required: false
+    default: "high"
+  allowed-rules:
+    description: "Comma-separated list of AITF-DET-NNN rule IDs to ignore."
+    required: false
+    default: ""
+  summary:
+    description: "Write a markdown summary to $GITHUB_STEP_SUMMARY."
+    required: false
+    default: "true"
+
+outputs:
+  violations:
+    description: "Number of events that exceeded the severity threshold."
+    value: ${{ steps.gate.outputs.violations }}
+  report-path:
+    description: "Path to the JSON report this action produced."
+    value: ${{ steps.gate.outputs.report }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: gate
+      shell: bash
+      run: |
+        set -euo pipefail
+        python3 - <<'PY'
+        import glob, json, os, sys
+        from collections import Counter
+
+        events_glob = os.environ["INPUT_EVENTS"]
+        threshold   = os.environ["INPUT_FAIL_ON_SEVERITY"].lower().strip()
+        allowed     = {r.strip() for r in os.environ["INPUT_ALLOWED_RULES"].split(",") if r.strip()}
+        write_md    = os.environ["INPUT_SUMMARY"].lower() == "true"
+
+        order = ["informational", "low", "medium", "high", "critical"]
+        sev_rank = {s: i for i, s in enumerate(order)}
+        if threshold not in sev_rank:
+            print(f"::error::Unknown severity '{threshold}' (expected one of {order})", file=sys.stderr)
+            sys.exit(2)
+        cutoff = sev_rank[threshold]
+
+        paths = sorted({p for g in events_glob.splitlines() for p in glob.glob(g.strip(), recursive=True) if g.strip()})
+        if not paths:
+            print(f"::warning::No event files matched '{events_glob}'")
+
+        total, violations = 0, []
+        per_rule, per_sev = Counter(), Counter()
+        for path in paths:
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line: continue
+                    try: ev = json.loads(line)
+                    except Exception: continue
+                    total += 1
+                    risk = (ev.get("risk_level") or "low").lower()
+                    per_sev[risk] += 1
+                    rule_id = (ev.get("security_finding") or {}).get("rule_id") \
+                              or (ev.get("details") or {}).get("rule_id")
+                    if rule_id:
+                        per_rule[rule_id] += 1
+                    if rule_id and rule_id in allowed:
+                        continue
+                    if sev_rank.get(risk, 0) >= cutoff:
+                        violations.append({
+                            "timestamp": ev.get("timestamp"),
+                            "rule_id":   rule_id,
+                            "risk":      risk,
+                            "message":   ev.get("message"),
+                            "source":    ev.get("source"),
+                        })
+
+        report = {
+            "total_events": total,
+            "fail_on_severity": threshold,
+            "allowed_rules": sorted(allowed),
+            "by_severity": dict(per_sev),
+            "by_rule": dict(per_rule),
+            "violations": violations,
+        }
+        os.makedirs("agentdr-report", exist_ok=True)
+        rp = "agentdr-report/policy-gate.json"
+        with open(rp, "w") as f: json.dump(report, f, indent=2)
+        print(f"::set-output name=violations::{len(violations)}")
+        print(f"::set-output name=report::{rp}")
+
+        if write_md and "GITHUB_STEP_SUMMARY" in os.environ:
+            with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+                f.write("# AgentDR Policy Gate\n")
+                f.write(f"- Events scanned: **{total}**\n")
+                f.write(f"- Fail-on-severity: **{threshold}**\n")
+                f.write(f"- Violations: **{len(violations)}**\n\n")
+                if per_rule:
+                    f.write("## By rule\n\n")
+                    for rid, n in per_rule.most_common():
+                        f.write(f"- `{rid}`: {n}\n")
+                if violations:
+                    f.write("\n## Violations (first 25)\n\n")
+                    for v in violations[:25]:
+                        f.write(f"- `{v.get('rule_id') or '-'}` "
+                                f"{v.get('risk')}: {v.get('message') or ''}\n")
+
+        if violations:
+            print(f"::error::AgentDR Policy Gate failed: {len(violations)} violation(s) at severity >= {threshold}")
+            sys.exit(1)
+        PY
+      env:
+        INPUT_EVENTS:           ${{ inputs.events }}
+        INPUT_FAIL_ON_SEVERITY: ${{ inputs.fail-on-severity }}
+        INPUT_ALLOWED_RULES:    ${{ inputs.allowed-rules }}
+        INPUT_SUMMARY:          ${{ inputs.summary }}

@@ -1,0 +1,21 @@
+[package]
+name = "aitf"
+version = "0.1.0"
+edition = "2021"
+description = "AITF Rust SDK — OCSF AI event schema, ai_operation profile, agent_message unification, and the Claude Compliance mapper."
+license = "Apache-2.0"
+
+[features]
+default = []
+client = ["dep:ureq"]
+otel = ["dep:opentelemetry"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+ureq = { version = "2", optional = true }
+opentelemetry = { version = "0.32", optional = true }
+
+[dev-dependencies]
+opentelemetry_sdk = { version = "0.32", features = ["testing"] }

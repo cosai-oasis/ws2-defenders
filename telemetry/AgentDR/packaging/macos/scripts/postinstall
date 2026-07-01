@@ -1,0 +1,65 @@
+#!/bin/bash
+# AgentDR macOS .pkg postinstall — create user, dirs, load LaunchDaemon.
+set -euo pipefail
+
+LABEL="com.cosai.agentdr"
+USER="_agentdr"
+UID_NEW=308
+DATA_DIR="/var/lib/agentdr"
+LOG_DIR="/var/log/agentdr"
+ETC_DIR="/etc/agentdr"
+PLIST="/Library/LaunchDaemons/${LABEL}.plist"
+
+# 1. Service account (idempotent)
+if ! dscl . -read "/Users/${USER}" >/dev/null 2>&1; then
+  dscl . -create "/Users/${USER}"
+  dscl . -create "/Users/${USER}" UserShell /usr/bin/false
+  dscl . -create "/Users/${USER}" RealName "AgentDR Daemon"
+  dscl . -create "/Users/${USER}" UniqueID "${UID_NEW}"
+  dscl . -create "/Users/${USER}" PrimaryGroupID "${UID_NEW}"
+  dscl . -create "/Users/${USER}" NFSHomeDirectory "${DATA_DIR}"
+  dscl . -create "/Groups/${USER}" PrimaryGroupID "${UID_NEW}"
+fi
+
+# 2. Directories
+install -d -m 0755 -o "${USER}" -g "${USER}" "${DATA_DIR}" "${LOG_DIR}"
+install -d -m 0755 "${ETC_DIR}"
+
+# 3. Default config (only if missing — preserve operator edits on upgrade)
+if [ ! -f "${ETC_DIR}/config.toml" ]; then
+  cat > "${ETC_DIR}/config.toml" <<EOF
+# AgentDR — managed config. See https://github.com/girdav01/agentdr
+watch_directories = ["/Users"]
+
+[otlp]
+enabled = true
+bind = "127.0.0.1:4318"
+redact_content = true
+
+[mcp]
+inventory_on_start = true
+rescan_seconds = 600
+
+[server_push]
+enabled = false
+endpoint = ""
+EOF
+fi
+
+# 4. Load (or reload) the daemon
+if launchctl print "system/${LABEL}" >/dev/null 2>&1; then
+  launchctl bootout system "${PLIST}" || true
+fi
+launchctl bootstrap system "${PLIST}"
+launchctl enable "system/${LABEL}"
+
+# 5. Tier 8 — auto-discovery on install. Runs non-interactively against
+# the policy/discovery.yaml shipped in the rule pack; safe to invoke
+# repeatedly. Operators can rerun:
+#   sudo /usr/local/bin/adr-agent --root /var/lib/agentdr discovery scan --apply
+if [ -x /usr/local/bin/adr-agent ]; then
+  /usr/local/bin/adr-agent --root "${DATA_DIR}" discovery scan --apply >/dev/null 2>&1 || true
+fi
+
+echo "AgentDR installed and started."
+exit 0

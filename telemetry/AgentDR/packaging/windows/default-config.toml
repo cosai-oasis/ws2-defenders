@@ -1,0 +1,122 @@
+# AgentDR default Windows config. Operators may edit
+# C:\ProgramData\AgentDR\config.toml; subsequent MSI upgrades preserve edits
+# (NeverOverwrite="yes").
+watch_directories = ["C:\\Users"]
+
+[otlp]
+enabled = true
+bind = "127.0.0.1:4318"
+redact_content = true
+
+[mcp]
+inventory_on_start = true
+rescan_seconds = 600
+
+# Inline forward CONNECT proxy (egress control for outbound LLM / API calls).
+# Enrichments below add caller provenance, optional auth and rate limiting on
+# top of the existing host allow-list / policy engine. Disabled by default.
+[proxy]
+enabled = false
+bind = "127.0.0.1:8080"
+allowlist = []
+# Attribute each connection to the local PID / executable and known AI agent.
+provenance = true
+# Optional static API keys (Proxy-Authorization: Bearer <key> or X-API-Key).
+# Empty + jwt.enabled=false => observe-only (no credential required).
+auth_tokens = []
+
+[proxy.jwt]
+enabled = false
+secret = ""
+issuer = ""
+audience = ""
+
+# Forward-proxy rate limiting is OFF by default so it does not throttle
+# chatty browser/agent clients. Enable to cap per-caller request rates.
+[proxy.rate_limits]
+enabled = false
+requests_per_minute = 120
+burst = 30
+
+# LLM Guard reverse proxy — sits IN FRONT of local model backends (Ollama,
+# LM Studio, llama.cpp). Point your model clients at listen_address instead of
+# the backend. Inspects request/response bodies for prompt-injection & PII,
+# tracks token usage, authenticates callers, and rate-limits per key.
+# Disabled by default.
+[llm_guard]
+enabled = false
+listen_address = "127.0.0.1:8011"
+auth_tokens = []
+# Periodic upstream health checks (0 = disabled); GET /healthz always works.
+health_check_interval_seconds = 30
+max_body_bytes = 8388608
+upstream_timeout_seconds = 120
+
+# Upstream backends. Requests route by route_prefix (longest match wins);
+# an empty prefix is the default backend. The prefix is stripped on forward.
+[[llm_guard.backends]]
+name = "ollama"
+kind = "ollama"
+url = "http://127.0.0.1:11434"
+route_prefix = "/ollama"
+health_path = "/api/tags"
+
+[[llm_guard.backends]]
+name = "lmstudio"
+kind = "lmstudio"
+url = "http://127.0.0.1:1234"
+route_prefix = "/lmstudio"
+health_path = "/v1/models"
+
+[[llm_guard.backends]]
+name = "llamacpp"
+kind = "llamacpp"
+url = "http://127.0.0.1:8080"
+route_prefix = "/llamacpp"
+health_path = "/health"
+
+[llm_guard.jwt]
+enabled = false
+secret = ""
+issuer = ""
+audience = ""
+
+[llm_guard.rate_limits]
+enabled = true
+requests_per_minute = 120
+burst = 30
+
+# Content inspection. block_on_* default false = alert-only (request still
+# forwarded, but an OCSF finding is emitted). Set true to reject (403).
+[llm_guard.monitoring]
+enabled = true
+detect_prompt_injection = true
+detect_pii = true
+track_tokens = true
+block_on_injection = false
+block_on_pii = false
+max_prompt_chars = 512
+
+# Process access control — gate on WHICH local process (or attributed AI agent)
+# may call the local models. Patterns are case-insensitive substrings matched
+# against the caller's name / exe / cmdline / agent. `deny` wins over `allow`;
+# `default` ("deny" = allowlist, "allow" = denylist) decides when neither hits.
+# Disabled by default. Process resolution is Linux-only today, so leave
+# block_unresolved = false on Windows/macOS. Example (allow AI coding agents):
+[llm_guard.process_acl]
+enabled = false
+default = "deny"
+block_unresolved = false
+allow = []   # e.g. ["claude-code", "cursor", "ollama"]
+deny = []    # e.g. ["curl", "wget", "python"]
+
+# NVIDIA OpenShell Gateway OCSF audit-log ingest (opt-in).
+# Set ocsf_json_enabled on the OpenShell side, then point log_glob at its export.
+[openshell]
+enabled = false
+log_glob = "C:\\ProgramData\\OpenShell\\logs\\openshell-ocsf*.log"
+poll_interval_seconds = 5
+
+[server_push]
+enabled = false
+endpoint = ""

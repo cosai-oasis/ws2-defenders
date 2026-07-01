@@ -1,0 +1,35 @@
+[Unit]
+Description=AgentDR — AI Agent Detection & Response
+Documentation=https://github.com/girdav01/agentdr
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=agentdr
+Group=agentdr
+ExecStart=/usr/bin/adr-agent start --root /var/lib/agentdr --config /etc/agentdr/config.toml --quiet
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+
+# Security hardening — agent reads files and watches processes but does not
+# need write access outside its data dir.
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/agentdr /var/log/agentdr
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+
+Environment=RUST_LOG=adr_agent=info
+
+[Install]
+WantedBy=multi-user.target

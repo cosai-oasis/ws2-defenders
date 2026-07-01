@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Node
+node_modules/
+
+# Go
+*.exe
+*.test
+
+# Rust
+sdk/rust/target/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test/Cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/

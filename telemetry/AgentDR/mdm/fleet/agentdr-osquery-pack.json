@@ -1,0 +1,60 @@
+{
+  "name": "agentdr-fleet-pack",
+  "description": "Fleet/osquery pack that proves AgentDR is installed and emitting events on every endpoint. Import via `fleetctl apply -f agentdr-osquery-pack.json` or paste into the Fleet UI 'Queries' library. Cross-platform: each query is platform-scoped.",
+  "queries": {
+    "agentdr_installed_macos": {
+      "query": "SELECT name, path, version FROM apps WHERE name LIKE 'AgentDR%';",
+      "interval": 3600,
+      "platform": "darwin",
+      "description": "AgentDR application metadata on macOS."
+    },
+    "agentdr_launchdaemon_running": {
+      "query": "SELECT * FROM launchd WHERE label = 'com.cosai.agentdr';",
+      "interval": 600,
+      "platform": "darwin",
+      "description": "Verify the AgentDR LaunchDaemon is loaded."
+    },
+    "agentdr_service_windows": {
+      "query": "SELECT name, status, start_type, path FROM services WHERE name = 'AgentDR';",
+      "interval": 600,
+      "platform": "windows",
+      "description": "Verify the AgentDR Windows service is installed and running."
+    },
+    "agentdr_systemd_linux": {
+      "query": "SELECT name, load_state, active_state, sub_state FROM systemd_units WHERE name = 'agentdr.service';",
+      "interval": 600,
+      "platform": "linux",
+      "description": "Verify the AgentDR systemd unit is active on Linux."
+    },
+    "agentdr_process_running": {
+      "query": "SELECT pid, name, path, cmdline, start_time FROM processes WHERE name LIKE 'adr-agent%';",
+      "interval": 300,
+      "platform": "darwin,linux,windows",
+      "description": "Live AgentDR process inventory."
+    },
+    "agentdr_events_jsonl_freshness_macos": {
+      "query": "SELECT path, size, mtime FROM file WHERE path = '/var/log/agentdr/stdout.log';",
+      "interval": 600,
+      "platform": "darwin",
+      "description": "Heartbeat: stdout log mtime should be recent."
+    },
+    "agentdr_events_jsonl_freshness_linux": {
+      "query": "SELECT path, size, mtime FROM file WHERE path = '/var/lib/agentdr/logs/events.jsonl';",
+      "interval": 600,
+      "platform": "linux",
+      "description": "Heartbeat: events.jsonl mtime should be recent."
+    },
+    "agentdr_otlp_listener": {
+      "query": "SELECT pid, fd, family, local_address, local_port FROM listening_ports WHERE local_port = 4318 AND local_address IN ('127.0.0.1', '::1');",
+      "interval": 600,
+      "platform": "darwin,linux,windows",
+      "description": "Verify the OTLP loopback ingest is listening on 4318."
+    },
+    "agentdr_mcp_configs_present": {
+      "query": "SELECT path, mtime FROM file WHERE path LIKE '/Users/%/.cursor/mcp.json' OR path LIKE '/home/%/.cursor/mcp.json';",
+      "interval": 86400,
+      "platform": "darwin,linux",
+      "description": "Inventory of Cursor MCP configs on the endpoint (used to baseline AgentDR's mcp_server_inventory events)."
+    }
+  }
+}

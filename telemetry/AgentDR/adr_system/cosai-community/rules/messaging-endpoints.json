@@ -1,0 +1,24 @@
+{
+  "$schema": "https://cosai.dev/schemas/messaging-endpoints-v1.json",
+  "version": "1.1.0",
+  "description": "CoSAI Community Messaging Platform Endpoint Signatures — hostname patterns used to detect AI agents communicating via messaging platforms.",
+  "endpoints": [
+    { "pattern": "api.whatsapp.com",     "platform": "WhatsApp" },
+    { "pattern": "web.whatsapp.com",     "platform": "WhatsApp" },
+    { "pattern": "api.telegram.org",     "platform": "Telegram" },
+    { "pattern": "discord.com",          "platform": "Discord" },
+    { "pattern": "gateway.discord.gg",   "platform": "Discord" },
+    { "pattern": "slack.com",            "platform": "Slack" },
+    { "pattern": "api.slack.com",        "platform": "Slack" },
+    { "pattern": "chat.googleapis.com",  "platform": "Google Chat" },
+    { "pattern": "graph.microsoft.com",  "platform": "Microsoft Teams" },
+    { "pattern": "matrix.org",           "platform": "Matrix" },
+    { "pattern": "signal.org",           "platform": "Signal" },
+    { "pattern": "signal-cli",           "platform": "Signal" },
+    { "pattern": "api.sendgrid.com",     "platform": "Email (SendGrid)" },
+    { "pattern": "api.mailgun.net",      "platform": "Email (Mailgun)" },
+    { "pattern": "api.resend.com",       "platform": "Email (Resend)" },
+    { "pattern": "api.postmarkapp.com",  "platform": "Email (Postmark)" },
+    { "pattern": "gmail.googleapis.com", "platform": "Email (Gmail API)" }
+  ]
+}

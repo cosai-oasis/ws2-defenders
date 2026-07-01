@@ -1,0 +1,52 @@
+# Kandji blueprint for AgentDR (macOS).
+# Import via Kandji's "Custom Apps" + "Library Items" flows. Pair with the
+# signed .pkg shipped from CI.
+#
+# This YAML is a documentation/source-of-truth file; Kandji's UI consumes the
+# concepts below via its REST API or its blueprint export/import.
+
+name: AgentDR — AI Agent Detection & Response
+description: |
+  Deploys the AgentDR endpoint agent across a Mac fleet: signed .pkg
+  install, managed config delivery, privacy preferences (full-disk-access
+  for the agent binary), and a Kandji Audit & Enforce script that keeps the
+  LaunchDaemon healthy.
+
+platform: macOS
+min_os_version: "11.0"
+
+library_items:
+  - type: custom_app
+    name: AgentDR Installer
+    install_type: package
+    package_url: "https://github.com/girdav01/agentdr/releases/latest/download/agentdr-latest.pkg"
+    audit_script: |
+      #!/bin/bash
+      # exit 0 if installed and healthy, exit 1 otherwise (forces re-install).
+      if [ ! -x /usr/local/bin/adr-agent ]; then exit 1; fi
+      if ! launchctl print system/com.cosai.agentdr >/dev/null 2>&1; then exit 1; fi
+      exit 0
+    enforcement: continuously
+
+  - type: custom_profile
+    name: AgentDR Managed Settings
+    mobileconfig_url: "https://github.com/girdav01/agentdr/blob/main/mdm/jamf/agentdr.mobileconfig"
+    # Same .mobileconfig works for Jamf and Kandji.
+
+  - type: script
+    name: AgentDR — Health Check
+    execution_frequency: every_15_minutes
+    script: |
+      #!/bin/bash
+      set -e
+      LABEL="com.cosai.agentdr"
+      if ! launchctl print "system/${LABEL}" >/dev/null 2>&1; then
+        launchctl bootstrap system /Library/LaunchDaemons/${LABEL}.plist || true
+      fi
+      # Verify the rule pack hasn't been tampered with.
+      /usr/local/bin/adr-agent verify >/dev/null 2>&1 || \
+        /usr/local/bin/adr-agent update >/dev/null 2>&1 || true
+
+assignments:
+  groups:
+    - name: All Macs

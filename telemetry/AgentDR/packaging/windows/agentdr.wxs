@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AgentDR Windows MSI. Builds the per-machine package and registers a Windows
+  Service that runs `adr-agent.exe start` as LocalSystem. Build with:
+    candle -arch x64 packaging\windows\agentdr.wxs
+    light  -ext WixUtilExtension agentdr.wixobj -o dist\agentdr-VERSION.msi
+  (CI runs build-msi.ps1 which fills the variables.)
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="*"
+           Name="AgentDR"
+           Language="1033"
+           Version="$(var.Version)"
+           Manufacturer="CoSAI"
+           UpgradeCode="B7B9F4F4-2B15-4E5F-9A57-2C9A0E2C9F11">
+
+    <Package InstallerVersion="500"
+             Compressed="yes"
+             InstallScope="perMachine"
+             Description="AgentDR — AI Agent Detection &amp; Response"
+             Manufacturer="CoSAI"/>
+
+    <MajorUpgrade Schedule="afterInstallInitialize"
+                  DowngradeErrorMessage="A newer version of AgentDR is already installed."/>
+
+    <MediaTemplate EmbedCab="yes"/>
+
+    <Feature Id="ProductFeature" Title="AgentDR" Level="1">
+      <ComponentGroupRef Id="ProductComponents"/>
+      <ComponentRef Id="ServiceComponent"/>
+    </Feature>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="AgentDR">
+          <Component Id="ServiceComponent" Guid="B7B9F4F4-2B15-4E5F-9A57-2C9A0E2C9F22">
+            <File Id="AdrAgentExe"
+                  Source="$(var.BinaryPath)"
+                  KeyPath="yes"
+                  Name="adr-agent.exe"/>
+
+            <ServiceInstall Id="AdrAgentSvc"
+                            Type="ownProcess"
+                            Vital="yes"
+                            Name="AgentDR"
+                            DisplayName="AgentDR — AI Agent Detection &amp; Response"
+                            Description="CoSAI AI agent endpoint monitor (telemetry, OTLP, MCP)"
+                            Start="auto"
+                            Account="LocalSystem"
+                            ErrorControl="normal"
+                            Interactive="no"
+                            Arguments='start --root "[CommonAppDataFolder]AgentDR" --config "[CommonAppDataFolder]AgentDR\config.toml" --quiet'>
+              <util:ServiceConfig FirstFailureActionType="restart"
+                                  SecondFailureActionType="restart"
+                                  ThirdFailureActionType="none"
+                                  RestartServiceDelayInSeconds="30"/>
+            </ServiceInstall>
+            <ServiceControl Id="AdrAgentSvcCtrl"
+                            Name="AgentDR"
+                            Start="install"
+                            Stop="both"
+                            Remove="uninstall"
+                            Wait="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="AgentDRData" Name="AgentDR">
+          <Component Id="ConfigComponent" Guid="B7B9F4F4-2B15-4E5F-9A57-2C9A0E2C9F33"
+                     NeverOverwrite="yes" Permanent="no">
+            <File Id="ConfigToml"
+                  Source="$(var.ConfigPath)"
+                  Name="config.toml"
+                  KeyPath="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <ComponentGroup Id="ProductComponents">
+      <ComponentRef Id="ConfigComponent"/>
+    </ComponentGroup>
+  </Product>
+</Wix>

@@ -1,0 +1,100 @@
+"""AITF OCSF Module.
+
+Provides OCSF schema definitions for AI events (class-reuse model),
+event class models, span-to-OCSF mapping, and compliance mapping.
+
+Based on the OCSF schema extensions from the AITelemetry project.
+"""
+
+from aitf.ocsf.schema import (
+    AIBaseEvent,
+    AICostInfo,
+    AILatencyMetrics,
+    AIModelInfo,
+    AITokenUsage,
+    AgentProtocolID,
+    AgentTypeID,
+    OCSFAgentMessage,
+    OCSFCategoryUID,
+    OCSFClassUID,
+    OCSFActor,
+    OCSFAIAgent,
+    normalize_agent_protocol_id,
+    OCSFDelegation,
+    OCSFDelegationLineage,
+    OCSFDelegationNode,
+    OCSFDevice,
+    OCSFMetadata,
+    normalize_agent_type_id,
+)
+from aitf.ocsf.crosswalk import (
+    OCSF_AGENT_ACTIVITY_CROSSWALK,
+    OCSF_CLASS_CROSSWALK,
+    OCSF_DELEGATION_ACTIVITY_CROSSWALK,
+    build_agent_message,
+    build_ai_agent,
+    build_delegation,
+    build_delegation_lineage,
+    canonical_comm_status,
+)
+from aitf.ocsf.event_classes import (
+    AIAgentActivityEvent,
+    AIAgentCommunicationEvent,
+    AIAssetInventoryEvent,
+    AIDataRetrievalEvent,
+    AIGovernanceEvent,
+    AIIdentityEvent,
+    AIModelInferenceEvent,
+    AIModelOpsEvent,
+    AISecurityFindingEvent,
+    AISupplyChainEvent,
+    AIToolExecutionEvent,
+)
+from aitf.ocsf.mapper import OCSFMapper
+from aitf.ocsf.compliance_mapper import ComplianceMapper
+from aitf.ocsf.vendor_mapper import VendorMapper, VendorMapping
+
+__all__ = [
+    "OCSFMetadata",
+    "OCSFActor",
+    "OCSFDevice",
+    "OCSFAIAgent",
+    "OCSFDelegation",
+    "OCSFDelegationLineage",
+    "OCSFDelegationNode",
+    "AgentTypeID",
+    "AgentProtocolID",
+    "OCSFAgentMessage",
+    "OCSFCategoryUID",
+    "OCSFClassUID",
+    "normalize_agent_type_id",
+    "normalize_agent_protocol_id",
+    "build_ai_agent",
+    "build_delegation",
+    "build_delegation_lineage",
+    "build_agent_message",
+    "canonical_comm_status",
+    "OCSF_AGENT_ACTIVITY_CROSSWALK",
+    "OCSF_DELEGATION_ACTIVITY_CROSSWALK",
+    "OCSF_CLASS_CROSSWALK",
+    "AIModelInfo",
+    "AITokenUsage",
+    "AILatencyMetrics",
+    "AICostInfo",
+    "AIBaseEvent",
+    "AIModelInferenceEvent",
+    "AIAgentActivityEvent",
+    "AIAgentCommunicationEvent",
+    "AIToolExecutionEvent",
+    "AIDataRetrievalEvent",
+    "AISecurityFindingEvent",
+    "AISupplyChainEvent",
+    "AIGovernanceEvent",
+    "AIIdentityEvent",
+    "AIModelOpsEvent",
+    "AIAssetInventoryEvent",
+    "OCSFMapper",
+    "ComplianceMapper",
+    "VendorMapper",
+    "VendorMapping",
+]

@@ -1,0 +1,26 @@
+# Rust build artifacts
+adr_system/rust_agent/target/
+**/*.rs.bk
+
+# Packaging output
+dist/
+
+# Node / Next.js
+node_modules/
+.next/
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS / editor cruft
+.DS_Store
+*.swp
+*.tmp
+
+# AgentDR runtime
+adr_system/agent/logs/
+adr_system/agent/runtime/

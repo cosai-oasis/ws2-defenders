@@ -1,0 +1,123 @@
+# AgentDR / CoSAI policy pack.
+#
+# Loaded at agent start (see src/policy/). Each policy emits a Compliance
+# Finding (OCSF 2003, ai_operation=compliance_violation) event when its
+# `when` clause matches. Action determines downstream behaviour:
+#   log    — record only (no severity escalation)
+#   alert  — emit a Compliance Finding event
+#   block  — same as alert, plus the inline proxy refuses the connection
+#
+# The matcher supports dotted field paths over the EventRecord JSON
+# (e.g. `details.path`, `actor.user`). Following AITF's OCSF Class-Reuse
+# Model, match the AI semantic on the `ai_operation` profile string rather
+# than the (collapsed) reused `class_uid`. Operators may copy this file to
+# /etc/agentdr/policies.yaml to override the default pack.
+
+policies:
+  # ── Hard blocks ────────────────────────────────────────────────────────
+  - id:       AGENTDR-POL-001
+    name:     "Block agent reads of AWS credentials"
+    severity: critical
+    action:   block
+    reason:   "Coding agents must not read ~/.aws/credentials"
+    compliance: ["OWASP-LLM-Top10:LLM06", "NIST-AI-RMF:GOVERN-1.5"]
+    when:
+      all:
+        - field: event_type
+          eq: file_read
+        - field: details.path
+          regex: "\\.aws/credentials|\\.aws/config"
+
+  - id:       AGENTDR-POL-002
+    name:     "Block agent reads of SSH private keys"
+    severity: critical
+    action:   block
+    reason:   "Coding agents must not read SSH private keys"
+    compliance: ["OWASP-LLM-Top10:LLM06"]
+    when:
+      all:
+        - field: event_type
+          eq: file_read
+        - field: details.path
+          regex: "id_rsa$|id_ed25519$|id_ecdsa$"
+
+  # ── Provider allow-listing ─────────────────────────────────────────────
+  - id:       AGENTDR-POL-003
+    name:     "Disallow inference to non-allow-listed providers"
+    severity: high
+    action:   block
+    reason:   "Only Anthropic and OpenAI are approved by SecOps"
+    when:
+      all:
+        - field: ai_operation
+          eq: inference
+        - field: provider
+          exists: {}
+        - not:
+            field: provider
+            in: ["anthropic", "openai"]
+
+  # ── MCP hardening ──────────────────────────────────────────────────────
+  - id:       AGENTDR-POL-010
+    name:     "Alert on MCP tool calls that read sensitive paths"
+    severity: high
+    action:   alert
+    compliance: ["OWASP-LLM-Top10:LLM05"]
+    when:
+      all:
+        - field: ai_operation
+          eq: mcp_operation
+        - field: tool_name
+          eq: resources/read
+        - field: details.params.uri
+          regex: "file:///(etc|root|home/[^/]+/\\.ssh|home/[^/]+/\\.aws)"
+
+  - id:       AGENTDR-POL-011
+    name:     "Alert on undeclared MCP servers"
+    severity: medium
+    action:   alert
+    reason:   "MCP server was used at runtime but is not in the inventory"
+    when:
+      all:
+        - field: event_type
+          eq: mcp_rpc
+        - field: source
+          eq: mcp_intercept
+        - field: mcp_server
+          not_in: ["github", "filesystem", "linear"]
+
+  # ── Cost / token-spend guards ──────────────────────────────────────────
+  - id:       AGENTDR-POL-020
+    name:     "Alert on large token-spend bursts"
+    severity: high
+    action:   alert
+    compliance: ["OWASP-LLM-Top10:LLM04"]
+    when:
+      field: token_usage.total
+      gt: 100000
+
+  # ── Approval flow ──────────────────────────────────────────────────────
+  - id:       AGENTDR-POL-030
+    name:     "Alert on user-denied agent approval"
+    severity: medium
+    action:   alert
+    reason:   "Track denied approval requests so SOC can baseline coercive prompts"
+    when:
+      all:
+        - field: event_type
+          eq: gen_ai.approval
+        - field: details.decision
+          eq: deny
+
+  # ── Messaging exfil ────────────────────────────────────────────────────
+  - id:       AGENTDR-POL-040
+    name:     "Block agent egress to messaging platforms"
+    severity: high
+    action:   block
+    reason:   "Coding agents must not post to Slack/Discord/Teams"
+    when:
+      all:
+        - field: ai_operation
+          eq: permission_escalation
+        - field: event_type
+          contains: messaging

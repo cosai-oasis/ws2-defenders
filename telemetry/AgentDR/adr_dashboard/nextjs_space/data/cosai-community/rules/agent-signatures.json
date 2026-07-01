@@ -1,0 +1,60 @@
+{
+  "$schema": "https://cosai.dev/schemas/agent-signatures-v1.json",
+  "version": "1.2.0",
+  "description": "CoSAI Community Agent Detection Signatures — process-name patterns and metadata used by ADR endpoint agents to identify AI agents running on monitored hosts.",
+  "categories": {
+    "coding":     { "label": "Coding Assistants",     "icon": "💻", "color": "text-blue-400",    "description": "AI coding assistants and IDE-integrated agents" },
+    "general":    { "label": "General-Purpose Agents", "icon": "🤖", "color": "text-purple-400",  "description": "Autonomous general-purpose AI agents" },
+    "workflow":   { "label": "Workflow / Orchestration","icon": "⚙️", "color": "text-cyan-400",    "description": "Multi-agent workflow orchestrators" },
+    "enterprise": { "label": "Enterprise / Productivity","icon": "🏢", "color": "text-emerald-400", "description": "Enterprise Copilot and IT agents (Microsoft, ServiceNow, SAP)" },
+    "browser":    { "label": "Browser Automation",     "icon": "🌐", "color": "text-amber-400",   "description": "Agentic browser automation and computer-use agents" }
+  },
+  "signatures": [
+    { "id": "cursor",           "name": "Cursor",              "framework": "Cursor IDE",         "category": "coding",     "risk": "low",    "process_patterns": ["cursor"] },
+    { "id": "claude-code",      "name": "Claude Code",          "framework": "Anthropic CLI",      "category": "coding",     "risk": "low",    "process_patterns": ["claude", "claude_desktop"] },
+    { "id": "codex-cli",        "name": "Codex CLI",            "framework": "OpenAI CLI",         "category": "coding",     "risk": "low",    "process_patterns": ["codex"] },
+    { "id": "github-copilot",   "name": "GitHub Copilot",       "framework": "VSCode Extension",   "category": "coding",     "risk": "low",    "process_patterns": ["copilot"] },
+    { "id": "aider",            "name": "Aider",                "framework": "Aider",              "category": "coding",     "risk": "low",    "process_patterns": ["aider"] },
+    { "id": "devin",            "name": "Devin",                "framework": "Cognition",          "category": "coding",     "risk": "low",    "process_patterns": ["devin"] },
+    { "id": "windsurf",         "name": "Windsurf",             "framework": "Codeium",            "category": "coding",     "risk": "low",    "process_patterns": ["windsurf"] },
+    { "id": "cline",            "name": "Cline",                "framework": "VSCode Extension",   "category": "coding",     "risk": "low",    "process_patterns": ["cline"] },
+    { "id": "augment-code",     "name": "Augment Code",         "framework": "VSCode Extension",   "category": "coding",     "risk": "low",    "process_patterns": ["augment"] },
+    { "id": "continue-dev",     "name": "Continue.dev",         "framework": "VSCode Extension",   "category": "coding",     "risk": "low",    "process_patterns": ["continue"] },
+    { "id": "opencode",         "name": "OpenCode",             "framework": "OpenCode CLI",       "category": "coding",     "risk": "low",    "process_patterns": ["opencode"] },
+
+    { "id": "openclaw",         "name": "OpenClaw",             "framework": "OpenClaw Runtime",   "category": "general",    "risk": "high",   "process_patterns": ["openclaw", "moltbot", "clawdbot"] },
+    { "id": "nemoclaw",         "name": "NemoClaw",             "framework": "NVIDIA NemoClaw",    "category": "general",    "risk": "medium", "process_patterns": ["nemoclaw"] },
+    { "id": "autogpt",          "name": "AutoGPT",              "framework": "AutoGPT",            "category": "general",    "risk": "high",   "process_patterns": ["autogpt"] },
+    { "id": "babyagi",          "name": "BabyAGI",              "framework": "BabyAGI",            "category": "general",    "risk": "medium", "process_patterns": ["babyagi"] },
+    { "id": "superagi",         "name": "SuperAGI",             "framework": "SuperAGI",           "category": "general",    "risk": "medium", "process_patterns": ["superagi"] },
+    { "id": "chatgpt",          "name": "ChatGPT",              "framework": "OpenAI",             "category": "general",    "risk": "medium", "process_patterns": ["chatgpt", "com.openai.chat"] },
+    { "id": "hermes-agent",     "name": "Hermes Agent",         "framework": "Nous Research",      "category": "general",    "risk": "high",   "process_patterns": ["hermes-agent", "hermes_agent", "nous-hermes", "hermesd"] },
+
+    { "id": "langchain",        "name": "LangChain Agent",      "framework": "LangChain",          "category": "workflow",   "risk": "low",    "process_patterns": ["langchain"] },
+    { "id": "crewai",           "name": "CrewAI",               "framework": "CrewAI",             "category": "workflow",   "risk": "medium", "process_patterns": ["crewai"] },
+    { "id": "autogen",          "name": "AutoGen",              "framework": "Microsoft AutoGen",  "category": "workflow",   "risk": "medium", "process_patterns": ["autogen"] },
+    { "id": "llamaindex",       "name": "LlamaIndex Agent",     "framework": "LlamaIndex",         "category": "workflow",   "risk": "low",    "process_patterns": ["llamaindex"] },
+    { "id": "smolagents",       "name": "SmolAgents",           "framework": "HuggingFace",        "category": "workflow",   "risk": "medium", "process_patterns": ["smolagents"] },
+    { "id": "nvidia-openshell", "name": "NVIDIA OpenShell",      "framework": "NVIDIA Agent Toolkit", "category": "workflow", "risk": "medium", "process_patterns": ["openshell", "openshell-gateway", "nv-openshell"] },
+
+    { "id": "m365-copilot",     "name": "M365 Copilot",         "framework": "Microsoft 365",      "category": "enterprise", "risk": "medium", "process_patterns": ["microsoft.copilot"] },
+    { "id": "edge-copilot",     "name": "Edge Copilot",         "framework": "Microsoft Edge",     "category": "enterprise", "risk": "medium", "process_patterns": ["msedge-copilot"] },
+    { "id": "windows-copilot",  "name": "Windows Copilot",      "framework": "Windows",            "category": "enterprise", "risk": "medium", "process_patterns": ["microsoft ai", "copilot.exe"] },
+    { "id": "copilot-studio",   "name": "Copilot Studio",       "framework": "Microsoft Power Platform", "category": "enterprise", "risk": "high",   "process_patterns": ["copilot-studio"] },
+    { "id": "bing-copilot",     "name": "Bing Copilot",         "framework": "Microsoft Bing",     "category": "enterprise", "risk": "low",    "process_patterns": ["bing chat"] },
+    { "id": "servicenow-cli",   "name": "ServiceNow CLI",       "framework": "ServiceNow CLI",     "category": "enterprise", "risk": "medium", "process_patterns": ["snc"] },
+    { "id": "mid-server",       "name": "MID Server",           "framework": "ServiceNow MID",     "category": "enterprise", "risk": "medium", "process_patterns": ["mid.jar", "mid-server"] },
+    { "id": "now-assist",       "name": "Now Assist",           "framework": "ServiceNow AI",      "category": "enterprise", "risk": "medium", "process_patterns": ["now assist"] },
+    { "id": "sn-virtual-agent", "name": "ServiceNow Virtual Agent", "framework": "ServiceNow",    "category": "enterprise", "risk": "medium", "process_patterns": ["servicenow"] },
+    { "id": "sap-gui",          "name": "SAP GUI",              "framework": "SAP GUI",            "category": "enterprise", "risk": "medium", "process_patterns": ["sapgui", "saplogon", "saplgpad"] },
+    { "id": "sap-btp-cli",      "name": "SAP BTP CLI",          "framework": "SAP BTP",            "category": "enterprise", "risk": "medium", "process_patterns": ["btp"] },
+    { "id": "sap-joule",        "name": "SAP Joule",            "framework": "SAP AI",             "category": "enterprise", "risk": "medium", "process_patterns": ["joule"] },
+    { "id": "sap-integration",  "name": "SAP Integration Agent","framework": "SAP Integration Suite", "category": "enterprise", "risk": "medium", "process_patterns": ["sap-integration"] },
+
+    { "id": "claude-computer-use", "name": "Claude Computer Use", "framework": "Anthropic",      "category": "browser",    "risk": "high",   "process_patterns": ["computer-use", "anthropic-browser"] },
+    { "id": "openai-operator",  "name": "OpenAI Operator",      "framework": "OpenAI",             "category": "browser",    "risk": "high",   "process_patterns": ["operator", "openai-operator"] },
+    { "id": "browser-use",      "name": "Browser Use",          "framework": "Browser Use",        "category": "browser",    "risk": "high",   "process_patterns": ["browser-use", "browser_use"] },
+    { "id": "browserbase",      "name": "Browserbase",          "framework": "Browserbase",        "category": "browser",    "risk": "high",   "process_patterns": ["browserbase"] },
+    { "id": "stagehand",        "name": "Stagehand",            "framework": "Browserbase",        "category": "browser",    "risk": "high",   "process_patterns": ["stagehand"] }
+  ]
+}

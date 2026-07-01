@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+if [ -d /run/systemd/system ]; then
+  systemctl stop agentdr.service    || true
+  systemctl disable agentdr.service || true
+fi
+#DEBHELPER#
+exit 0

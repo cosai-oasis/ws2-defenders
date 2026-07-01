@@ -1,0 +1,46 @@
+# AgentDR discovery policy
+#
+# Applied when `[discovery].mode = "policy"`. The decision engine walks
+# this file top-down: per-agent rules win over category defaults; "skip"
+# wins over "monitor" when both match (so an explicit deny is always
+# safe). Possible decisions per agent:
+#
+#   monitor : install AgentDR's runtime hook immediately
+#   prompt  : ask the local user (interactive TTY) — falls back to "skip"
+#             on headless / managed endpoints, with a warning in the log
+#   skip    : never auto-install (operator can still `hooks install` by hand)
+#
+# A separate field `self_heal` (per agent) overrides the watchdog's
+# self_heal setting for that agent: useful when one runtime is known to
+# routinely strip its own config and you want AgentDR to fight back.
+
+defaults:
+  coding:     monitor
+  general:    monitor
+  workflow:   monitor
+  browser:    prompt
+  enterprise: skip       # M365 Copilot et al. require explicit opt-in
+
+agents:
+  - id: claude-code
+    decision: monitor
+  - id: cursor
+    decision: monitor
+  - id: codex
+    decision: monitor
+  - id: aider
+    decision: monitor
+  - id: opencode
+    decision: monitor
+  - id: openclaw
+    decision: monitor
+    self_heal: true       # known to behave evasively; keep the hook hot
+  - id: autogpt
+    decision: monitor
+    self_heal: true
+  - id: browser-use
+    decision: prompt      # capable of full browser automation; ask first
+  - id: claude-computer-use
+    decision: prompt
+  - id: openai-operator
+    decision: prompt

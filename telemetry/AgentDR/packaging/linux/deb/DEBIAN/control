@@ -1,0 +1,14 @@
+Package: agentdr
+Version: 0.2.0
+Section: admin
+Priority: optional
+Architecture: amd64
+Maintainer: CoSAI Community <agentdr@cosai.dev>
+Depends: libc6 (>= 2.31)
+Homepage: https://github.com/girdav01/agentdr
+Description: AgentDR — AI Agent Detection & Response
+ Endpoint agent that monitors local AI runtimes (Claude Code, Cursor, Codex,
+ Aider, OpenClaw, etc.), accepts OpenTelemetry signals on the loopback OTLP
+ endpoint, inventories and intercepts Model Context Protocol (MCP) servers,
+ and ships normalised CoSAI AI Telemetry Framework events (OCSF Category 7)
+ to any SIEM.

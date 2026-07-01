@@ -1,0 +1,209 @@
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  plan          String   @default("individual")  // individual, team, enterprise
+  settings      String?  @db.Text                // JSON: org-level settings
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  users         User[]
+  policies      Policy[]
+  storageConfig StorageConfig?
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String        @unique
+  password      String
+  role          String        @default("analyst")  // owner, admin, analyst, viewer
+  orgId         String?
+  org           Organization? @relation(fields: [orgId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([orgId])
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  timestamp     DateTime
+  eventType     String
+  details       String   @db.Text
+  riskLevel     String
+  agentDetected String?
+  source        String?
+  tags          String?  @db.Text
+  orgId         String?       // Scope to organization (null = personal)
+  // AITF OCSF Class-Reuse fields
+  classUid      Int?          // Reused OCSF class_uid (e.g., 6003, 2004, 9001)
+  aiOperation   String?       // AITF ai_operation profile (e.g., inference, tool_execution)
+  typeUid       Int?          // OCSF type_uid (classUid * 100 + activityId)
+  activityId    Int?          // OCSF activity_id
+  severityId    Int?          // OCSF severity_id (0-6)
+  statusId      Int?          // OCSF status_id
+  message       String?       @db.Text
+  provider      String?       // AI provider name (openai, anthropic, etc.)
+  model         String?       // AI model used
+  agentName     String?       // Agent name
+  agentFramework String?      // Agent framework (langchain, crewai, etc.)
+  toolName      String?       // Tool/skill name
+  mcpServer     String?       // MCP server name
+  actor         String?       @db.Text  // JSON: actor info
+  compliance    String?       @db.Text  // JSON: compliance framework mappings
+  securityFinding String?     @db.Text  // JSON: security finding details
+  tokenUsage    String?       @db.Text  // JSON: token usage stats
+  costInfo      String?       @db.Text  // JSON: cost information
+  traceId       String?       // OpenTelemetry trace ID
+  spanId        String?       // OpenTelemetry span ID
+  // Tier 4 — denormalised correlation fields, lifted from `actor` JSON
+  // by /api/sync so we can query without LIKE'ing the JSON blob.
+  hostName      String?       // actor.host
+  userName      String?       // actor.user
+  createdAt     DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([eventType])
+  @@index([riskLevel])
+  @@index([agentDetected])
+  @@index([classUid])
+  @@index([aiOperation])
+  @@index([provider])
+  @@index([orgId])
+  @@index([traceId])
+  @@index([hostName])
+  @@index([userName])
+}
+
+model Alert {
+  id            String   @id @default(cuid())
+  timestamp     DateTime
+  alertType     String
+  severity      String
+  description   String   @db.Text
+  details       String?  @db.Text
+  resolved      Boolean  @default(false)
+  eventId       String?
+  orgId         String?       // Scope to organization (null = personal)
+  // AITF detection rule fields
+  ruleId        String?       // AITF detection rule ID (e.g., AITF-DET-003)
+  owaspCategory String?       // OWASP mapping (e.g., LLM01)
+  classUid      Int?          // Related OCSF class_uid
+  complianceRef String?       @db.Text  // JSON: compliance references
+  createdAt     DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([severity])
+  @@index([ruleId])
+  @@index([orgId])
+}
+
+model Policy {
+  id            String        @id @default(cuid())
+  name          String
+  ruleId        String        // AITF-DET-xxx
+  enabled       Boolean       @default(true)
+  severity      String        @default("medium")  // low, medium, high, critical
+  threshold     String?       @db.Text             // JSON: rule thresholds & parameters
+  action        String        @default("alert")    // alert, block, log
+  orgId         String?
+  org           Organization? @relation(fields: [orgId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([ruleId, orgId])
+  @@index([orgId])
+}
+
+// ─── Tier 4 — multi-host correlation + UEBA baselines ─────────────────────
+
+/// Per-endpoint registry. Populated lazily from the actor.host attribute of
+/// incoming events (see /api/sync). Lets analysts pivot from a single
+/// session/trace to "everything that happened on host X" and supports
+/// multi-host kill-chain reconstruction.
+model Host {
+  id            String   @id @default(cuid())
+  hostname      String   @unique
+  firstSeen     DateTime @default(now())
+  lastSeen      DateTime @updatedAt
+  os            String?
+  riskScore     Float    @default(0)
+  metadata      String?  @db.Text          // JSON
+  orgId         String?
+  baselines     Baseline[]
+
+  @@index([orgId])
+  @@index([lastSeen])
+}
+
+/// Rolling per-(host, user, agent) baseline. The baselining job
+/// (lib/baselines.ts) recomputes these on demand or on a cron tick.
+/// Mean / stdev / p95 are stored so the UEBA scorer can return a
+/// stable z-score for new events without re-reading the full history.
+model Baseline {
+  id            String   @id @default(cuid())
+  hostId        String?
+  host          Host?    @relation(fields: [hostId], references: [id])
+  userName      String?              // actor.user
+  agentName     String?              // agent_name
+  metric        String               // tokens_per_hour | files_touched_per_hour | mcp_tool_diversity | offhours_share | api_call_rate
+  windowDays    Int      @default(14)
+  sampleCount   Int      @default(0)
+  mean          Float    @default(0)
+  stdev         Float    @default(0)
+  p50           Float    @default(0)
+  p95           Float    @default(0)
+  p99           Float    @default(0)
+  lastValue     Float    @default(0)
+  computedAt    DateTime @default(now())
+  orgId         String?
+
+  @@unique([hostId, userName, agentName, metric])
+  @@index([orgId])
+  @@index([metric])
+}
+
+/// Per-event UEBA outlier score (z-score against the matching Baseline).
+/// Populated by /api/ueba/score; surfaced in the Sessions and UEBA pages.
+model UebaScore {
+  id            String   @id @default(cuid())
+  eventId       String?
+  traceId       String?
+  userName      String?
+  agentName     String?
+  metric        String
+  observed      Float
+  baselineMean  Float
+  baselineStdev Float
+  zScore        Float
+  computedAt    DateTime @default(now())
+  orgId         String?
+
+  @@index([traceId])
+  @@index([zScore])
+  @@index([orgId])
+}
+
+model StorageConfig {
+  id              String        @id @default(cuid())
+  retentionDays   Int           @default(90)
+  maxStorageMb    Int           @default(5000)
+  archiveEnabled  Boolean       @default(false)
+  archiveAfterDays Int          @default(30)
+  exportFormat    String        @default("jsonl")    // jsonl, csv, parquet
+  autoCleanup     Boolean       @default(true)
+  orgId           String?       @unique
+  org             Organization? @relation(fields: [orgId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}

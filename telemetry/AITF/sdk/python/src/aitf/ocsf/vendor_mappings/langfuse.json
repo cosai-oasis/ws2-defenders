@@ -1,0 +1,175 @@
+{
+  "$schema": "https://aitf.dev/schemas/vendor-mapping-v1.json",
+  "vendor": "langfuse",
+  "version": "3.x",
+  "description": "Maps Langfuse observability telemetry (OpenTelemetry export) to AITF semantic conventions. Langfuse encodes the observation type in the `langfuse.observation.type` attribute value (generation | span | event), and emits scores via `langfuse.score.*`. Standard gen_ai.* attributes pass through unchanged.",
+  "homepage": "https://langfuse.com/docs/opentelemetry/get-started",
+
+  "type_attribute": {
+    "key": "langfuse.observation.type",
+    "values": {
+      "generation": "inference",
+      "span": "agent",
+      "event": "agent"
+    }
+  },
+
+  "span_name_patterns": {
+    "inference": [
+      "[Gg]eneration$",
+      "-generation$"
+    ],
+    "retrieval": [
+      "[Rr]etriev",
+      "[Vv]ector[Ss]earch"
+    ],
+    "tool": [
+      "^[Tt]ool:",
+      "[Tt]ool[Cc]all"
+    ],
+    "evaluation": [
+      "^[Ss]core:"
+    ]
+  },
+
+  "attribute_mappings": {
+    "inference": {
+      "vendor_to_aitf": {
+        "langfuse.observation.model.name": "gen_ai.request.model",
+        "langfuse.observation.model.parameters": "gen_ai.request.parameters",
+        "langfuse.observation.input": "gen_ai.input.messages",
+        "langfuse.observation.output": "gen_ai.output.messages",
+        "langfuse.observation.prompt.name": "gen_ai.prompt.name",
+        "langfuse.observation.prompt.version": "gen_ai.prompt.version",
+        "langfuse.trace.session.id": "gen_ai.conversation.id",
+        "langfuse.session.id": "gen_ai.conversation.id",
+        "langfuse.trace.user.id": "user.id",
+        "langfuse.user.id": "user.id",
+        "langfuse.trace.tags": "tags",
+
+        "gen_ai.request.model": "gen_ai.request.model",
+        "gen_ai.provider.name": "gen_ai.provider.name",
+        "gen_ai.input.messages": "gen_ai.input.messages",
+        "gen_ai.output.messages": "gen_ai.output.messages",
+        "gen_ai.usage.input_tokens": "gen_ai.usage.input_tokens",
+        "gen_ai.usage.output_tokens": "gen_ai.usage.output_tokens",
+        "gen_ai.usage.total_tokens": "gen_ai.usage.total_tokens",
+        "gen_ai.response.finish_reasons": "gen_ai.response.finish_reasons"
+      },
+      "ocsf_class_uid": 6003,
+      "ocsf_activity_id_map": {
+        "chat": 1,
+        "text_completion": 2,
+        "embeddings": 3,
+        "default": 1
+      },
+      "defaults": {
+        "gen_ai.operation.name": "chat"
+      }
+    },
+
+    "agent": {
+      "vendor_to_aitf": {
+        "langfuse.observation.name": "gen_ai.agent.name",
+        "langfuse.trace.name": "gen_ai.agent.name",
+        "langfuse.observation.input": "agent.step.action",
+        "langfuse.observation.output": "agent.step.observation",
+        "langfuse.trace.session.id": "gen_ai.conversation.id",
+        "langfuse.session.id": "gen_ai.conversation.id",
+        "langfuse.trace.user.id": "user.id",
+        "langfuse.user.id": "user.id",
+        "langfuse.trace.tags": "tags"
+      },
+      "ocsf_class_uid": 9001,
+      "ocsf_activity_id_map": {
+        "session_start": 1,
+        "session_end": 2,
+        "step_execute": 3,
+        "default": 3
+      },
+      "defaults": {
+        "agent.type": "autonomous"
+      }
+    },
+
+    "tool": {
+      "vendor_to_aitf": {
+        "langfuse.observation.name": "gen_ai.tool.name",
+        "langfuse.observation.input": "gen_ai.tool.call.arguments",
+        "langfuse.observation.output": "gen_ai.tool.call.result"
+      },
+      "ocsf_class_uid": 6003,
+      "ocsf_activity_id_map": {
+        "function_call": 1,
+        "mcp_tool": 2,
+        "skill": 3,
+        "default": 1
+      },
+      "defaults": {
+        "tool_type": "function"
+      }
+    },
+
+    "retrieval": {
+      "vendor_to_aitf": {
+        "langfuse.observation.name": "rag.pipeline.name",
+        "langfuse.observation.input": "gen_ai.retrieval.query.text",
+        "langfuse.observation.output": "gen_ai.retrieval.documents"
+      },
+      "ocsf_class_uid": 6005,
+      "ocsf_activity_id_map": {
+        "vector_search": 1,
+        "document_retrieval": 2,
+        "default": 1
+      },
+      "defaults": {
+        "rag.pipeline.stage": "retrieve"
+      }
+    },
+
+    "evaluation": {
+      "vendor_to_aitf": {
+        "langfuse.score.name": "gen_ai.evaluation.name",
+        "langfuse.score.value": "gen_ai.evaluation.score.value",
+        "langfuse.score.string_value": "gen_ai.evaluation.score.label",
+        "langfuse.score.data_type": "gen_ai.evaluation.score.data_type",
+        "langfuse.score.source": "gen_ai.evaluation.source",
+        "langfuse.score.comment": "gen_ai.evaluation.comment",
+        "langfuse.trace.session.id": "gen_ai.conversation.id",
+        "langfuse.session.id": "gen_ai.conversation.id"
+      },
+      "defaults": {}
+    }
+  },
+
+  "provider_detection": {
+    "attribute_keys": ["gen_ai.provider.name"],
+    "model_prefix_to_provider": {
+      "gpt-": "openai",
+      "o1": "openai",
+      "o3": "openai",
+      "claude-": "anthropic",
+      "gemini-": "google",
+      "mistral-": "mistral",
+      "command-": "cohere",
+      "llama-": "meta"
+    }
+  },
+
+  "severity_mapping": {
+    "langfuse.observation.level": {
+      "DEBUG": 1,
+      "DEFAULT": 1,
+      "WARNING": 3,
+      "ERROR": 4
+    }
+  },
+
+  "metadata": {
+    "ocsf_product": {
+      "name": "Langfuse",
+      "vendor_name": "Langfuse",
+      "version": "3.x"
+    }
+  }
+}

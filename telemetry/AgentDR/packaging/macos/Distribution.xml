@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="2">
+  <title>AgentDR — AI Agent Detection &amp; Response</title>
+  <organization>ai.cosai.agentdr</organization>
+  <domains enable_localSystem="true"/>
+  <options customize="never" require-scripts="true" rootVolumeOnly="true"/>
+  <volume-check>
+    <allowed-os-versions>
+      <os-version min="11.0"/>
+    </allowed-os-versions>
+  </volume-check>
+  <choices-outline>
+    <line choice="default">
+      <line choice="ai.cosai.agentdr.pkg"/>
+    </line>
+  </choices-outline>
+  <choice id="default"/>
+  <choice id="ai.cosai.agentdr.pkg" visible="false">
+    <pkg-ref id="ai.cosai.agentdr.pkg"/>
+  </choice>
+  <pkg-ref id="ai.cosai.agentdr.pkg" version="0.2.0" auth="root">agentdr-component.pkg</pkg-ref>
+</installer-gui-script>

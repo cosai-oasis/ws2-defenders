@@ -1,0 +1,27 @@
+{
+  "$schema": "https://cosai.dev/schemas/detection-rules-v1.json",
+  "version": "2.0.0",
+  "description": "CoSAI Community Default Detection Rules — pre-built threat-detection policies for AI agent monitoring. Aligned with the AITF OCSF Class-Reuse Model: each finding reuses an existing OCSF class (Detection Finding 2004, Compliance Finding 2003, Vulnerability Finding 2002) and carries an `ai_operation` profile. Rules 001–014 are the canonical AITF built-ins; 015–020 are AgentDR endpoint-specific extensions.",
+  "rules": [
+    { "id": "AITF-DET-001", "name": "Unusual Token Usage",            "category": "Inference",      "severity": "medium",   "enabled": true, "ai_operation": "cost_anomaly",          "ocsf_class": 2004 },
+    { "id": "AITF-DET-002", "name": "Model Switching Attack",         "category": "Inference",      "severity": "high",     "enabled": true, "ai_operation": "prompt_injection",      "ocsf_class": 2004 },
+    { "id": "AITF-DET-003", "name": "Prompt Injection Attempt",       "category": "Inference",      "severity": "critical", "enabled": true, "ai_operation": "prompt_injection",      "ocsf_class": 2004 },
+    { "id": "AITF-DET-004", "name": "Excessive Cost Spike",           "category": "Inference",      "severity": "high",     "enabled": true, "ai_operation": "cost_anomaly",          "ocsf_class": 2004 },
+    { "id": "AITF-DET-005", "name": "Agent Loop Detection",           "category": "Agent",          "severity": "medium",   "enabled": true, "ai_operation": "guardrail",             "ocsf_class": 2004 },
+    { "id": "AITF-DET-006", "name": "Unauthorized Agent Delegation",  "category": "Agent",          "severity": "high",     "enabled": true, "ai_operation": "permission_escalation", "ocsf_class": 2004 },
+    { "id": "AITF-DET-007", "name": "Agent Session Hijack",           "category": "Agent",          "severity": "critical", "enabled": true, "ai_operation": "permission_escalation", "ocsf_class": 2004 },
+    { "id": "AITF-DET-008", "name": "Excessive Tool Calls",           "category": "Agent",          "severity": "medium",   "enabled": true, "ai_operation": "guardrail",             "ocsf_class": 2004 },
+    { "id": "AITF-DET-009", "name": "MCP Server Impersonation",       "category": "MCP/Tool",       "severity": "critical", "enabled": true, "ai_operation": "permission_escalation", "ocsf_class": 2004 },
+    { "id": "AITF-DET-010", "name": "Tool Permission Bypass",         "category": "MCP/Tool",       "severity": "high",     "enabled": true, "ai_operation": "permission_escalation", "ocsf_class": 2004 },
+    { "id": "AITF-DET-011", "name": "Data Exfiltration via Tools",    "category": "MCP/Tool",       "severity": "critical", "enabled": true, "ai_operation": "data_exfiltration",     "ocsf_class": 2004 },
+    { "id": "AITF-DET-012", "name": "PII Exfiltration Chain",         "category": "Security",       "severity": "critical", "enabled": true, "ai_operation": "data_exfiltration",     "ocsf_class": 2004 },
+    { "id": "AITF-DET-013", "name": "Jailbreak Escalation",           "category": "Security",       "severity": "high",     "enabled": true, "ai_operation": "guardrail",             "ocsf_class": 2004 },
+    { "id": "AITF-DET-014", "name": "Supply Chain Compromise",        "category": "Security",       "severity": "critical", "enabled": true, "ai_operation": "supply_chain",          "ocsf_class": 2002 },
+    { "id": "AITF-DET-015", "name": "Malicious Skill/Plugin Loaded",  "category": "Agent/Plugin",   "severity": "critical", "enabled": true, "ai_operation": "supply_chain",          "ocsf_class": 2002 },
+    { "id": "AITF-DET-016", "name": "Unauthorized Messaging Channel", "category": "Agent/Comms",    "severity": "high",     "enabled": true, "ai_operation": "data_exfiltration",     "ocsf_class": 2004 },
+    { "id": "AITF-DET-017", "name": "Shell Command Execution",        "category": "Agent/System",   "severity": "high",     "enabled": true, "ai_operation": "permission_escalation", "ocsf_class": 2004 },
+    { "id": "AITF-DET-018", "name": "Credential / Secret Access",     "category": "Security",       "severity": "critical", "enabled": true, "ai_operation": "data_exfiltration",     "ocsf_class": 2004 },
+    { "id": "AITF-DET-019", "name": "Cross-Platform Data Relay",      "category": "Security",       "severity": "critical", "enabled": true, "ai_operation": "data_exfiltration",     "ocsf_class": 2004 },
+    { "id": "AITF-DET-020", "name": "Unvetted Skill Installation",    "category": "Agent/Plugin",   "severity": "high",     "enabled": true, "ai_operation": "supply_chain",          "ocsf_class": 2002 }
+  ]
+}

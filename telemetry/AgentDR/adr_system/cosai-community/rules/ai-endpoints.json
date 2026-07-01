@@ -1,0 +1,26 @@
+{
+  "$schema": "https://cosai.dev/schemas/ai-endpoints-v1.json",
+  "version": "1.2.0",
+  "description": "CoSAI Community AI Provider Endpoint Signatures — hostname patterns used to classify outbound network connections to AI inference APIs.",
+  "endpoints": [
+    { "patterns": ["openai", "api.openai.com"],   "provider": "OpenAI",       "model": "gpt-4o" },
+    { "patterns": ["openrouter.ai", "openrouter"], "provider": "OpenRouter",  "model": "routed-model" },
+    { "patterns": ["nousresearch.com", "portal.nousresearch.com"], "provider": "Nous Research", "model": "hermes" },
+    { "patterns": ["anthropic", "api.anthropic.com"], "provider": "Anthropic",  "model": "claude-3.5-sonnet" },
+    { "patterns": ["googleapis", "generativelanguage"], "provider": "Google",  "model": "gemini-pro" },
+    { "patterns": ["azure"],                        "provider": "Azure OpenAI", "model": "gpt-4",          "requires_also": "openai" },
+    { "patterns": ["huggingface"],                   "provider": "HuggingFace",  "model": "unknown" },
+    { "patterns": ["deepseek"],                      "provider": "DeepSeek",     "model": "deepseek-v3" },
+    { "patterns": ["mistral"],                       "provider": "Mistral",      "model": "mistral-large-latest" },
+    { "patterns": ["localhost:11434", "ollama"],     "provider": "Ollama (local)", "model": "local-model" },
+    { "patterns": ["copilot.microsoft.com", "substrate.office.com"], "provider": "Microsoft Copilot", "model": "gpt-4-m365" },
+    { "patterns": ["bing.com/chat", "edgeservices.bing.com"], "provider": "Microsoft Copilot", "model": "bing-copilot" },
+    { "patterns": ["copilot.cloud.microsoft"],       "provider": "Microsoft Copilot Studio", "model": "copilot-studio" },
+    { "patterns": ["service-now.com", "servicenow.com"], "provider": "ServiceNow", "model": "now-assist" },
+    { "patterns": ["hana.ondemand.com", "ai.api.sap.com"], "provider": "SAP AI", "model": "joule" },
+    { "patterns": [".sap.com"],                      "provider": "SAP",         "model": "sap-btp" },
+    { "patterns": ["operator.chatgpt.com", "browser.openai.com"], "provider": "OpenAI Operator", "model": "operator" },
+    { "patterns": ["api.browserbase.com"],            "provider": "Browserbase",  "model": "browser-agent" },
+    { "patterns": ["api.browser-use.com"],            "provider": "Browser Use",  "model": "browser-use" }
+  ]
+}

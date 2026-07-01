@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cosai.agentdr</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/adr-agent</string>
+    <string>start</string>
+    <string>--root</string>
+    <string>/var/lib/agentdr</string>
+    <string>--config</string>
+    <string>/etc/agentdr/config.toml</string>
+    <string>--quiet</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/var/log/agentdr/stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/var/log/agentdr/stderr.log</string>
+
+  <key>UserName</key>
+  <string>_agentdr</string>
+  <key>GroupName</key>
+  <string>_agentdr</string>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>RUST_LOG</key>
+    <string>adr_agent=info</string>
+    <key>HOME</key>
+    <string>/var/lib/agentdr</string>
+  </dict>
+</dict>
+</plist>

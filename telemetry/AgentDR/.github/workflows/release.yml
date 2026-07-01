@@ -1,0 +1,281 @@
+name: release
+
+# Triggers on a semver-style tag, e.g. v0.2.0.
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (without leading v)"
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  AGENT_DIR: adr_system/rust_agent
+
+jobs:
+  build:
+    name: build ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            runner: ubuntu-latest
+            ext: ""
+          - target: aarch64-unknown-linux-gnu
+            runner: ubuntu-latest
+            ext: ""
+            cross: true
+          - target: x86_64-apple-darwin
+            runner: macos-13
+            ext: ""
+          - target: aarch64-apple-darwin
+            runner: macos-14
+            ext: ""
+          - target: x86_64-pc-windows-msvc
+            runner: windows-latest
+            ext: ".exe"
+          - target: aarch64-pc-windows-msvc
+            runner: windows-latest
+            ext: ".exe"
+            cross: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross (linux aarch64)
+        if: matrix.cross == true && runner.os == 'Linux'
+        run: cargo install cross --locked
+
+      - name: Build (cargo)
+        if: matrix.cross != true
+        working-directory: ${{ env.AGENT_DIR }}
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Build (cross)
+        if: matrix.cross == true && runner.os == 'Linux'
+        working-directory: ${{ env.AGENT_DIR }}
+        run: cross build --release --target ${{ matrix.target }}
+
+      - name: Build (windows arm64 via rustc)
+        if: matrix.cross == true && runner.os == 'Windows'
+        working-directory: ${{ env.AGENT_DIR }}
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            v="${{ inputs.version }}"
+          else
+            v="${GITHUB_REF_NAME#v}"
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
+      - name: Stage artifact
+        shell: bash
+        run: |
+          v="${{ steps.ver.outputs.version }}"
+          stage="stage/adr-agent-${v}-${{ matrix.target }}"
+          mkdir -p "$stage"
+          cp ${{ env.AGENT_DIR }}/target/${{ matrix.target }}/release/adr-agent${{ matrix.ext }} "$stage/"
+          cp LICENSE README.md "$stage/" || true
+
+      - name: Archive (tar.gz, Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          v="${{ steps.ver.outputs.version }}"
+          name="adr-agent-${v}-${{ matrix.target }}"
+          tar -C stage -czf "${name}.tar.gz" "${name}"
+          sha256sum "${name}.tar.gz" > "${name}.tar.gz.sha256"
+
+      - name: Archive (zip, Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $v = "${{ steps.ver.outputs.version }}"
+          $name = "adr-agent-$v-${{ matrix.target }}"
+          Compress-Archive -Path "stage/$name/*" -DestinationPath "$name.zip"
+          (Get-FileHash "$name.zip" -Algorithm SHA256).Hash | Out-File -Encoding ASCII "$name.zip.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.target }}
+          path: |
+            adr-agent-*.tar.gz
+            adr-agent-*.zip
+            adr-agent-*.sha256
+
+  package-linux:
+    name: package linux (.deb / .rpm)
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            deb_arch: amd64
+            rpm_arch: x86_64
+          - target: aarch64-unknown-linux-gnu
+            deb_arch: arm64
+            rpm_arch: aarch64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin-${{ matrix.target }}
+          path: bin/
+
+      - name: Extract binary
+        shell: bash
+        run: |
+          mkdir -p extracted
+          tar -xzf bin/adr-agent-*-${{ matrix.target }}.tar.gz -C extracted
+          mv extracted/adr-agent-*/adr-agent ./adr-agent
+          chmod +x ./adr-agent
+
+      - name: Install rpm tooling
+        run: sudo apt-get update && sudo apt-get install -y rpm
+
+      - name: Resolve version
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build .deb
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+          ARCH:    ${{ matrix.deb_arch }}
+          BIN:     ./adr-agent
+        run: bash packaging/linux/deb/build-deb.sh
+
+      - name: Build .rpm
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+          ARCH:    ${{ matrix.rpm_arch }}
+          BIN:     ./adr-agent
+        run: bash packaging/linux/rpm/build-rpm.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pkg-linux-${{ matrix.target }}
+          path: dist/*
+
+  package-macos:
+    name: package macos (.pkg)
+    needs: build
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin-x86_64-apple-darwin
+          path: bin-x86_64/
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin-aarch64-apple-darwin
+          path: bin-arm64/
+      - name: Extract
+        run: |
+          mkdir -p extract-x86 extract-arm
+          tar -xzf bin-x86_64/adr-agent-*-x86_64-apple-darwin.tar.gz -C extract-x86
+          tar -xzf bin-arm64/adr-agent-*-aarch64-apple-darwin.tar.gz -C extract-arm
+          mkdir -p target/x86_64-apple-darwin/release target/aarch64-apple-darwin/release
+          cp extract-x86/adr-agent-*/adr-agent target/x86_64-apple-darwin/release/adr-agent
+          cp extract-arm/adr-agent-*/adr-agent target/aarch64-apple-darwin/release/adr-agent
+          chmod +x target/*/release/adr-agent
+
+      - name: Resolve version
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build .pkg
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+          DEVELOPER_ID_INST: ${{ secrets.MACOS_DEVID_INSTALLER }}
+          NOTARY_PROFILE: ${{ secrets.MACOS_NOTARY_PROFILE }}
+        run: bash packaging/macos/build-pkg.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pkg-macos
+          path: dist/*.pkg
+
+  package-windows:
+    name: package windows (.msi)
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin-x86_64-pc-windows-msvc
+          path: bin/
+
+      - name: Extract
+        shell: pwsh
+        run: |
+          Expand-Archive bin\adr-agent-*-x86_64-pc-windows-msvc.zip -DestinationPath extract
+          New-Item -ItemType Directory -Force -Path target\x86_64-pc-windows-msvc\release | Out-Null
+          Copy-Item extract\adr-agent.exe target\x86_64-pc-windows-msvc\release\adr-agent.exe -Force
+
+      - name: Install WiX
+        shell: pwsh
+        run: |
+          choco install wixtoolset --no-progress -y
+          echo "C:\Program Files (x86)\WiX Toolset v3.14\bin" >> $env:GITHUB_PATH
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          $v = "${env:GITHUB_REF_NAME}".TrimStart("v")
+          echo "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Build .msi
+        shell: pwsh
+        run: |
+          pwsh -File packaging\windows\build-msi.ps1 `
+            -Version "${{ steps.ver.outputs.version }}" `
+            -BinaryPath "target\x86_64-pc-windows-msvc\release\adr-agent.exe" `
+            -SigningCertSubject "${{ secrets.WINDOWS_SIGN_SUBJECT }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pkg-windows
+          path: dist/*.msi
+
+  publish:
+    name: github release
+    needs: [build, package-linux, package-macos, package-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Flatten
+        run: |
+          mkdir -p release
+          find artifacts -type f \( -name '*.tar.gz' -o -name '*.zip' \
+                                  -o -name '*.deb'    -o -name '*.rpm' \
+                                  -o -name '*.pkg'    -o -name '*.msi' \
+                                  -o -name '*.sha256' \) -exec cp -v {} release/ \;
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true

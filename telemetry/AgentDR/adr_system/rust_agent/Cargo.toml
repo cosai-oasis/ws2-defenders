@@ -1,0 +1,105 @@
+[package]
+name = "adr_agent"
+version = "0.2.0"
+edition = "2021"
+description = "CoSAI ADR Agent — AI Detection & Response endpoint monitor (Rust)"
+authors = ["CoSAI Contributors"]
+license = "Apache-2.0"
+
+[[bin]]
+name = "adr-agent"
+path = "src/main.rs"
+
+[features]
+default = []
+# Opt-in interop with the official AITF Rust SDK (beta, not yet on crates.io).
+# Enables the conformance cross-check in src/ingest/aitf_interop.rs that keeps
+# AgentDR's OTLP->OCSF class mapping in sync with the SDK's OcsfMapper.
+#
+# To use it, also uncomment the `aitf` dependency below, then build with
+#   cargo build --features aitf-sdk
+# (The dep is left commented so the default build never needs network access to
+# the AITF git repo — an optional git dependency is still fetched at resolve
+# time, which breaks offline / CI builds.)
+aitf-sdk = []
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Optional: official AITF Rust SDK (semconv keys + OcsfMapper) — interop only.
+# Uncomment together with the `aitf-sdk` feature mapping (aitf-sdk = ["dep:aitf"]).
+# aitf = { git = "https://github.com/girdav01/AITF.git", optional = true }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# HTTP client for event pushing
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+
+# HTTP server for OTLP ingest (Tier 1)
+axum = { version = "0.7", features = ["json", "macros"] }
+tower-http = { version = "0.6", features = ["limit", "trace"] }
+bytes = "1"
+flate2 = "1"
+
+# System monitoring
+sysinfo = "0.33"
+
+# File system watching
+notify = "7"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID generation
+uuid = { version = "1", features = ["v4"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+tracing-appender = "0.2"
+
+# CLI argument parsing
+clap = { version = "4", features = ["derive"] }
+
+# Config file handling
+toml = "0.8"
+
+# SHA-256 integrity verification
+sha2 = "0.10"
+
+# Tier 3: exporter backends
+async-trait = "0.1"
+hmac = "0.12"
+base64 = "0.22"
+
+# Tier 5: policy-as-code (regex matching, YAML loading)
+regex = "1"
+serde_yaml = "0.9"
+
+# Tier 9: LLM Guard reverse proxy — per-key sliding-window rate limiting.
+# (Auth/JWT HS256 verification reuses the existing hmac + sha2 + base64 deps.)
+governor = "0.6"
+
+# Paths (hooks, MCP inventory)
+dirs = "5"
+hostname = "0.4"
+
+# Tier 6: Linux audit netlink (target-scoped so other OSes don't pull it in)
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+codegen-units = 1
+
+# Cargo.wix metadata for Windows MSI builds (Tier 2)
+[package.metadata.wix]
+upgrade-guid = "B7B9F4F4-2B15-4E5F-9A57-2C9A0E2C9F11"
+path-guid    = "B7B9F4F4-2B15-4E5F-9A57-2C9A0E2C9F22"
+license      = false
+eula         = false

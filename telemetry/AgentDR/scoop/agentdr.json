@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "description": "AgentDR — AI Agent Detection & Response endpoint telemetry agent (CoSAI / AITF).",
+    "homepage": "https://github.com/girdav01/agentdr",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/girdav01/agentdr/releases/download/v0.2.0/adr-agent-0.2.0-x86_64-pc-windows-msvc.zip",
+            "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "arm64": {
+            "url": "https://github.com/girdav01/agentdr/releases/download/v0.2.0/adr-agent-0.2.0-aarch64-pc-windows-msvc.zip",
+            "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+    },
+    "bin": "adr-agent.exe",
+    "post_install": [
+        "if (-not (Test-Path \"$env:ProgramData\\AgentDR\")) { New-Item -ItemType Directory -Path \"$env:ProgramData\\AgentDR\" | Out-Null }",
+        "if (-not (Test-Path \"$env:ProgramData\\AgentDR\\config.toml\")) {",
+        "    @\"",
+        "watch_directories = [\"$env:USERPROFILE\"]",
+        "",
+        "[otlp]",
+        "enabled = true",
+        "bind = \"127.0.0.1:4318\"",
+        "redact_content = true",
+        "",
+        "[mcp]",
+        "inventory_on_start = true",
+        "rescan_seconds = 600",
+        "\"@ | Out-File -Encoding ASCII \"$env:ProgramData\\AgentDR\\config.toml\"",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/girdav01/agentdr/releases/download/v$version/adr-agent-$version-x86_64-pc-windows-msvc.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/girdav01/agentdr/releases/download/v$version/adr-agent-$version-aarch64-pc-windows-msvc.zip"
+            }
+        }
+    }
+}

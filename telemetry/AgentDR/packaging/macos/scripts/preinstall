@@ -1,0 +1,9 @@
+#!/bin/bash
+# AgentDR macOS .pkg preinstall — stop existing daemon (upgrade path).
+set -e
+LABEL="com.cosai.agentdr"
+PLIST="/Library/LaunchDaemons/${LABEL}.plist"
+if [ -f "${PLIST}" ] && launchctl print "system/${LABEL}" >/dev/null 2>&1; then
+  launchctl bootout system "${PLIST}" || true
+fi
+exit 0

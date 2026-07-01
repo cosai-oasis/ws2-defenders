@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Jamf Pro custom configuration profile for AgentDR on macOS.
+  Imports as a "Custom Settings" payload under the
+  com.cosai.agentdr managed-preferences domain. Pair with the signed .pkg
+  shipped from CI for end-to-end fleet deployment.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+  <key>PayloadIdentifier</key>
+  <string>ai.cosai.agentdr.profile</string>
+  <key>PayloadUUID</key>
+  <string>5C0E2C9F-2B15-4E5F-9A57-2C9A0E2C9F11</string>
+  <key>PayloadDisplayName</key>
+  <string>AgentDR Configuration</string>
+  <key>PayloadOrganization</key>
+  <string>CoSAI</string>
+  <key>PayloadScope</key>
+  <string>System</string>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadType</key>
+      <string>com.apple.ManagedClient.preferences</string>
+      <key>PayloadIdentifier</key>
+      <string>ai.cosai.agentdr.prefs</string>
+      <key>PayloadUUID</key>
+      <string>5C0E2C9F-2B15-4E5F-9A57-2C9A0E2C9F22</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadDisplayName</key>
+      <string>AgentDR Managed Preferences</string>
+      <key>PayloadContent</key>
+      <dict>
+        <key>com.cosai.agentdr</key>
+        <dict>
+          <key>Forced</key>
+          <array>
+            <dict>
+              <key>mcx_preference_settings</key>
+              <dict>
+                <key>otlp_enabled</key>           <true/>
+                <key>otlp_bind</key>              <string>127.0.0.1:4318</string>
+                <key>otlp_redact_content</key>    <true/>
+                <key>mcp_inventory_on_start</key> <true/>
+                <key>mcp_rescan_seconds</key>     <integer>600</integer>
+                <key>server_push_enabled</key>    <true/>
+                <key>server_push_endpoint</key>   <string>https://agentdr.example.com/api/sync</string>
+                <key>server_push_api_key_ref</key><string>JAMF:agentdr_api_key</string>
+                <key>watch_directories</key>
+                <array>
+                  <string>/Users</string>
+                </array>
+              </dict>
+            </dict>
+          </array>
+        </dict>
+      </dict>
+    </dict>
+
+    <!-- Privacy Preferences Policy Control: allow AgentDR full-disk access
+         and accessibility so the file monitor sees user-domain paths. -->
+    <dict>
+      <key>PayloadType</key>
+      <string>com.apple.TCC.configuration-profile-policy</string>
+      <key>PayloadIdentifier</key>
+      <string>ai.cosai.agentdr.tcc</string>
+      <key>PayloadUUID</key>
+      <string>5C0E2C9F-2B15-4E5F-9A57-2C9A0E2C9F33</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadDisplayName</key>
+      <string>AgentDR — Privacy Preferences</string>
+      <key>Services</key>
+      <dict>
+        <key>SystemPolicyAllFiles</key>
+        <array>
+          <dict>
+            <key>Identifier</key>
+            <string>/usr/local/bin/adr-agent</string>
+            <key>IdentifierType</key>
+            <string>path</string>
+            <key>Allowed</key>
+            <true/>
+            <key>CodeRequirement</key>
+            <string>identifier "com.cosai.agentdr" and anchor apple generic</string>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+  </array>
+</dict>
+</plist>

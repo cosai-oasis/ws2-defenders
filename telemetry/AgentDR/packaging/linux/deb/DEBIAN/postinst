@@ -1,0 +1,54 @@
+#!/bin/sh
+set -e
+
+# Create system user/group (idempotent)
+if ! getent group agentdr >/dev/null 2>&1; then
+  groupadd --system agentdr
+fi
+if ! getent passwd agentdr >/dev/null 2>&1; then
+  useradd --system --gid agentdr --home-dir /var/lib/agentdr --shell /usr/sbin/nologin agentdr
+fi
+
+# Directories
+install -d -m 0755 -o agentdr -g agentdr /var/lib/agentdr /var/log/agentdr
+install -d -m 0755 /etc/agentdr
+
+# Default config (only when missing)
+if [ ! -f /etc/agentdr/config.toml ]; then
+  cat > /etc/agentdr/config.toml <<'EOF'
+watch_directories = ["/home"]
+
+[otlp]
+enabled = true
+bind = "127.0.0.1:4318"
+redact_content = true
+
+[mcp]
+inventory_on_start = true
+rescan_seconds = 600
+
+[server_push]
+enabled = false
+endpoint = ""
+EOF
+fi
+
+# systemd
+if [ -d /run/systemd/system ]; then
+  systemctl daemon-reload || true
+  systemctl enable agentdr.service || true
+  systemctl restart agentdr.service || true
+fi
+
+# Tier 8 — auto-discovery on install. We run a non-interactive scan that
+# honours the [discovery].mode shipped in /etc/agentdr/config.toml (policy
+# mode by default). This installs hooks for the agents that policy says
+# should be monitored automatically; the operator can re-run
+#   adr-agent discovery scan --apply
+# or use the interactive prompt mode later.
+if [ -x /usr/bin/adr-agent ]; then
+  /usr/bin/adr-agent --root /var/lib/agentdr discovery scan --apply >/dev/null 2>&1 || true
+fi
+
+#DEBHELPER#
+exit 0
