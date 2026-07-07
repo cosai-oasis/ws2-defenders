@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { randomBytes } from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { getSessionUser, isAdmin, isOwner } from '@/lib/session-helpers';
 
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Create new user in org
-  const tempPassword = password || Math.random().toString(36).slice(-10);
+  const tempPassword = password || randomBytes(12).toString('base64url').slice(0, 10);
   const hashed = await bcrypt.hash(tempPassword, 10);
   const newUser = await prisma.user.create({
     data: {
