@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { randomInt, randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -59,9 +60,9 @@ const USERS = [
 
 const RISK_LEVELS = ['low', 'low', 'low', 'medium', 'medium', 'high', 'critical'];
 
-function pick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)]; }
-function randInt(min: number, max: number) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function uuid() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); }); }
+function pick<T>(arr: T[]): T { return arr[randomInt(arr.length)]; }
+function randInt(min: number, max: number) { return randomInt(min, max + 1); }
+function uuid() { return randomUUID(); }
 
 function makeTimestamp(hoursAgo: number) {
   return new Date(Date.now() - hoursAgo * 3600000 + randInt(0, 3600000));
