@@ -514,38 +514,38 @@ Table 3. Zero Trust publication frameworks comparison
 
 ## Workstream Leads
 
-* Vinay Bansal  
-* Josiah Hagen
+* Vinay Bansal, Cisco ([vibansal@cisco.com](mailto:vibansal@cisco.com)) 
+* Josiah Hagen ([josiah.hagen@gmail.com](mailto:josiah.hagen@gmail.com))
 
 ## Contributors
 
-* Shrey Bagga  
-* Michael Epley  
-* Nik Kale  
+* Shrey Bagga, Cisco  
+* Michael Epley, Red Hat
+* Nik Kale, Cisco
 * Victor Lu  
-* Asmae Mhassni  
-* Dhaval Parekh  
-* David Pierce  
-* Marina Zeldin
+* Asmae Mhassni , Intel
+* Dhaval Parekh, 
+* David Pierce, Paypal
+* Marina Zeldin, Dell
 
 ## Editors
 
-* Jason Garman  
+* Jason Garman, Amazon 
 * Josiah Hagen  
-* Igor Pedan  
+* Igor Pedan, Dell  
 * Bill Stout
 
 ## Reviewers
 
-* Parthy Chandransekakan  
-* David Garibaldi  
-* Arthur Saputkin    
-* Akila Srinivasan
+* Parthy Chandransekakan, Trend AI 
+* David Garibaldi, Amazon 
+* Arthur Saputkin, Meta   
+* Akila Srinivasan, Anthropic
 
 ## Technical Steering Committee Co-Chairs
 
-* J.R. Rao  
-* Akila Srinivasan
+* J.R. Rao, IBM
+* Akila Srinivasan, Anthropic
 
 # Disclosure
 
