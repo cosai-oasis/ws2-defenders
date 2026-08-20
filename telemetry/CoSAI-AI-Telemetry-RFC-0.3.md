@@ -709,13 +709,13 @@ Each catalogued attack mapped to its primary ATLAS technique(s). This is the cro
 
 ## Appendix B: Mapping to the CoSAI Risk Map (risks, controls & proposed additions)
 
-*Does this telemetry work imply changes to the [CoSAI Risk Map](https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map)? **Substantially less than it once did.*** The risk map has expanded considerably, from 25 risks and 35 controls to **52 risks and 73 controls**, and the expansion, driven largely by review of CoSAI's [MCP Security paper](https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf) (WS4, approved 8 January 2026), lands directly on the agentic surface this document instruments. Most of what this document proposes to the WS3 group is now either present in the risk map or superseded by it.
+*Does this telemetry work imply changes to the [CoSAI Risk Map](https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map)? Less than the earlier draft expected.* The risk map has expanded considerably, from 25 risks and 35 controls to **52 risks and 73 controls**, and the expansion, driven largely by review of CoSAI's [MCP Security paper](https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf) (WS4, approved 8 January 2026), lands directly on the agentic surface this document instruments. Most of what this document proposes to the WS3 group is now either present in the risk map or superseded by it.
 
 > **Version basis.** This mapping is built against the **`preview/controls-risks-for-review`** branch, which is expected to merge to `main`. Two changes matter for reading it. Risk IDs have migrated from legacy uppercase abbreviations (`DP`, `EDH-I`) to the `risk` + camelCase convention used by every other entity type, the format this document already used, so no citation here changes shape. And the eight risk IDs this document flags as referenced by `controls.yaml` but absent from `risks.yaml` are **all present** on the branch, which closes that finding ([B.7](#b7-taxonomy-consistency-resolved)). Verify IDs against `main` once merged.
 
 ### B.1 What the risk-map expansion validates
 
-The expansion is independent corroboration for the fields this document added on **analogical grounding**: where the reasoning was sound but the attack corpus held no documented instance. Several now have a named risk, a named control, or both:
+The expansion names risks and controls that match fields this document added on **analogical grounding**: cases where the reasoning was sound but the attack corpus held no documented instance. Several now have a named risk, a named control, or both:
 
 | Field (tier) | Now named in the risk map as |
 | :-------------------------------------- | :-------------------------------------------------------------- |
@@ -748,7 +748,7 @@ This document is, in effect, the implementation spec for the risk map's **detect
 - **`controlIncidentResponseManagement`**: post-incident forensics. → content, tool I/O, identity, memory and retrieval provenance.
 - **`controlVulnerabilityManagement`**, **`controlRiskGovernance`**, **`controlAIComponentPatchManagement`**: fleet monitoring and residual-risk measurement. → §14 aggregates, version and provenance.
 
-**Recommendation, unchanged and now better supported:** have `controlAgentObservability`, `controlThreatDetection`, and the three new audit-trail controls reference this field set **by tier** as their normative telemetry schema, rather than each deployment reinventing it.
+**Recommendation:** have `controlAgentObservability`, `controlThreatDetection`, and the three new audit-trail controls reference this field set **by tier** as their normative telemetry schema, rather than each deployment reinventing it.
 
 ### B.3 Telemetry cluster → risk → control
 
@@ -953,7 +953,7 @@ The conventions are richer than is commonly assumed, and several fields marked "
 - **Metrics.** `gen_ai.client.operation.duration`, `gen_ai.client.token.usage`, `gen_ai.client.operation.time_to_first_chunk` / `.time_per_output_chunk`, `gen_ai.execute_tool.duration`, **`gen_ai.invoke_agent.duration` / `.inference_calls` / `.tool_calls`**, `gen_ai.invoke_workflow.duration`, `gen_ai.server.request.duration` / `.time_to_first_token` / `.time_per_output_token`.
 - **MCP.** A distinct **`mcp.*`** namespace: `mcp.method.name`, `mcp.protocol.version`, `mcp.request.id`, `mcp.resource.uri`, `mcp.session.id`, plus `mcp.client.operation.duration`, `mcp.server.operation.duration`, and client/server `session.duration` metrics.
 
-**Three of these deserve explicit note**, because they close gaps this document had recorded as open. `gen_ai.system_instructions` gives **System Prompt** (§5) a home. `gen_ai.tool.definitions` gives **Tool Definition Digest** (§9) one; the raw material for a digest is already in scope, and only the *hash-and-compare* is missing. And `gen_ai.invoke_agent.tool_calls` / `.inference_calls` are already the shape of **Loop / Step-Count Signal** (§12) and part of **Resource-Consumption Aggregate** (§12), as metrics rather than attributes.
+Three existing GenAI attributes already close gaps this document had left open. `gen_ai.system_instructions` gives **System Prompt** (§5) a home. `gen_ai.tool.definitions` gives **Tool Definition Digest** (§9) one; the raw material for a digest is already in scope, and only the *hash-and-compare* is missing. And `gen_ai.invoke_agent.tool_calls` / `.inference_calls` are already the shape of **Loop / Step-Count Signal** (§12) and part of **Resource-Consumption Aggregate** (§12), as metrics rather than attributes.
 
 ### D.3 Coverage & gaps, by field cluster
 
@@ -1005,7 +1005,7 @@ OTel has three signal types and OCSF has one event model, so this guidance has n
 | **Events / logs** | Content and anything high-cardinality, large, or privacy-bearing | Prompts, responses, system instructions, tool arguments and results, memory operations, retrieved documents, citations, guardrail verdicts, capability-change events |
 | **Metrics** | Aggregates, budgets, and rate-based detections | Token usage, loop and step counts, tool-call rates, resource aggregates, guardrail block rates, deny rates |
 
-Three rules follow, and each corrects a mistake this document has seen made in practice:
+Signal choice matters. The following rules correct mistakes that show up often when GenAI instrumentation is reused for security:
 
 - **Never put content in span attributes.** Prompts, responses, and tool results are unbounded in size and often contain PII. OTel already models them as event bodies; keep them there. A span attribute carrying a full prompt breaks cardinality limits and leaks into every trace backend that samples the span.
 - **Emit detection-relevant aggregates as metrics, not as derived queries.** Loop counts and token budgets (§12) are cheap as metrics and expensive as trace aggregations, and metrics survive sampling, which traces may not.
@@ -1273,9 +1273,9 @@ From this follows the trust boundary: everything on the agent side of the monito
 
 **Read strictly, the rest of this document operates on a weaker premise, and the gap is not cosmetic.** §§5 to 15 treat the agent as a *victim* of attack (something to be instrumented so that attacks against it become visible. Under CPEX's model the agent is also a potential *liar*, and that distinction propagates straight into the telemetry: several fields this document marks MUST or SHOULD are values the agent itself supplies. **Autonomy Level** (§5), **Task / Intent Declaration** (§12), **System Prompt** (§5), **Observation / Thought** (§7), and every reasoning field are self-asserted. A compromised agent can report a benign autonomy level while acting outside it, and `AOC-01` is the corpus's demonstration that agents do misreport) it declared a secret destroyed while the data remained recoverable.
 
-The document already contained the correct instinct in one place: **Verified vs Displayed Identity** (§13) is MUST precisely because `AOC-08` turns on the difference between an immutable identifier and a spoofable display name. CPEX's contribution is to recognize that identity is not special; *every* security-relevant attribute has a provenance, and telemetry that does not record it cannot survive the assume-breach model. That is the reasoning behind the new cross-cutting **Attribute Source / Trusted-Provenance Marking** ([§16](#16-policy-enforcement--mediation)), and it is the single most consequential change this appendix produced.
+**Verified vs Displayed Identity** (§13) is already MUST because `AOC-08` turns on the difference between an immutable identifier and a spoofable display name. CPEX generalizes that lesson: identity is not special; *every* security-relevant attribute has a provenance, and telemetry that does not record it cannot survive the assume-breach model. That is the reasoning behind the new cross-cutting **Attribute Source / Trusted-Provenance Marking** ([§16](#16-policy-enforcement--mediation)), and it is the largest change this appendix produced.
 
-A second consequence worth stating: under this model, **denied and failed attempts are first-class telemetry**, not exhaust. CPEX's audit requirement explicitly includes denied attempts. This document was already aligned in spirit (`AOC-12`/`AOC-13`/`AOC-14` are catalogued precisely because their telemetry documents *attempted* attacks that were resisted) but §16's Authorization Decision Record now makes it structural rather than incidental.
+Denied and failed attempts are first-class telemetry under this model, not exhaust. CPEX's audit requirement explicitly includes denied attempts. This document was already aligned in spirit (`AOC-12`/`AOC-13`/`AOC-14` are catalogued because their telemetry documents *attempted* attacks that were resisted) but §16's Authorization Decision Record now makes it structural rather than incidental.
 
 ### G.2 Threats & controls cross reference
 
@@ -1372,7 +1372,7 @@ CSF Categories cited: **GV.OC** Organizational Context · **GV.SC** Cybersecurit
 | **RESPOND** (RS.MA, RS.AN) | The identifier hierarchy and trace context (§5); tool execution IDs (§9); memory and retrieval provenance (§§10 to 11); delegation chain (§13); ATLAS technique tag (§6); event sequence continuity (§15) | **Strong**: this is the document's **R** priority, and the ATLAS tag makes RS.AN findings portable |
 | **RECOVER** (RC.RP) | Lifecycle state and revocation (§13); instance ID for per-instance quarantine (§5); capability-set change for rollback verification (§14) | **Weak, and appropriately so**: recovery is largely an operational discipline; telemetry scopes it but does not perform it |
 
-**The pattern is the argument.** Coverage is strongest exactly where this document concentrates (**DETECT**, **RESPOND**) and weakest where its priorities place least weight (**RECOVER**, the organizational half of **GOVERN**). That is not a defect; it is the [D > R > Q > A ordering](#41-use-case-priorities) showing through, and it tells an implementer precisely which CSF outcomes this field set will and will not evidence.
+Coverage is strongest where this document concentrates (**DETECT**, **RESPOND**) and weakest where its priorities place least weight (**RECOVER**, the organizational half of **GOVERN**). That follows the [D > R > Q > A ordering](#41-use-case-priorities), and it shows which CSF outcomes this field set will and will not evidence.
 
 ### H.3 AI RMF mapping, by function
 
@@ -1383,7 +1383,7 @@ CSF Categories cited: **GV.OC** Organizational Context · **GV.SC** Cybersecurit
 | **MEASURE** | **The whole field set.** Every MUST field; guardrail scores; refusal rates; loop and resource metrics; ATLAS-tagged detections | **The natural home.** AI RMF asks that AI risks be measured; this document specifies what to measure and why |
 | **MANAGE** | Incident response fields (§§5, 9, 13); enforcement decisions and taint (§16); kill-switch and lifecycle state (§13); [correlation patterns](#17-correlation-patterns) | Strong for security risk; silent on fairness, bias, and environmental risk, which are out of scope here |
 
-**Boundary worth stating.** AI RMF's trustworthiness characteristics extend well beyond security, validity, fairness, bias management, interpretability, environmental impact. **This document evidences the security slice only.** An organization using AI RMF should not read comprehensive MEASURE coverage into it. The `gen_ai.evaluation.*` conventions discussed in [D.2](#d2-what-the-genai-conventions-cover-today) are the natural carrier for the quality and fairness slice, which is one more reason to keep security guardrail signals distinguishable from quality evaluations rather than merging them.
+**Scope note.** AI RMF's trustworthiness characteristics extend well beyond security, validity, fairness, bias management, interpretability, environmental impact. **This document evidences the security slice only.** An organization using AI RMF should not read comprehensive MEASURE coverage into it. The `gen_ai.evaluation.*` conventions discussed in [D.2](#d2-what-the-genai-conventions-cover-today) are the natural carrier for the quality and fairness slice, which is one more reason to keep security guardrail signals distinguishable from quality evaluations rather than merging them.
 
 ### H.4 What this implies
 
@@ -1447,7 +1447,7 @@ Three of the four weak areas are properly out of scope. The fourth is a genuine 
 
 Why each component's **MUST** fields earn that tier, and where the tier boundaries were contested. Ordered to match the [classification summary](#45-classification-summary): §5 through §16.
 
-The rubric is in [§4.2](#42-classification-legend). Two things it implies recur below and are worth stating once. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
+The rubric is in [§4.2](#42-classification-legend). Two rules recur below. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
 
 ### J.1 Application & Agent Reasoning Core (§5)
 
