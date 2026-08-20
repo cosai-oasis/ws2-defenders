@@ -41,8 +41,6 @@ Four fields, none exotic. Their absence is the difference between a detection an
 
 Go to the **classification summary** ([§4.5](#45-classification-summary), the single table listing every field by component and tier) and treat the **MUST** column as the baseline your AI deployments should meet. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.2](#42-classification-legend). That is 47 fields, each required to detect or scope a documented attack, and it is the artifact to take into an engineering plan or a budget discussion.
 
-Three things make that conversation easier:
-
 - **The justification is evidentiary.** Every MUST field cites named real-world attacks and incidents. The ask is "these fields catch these attacks," not "best practice suggests." [Appendix J](#appendix-j-tiering-rationale) sets out that reasoning per component if it is challenged.
 - **There is a build order.** The MUST tier is sequenced, so a team starts with the identifiers and content that everything else correlates through rather than instrumenting alphabetically.
 - **Compliance follows detection, not the reverse.** MUST coverage already evidences most of NIST CSF [[25]](#standards--frameworks) **DETECT** and **RESPOND**, AI RMF **MEASURE**, and ISO/IEC 42001 [[27]](#standards--frameworks) event-logging control; the mappings are in [Appendix H](#appendix-h-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile) and [Appendix I](#appendix-i-implications-for-isoiec-42001), which show coverage strongest exactly where this document concentrates and weakest where it places least weight. Build for detection and the audit evidence is a by-product; building for audit does not produce detection.
@@ -61,9 +59,7 @@ Every adjacent standard has its own appendix, stating what this field set alread
 | **OWASP AOS** [[32]](#standards--frameworks) | F | 9 contributions: trust classification, egress destination, ATLAS tagging, priority tiering, and migration of its OTel binding from `llm.*` to `gen_ai.*` |
 | **CPEX** [[38]](#standards--frameworks) | G | 6 contributions: retention and priority guidance, and a SOC destination for enforcement decisions |
 
-**AITF** [[19]](#standards--frameworks), the AI Telemetry Framework, donated to CoSAI Workstream 2; is the bridge between this document and both of those destinations, OpenTelemetry for emission, OCSF for consumption. It carries these fields as OpenTelemetry attributes today and emits them into OCSF ahead of formal ratification, so adopters are not blocked on either standards body. The field-level mapping is **Appendix C**; completing it is CoSAI's own work, in hand before final publication.
-
-Two things worth knowing before reading the asks:
+**AITF** [[19]](#standards--frameworks), the AI Telemetry Framework, donated to CoSAI Workstream 2, is the bridge between this document and both of those destinations, OpenTelemetry for emission, OCSF for consumption. It carries these fields as OpenTelemetry attributes today and emits them into OCSF ahead of formal ratification, so adopters are not blocked on either standards body. The field-level mapping is **Appendix C**; completing it is CoSAI's own work, in hand before final publication.
 
 - **They are evidence-gated and therefore small.** A field becomes a standardization ask only once two or more independent documented attacks require it. Nothing is proposed speculatively.
 - **Emission and consumption move together.** A field OpenTelemetry emits but OCSF cannot represent arrives at the SIEM as unstructured overflow; a field OCSF defines but no instrumentation produces stays theoretical. Paired asks are the intent.
@@ -74,7 +70,7 @@ What is wanted in return: corrections to the mappings, and attacks the corpus is
 
 ### 2.3 For builders of AI solutions
 
-One set of telemetry serves four purposes: **detecting** attacks while a run is still in flight, **responding** to them afterwards, **debugging** how the system behaved, and **auditing** it for compliance. Instrumenting once for all four is considerably cheaper than retrofitting each in turn.
+One telemetry set covers **detection** while a run is in flight, **response** afterwards, **debugging** of behaviour, and **compliance audit**. Instrumenting once for all four is cheaper than retrofitting each purpose later.
 
 Work from the **per-component breakdown**. The field set is organized by the components of an AI system (reasoning core, input handling, output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) so you can take the components you actually build and read off what each must emit. Every field states what to capture and the attacks that make it necessary. The correlation patterns that follow the field tables show how fields combine into detections, and are usually the fastest way to see why a given field earns its place.
 
@@ -95,7 +91,7 @@ The security-relevant telemetry an AI system should produce: which fields, justi
 
 Telemetry for **agents the deployment does not operate** is in scope, with the limits that implies: what is observable at your own boundary, plus whatever the counterparty presents and can be verified. [§4.7](#47-agents-you-do-not-operate) sets out how the field set applies in that case.
 
-Three boundaries follow from that framing. This is **not a wire format**: the bindings are in the appendices. It does **not specify detection logic**, only the fields detections consume. And it covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
+The framing implies three limits. This is **not a wire format**: the bindings are in the appendices. It does **not specify detection logic**, only the fields detections consume. And it covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
 
 ### 3.2 Not in scope
 
@@ -141,12 +137,10 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119
 | **SHOULD** | Required once a deployment adopts a modality or faces a threat scenario at the **edge of current agentic practice**. | The field serves a deployment modality or threat scenario that is emerging rather than typical; **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, inline enforcement that mutates payloads, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding may be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not required to catch the core attack classes. | The field's dominant value is **Q or A**; or its attack motivation is thin (single weak instance, or none); or it is a research-grade signal, a derived detector output, or redundant with a MUST field. |
 
-Two consequences follow:
-
 - **Attack count alone does not set the tier.** A field cited by five attacks is still SHOULD if every one of those attacks presupposes a delegation chain, and still MAY if its real job is compliance reporting. The modality gate applies after the evidence gate.
 - **SHOULD is not "MUST later."** It is "MUST *if you run this modality*." This is the RFC 2119 reading applied narrowly: the "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**, and nothing else. Cost, effort, and inconvenience are not among them. A deployment with cascaded delegation should treat §13 as mandatory on day one; a single-agent deployment may never need it.
 
-> The classification is **deliberately deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. See the maturity model in [Implementation Guidance](#18-implementation-guidance).
+> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. See the maturity model in [Implementation Guidance](#18-implementation-guidance).
 
 
 ### 4.3 Component taxonomy
@@ -202,15 +196,13 @@ The MUST tier is 47 fields, which is more than most teams can instrument at once
 
 **Adoption order for a deployment starting from zero.** (1) the identifier hierarchy and trace context (§5), because everything else correlates through them and nothing else is interpretable without them; (2) content, trust classification, and guardrail verdicts (§§6 to 7), the highest D-density cluster in the document; (3) tool call I/O with execution IDs and sandbox posture (§9), the highest R value; (4) memory and retrieval (§§10 to 11); (5) orchestration (§12); (6) identity (§13) and capability-set change (§14).
 
-**Two SHOULD fields worth adopting early regardless of modality**, because they are cheap and protect the value of Tier 1: **Enforcement-Point Availability** (§15), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (§6), without which a redaction pipeline silently falsifies the log it feeds.
+**Early SHOULD fields that protect Tier 1 value**, even before the matching modality is fully adopted: **Enforcement-Point Availability** (§15), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (§6), without which a redaction pipeline silently falsifies the log it feeds.
 
-Two properties of this ordering are worth making explicit. It is **dependency-driven, not importance-driven**: the identifiers come first because every later detection resolves through them, not because they matter most. And each step is **independently useful**: a deployment that stops after step (2) has a working injection-detection capability, not a half-built one. See [§18](#18-implementation-guidance) for the full maturity model across all three tiers.
+The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. See [§18](#18-implementation-guidance) for the full maturity model across all three tiers.
 
 ### 4.7 Agents you do not operate
 
-Much of the corpus involves a counterparty someone else runs: another owner's agent (`AOC-04`, `AOC-09`, `AOC-11`, `AOC-16`), an MCP server you did not deploy (`TA-12`, `TA-13`), or a shared multi-tenant service (`TA-11`). You cannot instrument what you do not operate, so the field set applies differently, and the difference is worth stating rather than leaving implicit.
-
-Three guiding principles, one from each of the adjacent standards, resolve most of it.
+Much of the corpus involves a counterparty someone else runs: another owner's agent (`AOC-04`, `AOC-09`, `AOC-11`, `AOC-16`), an MCP server you did not deploy (`TA-12`, `TA-13`), or a shared multi-tenant service (`TA-11`). You cannot instrument what you do not operate, so the field set applies differently. The adjacent standards each supply a useful rule:
 
 **From CPEX: the counterparty is on the hostile side of the monitor, by definition.** CPEX's boundary places the agent, the caller, and everything beyond it in the untrusted region, and admits nothing from there into policy. An external agent is simply the clearest case. The consequence for telemetry is that you instrument **your own boundary**, not their internals, and CPEX's inbound-gateway placement is the one that sees every caller. What you record is a mediated interaction, not an observed agent.
 
@@ -218,7 +210,7 @@ Three guiding principles, one from each of the adjacent standards, resolve most 
 
 **From OWASP AOS: ask the counterparty to be inspectable, and record the answer.** AOS's *Observed Agent* is one that exposes hooks, events, and an AgBOM on request; an external agent is an **unobserved** agent until it agrees otherwise. AOS's A2A extension already distinguishes full from partial counterparty context, which is the same distinction as knowing versus not knowing who you are talking to. Whether an inspection request was answered is itself a signal.
 
-Together these give **three tiers of knowability**, and every field in §§5 to 16 should be read against whichever applies:
+Read every field in §§5 to 16 against one of these **knowability** tiers:
 
 | Tier | What you have | How the field set applies |
 | :------- | :------------------------- | :------------------------------------------------ |
@@ -226,7 +218,7 @@ Together these give **three tiers of knowability**, and every field in §§5 to 
 | **Attested** | The counterparty presents verifiable claims (ODIS credential, signed AgBOM, agent card) | Record the claim **and its verification outcome**. **Attribute Source / Trusted-Provenance Marking** (§16) is the mechanism: an unverified claim is `self-asserted`, whatever it asserts |
 | **Opaque** | Only the wire interaction | §§6, 7, 12 at the protocol surface, and nothing more. **Do not synthesize** fields you cannot observe. An opaque counterparty should be visibly opaque in the telemetry, not silently defaulted |
 
-The failure mode this guards against is the third row collapsing into the second: recording an external agent's self-description as though it were established fact. `AOC-08` is that failure in miniature, and `AOC-11` is its consequence at scale.
+The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. `AOC-08` is that failure in miniature, and `AOC-11` is its consequence at scale.
 
 
 ---
