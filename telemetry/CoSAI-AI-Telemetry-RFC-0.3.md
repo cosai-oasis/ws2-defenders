@@ -8,19 +8,17 @@
 
 ## 1. Introduction
 
-AI systems now read untrusted content, decide what to do about it, and act: calling tools, writing memory, retrieving documents, sending mail, invoking other agents. Attacks against them succeed in the gap between reading and acting. That gap is where they have to be caught.
+AI systems now read untrusted content, decide what to do about it, and act: calling tools, writing memory, retrieving documents, sending mail, invoking other agents. Attacks against them succeed in the gap between reading and acting. Detection has to happen in that gap, as far left in the kill chain as possible.
 
-Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Most deployments record none of this. Traditional application logging captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. What is not recorded cannot be detected, and it cannot be investigated, debugged nor audited afterwards.
+Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Most deployments record none of this. Traditional application logging captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards nothing solid to investigate, debug, or audit.
 
 ### 1.1 One umbrella, many efforts
 
 Several communities are converging on AI telemetry, and their work is complementary. **OpenTelemetry** [[29]](#standards--frameworks) defines how instrumentation emits GenAI and agent data. **OCSF**, the Open Cybersecurity Schema Framework [[31]](#standards--frameworks), defines how security events are normalized for a SOC. **OWASP AOS**, the Agent Observability Standard [[32]](#standards--frameworks), defines how an agent exposes itself for observation. **CPEX** [[38]](#standards--frameworks) defines how a policy runtime mediates agent actions. **ODIS**, the Open Delegation and Identity Standard [[20]](#standards--frameworks), defines delegated identity and authority. **MITRE ATLAS** [[1]](#primary-sources-attack-corpus--taxonomy) defines the adversary techniques to classify against. Regulation adds its own obligations, notably EU AI Act Article 12 [[28]](#standards--frameworks) and the NIST AI Risk Management Framework [[24]](#standards--frameworks).
 
-Each answers a real question. None answers this one:
+Those efforts answer different questions. The open question this RFC addresses is which fields must exist, why, and at what priority.
 
-> **Which fields must exist, why, and at what priority?**
-
-This document answers it. It is the requirements layer, not a wire format: it specifies the telemetry an AI system must produce for security, the evidence that makes each field necessary, and the order in which to build them.
+This RFC is a requirements layer for security telemetry, not a wire format. It specifies the fields an AI system must produce for security, the evidence that makes each field necessary, and a suggested build order.
 
 ### 1.2 For example: EchoLeak
 
