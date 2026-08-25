@@ -1,4 +1,4 @@
-# Secure by Design: Telemetry Field Selection for AI Systems {**Working Draft**}
+# Secure by Design: Telemetry Field Selection for AI Systems {**Working Draft v0.4**}
 
 **Status:** Request for Comments, revision 0.3
 **Origin:** Coalition for Secure AI (CoSAI), Workstream 2 (Defenders)
