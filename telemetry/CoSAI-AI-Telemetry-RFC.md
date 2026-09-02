@@ -1,6 +1,6 @@
-# Secure by Design: Telemetry Field Selection for AI Systems {**Working Draft**}
+# Secure by Design: Telemetry Field Selection for AI Systems {**Working Draft v0.4**}
 
-**Status:** Request for Comments, revision 0.3
+**Status:** Request for Comments, revision 0.4
 **Origin:** Coalition for Secure AI (CoSAI), Workstream 2 (Defenders)
 **Disclosure:** Prepared for open publication under CoSAI. No commercial sponsorship; the standards positions taken favour open specifications (OpenTelemetry, OCSF, OWASP AOS, CPEX) over any vendor implementation. Drafting, cross-referencing, and consistency checking were performed with AI assistance; every attack, field, mapping, and citation must be verified before release.
 
@@ -53,9 +53,9 @@ Every adjacent standard has its own appendix, stating what this field set alread
 
 | Community | Appendix | What is proposed |
 | :------------- | :---- | :-------------------------------------------------------------------------------------- |
-| **OpenTelemetry** [[29]](#standards--frameworks) | D | 9 attribute proposals: input trust classification, a security guardrail signal, a `gen_ai.memory.*` namespace, retrieval provenance, turn and step identifiers |
+| **OpenTelemetry** [[29]](#standards--frameworks) | D | 9 attribute proposals: input trust classification, a security guardrail signal, memory provenance and footprint, retrieval provenance, turn and step identifiers |
 | **OCSF** [[31]](#standards--frameworks) | E | 6 asks: two AI event classes, an `ai_operation` profile, new objects and enums, ATLAS as a first-class technique reference |
-| **CoSAI Risk Map (WS3)** [[17]](#standards--frameworks) | B | 3 proposed new risks and 1 proposed control, after the risk-map expansion superseded two earlier proposals |
+| **CoSAI Risk Map (WS3)** [[17]](#standards--frameworks) | B | 3 refinements: confirm `componentMemory` covers persistent long-term memory, add a component for background and scheduled execution, and require the ATLAS technique tag on `controlThreatDetection` |
 | **OWASP AOS** [[32]](#standards--frameworks) | F | 9 contributions: trust classification, egress destination, ATLAS tagging, priority tiering, and migration of its OTel binding from `llm.*` to `gen_ai.*` |
 | **CPEX** [[38]](#standards--frameworks) | G | 6 contributions: retention and priority guidance, and a SOC destination for enforcement decisions |
 
@@ -66,7 +66,7 @@ Every adjacent standard has its own appendix, stating what this field set alread
 
 CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on this work, and welcomes input from the wider open source security community in turn. The timing favours it: every OpenTelemetry GenAI convention is at *Development* status and has just moved to a dedicated repository, so contributions land more cheaply now than after stabilization.
 
-What is wanted in return: corrections to the mappings, and attacks the corpus is missing. Two gaps remain open, both named in the open questions: **MCP tool poisoning / tool-definition rug-pull**, and **attacks on the observability plane** (enforcement starvation, instrumentation disablement, event suppression), the second of which is why [§15](#15-observability-plane-integrity) carries no MUST field. Each holds at least one field below the tier its reasoning would otherwise justify. A third gap, cross-tenant leakage, was closed by `TA-11` after the tiers were set; re-running the affected tiers is [open question 12](#open-questions-for-the-working-group).
+What is wanted in return: corrections to the mappings, and attacks the corpus is missing.
 
 ### 2.3 For builders of AI solutions
 
@@ -159,7 +159,7 @@ Fields are organized under the CoSAI Risk Map fine-grained components. The compo
 
 ### 4.4 Attack ID scheme
 
-- **`TA-01…13`**: real-world attack vectors, each with its own field-detection mapping. **`TA-01` is EchoLeak** (M365 Copilot, CVE-2025-32711), the document's lead public case study, and the first entry in the catalogue. **`TA-02…10`** are the CoSAI Telemetry paper's **"Attacks" tab**: Slack AI, Bard markdown exfil, training-data extraction, Samsung leak, LangChain RCE, system-prompt extraction, tool-chaining escalation, RAG-KB poisoning, context-window DoS. **`TA-11…13`** are MCP-mediated incidents from CoSAI's **MCP Security** paper.
+- **`TA-01…13`**: real-world attack vectors, each with its own field-detection mapping. **`TA-01` is EchoLeak** (M365 Copilot, CVE-2025-32711), the document's lead public case study, and the first entry in the catalogue. **`TA-02…10`** are the authoritative catalogue: Slack AI, Bard markdown exfil, training-data extraction, Samsung leak, LangChain RCE, system-prompt extraction, tool-chaining escalation, RAG-KB poisoning, context-window DoS. **`TA-11…13`** are MCP-mediated incidents from CoSAI's **MCP Security** paper.
 - **`IR-01…05`**: CoSAI WS2 *AI Incident Response* case studies.
 - **`AOC-01…16`**: *Agents of Chaos* (arXiv:2602.20021) case studies.
 - **`AML.Txxxx`**: **MITRE ATLAS** technique IDs. **This is the canonical adversary-technique taxonomy for this document**, and the only one that may appear in new material or in emitted telemetry ([decision](#attack-taxonomy-mitre-atlas-is-canonical)). The CoSAI `AT10xx` labels used by the incident-response case studies are **deprecated aliases**, retained solely so existing material can be migrated, see the alias table in [Appendix A.4](#a4-attack-taxonomy-cosai-at10xx-codes-deprecated-aliases-to-mitre-atlas). The full attack→ATLAS mapping is [Appendix A.5](#a5-attack-inventory--mitre-atlas-technique-mapping).
@@ -168,7 +168,7 @@ Fields are organized under the CoSAI Risk Map fine-grained components. The compo
 
 ### 4.5 Classification summary
 
-The complete field-by-component classification, before the detailed tables that follow. It is an index rather than a definition: each field name is defined, with what to capture, when it applies, and the attacks that motivate it, in the section shown against it. The table is a catalogue, not a claim that every deployment or every event emits every field; the [applicability rules](#42-classification-legend) determine each deployment's required subset. The reasoning behind each tier (why the MUSTs are MUST, and where the boundaries were contested) is in **[Appendix J](#appendix-j-tiering-rationale)**, ordered to match this table.
+The complete field-by-component classification, before the detailed tables that follow. It is an index rather than a definition: each field name is defined, with what to capture, when it applies, and the attacks that motivate it, in the section shown against it. The table is a catalogue, not a claim that every deployment or every event emits every field; the [applicability rules](#42-classification-legend) determine each deployment's required subset. The reasoning behind each tier (why the MUSTs are MUST, and where the boundaries are closest) is in **[Appendix J](#appendix-j-tiering-rationale)**, ordered to match this table.
 
 | Component (risk-map) | MUST fields | SHOULD fields | MAY fields |
 | :-------- | :---------------------------------- | :------------------------------------------ | :---------------- |
@@ -200,7 +200,7 @@ The full MUST catalogue contains 47 fields, which is more than most full-stack d
 
 **Early SHOULD fields that protect Tier 1 value**, even before the matching modality is fully adopted: **Enforcement-Point Availability** (§15), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (§6), without which a redaction pipeline silently falsifies the log it feeds.
 
-The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. See [§18](#18-implementation-guidance) for the full maturity model across all three tiers.
+The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. See [§18](#18-implementation-guidance) for additional detail: the full maturity model across all three tiers, how to operationalize these fields for detection, and the privacy constraints on logging the content-bearing ones.
 
 ### 4.7 Agents you do not operate
 
@@ -531,7 +531,7 @@ Logged fields are a necessary evidentiary foundation, not detection by themselve
 
 ### Real-world attack primary sources
 
-One source per real-world attack vector, each mapping to a `TA-` ID in [Appendix A.1](#a1-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations from the CoSAI Telemetry paper's "Attacks" tab.
+One source per real-world attack vector, each mapping to a `TA-` ID in [Appendix A.1](#a1-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02…10`.
 
 4. **[TA-01]** EchoLeak, zero-click data exfiltration from Microsoft 365 Copilot (CVE-2025-32711, CVSS 9.3). Discovered and disclosed by **Aim Labs (Aim Security)**; reported to MSRC Jan 2025, fixed server-side and publicly disclosed Jun 2025. Microsoft advisory: <https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711> · CVE record: <https://nvd.nist.gov/vuln/detail/CVE-2025-32711> · **Technical analysis:** Reddy, P. & Gujral, A. *EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System.* arXiv:2509.10540 (2025). <https://arxiv.org/abs/2509.10540>
 5. **[TA-02]** Slack AI private-channel data exfiltration. Dark Reading. <https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels>
@@ -549,7 +549,7 @@ One source per real-world attack vector, each mapping to a `TA-` ID in [Appendix
 
 ### Standards & frameworks
 
-17. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 52 risks / 73 controls as of the `preview/controls-risks-for-review` branch; risk IDs migrated to the `risk`+camelCase convention. <https://github.com/davidlabianca/secure-ai-tooling/tree/preview/controls-risks-for-review>
+17. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 55 risks / 68 controls: PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`; risk IDs migrated to the `risk`+camelCase convention.
 18. **CoSAI MCP Security**: Coalition for Secure AI, Workstream 4 (Secure Design Patterns for Agentic Systems): *Model Context Protocol (MCP) Security*, approved 8 January 2026. Twelve threat categories (MCP-T1…T12), ~40 threats. <https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf>
 19. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
 20. **ODIS**: Open Delegation & Identity Standard. **Working document, access-controlled**; no public citable URL at time of writing. <https://docs.google.com/document/d/1OGlaIAPu_I9RT0YqSF_li3dQEULAW6eo/edit>, replace with the published reference before release.
@@ -594,9 +594,9 @@ Normalized catalogue of the attacks and incidents referenced above. Each row lis
 
 The catalogue of documented, real-world attacks, each mapped to the CoSAI telemetry fields that detect it, ordered so that the lead case study comes first:
 
-- **`TA-01`: EchoLeak** is the document's lead public case study and the first entry in the catalogue. It is **not** from the working paper's Attacks tab; it is included here because it is the most complete public example of the attack class this schema exists to make visible (a zero-click, retrieval-mediated, classifier-bypassing exfiltration chain) and because its own post-incident guidance is the telemetry argument this document opens with. Its detecting-field list is derived here rather than reproduced from the tab.
+- **`TA-01`: EchoLeak** is the document's lead public case study and the first entry in the catalogue. It is included here because it is the most complete public example of the attack class this schema exists to make visible (a zero-click, retrieval-mediated, classifier-bypassing exfiltration chain) and because its own post-incident guidance is the telemetry argument this document opens with. Its detecting-field list is derived here.
 - **`TA-11…13`** are MCP-mediated incidents, surfaced by CoSAI's **MCP Security** paper (WS4) and cited here to their primary sources. They enter the corpus because they supply documented instances of attack classes the field set otherwise rests on analogical grounding for: cross-tenant leakage and MCP-mediated privilege escalation. Their detecting-field lists are derived here.
-- **`TA-02…10`** are the authoritative catalogue from the working paper's **Attacks** tab, reproduced with the tab's own detecting-field lists so the fields above can cite them by ID. `TA-02/03/05/06` are the same incidents carried as provisional `KP-02/03/05/04` in earlier CoSAI material; those provisional IDs are retired in favour of the authoritative `TA-` IDs.
+- **`TA-02…10`** are the authoritative catalogue, reproduced with their original detecting-field lists so the fields above can cite them by ID.
 
 
 | ID | Name (date) | What happened | Detecting fields | Primary component(s) |
@@ -648,7 +648,7 @@ The catalogue of documented, real-world attacks, each mapped to the CoSAI teleme
 
 ### A.4 Attack taxonomy: CoSAI `AT10xx` codes (deprecated aliases to MITRE ATLAS)
 
-**Migration table.** The `AT10xx` codes are the informal technique labels used by the AI-Incident-Response case studies. Per the [taxonomy decision](#attack-taxonomy-mitre-atlas-is-canonical), **[MITRE ATLAS](https://atlas.mitre.org/) `AML.Txxxx` is canonical and `AT10xx` is deprecated.** This table exists so that existing CoSAI material can be read and migrated; **do not use the left-hand column in new work or in emitted telemetry.** Read it left-to-right once, then use ATLAS.
+**Migration table.** The `AT10xx` codes are the informal technique labels used by the AI-Incident-Response case studies. **[MITRE ATLAS](https://atlas.mitre.org/) `AML.Txxxx` is canonical and `AT10xx` is deprecated.** This table exists so that existing CoSAI material can be read and migrated; **do not use the left-hand column in new work or in emitted telemetry.** Read it left-to-right once, then use ATLAS.
 
 ATLAS is community-maintained, versioned, and ATT&CK-aligned, and is a first-class compliance framework in AITF via `compliance.framework = mitre_atlas`, so a tagged event correlates with existing SOC tooling without translation.
 
@@ -707,96 +707,45 @@ Each catalogued attack mapped to its primary ATLAS technique(s). This is the cro
 
 ---
 
-## Appendix B: Mapping to the CoSAI Risk Map (risks, controls & proposed additions)
+## Appendix B: Mapping to the CoSAI Risk Map (risks & controls)
 
-*Does this telemetry work imply changes to the [CoSAI Risk Map](https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map)? Less than the earlier draft expected.* The risk map has expanded considerably, from 25 risks and 35 controls to **52 risks and 73 controls**, and the expansion, driven largely by review of CoSAI's [MCP Security paper](https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf) (WS4, approved 8 January 2026), lands directly on the agentic surface this document instruments. Most of what this document proposes to the WS3 group is now either present in the risk map or superseded by it.
+*Does this telemetry work imply changes to the [CoSAI Risk Map](https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map)?* The risk map has expanded considerably, from 36 risks and 37 controls to **55 risks and 68 controls**, and the expansion, driven largely by review of CoSAI's [MCP Security paper](https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf) (WS4, approved 8 January 2026), lands directly on the agentic surface this document instruments. Every risk and control this field set requires is present in the risk map, so this appendix is a mapping rather than a set of asks. What remains open is a small number of component and control refinements, in [B.3](#b3-component--control-refinements).
 
-> **Version basis.** This mapping is built against the **`preview/controls-risks-for-review`** branch, which is expected to merge to `main`. Risk IDs use the branch's `risk` + camelCase convention. Verify IDs against `main` once merged.
+> **Version basis.** This mapping is built against the risk map with PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`: **55 risks and 68 controls**. Risk IDs use the `risk` + camelCase convention. Verify IDs against `main`.
 
-### B.1 What the risk-map expansion validates
-
-The expansion names risks and controls that match fields this document added on **analogical grounding**: cases where the reasoning was sound but the attack corpus held no documented instance. Several now have a named risk, a named control, or both:
-
-| Field (tier) | Now named in the risk map as |
-| :-------------------------------------- | :-------------------------------------------------------------- |
-| **Execution Environment / Sandbox** (§9, MUST) | `riskUnsandboxedCodeExecution`, `riskUntrustedHostToolRuntimeExposure` · `controlRuntimeHostIsolation`, `controlAgentHostSecureConfiguration` |
-| **Authorization Decision Record** (§16, MUST) | `riskBrokenAuthorizationEnforcement` · `controlTrustedPolicyEnforcementPoint`, `controlExternalizedAuthorizationDecisioning`, `controlResourceAuthorizationEnforcement` |
-| **Attribute Source / Trusted-Provenance** (§16, MUST) | `controlAgenticZeroTrustPosture` |
-| **Capability-Set Change Event** (§14, MUST) | `riskToolRegistryTampering`, `riskZombieShadowMCPServers` · `controlToolRegistryAndDiscoveryIntegrity`, `controlAgentCapabilityNegotiation`, `controlThirdPartyCapabilityAdmission` |
-| **Human Approval / Elicitation Event** (§16, SHOULD) | `riskUnconsentedAgentAction`, `riskConsentFatigue` · `controlInformedAgentConsentSurface` |
-| **Session Taint Labels** (§16, SHOULD) | `controlUntrustedContextContainment` |
-| **Tool Definition Digest** (§9, SHOULD) | `riskToolRegistryTampering`, `riskToolSourceProvenance` · `controlToolServerVetting`, `controlToolServerSupplyChainIntegrity` |
-| **MCP Server Identity & Primitive** (§9, SHOULD) | `riskMCPTransportHijacking`, `riskZombieShadowMCPServers`, `riskExcessiveNetworkExposure` |
-| **Credential Minting & Scope-Narrowing** (§13, SHOULD) | `riskOverScopedToolAuthority`, `riskCredentialAndTokenTheft` · `controlDelegatedAuthorityConfinement`, `controlSenderConstrainedCredentials`, `controlSessionCredentialBindingAndLifecycle` |
-| **Backend / Route Restriction** (§16, SHOULD) | `riskOrchestratorRouteHijacking` · `controlNetworkEgressControl`, `controlOrchestratorAndRouteIntegrity` |
-| **Mediation Coverage & Bypass Path** (§16, SHOULD) | `riskImplicitCrossBoundaryTrust` · `controlTrustedPolicyEnforcementPoint` |
-| **Instrumentation Coverage / Hook Attestation** (§15, SHOULD) | `riskAuditTrailTampering` · `controlAuditTrailCompleteness` |
-| **Event Sequence Continuity** (§15, SHOULD) | `riskAuditTrailTampering` · `controlAuditTrailIntegrityVerification` |
-| **Organization / Tenant ID** (§5, SHOULD) | `riskCrossTenantCredentialPropagation`, `riskConcentratedAccessCorrelation` |
-
-**This does not by itself change any tier.** The [rubric](#42-classification-legend) requires a documented attack, not a catalogued risk, and a risk-map entry is a statement that a scenario is credible rather than evidence that it occurred. What the expansion does establish is that this document and WS3 independently identified the same gaps, which is the stronger argument for the fields, and which makes the corpus additions in [B.5](#b5-corpus-additions-the-mcp-paper-makes-available) the operative question.
-
-### B.2 Controls this telemetry operationalizes
+### B.1 Controls this telemetry operationalizes
 
 This document is, in effect, the implementation spec for the risk map's **detection and observability** controls; those that require logging without specifying fields:
 
 - **`controlAgentObservability`**: "an agent's actions, tool use, and reasoning are transparent and auditable through logging." → §§5, 7, 9, 12, 13 fields.
 - **`controlThreatDetection`**: detect and alert on attacks against AI assets. → all MUST fields + the [ATLAS Technique Tag](#a5-attack-inventory--mitre-atlas-technique-mapping).
-- **`controlAuditTrailCompleteness`**: *new.* → **Instrumentation Coverage / Hook Attestation** (§15) is the field that evidences completeness rather than asserting it.
-- **`controlAuditTrailIntegrityVerification`**: *new.* → **Event Sequence Continuity** (§15).
-- **`controlAIInfrastructureObservability`**: *new.* → §§8, 12, 14 resource, loop, and inventory signals.
+- **`controlAuditTrailCompleteness`**: → **Instrumentation Coverage / Hook Attestation** (§15) is the field that evidences completeness rather than asserting it.
+- **`controlAuditTrailIntegrityVerification`**: → **Event Sequence Continuity** (§15).
+- **`controlAIInfrastructureObservability`**: → §§8, 12, 14 resource, loop, and inventory signals.
+- **`controlAgentMemoryIntegrity`**: provenance, integrity and isolation of persistent memory. → §10 **Memory Write Event**, **Memory Read / Injection Event** and **Memory Provenance / Source**, the field that separates a legitimate write from an implant.
 - **`controlIncidentResponseManagement`**: post-incident forensics. → content, tool I/O, identity, memory and retrieval provenance.
 - **`controlVulnerabilityManagement`**, **`controlRiskGovernance`**, **`controlAIComponentPatchManagement`**: fleet monitoring and residual-risk measurement. → §14 aggregates, version and provenance.
 
-**Recommendation:** have `controlAgentObservability`, `controlThreatDetection`, and the three new audit-trail controls reference this field set **by tier** as their normative telemetry schema, rather than each deployment reinventing it.
+**Recommendation:** have `controlAgentObservability`, `controlThreatDetection`, the audit-trail controls and `controlAgentMemoryIntegrity` reference this field set **by tier** as their normative telemetry schema, rather than each deployment reinventing it.
 
-### B.3 Telemetry cluster → risk → control
+### B.2 Telemetry cluster → risk → control
 
 | Telemetry cluster (§) | Risks it detects or evidences | Controls it operationalizes |
 | :---------------- | :------------------------------------ | :------------------------------------ |
-| Execution context & agent identity (§5) | `riskRogueActions`, `riskShadowAndUnknownAgents`, `riskConcentratedAccessCorrelation`, `riskCrossTenantCredentialPropagation` | `controlAgentInventoryManagement`, `controlAgentObservability` |
+| Execution context & agent identity (§5) | `riskRogueActions`, `riskShadowAndUnknownAgents`, `riskDeceptiveAgentReporting`, `riskConcentratedAccessCorrelation`, `riskCrossTenantCredentialPropagation` | `controlAgentInventoryManagement`, `controlAgentObservability` |
 | Input handling & trust provenance (§6) | `riskPromptInjection`, `riskModelEvasion`, `riskRetrievalVectorStorePoisoning`, `riskImplicitCrossBoundaryTrust` | `controlInputValidationAndSanitization`, `controlUntrustedContextContainment`, `controlThreatDetection` |
 | Output handling & egress (§7) | `riskSensitiveDataDisclosure`, `riskInsecureModelOutput`, `riskCovertChannelsInModelOutputs`, `riskExcessiveNetworkExposure` | `controlOutputValidationAndSanitization`, `controlNetworkEgressControl` |
 | Model & serving (§8) | `riskModelSourceTampering`, `riskModelDeploymentTampering`, `riskModelExfiltration`, `riskDenialOfMLService`, `riskEconomicDenialOfWallet`, `riskAdapterPEFTInjection`, `riskMaliciousLoaderDeserialization` | `controlModelAndDataIntegrityManagement`, `controlModelRegistryIntegrity`, `controlMessageAndPayloadResourceLimits` |
 | Tools & MCP (§9) | `riskRogueActions`, `riskInsecureIntegratedComponent`, `riskToolRegistryTampering`, `riskToolSourceProvenance`, `riskMCPTransportHijacking`, `riskZombieShadowMCPServers`, `riskUnsandboxedCodeExecution`, `riskUntrustedHostToolRuntimeExposure`, `riskOverScopedToolAuthority`, `riskAgenticToolSupplyChain` | `controlToolServerVetting`, `controlToolServerSupplyChainIntegrity`, `controlRuntimeHostIsolation`, `controlToolArgumentValidationAndSanitization`, `controlAgentPluginPermissions`, `controlInterComponentTransportSecurity` |
-| Memory (§10) | `riskPromptResponseCachePoisoning`, `riskLongLivedSessionStateWeakness`, `riskDataPoisoning` (loose), **gap, see [B.4](#b4-proposed-new-risks)** | `controlRetrievalAndVectorSystemIntegrity` (partial), `controlUntrustedContextContainment` |
+| Memory (§10) | `riskAgentMemoryPoisoning`, `riskPromptResponseCachePoisoning`, `riskLongLivedSessionStateWeakness`, `riskDataPoisoning` (loose) | `controlAgentMemoryIntegrity`, `controlUntrustedContextContainment`, `controlRetrievalAndVectorSystemIntegrity` (partial) |
 | RAG / retrieval (§11) | `riskRetrievalVectorStorePoisoning` | `controlRetrievalAndVectorSystemIntegrity`, `controlInputValidationAndSanitization` |
-| Orchestration & multi-agent (§12) | `riskRunawayAgentToolLoops`, `riskDenialOfMLService`, `riskEconomicDenialOfWallet`, `riskOrchestratorRouteHijacking`, `riskImplicitCrossBoundaryTrust` | `controlAgentExecutionBounds`, `controlOrchestratorAndRouteIntegrity`, `controlAgentCapabilityNegotiation` |
+| Orchestration & multi-agent (§12) | `riskRunawayAgentToolLoops`, `riskDenialOfMLService`, `riskEconomicDenialOfWallet`, `riskOrchestratorRouteHijacking`, `riskImplicitCrossBoundaryTrust`, `riskUnsafeInterAgentPropagation` | `controlAgentExecutionBounds`, `controlOrchestratorAndRouteIntegrity`, `controlAgentCapabilityNegotiation` |
 | Identity, delegation & attestation (§13) | `riskAgentDelegationChainOpacity`, `riskAgentIdentitySpoofing`, `riskAgenticDelegationConfusedDeputy`, `riskStaleAgentIdentityBinding`, `riskCredentialAndTokenTheft`, `riskLongLivedSessionStateWeakness`, `riskConfidentialComputingAttestationBypass` | `controlComponentIdentityAuthentication`, `controlComponentIdentityRegistration`, `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, `controlSenderConstrainedCredentials`, `controlSessionCredentialBindingAndLifecycle`, `controlAgentCredentialIsolation` |
 | Asset inventory & fleet (§14) | `riskShadowAndUnknownAgents`, `riskZombieShadowMCPServers`, `riskToolRegistryTampering`, `riskAgenticToolSupplyChain` | `controlAgentInventoryManagement`, `controlToolRegistryAndDiscoveryIntegrity`, `controlThirdPartyCapabilityAdmission`, `controlAIComponentPatchManagement` |
 | Observability-plane integrity (§15) | `riskAuditTrailTampering` | `controlAuditTrailCompleteness`, `controlAuditTrailIntegrityVerification`, `controlAuditRecordRepositoryIndependence` |
 | Policy enforcement & mediation (§16) | `riskBrokenAuthorizationEnforcement`, `riskUnconsentedAgentAction`, `riskConsentFatigue`, `riskOverScopedToolAuthority`, `riskAgenticDelegationConfusedDeputy`, `riskImplicitCrossBoundaryTrust` | `controlTrustedPolicyEnforcementPoint`, `controlExternalizedAuthorizationDecisioning`, `controlInformedAgentConsentSurface`, `controlResourceAuthorizationEnforcement`, `controlAgenticZeroTrustPosture` |
 
-### B.4 Proposed new risks
-
-Five risks are proposed below in reduced form: the risk-map expansion resolves two of the original five, leaving three.
-
-| Proposed risk | Status against the preview branch |
-| :------------------------ | :----------------------------------------------------- |
-| **`riskAgentMemoryPoisoning`** | **Still proposed.** Poisoning of an agent's *persistent long-term memory* so future sessions inherit malicious state. `riskPromptResponseCachePoisoning` and `riskRetrievalVectorStorePoisoning` cover the cache and vector-store surfaces; neither covers `componentMemory`. `riskLongLivedSessionStateWeakness` is adjacent but concerns session *credentials and authorization*, not persisted content. Grounded in `IR-02`, `IR-05`, `AOC-10`; detected by §10. Proposed control: **`controlAgentMemoryIntegrity`**, mirroring `controlRetrievalAndVectorSystemIntegrity` for the memory component. |
-| **`riskDeceptiveAgentReporting`** | **Still proposed, and now more clearly distinct.** An agent reports a task complete while system state contradicts the report. `riskAuditTrailTampering` is the nearest new entry but concerns an adversary destroying or suppressing *records*; this concerns an agent generating *false* records through the sanctioned path, with the audit trail intact. Grounded in `AOC-01`, `AOC-07`; detected by Execution Status vs Tool Call I/O outcome, and Tool Execution ID pairing (§§5, 9). |
-| **`riskUnsafeInterAgentPropagation`** | **Narrowed but still proposed.** `riskImplicitCrossBoundaryTrust` now covers *ambient trust* across boundaries and transitive-trust chains, which was part of the original case. What remains uncovered is **behavioural propagation**: instructions, capabilities, or reputation judgements spreading agent-to-agent (`AOC-09` capability transfer, `AOC-11` broadcast, `AOC-16` shared risk signals). Recommend either extending `riskImplicitCrossBoundaryTrust` to name behavioural propagation explicitly, or adding this as a sibling. |
-| ~~`riskPrincipalImpersonationConfusedDeputy`~~ | **Withdrawn, superseded.** `riskAgentIdentitySpoofing` covers forged or unverified credentials accepted by an endpoint, and `riskAgenticDelegationConfusedDeputy` covers a high-privilege agent acting for a less-privileged caller without validating authorization at the delegation boundary. Together these cover `AOC-08`, `AOC-11`, and `AOC-15` more precisely than the original proposal. |
-| ~~`riskSystemInstructionDisclosure`~~ | **Withdrawn, reclassified.** On re-examination this is a specialization of `riskSensitiveDataDisclosure` where the disclosed asset is the agent's own instruction configuration. The distinction is real but does not warrant a separate risk; it is better handled as a detection pattern (System Prompt vs Response similarity, §§5, 7) than as a taxonomy entry. `TA-07` remains the grounding attack. |
-
-### B.5 Corpus additions the MCP paper makes available
-
-The MCP Security paper is more consequential for this document than the risk-map expansion, because it supplies **documented incidents** where the corpus had none. Three of its cited incidents bear directly on the gaps recorded in [open question 12](#open-questions-for-the-working-group):
-
-| Incident (per the MCP paper §2.1) | Closes which gap | Fields it would promote |
-| :----------------------- | :------------------ | :--------------------------- |
-| **Asana AI** (May 2025), tenant isolation flaw allowing cross-organization data contamination, up to 1,000 enterprises affected | **Cross-tenant agent leakage**, where the corpus otherwise holds no documented instance | **Organization / Tenant ID** (§5), SHOULD → candidate MUST |
-| **Supabase MCP**: prompt injection via support-ticket data caused an agent to expose private tables through a connected MCP server with direct database access, exploiting excessive tools and overprivilege | MCP-mediated exploitation, over-scoped tool authority | **MCP Server Identity & Primitive** (§9), **Tool ACL / Required Scope** (§9), **Authorization Decision Record** (§16) |
-| **WordPress AI Engine plugin** (patched Jun 2025), privilege escalation via MCP, 100,000+ sites affected | MCP privilege escalation at scale | **MCP Server Identity & Primitive** (§9), **Authorization Decision Record** (§16) |
-
-Its threat taxonomy also names, as MCP-specific threats, two attack classes this document had to argue for analogically:
-
-- **Tool Poisoning** (MCP-specific #2) and **Full Schema Poisoning** (#3), malicious modification of tool metadata, descriptors, or entire schema definitions injected via `tools/list`. This is precisely the rug-pull that **Tool Definition Digest** (§9) detects, and which was held at SHOULD for want of a documented case. The paper's own note that tool descriptions "should be considered untrusted, unless obtained from a trusted server" is the same argument this document makes for capturing the digest at invocation rather than registration.
-- **Invisible Agent Activity** (#15), agents or servers operating covertly, mimicking valid workflows while executing unauthorized actions without detection. Together with `riskAuditTrailTampering` and its ATT&CK anchor (*Disable or Modify Tools*, T1685), this is the observability-plane attack class whose absence leaves §15 with no MUST field.
-
-**Status: incorporated.** All three are now catalogued in [Appendix A.1](#a1-real-world-attack-vectors) as **`TA-11`** (Asana AI), **`TA-12`** (Supabase MCP), and **`TA-13`** (WordPress AI Engine), with ATLAS mappings in [A.5](#a5-attack-inventory--mitre-atlas-technique-mapping), and their IDs are cited by the field rows they bear on. **The tier assignments have not been re-run**: that requires WG ratification, and it is [open question 12](#open-questions-for-the-working-group). What has changed is that the question is now answerable from the corpus rather than from analogy: **Organization / Tenant ID** has a documented cross-tenant incident behind it, and **MCP Server Identity & Primitive** has two documented MCP-mediated exploitations.
-
-### B.6 Component & control refinements
+### B.3 Component & control refinements
 
 - **No new pipeline components required.** `componentMemory` and `componentRAGContent` exist. Two clarifications stand: confirm `componentMemory` scope explicitly covers *persistent long-term* memory, which `riskAgentMemoryPoisoning` targets; and note that **background and scheduled execution** (heartbeats, cron, self-scheduled loops; §12) still has no dedicated component, despite being a distinct autonomy surface (`AOC-04`, `AOC-10`).
 - **Identity and delegation is now well covered by controls.** The recommendation to document an identity/delegation control-plane view is largely satisfied by `controlComponentIdentityAuthentication`, `controlComponentIdentityRegistration`, `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, and `controlSenderConstrainedCredentials`. §13 telemetry now has an explicit home.
@@ -814,10 +763,10 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Agent Name | MUST | `gen_ai.agent.name`, `asset.*` | `agent_id` /`owner_ref` (6.1) |
 | Agent Instance ID | MUST | `gen_ai.agent.id` | `runtime_instance_id` (6.2) |
 | Workflow / Run ID | MUST | trace id / run attr, *see note below* | `request_trace_id` (6.4) |
-| Session / Turn / Step IDs | MUST | `gen_ai.conversation.id`; turn attr (AITF gap); OTel `span_id` + `gen_ai.agent.step.index` | n/a |
+| Session / Turn / Step IDs | MUST | `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index` | n/a |
 | Trace Context (propagated) | MUST | OTel `trace_id`/`span_id`, W3C `traceparent` | `request_trace_id` (6.4) |
-| Organization / Tenant ID | SHOULD | `asset.*` / resource attrs (AITF gap) | `trust_domain` (6.1) |
-| Trigger Type & Source Event | MUST | `gen_ai.agent.*` trigger attrs (AITF gap) | n/a |
+| Organization / Tenant ID | SHOULD | `asset.*` / resource attrs | `trust_domain` (6.1) |
+| Trigger Type & Source Event | MUST | `gen_ai.agent.*` trigger attrs | n/a |
 | Action Type | MUST | `gen_ai.agent.step.type` | `action.{tool,method}` (6.4) |
 | Execution Status | MUST | `gen_ai.response.finish_reason` | n/a |
 | Surface / App | MUST | `gen_ai.*` (surface attr) | n/a (policy input) |
@@ -828,12 +777,12 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Input Trust Classification | MUST | `security.*` (trust/threat) | `constraints` (6.3) |
 | Source host / IP | MUST | `security.*` / resource attrs | n/a (policy input) |
 | Guardrail (Input) Verdict | MUST | `security.guardrail.type`, `security.blocked`, `security.threat_type` | n/a |
-| Content Modality & Attachment Identity | MUST ‡ | `gen_ai.*` content-part attrs (AITF gap) | n/a |
-| Guardrail Modification Record | SHOULD ‡ | `security.guardrail.*` + modified/redacted flags (AITF gap) | n/a |
+| Content Modality & Attachment Identity | MUST ‡ | `gen_ai.*` content-part attrs | n/a |
+| Guardrail Modification Record | SHOULD ‡ | `security.guardrail.*` + modified/redacted flags | n/a |
 | Threat Classification / ATLAS Technique Tag | MUST † | `security.threat_type`, `compliance.framework=mitre_atlas`, `compliance.control_id` | n/a |
-| Encoded / Obfuscated Payload Indicator | MAY | `security.*` obfuscation / decoded-form attrs (AITF gap) | n/a |
+| Encoded / Obfuscated Payload Indicator | MAY | `security.*` obfuscation / decoded-form attrs | n/a |
 | Response / Output | MUST | `gen_ai.completion` | n/a |
-| Citations / Source Attribution | MUST | `rag.*` (source) + output citation attrs (AITF gap) | n/a |
+| Citations / Source Attribution | MUST | `rag.*` (source) + output citation attrs | n/a |
 | Output Egress Destination | MUST | `mcp.tool.call.arguments`, `security.pii.*` | `resource_indicators` (6.3) |
 | Observation / Thought | SHOULD | `gen_ai.agent.step.thought` | n/a |
 | Guardrail (Output) Verdict | MUST | `security.guardrail.*`, `security.pii.*` | `constraints.data_classification` (6.3) |
@@ -851,9 +800,9 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Tool Type / Trust Boundary | MUST | `mcp.*` vs internal | n/a |
 | Tool ID | MAY | `mcp.server.name` + tool id | n/a |
 | Tool Execution ID | MUST | `gen_ai.tool.call.id` | n/a |
-| Tool Definition Digest | SHOULD | `mcp.tool.*` schema/description hash (AITF gap) | `approved_software_refs` (6.1) |
-| Execution Environment / Sandbox | MUST | `supply_chain.*` + runtime/sandbox attrs (AITF gap) | `binding_profile` (6.2, partial) |
-| MCP Server Identity & Primitive | SHOULD | `mcp.server.name/version`, primitive attr (AITF gap) | n/a |
+| Tool Definition Digest | SHOULD | `mcp.tool.*` schema/description hash | `approved_software_refs` (6.1) |
+| Execution Environment / Sandbox | MUST | `supply_chain.*` + runtime/sandbox attrs | `binding_profile` (6.2, partial) |
+| MCP Server Identity & Primitive | SHOULD | `mcp.server.name/version`, primitive attr | n/a |
 | Tool Error / Exception | MUST | `mcp.*` error, `security.*` | n/a |
 | Tool ACL / Required Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations` (6.3) |
 | Tool Privacy Classification | MAY | `security.pii.*`, `compliance.*` | `constraints.data_classification` (6.3) |
@@ -862,53 +811,51 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Memory Provenance | MUST | `memory.provenance` | n/a |
 | Memory Integrity / Poisoning | SHOULD | `memory.security.poisoning_score`, `memory.security.isolation_verified`, `memory.security.cross_session` | n/a |
 | Memory Footprint / Growth | MUST | `memory.*`, `cost.*` | n/a |
-| Declared Memory Configuration | MAY | `memory.*` config attrs (AITF gap) | n/a |
+| Declared Memory Configuration | MAY | `memory.*` config attrs | n/a |
 | Memory Write Rationale | SHOULD | `gen_ai.agent.step.thought` (per-step) | n/a |
 | Retrieval Event | MUST | `rag.*` | n/a |
 | Retrieved-Content Source | MUST | `rag.*` (source) | `delegation_chain[]`/`constraints` (6.3) |
 | Retrieved Content/Metadata Integrity | SHOULD | `rag.*`, `security.*` | n/a |
-| Declared Knowledge-Source Configuration | MAY | `rag.*` config/index attrs (AITF gap) | n/a |
+| Declared Knowledge-Source Configuration | MAY | `rag.*` config/index attrs | n/a |
 | Inter-Agent Message | MUST | `gen_ai.agent.*`, delegation activity (OCSF 9002) | `delegation_chain[]` (6.3) |
-| A2A Task Lifecycle Event | SHOULD | delegation activity (OCSF 9002); a2a attrs (AITF gap) | `delegation_id`, `parent_delegation_id` (6.3) |
-| Peer Agent Card / Descriptor | SHOULD | `gen_ai.agent.*` peer attrs (AITF gap) | `agent_id`, `approved_software_refs` (6.1) |
+| A2A Task Lifecycle Event | SHOULD | delegation activity (OCSF 9002); a2a attrs | `delegation_id`, `parent_delegation_id` (6.3) |
+| Peer Agent Card / Descriptor | SHOULD | `gen_ai.agent.*` peer attrs | `agent_id`, `approved_software_refs` (6.1) |
 | Background / Scheduled Task | MUST | `gen_ai.agent.next_action` / step events | n/a |
 | Loop / Step-Count Signal | MUST | `gen_ai.agent.turn_count` | n/a |
 | Resource-Consumption Aggregate | MUST | `cost.*`, `gen_ai.usage.*` | `constraints` (rate) (6.3) |
 | Task / Intent Declaration | SHOULD | `gen_ai.agent.next_action` | `task_id`, `task_description` (6.3) |
-| Protocol Envelope Capture | MAY | `mcp.*` / a2a raw payload (AITF gap) | n/a |
+| Protocol Envelope Capture | MAY | `mcp.*` / a2a raw payload | n/a |
 | Identities Used (per hop) | MUST | `identity.*` (OCSF Authentication 3002) | `actor`, chain (6.3) |
 | Verified vs Displayed Identity | MUST | `identity.auth.method`, `identity.auth.result` | `originating_principal`/`actor` (6.3) |
 | Originating Principal | SHOULD | `identity.*` | `originating_principal` (6.3) |
 | Delegation Chain | SHOULD | delegation activity (OCSF 9002) | `delegation_chain[]`, `delegation_id`, `parent_delegation_id` (6.3) |
 | Granted Authorizations / Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations` (6.3) |
 | Resource Indicators + Constraints | SHOULD | `identity.*`, `compliance.*` | `resource_indicators`, `constraints` (6.3) |
-| Trust-Domain Crossing & Delegation Depth | SHOULD | `identity.*` domain/depth attrs (AITF gap) | `trust_domain` (6.1), `max_depth` (6.3) |
+| Trust-Domain Crossing & Delegation Depth | SHOULD | `identity.*` domain/depth attrs | `trust_domain` (6.1), `max_depth` (6.3) |
 | Runtime Credential / Attestation | SHOULD | `identity.auth.method` (mTLS/SPIFFE/OAuth/DID-VC), `identity.trust.method` | `attestation_method`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2) |
 | Lifecycle State | SHOULD | `identity.lifecycle.operation` | `lifecycle_state` (6.1) |
 | Version / Repository / Software Ref | SHOULD | `supply_chain.*`, `asset.*` | `approved_software_refs` (6.1) |
-| Capability-Set Change Event | MUST | `asset.*` change events (AITF gap) | `approved_software_refs` (6.1) |
+| Capability-Set Change Event | MUST | `asset.*` change events | `approved_software_refs` (6.1) |
 | AgBOM / Inventory Snapshot | SHOULD | `supply_chain.ai_bom.*` | `approved_software_refs` (6.1) |
 | Component Dependency Graph | SHOULD | `supply_chain.ai_bom.*` (dependency edges) | n/a |
 | Inventory Attestation Signature | SHOULD | `supply_chain.*` signature attrs | `software_hash`, `attestation_method` (6.2) |
 | Asset-inventory metadata (creator, oncall, dates, status, surfaces) | MAY | `asset.*` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
 | Fleet aggregates | MAY | (derived) | n/a |
-| Credential Minting & Scope-Narrowing Check | SHOULD | `identity.auth.scope_granted` + token-exchange attrs (AITF gap) | `granted_authorizations`, `binding_profile` (6.2/6.3) |
-| Authorization Decision Record | MUST | `security.*` decision + `compliance.control_id` (AITF gap) | `policy_profile_ref` (6.1) |
-| Attribute Source / Trusted-Provenance Marking | MUST ‡ | (AITF gap) | `attestation_method` (6.2, partial) |
-| Session Taint Labels & Information-Flow Decisions | SHOULD | `security.*` labels (AITF gap) | `constraints.data_classification` (6.3) |
-| Human Approval / Elicitation Event | SHOULD | `identity.*` approver + approval attrs (AITF gap) | `originating_principal` (6.3, partial) |
-| Backend / Route Restriction Decision | SHOULD | `gen_ai.provider.name` + routing constraint attrs (AITF gap) | `resource_indicators`, `constraints` (6.3) |
-| Mediation Coverage & Bypass Path | SHOULD | (AITF gap) | n/a |
-| Enforcement-Point Availability & Failure Mode | SHOULD | `security.guardrail.*` availability/latency (AITF gap) | n/a |
-| Instrumentation Coverage / Hook Attestation | SHOULD | `asset.*` / instrumentation attrs (AITF gap) | n/a |
-| Event Sequence Continuity | SHOULD | (AITF gap) | n/a |
+| Credential Minting & Scope-Narrowing Check | SHOULD | `identity.auth.scope_granted` + token-exchange attrs | `granted_authorizations`, `binding_profile` (6.2/6.3) |
+| Authorization Decision Record | MUST | `security.*` decision + `compliance.control_id` | `policy_profile_ref` (6.1) |
+| Attribute Source / Trusted-Provenance Marking | MUST ‡ | n/a | `attestation_method` (6.2, partial) |
+| Session Taint Labels & Information-Flow Decisions | SHOULD | `security.*` labels | `constraints.data_classification` (6.3) |
+| Human Approval / Elicitation Event | SHOULD | `identity.*` approver + approval attrs | `originating_principal` (6.3, partial) |
+| Backend / Route Restriction Decision | SHOULD | `gen_ai.provider.name` + routing constraint attrs | `resource_indicators`, `constraints` (6.3) |
+| Mediation Coverage & Bypass Path | SHOULD | n/a | n/a |
+| Enforcement-Point Availability & Failure Mode | SHOULD | `security.guardrail.*` availability/latency | n/a |
+| Instrumentation Coverage / Hook Attestation | SHOULD | `asset.*` / instrumentation attrs | n/a |
+| Event Sequence Continuity | SHOULD | n/a | n/a |
 | Policy Reason Code | MAY | `security.*` + `compliance.control_id` | n/a |
 
 > **Note on the identifier mapping.** §5 distinguishes five levels (instance → run → session → turn → step). AITF maps the runtime instance to `gen_ai.agent.id` and the session to `gen_ai.conversation.id`; the run maps to the trace ID. AITF has no dedicated turn attribute today. Step identity is the OTel `span_id`, with `gen_ai.agent.step.index` recording its order within the agent sequence; see [Appendix F.4](#f4-what-this-implies-for-opentelemetry-aitf-and-ocsf).
 
-> **"(AITF gap)"** marks a field with no current AITF attribute. These are the concrete additions this document asks of AITF; the same evidence-driven promotion rule in [E.3](#e3-incremental-extension-path-via-aitf) applies.
->
-> **Note on upstream OTel coverage.** Several rows marked *(AITF gap)* do have a home in the **OpenTelemetry GenAI conventions**, which moved to a dedicated repository and are richer than this table's `(AITF gap)` markers alone suggest (notably `gen_ai.system_instructions` (System Prompt), `gen_ai.tool.definitions` (Tool Definition Digest), `gen_ai.retrieval.query.text` / `.documents` (Retrieval Event), the full `gen_ai.request.*` decoding set (Inference Parameters), the `mcp.*` namespace (MCP Server Identity), and `gen_ai.invoke_agent.tool_calls` / `.inference_calls` (Loop Signal, as metrics)). See **[Appendix D.1](#d1-what-the-genai-conventions-cover-today)** for the inventory and **[D.2](#d2-coverage--gaps-by-field-cluster)** for what remains genuinely absent: chiefly trust classification, security guardrail verdicts, retrieval provenance, and (within an otherwise-covered `gen_ai.memory.*` namespace) memory provenance and footprint.
+> **Note on upstream OTel coverage.** The **OpenTelemetry GenAI conventions** moved to a dedicated repository and cover more of this field set than is commonly assumed (notably `gen_ai.system_instructions` (System Prompt), `gen_ai.tool.definitions` (Tool Definition Digest), `gen_ai.retrieval.query.text` / `.documents` (Retrieval Event), the full `gen_ai.request.*` decoding set (Inference Parameters), the `mcp.*` namespace (MCP Server Identity), and `gen_ai.invoke_agent.tool_calls` / `.inference_calls` (Loop Signal, as metrics)). See **[Appendix D.1](#d1-what-the-genai-conventions-cover-today)** for the inventory and **[D.2](#d2-coverage--gaps-by-field-cluster)** for what remains genuinely absent: chiefly trust classification, security guardrail verdicts, retrieval provenance, and (within an otherwise-covered `gen_ai.memory.*` namespace) memory provenance and footprint.
 
 > **ODIS fields intentionally out of telemetry scope** (identity/authority mechanics rather than detection signals): `approved_runtime_issuers`, `trust_domain`, `policy_profile_ref`, `permitted_delegation_modes`, `provider_entitlements`, and the cryptographic details of `binding_profile` (DPoP/mTLS/TLS-session). These are consumed by the policy engine (ODIS §6.4 Identity Context) rather than emitted as security telemetry, `trust_domain` and `max_depth` are the exception: §13's **Trust-Domain Crossing & Delegation Depth** field carries them as telemetry, because both become detection-grade once a delegation chain leaves the domain that issued it (see [§4.7](#47-agents-you-do-not-operate)).
 
@@ -924,7 +871,7 @@ This appendix covers the OpenTelemetry emission side of the standards bridge; [A
 
 ### D.1 What the GenAI conventions cover today
 
-The conventions are richer than is commonly assumed, and several fields marked "(AITF gap)" in [Appendix C](#appendix-c-aitf--odis-cross-reference) in fact have a natural OTel home already.
+The conventions are richer than is commonly assumed, and several fields in fact have a natural OTel home already.
 
 - **Spans.** `chat`, `text_completion`, `embeddings`, `generate_content`, `execute_tool`, `create_agent`, `invoke_agent` (client and internal variants), `invoke_workflow`, and a **`plan`** span, discriminated by `gen_ai.operation.name`.
 - **Core attributes.** `gen_ai.provider.name`; `gen_ai.agent.id` / `.name` / `.description` / `.version`; `gen_ai.conversation.id`; `gen_ai.workflow.name`; `gen_ai.request.model` and the full decoding set (`temperature`, `top_p`, `top_k`, `max_tokens`, `stop_sequences`, `seed`, `frequency_penalty`, `presence_penalty`, `choice.count`, `stream`); `gen_ai.response.id` / `.model` / `.finish_reasons`; `gen_ai.usage.input_tokens` / `.output_tokens` / `.reasoning.output_tokens` / `.cache_read.input_tokens` / `.cache_creation.input_tokens`.
@@ -967,7 +914,7 @@ Ordered by ratio of security value to specification cost. Every item is scoped t
 
 1. **A trust-provenance attribute on message parts.** `gen_ai.input.trust_level`, distinguishing trusted instruction from untrusted environmental data. This is the single highest-value addition and the one with no current analogue anywhere in the conventions. It is cheap (an enum on an existing structure) and it is the field the CoSAI Risk Map treats as the core agentic control (§6).
 2. **A security-guardrail signal, ideally by extending `gen_ai.evaluation.*`.** The evaluation event already carries name, score, label, and explanation, the right shape for a classifier verdict. What it lacks is the security semantics: a **blocked / allowed** outcome, a guardrail **type**, and a **threat technique** reference. Reusing evaluation avoids a parallel namespace; the alternative is a dedicated `gen_ai.guardrail.*`. Either way, this is the field that makes classifier *bypass* detectable (`TA-01`).
-3. **Memory provenance and footprint, on the existing `gen_ai.memory.*` namespace.** **This ask is pending re-scope by the WG; see [open question 1(c)](#open-questions-for-the-working-group).** It was drafted when memory was absent from the conventions. It no longer is: `gen_ai.memory.*` now carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([D.1](#d1-what-the-genai-conventions-cover-today)). Of the four things this ask originally sought, operation and item identity are covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (§10), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.
+3. **Memory provenance and footprint, on the existing `gen_ai.memory.*` namespace.** `gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([D.1](#d1-what-the-genai-conventions-cover-today)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (§10), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.
 4. **Retrieval provenance.** `gen_ai.retrieval.documents` exists; per-document **source, owner, trust level, and last-modified** do not, and `TA-09` turns specifically on recently-modified retrievable content.
 5. **Turn and step identifiers.** `gen_ai.conversation.id` and `gen_ai.workflow.name` exist; the intermediate levels do not. `TA-08` and `IR-01` are across-turn patterns (§5).
 6. **`gen_ai.trigger.type` and `gen_ai.trigger.event`.** Whether a run was user-initiated or autonomous, and what event started it. `TA-01` is zero-click; this is the first filter of any injection hunt.
@@ -1063,8 +1010,7 @@ The [OWASP Agent Observability Standard](https://aos.owasp.org/) (AOS) defines h
 
 | Status | Meaning |
 | :----------------- | :----------------------------------------------------------------------------------- |
-| **Covered** | Already in the field set independently of AOS. |
-| **Covered (new)** | Added specifically to close an AOS gap. |
+| **Covered** | In the field set. |
 | **Partial** | Deliberately narrower coverage; the difference is explained. |
 | **Out of scope** | Control-plane or wire-protocol material this document intentionally does not specify. |
 
@@ -1076,21 +1022,21 @@ The [OWASP Agent Observability Standard](https://aos.owasp.org/) (AOS) defines h
 
 | AOS element | This document | Status |
 | :-------------------------------------------------------- | :-------------------------------------- | :------ |
-| Hook set (agent trigger, user message, agent response, tool call request, tool call result, memory store, memory retrieval, knowledge retrieval, MCP inbound/outbound) | Field coverage across §§5 to 12; **Instrumentation Coverage / Hook Attestation** (§15) records which hooks are live | **Covered (new)** |
+| Hook set (agent trigger, user message, agent response, tool call request, tool call result, memory store, memory retrieval, knowledge retrieval, MCP inbound/outbound) | Field coverage across §§5 to 12; **Instrumentation Coverage / Hook Attestation** (§15) records which hooks are live | **Covered** |
 | Decision `allow` / `deny` | Guardrail (Input/Output) Verdict, pass / block (§§6 to 7) | Covered |
-| Decision `modify` + `modifiedRequest` | **Guardrail Modification Record** (§6), cross-cutting | **Covered (new)** |
+| Decision `modify` + `modifiedRequest` | **Guardrail Modification Record** (§6), cross-cutting | **Covered** |
 | `reasoning` (human-readable decision rationale) | Guardrail Verdict detector + score (§§6 to 7) | Covered |
-| `reasonCode[]` (machine-readable) | **Policy Reason Code** (§15) | **Covered (new)** |
-| Enforcement callout failure, timeout, unavailability | **Enforcement-Point Availability & Failure Mode** (§15) | **Covered (new)** |
-| `ping` / liveness | **Enforcement-Point Availability** + **Event Sequence Continuity** (§15) | **Covered (new)** |
-| `StepContext`: agent, session, turn, step, timestamp, user, organization | **Session / Turn / Step IDs**, **Organization / Tenant ID** (§5) | **Covered (new)** |
+| `reasonCode[]` (machine-readable) | **Policy Reason Code** (§15) | **Covered** |
+| Enforcement callout failure, timeout, unavailability | **Enforcement-Point Availability & Failure Mode** (§15) | **Covered** |
+| `ping` / liveness | **Enforcement-Point Availability** + **Event Sequence Continuity** (§15) | **Covered** |
+| `StepContext`: agent, session, turn, step, timestamp, user, organization | **Session / Turn / Step IDs**, **Organization / Tenant ID** (§5) | **Covered** |
 | `Agent` object, name, id, description, version, `instructions`, provider, model, tools, mcpServers, resources | Agent Name, Instance ID, System Prompt (§5); Model fields (§8); inventory (§14) | Covered |
-| `Message` object + `Part` union (TextPart / FilePart / DataPart) | **Content Modality & Attachment Identity** (§6), cross-cutting | **Covered (new)** |
-| `ToolDefinition` / `ToolArgumentDefinition` / `ToolOutputDefinition` | **Tool Definition Digest** (§9) | **Covered (new)** |
-| `ToolCallRequest`: `executionId`, `toolId`, inputs | **Tool Execution ID** (§9) + Tool Call I/O, Tool Name (§9) | **Covered (new)** |
-| `Source` union, FileSource, SiteSource | **Citations / Source Attribution** (§7) | **Covered (new)** |
+| `Message` object + `Part` union (TextPart / FilePart / DataPart) | **Content Modality & Attachment Identity** (§6), cross-cutting | **Covered** |
+| `ToolDefinition` / `ToolArgumentDefinition` / `ToolOutputDefinition` | **Tool Definition Digest** (§9) | **Covered** |
+| `ToolCallRequest`: `executionId`, `toolId`, inputs | **Tool Execution ID** (§9) + Tool Call I/O, Tool Name (§9) | **Covered** |
+| `Source` union, FileSource, SiteSource | **Citations / Source Attribution** (§7) | **Covered** |
 | `KnowledgeRetrievalStepParams`: query, keywords, results | Retrieval Event, Retrieved-Content Source (§11) | Covered |
-| `A2AContext`: from / to, role (client / server) | **Peer Agent Card / Descriptor** (§12); Identities Used (§13) | **Covered (new)** |
+| `A2AContext`: from / to, role (client / server) | **Peer Agent Card / Descriptor** (§12); Identities Used (§13) | **Covered** |
 | Guardian Agent architecture; agent↔guardian authentication | Not specified, but its **outcomes** are, via §15 | Out of scope |
 | JSON-RPC 2.0 over HTTP(S); error code ranges | Wire protocol not specified; error *content* covered by LLM Error (§8), Tool Error (§9) | Out of scope |
 
@@ -1100,19 +1046,19 @@ The [OWASP Agent Observability Standard](https://aos.owasp.org/) (AOS) defines h
 
 | AOS element | This document | Status |
 | :------------------------------------- | :---------------------------------------- | :----------------------- |
-| `steps/agentTrigger`: `trigger.type` (autonomous), `trigger.event`, content | **Trigger Type & Source Event** (§5) | **Covered (new)** |
+| `steps/agentTrigger`: `trigger.type` (autonomous), `trigger.event`, content | **Trigger Type & Source Event** (§5) | **Covered** |
 | `steps/message`: role, content | Model Input (§6); Response (§7); System Prompt (§5) | Covered |
-| `steps/message`: `citations` | **Citations / Source Attribution** (§7) | **Covered (new)** |
+| `steps/message`: `citations` | **Citations / Source Attribution** (§7) | **Covered** |
 | `steps/message`: `reasoning` | Observation / Thought (§7) | Covered |
-| `steps/toolCallRequest`: `reasoning` | **Tool Selection Rationale** (§9) | **Covered (new)** |
-| `steps/toolCallResult`: `executionId`, outputs, `isError` | Tool Call I/O, Tool Error (§9); **Tool Execution ID** (§9) | **Covered (new)** |
-| `steps/memoryStore`: memory, `reasoning` | Memory Write (§10); **Memory Write Rationale** (§10) | **Covered (new)** |
+| `steps/toolCallRequest`: `reasoning` | **Tool Selection Rationale** (§9) | **Covered** |
+| `steps/toolCallResult`: `executionId`, outputs, `isError` | Tool Call I/O, Tool Error (§9); **Tool Execution ID** (§9) | **Covered** |
+| `steps/memoryStore`: memory, `reasoning` | Memory Write (§10); **Memory Write Rationale** (§10) | **Covered** |
 | `steps/memoryContextRetrieval`: memory, `reasoning` | Memory Read (§10) | Covered |
 | `steps/knowledgeRetrieval`: query, keywords, results | Retrieval Event (§11) | Covered |
-| `protocols/MCP`: full JSON-RPC payload | **MCP Server Identity & Primitive** (§9); **Protocol Envelope Capture** (§12) | **Covered (new)** |
-| `protocols/A2A`: full JSON-RPC payload | **A2A Task Lifecycle Event**, **Protocol Envelope Capture** (§12) | **Covered (new)** |
-| A2A methods: `message/send`, `message/stream`, `tasks/get`, `tasks/cancel`, `tasks/resubscribe`, `tasks/pushNotificationConfig/get`+`/set` | **A2A Task Lifecycle Event** (§12) | **Covered (new)** |
-| `ping`: timestamp, timeout, status, version | §15 (see [F.1](#f1-pillar-1-instrument)) | **Covered (new)** |
+| `protocols/MCP`: full JSON-RPC payload | **MCP Server Identity & Primitive** (§9); **Protocol Envelope Capture** (§12) | **Covered** |
+| `protocols/A2A`: full JSON-RPC payload | **A2A Task Lifecycle Event**, **Protocol Envelope Capture** (§12) | **Covered** |
+| A2A methods: `message/send`, `message/stream`, `tasks/get`, `tasks/cancel`, `tasks/resubscribe`, `tasks/pushNotificationConfig/get`+`/set` | **A2A Task Lifecycle Event** (§12) | **Covered** |
+| `ping`: timestamp, timeout, status, version | §15 (see [F.1](#f1-pillar-1-instrument)) | **Covered** |
 | OTel span hierarchy: `agent.run`, `agent.plan`, turn spans, step spans | **Session / Turn / Step IDs** + **Trace Context** (§5) specify the *identifiers and propagation*; span naming is left to the OTel binding | **Partial**: deliberate; this document is field-level, and span naming belongs in AITF |
 | OTel attribute naming: `agent.*`, `llm.model.name`, `llm.provider.name` | This document uses OTel GenAI semconv `gen_ai.*` throughout ([Appendix C](#appendix-c-aitf--odis-cross-reference)) | **Divergence**: see [F.6](#f6-divergences--open-coordination-items) |
 | OCSF binding: API Activity 6003, `type_uid` 600301, `actor.type_id: 99` "AI Agent", `unmapped.aos` namespace | [Appendix E](#appendix-e-implications-for-ocsf--aitf-the-standardization-bridge) proposes ratified classes 9001/9002 and an `ai_operation` profile | **Divergence**: see [F.6](#f6-divergences--open-coordination-items) |
@@ -1124,22 +1070,22 @@ The [OWASP Agent Observability Standard](https://aos.owasp.org/) (AOS) defines h
 
 | AOS element | This document | Status |
 | :------------------------------------------------ | :--------------------------------------------- | :------- |
-| AgBOM as a queryable, on-demand artifact | **AgBOM / Inventory Snapshot** (§14) | **Covered (new)** |
-| Dynamic refresh on discovery / removal / modification of agents, MCP servers, knowledge bases, tools, memory, models | **Capability-Set Change Event** (§14), MUST | **Covered (new)** |
+| AgBOM as a queryable, on-demand artifact | **AgBOM / Inventory Snapshot** (§14) | **Covered** |
+| Dynamic refresh on discovery / removal / modification of agents, MCP servers, knowledge bases, tools, memory, models | **Capability-Set Change Event** (§14), MUST | **Covered** |
 | Entity: Standard Packages, name, description, version | Tool/Agent Version, Repository/Software Ref (§14) | Covered |
-| Entity: Models, identity, version, description, endpoint, `modelContextWindow`, arguments | Model Name/Version, Provider/Endpoint Identity (§8); **Inference Parameters** (§8) | **Covered (new)** |
-| Entity: Capabilities, agent cards, discovered agents, MCP servers and their protocols | **Peer Agent Card / Descriptor** (§12); **MCP Server Identity & Primitive** (§9) | **Covered (new)** |
-| Entity: Knowledge, name, description, schema, search parameters | **Declared Knowledge-Source Configuration** (§11) | **Covered (new)** |
-| Entity: Memory, name, description, type, size constraints, retrieval spec | **Declared Memory Configuration** (§10) | **Covered (new)** |
-| Entity: Tools, name, description, scheme, local and MCP endpoints | **Tool Definition Digest** (§9); **MCP Server Identity** (§9) | **Covered (new)** |
-| CycloneDX `dependencies[].dependsOn` | **Component Dependency Graph** (§14) | **Covered (new)** |
-| CycloneDX `signatures[]`: `value`, `keyId` | **Inventory Attestation Signature** (§14) | **Covered (new)** |
-| CycloneDX properties: `sandbox`, `languageRuntime`, `environment.os`, `environment.architecture`, `timeoutMs` | **Execution Environment / Sandbox** (§9) | **Covered (new)** |
+| Entity: Models, identity, version, description, endpoint, `modelContextWindow`, arguments | Model Name/Version, Provider/Endpoint Identity (§8); **Inference Parameters** (§8) | **Covered** |
+| Entity: Capabilities, agent cards, discovered agents, MCP servers and their protocols | **Peer Agent Card / Descriptor** (§12); **MCP Server Identity & Primitive** (§9) | **Covered** |
+| Entity: Knowledge, name, description, schema, search parameters | **Declared Knowledge-Source Configuration** (§11) | **Covered** |
+| Entity: Memory, name, description, type, size constraints, retrieval spec | **Declared Memory Configuration** (§10) | **Covered** |
+| Entity: Tools, name, description, scheme, local and MCP endpoints | **Tool Definition Digest** (§9); **MCP Server Identity** (§9) | **Covered** |
+| CycloneDX `dependencies[].dependsOn` | **Component Dependency Graph** (§14) | **Covered** |
+| CycloneDX `signatures[]`: `value`, `keyId` | **Inventory Attestation Signature** (§14) | **Covered** |
+| CycloneDX properties: `sandbox`, `languageRuntime`, `environment.os`, `environment.architecture`, `timeoutMs` | **Execution Environment / Sandbox** (§9) | **Covered** |
 | CycloneDX properties: `auth`, `scope`, `endpoint` | Tool ACL / Required Scope (§9); Output Egress Destination (§7) | Covered |
-| CycloneDX properties: `memoryBackend`, `memoryLimitMB` | **Declared Memory Configuration** (§10) | **Covered (new)** |
+| CycloneDX properties: `memoryBackend`, `memoryLimitMB` | **Declared Memory Configuration** (§10) | **Covered** |
 | CycloneDX property: `compliance` | Not a distinct field; AITF `compliance.*` carries it ([Appendix C](#appendix-c-aitf--odis-cross-reference)) | Partial |
-| SPDX and SWID bindings | **AgBOM / Inventory Snapshot** (§14) is format-agnostic and names all three | Covered (new) |
-| CycloneDX property: `a2aCardUrl` | **Peer Agent Card / Descriptor** (§12) | **Covered (new)** |
+| SPDX and SWID bindings | **AgBOM / Inventory Snapshot** (§14) is format-agnostic and names all three | Covered |
+| CycloneDX property: `a2aCardUrl` | **Peer Agent Card / Descriptor** (§12) | **Covered** |
 
 ### F.4 What this implies for OpenTelemetry, AITF and OCSF
 
@@ -1162,7 +1108,7 @@ Closing the AOS gaps surfaced attributes missing from this document's bindings. 
 | 11 | **Declared-configuration attributes** for memory and knowledge sources | **`gen_ai.memory.*` exists** (store/record identity, query, count, and a memory span), but carries no declared-configuration, provenance or footprint attributes; knowledge partially via `gen_ai.data_source.id` | **OTel**: extend `gen_ai.memory.*` ([D.3](#d3-what-cosai-asks-opentelemetry-to-include) item 3, pending re-scope) |
 | 12 | **Instrumentation coverage** and **event sequence number** | **Instrumentation scope is native**: every signal carries an emitting scope name and version, which partially answers coverage. **No envelope sequence number**, and no gap-detection concept | Coverage: **reuse** instrumentation scope, extend for hook-level detail. Sequence number: **OCSF**, as an envelope concern rather than an instrumentation one |
 
-**What the pattern shows.** Of twelve asks, two are substantially resolved upstream (5, 7), three are answered wholly or partly by OTel structure that already exists and should be reused rather than duplicated (1, 6, 10, and the first half of 12), and seven remain genuine gaps. Memory was previously recorded here as the largest single hole; it is not. OpenTelemetry now carries a `gen_ai.memory.*` namespace and a memory span ([D.1](#d1-what-the-genai-conventions-cover-today)), and AITF carries `memory.*` including `memory.provenance` ([Appendix C](#appendix-c-aitf--odis-cross-reference)). What remains absent upstream is narrower and specific: **memory provenance and footprint**, the two attributes `IR-02`, `IR-05` and `AOC-05` turn on.
+**What the pattern shows.** Of twelve asks, two are substantially resolved upstream (5, 7), three are answered wholly or partly by OTel structure that already exists and should be reused rather than duplicated (1, 6, 10, and the first half of 12), and seven remain genuine gaps. Memory is not among them. OpenTelemetry now carries a `gen_ai.memory.*` namespace and a memory span ([D.1](#d1-what-the-genai-conventions-cover-today)), and AITF carries `memory.*` including `memory.provenance` ([Appendix C](#appendix-c-aitf--odis-cross-reference)). What remains absent upstream is narrower and specific: **memory provenance and footprint**, the two attributes `IR-02`, `IR-05` and `AOC-05` turn on.
 
 **Governance.** Per the rule in [E.3](#e3-incremental-extension-path-via-aitf), each item graduates from AITF-proposed to a standardization ask once ≥ 2 independent attacks in [Appendix A](#appendix-a-attack--incident-inventory) require it, a bar every MUST-tier item above already clears. File emission-side asks with OpenTelemetry, consumption-side asks with OCSF, and use AITF to carry both in the interim.
 
@@ -1219,14 +1165,14 @@ CPEX's threat matrix, mapped to this document's fields. This is the tightest ava
 
 | CPEX threat | CPEX control | Covered by | Status |
 | :------------- | :------------------- | :----------------------------------------- | :--------------------------- |
-| Prompt-injection tool misuse | Policy gates and argument validation before dispatch | Input Trust Classification, Guardrail (Input) Verdict (§6); Tool Call I/O (§9); **Authorization Decision Record** (§16) | **Covered (new)**: the decision record was missing |
+| Prompt-injection tool misuse | Policy gates and argument validation before dispatch | Input Trust Classification, Guardrail (Input) Verdict (§6); Tool Call I/O (§9); **Authorization Decision Record** (§16) | **Covered**: the decision record was missing |
 | Confused deputy / privilege escalation | Per-caller identity from verified tokens | Identities Used, Verified vs Displayed Identity, Granted Authorizations (§13) | Covered |
-| Cross-request data exfiltration | Session-level taint blocks the write-down | **Session Taint Labels & Information-Flow Decisions** (§16) | **Covered (new)**: expressible as state, not only as a correlation pattern |
-| Credential exposure | Fresh audience-scoped tokens minted per call | **Credential Minting & Scope-Narrowing Check** (§13) | **Covered (new)** |
+| Cross-request data exfiltration | Session-level taint blocks the write-down | **Session Taint Labels & Information-Flow Decisions** (§16) | **Covered**: expressible as state, not only as a correlation pattern |
+| Credential exposure | Fresh audience-scoped tokens minted per call | **Credential Minting & Scope-Narrowing Check** (§13) | **Covered** |
 | PII disclosure | Field-level redaction on outputs | Guardrail (Output) Verdict (§7); Guardrail Modification Record (§6); Tool Privacy Classification (§9) | Partial: see [G.5](#g5-divergences--gaps-remaining) on field-level granularity |
-| Unauthorized high-impact actions | Out-of-band human approval | **Human Approval / Elicitation Event** (§16) | **Covered (new)** |
-| Approval replay | Approvals bound to live arguments | **Human Approval / Elicitation Event**: scope-binding validation result (§16) | **Covered (new)** |
-| Unaccountable actions | Append-only audit per decision, denied attempts included | **Authorization Decision Record** (§16); Event Sequence Continuity (§15) | **Covered (new)** |
+| Unauthorized high-impact actions | Out-of-band human approval | **Human Approval / Elicitation Event** (§16) | **Covered** |
+| Approval replay | Approvals bound to live arguments | **Human Approval / Elicitation Event**: scope-binding validation result (§16) | **Covered** |
+| Unaccountable actions | Append-only audit per decision, denied attempts included | **Authorization Decision Record** (§16); Event Sequence Continuity (§15) | **Covered** |
 
 Five of eight CPEX controls map only to fields in §16; they had **no counterpart** anywhere else in the field set. That is the strongest single finding in this appendix, and it reflects a real blind spot rather than a difference of emphasis: the document was thorough on *observation* and near-silent on *enforcement*.
 
@@ -1234,22 +1180,22 @@ Five of eight CPEX controls map only to fields in §16; they had **no counterpar
 
 | CPEX element | This document | Status |
 | :----------------------------------------- | :----------------------------------------- | :------------------ |
-| Effects: `deny` / `deny(reason)` / `deny(reason, code)` | **Authorization Decision Record**: decision, reason, machine-readable code (§16) | **Covered (new)** |
-| Effect: `taint(label[, scope])`; session vs message scope | **Session Taint Labels** (§16) | **Covered (new)** |
-| Effect: `delegate(...)`, subject `user` / `client` / `caller_workload` / `this_workload` | **Credential Minting & Scope-Narrowing Check** (§13) | **Covered (new)** |
-| Effect: `require_approval(...)`; `elicitation.id` / `.status` / `.outcome` / `.approver` / `.channel` | **Human Approval / Elicitation Event** (§16) | **Covered (new)** |
-| Effect: `restrict: {allow_models, deny_models, allow_regions, allow_sites, max_cost_tier, custom, on_empty}` | **Backend / Route Restriction Decision** (§16) | **Covered (new)** |
+| Effects: `deny` / `deny(reason)` / `deny(reason, code)` | **Authorization Decision Record**: decision, reason, machine-readable code (§16) | **Covered** |
+| Effect: `taint(label[, scope])`; session vs message scope | **Session Taint Labels** (§16) | **Covered** |
+| Effect: `delegate(...)`, subject `user` / `client` / `caller_workload` / `this_workload` | **Credential Minting & Scope-Narrowing Check** (§13) | **Covered** |
+| Effect: `require_approval(...)`; `elicitation.id` / `.status` / `.outcome` / `.approver` / `.channel` | **Human Approval / Elicitation Event** (§16) | **Covered** |
+| Effect: `restrict: {allow_models, deny_models, allow_regions, allow_sites, max_cost_tier, custom, on_empty}` | **Backend / Route Restriction Decision** (§16) | **Covered** |
 | Effect: `plugin(name)` dispatch | Guardrail Verdict (§§6 to 7); Guardrail Modification Record (§6) | Covered |
 | Field pipelines: `mask(N)`, `redact`, `redact(!pred)`, `omit`, `hash`, `pii.redact`, `pii.detect`, `injection.scan` | Guardrail Modification Record (§6); Guardrail (Output) Verdict (§7) | Partial: whole-payload, not per-field |
 | Route phases: `args` → `authorization.pre_invocation` → `result` → `authorization.post_invocation` | Action Type (§5); Tool Execution ID (§9) pairs pre/post | Partial: phase identity is not recorded |
-| PDP integration: Cedar / CEL / OPA resolvers, `on_allow` / `on_deny` | **Authorization Decision Record**: deciding authority and rule id (§16) | **Covered (new)** |
+| PDP integration: Cedar / CEL / OPA resolvers, `on_allow` / `on_deny` | **Authorization Decision Record**: deciding authority and rule id (§16) | **Covered** |
 | `delegation.depth`, `delegation.origin_subject_id`, `delegation.granted.permissions` | Delegation Chain, Originating Principal, Granted Authorizations (§13); scope delta via **Credential Minting** (§13) | Covered |
 | Identity slots: `subject` (human), `client` (OAuth app), `caller_workload` (SPIFFE SVID), simultaneously | Identities Used (§13), now explicitly a **set**, not a single value | Covered (clarified) |
 | Attribute namespaces `agent.*`, `framework.*`, `subject.*`, `delegation.*`, `security.*`, `http.*`, `data.*` | Mapped to AITF namespaces in [Appendix C](#appendix-c-aitf--odis-cross-reference) | Covered |
 | CMF (protocol-agnostic envelope; one policy across tools, A2A, inference, prompts, resources) | Action Type (§5); MCP Server Identity & Primitive (§9); Inter-Agent Message (§12) | Partial, see [G.5](#g5-divergences--gaps-remaining) |
 | Extension mutability tiers: immutable / **monotonic** / mutable | Monotonicity is asserted for taint and delegation but not recorded | Out of scope: policy-engine internal |
 | Capability-gating: plugins declare capabilities; extensions filtered per plugin | Least-privilege for enforcement components | Out of scope: enforcement architecture |
-| Deployment placements: gateway / sidecar / in-process, each with named coverage gaps | **Mediation Coverage & Bypass Path** (§16) | **Covered (new)** |
+| Deployment placements: gateway / sidecar / in-process, each with named coverage gaps | **Mediation Coverage & Bypass Path** (§16) | **Covered** |
 | Builtins: `identity/jwt`, `delegator/oauth`, `validator/pii-scan`, `audit/logger`, `cedar-direct`, `cel`, `valkey` | Named as implementations, not telemetry | Out of scope |
 
 ### G.4 What this document contributes back to CPEX
@@ -1315,7 +1261,7 @@ Coverage is strongest where this document concentrates (**DETECT**, **RESPOND**)
 | AI RMF function | Telemetry that evidences it | Coverage |
 | :---- | :-------------------------------------------------------- | :----------------------------------------- |
 | **GOVERN** | Autonomy level (§5); task/intent declaration (§12); tool ACL and scope (§9); human approval events (§16); privacy and retention posture ([Implementation Guidance](#18-implementation-guidance)) | Partial: **Human Approval / Elicitation** (§16) is the strongest single piece of GOVERN evidence, because it records oversight *actually exercised* rather than merely documented |
-| **MAP** | Component taxonomy (§§5 to 16 organized by [CoSAI Risk Map](#appendix-b-mapping-to-the-cosai-risk-map-risks-controls--proposed-additions)); AgBOM (§14); trust boundaries (§9); [Appendix A](#appendix-a-attack--incident-inventory) attack corpus | Strong: the risk-map component mapping and attack inventory are MAP artifacts in substance |
+| **MAP** | Component taxonomy (§§5 to 16 organized by [CoSAI Risk Map](#appendix-b-mapping-to-the-cosai-risk-map-risks--controls)); AgBOM (§14); trust boundaries (§9); [Appendix A](#appendix-a-attack--incident-inventory) attack corpus | Strong: the risk-map component mapping and attack inventory are MAP artifacts in substance |
 | **MEASURE** | **The whole field set.** Every MUST field; guardrail scores; refusal rates; loop and resource metrics; ATLAS-tagged detections | **The natural home.** AI RMF asks that AI risks be measured; this document specifies what to measure and why |
 | **MANAGE** | Incident response fields (§§5, 9, 13); enforcement decisions and taint (§16); kill-switch and lifecycle state (§13); [correlation patterns](#17-correlation-patterns) | Strong for security risk; silent on fairness, bias, and environmental risk, which are out of scope here |
 
@@ -1350,7 +1296,7 @@ The relationship differs from every other appendix here, and the difference is t
 | **A.2 Policies related to AI** | System prompt / instruction config (§5) as the enforced expression of policy; authorization decision record and rule identity (§16) | Partial: §16 evidences policy *in force*, which is stronger than a policy document |
 | **A.3 Internal organization** | Creator, oncall, ownership metadata (§14) | Weak: organizational, not telemetric |
 | **A.4 Resources for AI systems** | AgBOM and dependency graph (§14); model, tool, memory and knowledge inventory (§§8 to 11, 10); token, compute and storage aggregates (§12) | **Strong**: the AgBOM cluster is an A.4 artifact almost exactly; A.4.2 *Resource documentation* and A.4.5 *System and computing resources* are directly served |
-| **A.5 Assessing impacts of AI systems** | [Appendix A](#appendix-a-attack--incident-inventory) attack corpus; [Appendix B](#appendix-b-mapping-to-the-cosai-risk-map-risks-controls--proposed-additions) risk mapping; guardrail and refusal rates as realized-impact measures | Partial: supplies the security input to impact assessment, not the assessment |
+| **A.5 Assessing impacts of AI systems** | [Appendix A](#appendix-a-attack--incident-inventory) attack corpus; [Appendix B](#appendix-b-mapping-to-the-cosai-risk-map-risks--controls) risk mapping; guardrail and refusal rates as realized-impact measures | Partial: supplies the security input to impact assessment, not the assessment |
 | **A.6 AI system life cycle** | **Event logs (A.6.2.8) is the direct hit**: §§5 to 16 in their entirety; capability-set change (§14) for change control; verification via evaluation and guardrail records | **Strongest alignment.** 42001 requires event logging without specifying content; this document specifies the content |
 | **A.7 Data for AI systems** | Retrieval provenance (§11); memory provenance (§10); input source and trust classification (§6); data classification constraints (§13) | **Strong**: A.7's provenance and quality controls are served by the provenance fields, which exist here for detection reasons and satisfy A.7 as a by-product |
 | **A.8 Information for interested parties** | Incident-response evidence (§§5, 9, 13); ATLAS-tagged detections (§6) supporting incident communication | Partial: supplies substance for A.8.4 incident communication; the communication process itself is out of scope |
@@ -1381,7 +1327,7 @@ Three of the four weak areas are properly out of scope. The fourth is a genuine 
 
 ## Appendix J: Tiering Rationale
 
-Why each component's **MUST** fields earn that tier, and where the tier boundaries were contested. Ordered to match the [classification summary](#45-classification-summary): §5 through §16.
+Why each component's **MUST** fields earn that tier, and where the tier boundaries are closest. Ordered to match the [classification summary](#45-classification-summary): §5 through §16.
 
 The rubric is in [§4.2](#42-classification-legend). Two rules recur below. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
 
@@ -1420,7 +1366,7 @@ Four MUSTs, each ≥3 attacks and each D-primary. Model Name + Version is the su
 
 - **Inference Parameters** rest on a *denominator* argument rather than a tampering attack: "max-length output" (`TA-04`) and "anomalously large input" (`TA-10`) are the documented detection signatures, and neither is computable without `max_tokens` and the declared context window. They also give decoding configuration the integrity baseline §5 gives the system prompt. Capture per-call, per-request overrides are the attack.
 - **Model Provenance / Signing is SHOULD** (supply-chain, ties to model-signing work and ODIS `software_hash`). **Pre-Forward-Pass State** and **Token Malformation** are MAY research-grade signals.
-- **Provider / Endpoint Identity is MAY**: the only field demoted two tiers. It rested on one attack, `AOC-06`, which this document's own mapping calls a governance and availability signal rather than a discrete adversary technique. That makes it Q- and A-dominant; the D concern, model substitution, is carried by Model Name + Version. *Implementer caveat:* the **finish / stop reason** was bundled into this field and should not be demoted with it; it belongs with Execution Status (§5), which is MUST.
+- **Provider / Endpoint Identity is MAY**. It rests on one attack, `AOC-06`, which this document's own mapping calls a governance and availability signal rather than a discrete adversary technique. That makes it Q- and A-dominant; the D concern, model substitution, is carried by Model Name + Version.
 
 ### J.5 Tools & External Services (§9)
 
@@ -1430,8 +1376,8 @@ The highest-value **R** fields in the document and strong D besides. Tool Call I
 - **Execution Environment / Sandbox** is MUST because `TA-06` is characterized as model-emitted Python executed **unsandboxed**: the isolation posture *is* the finding. Two calls to the same code-execution tool, one containerized and one not, are otherwise the same event.
 - **Tool Execution ID** makes *a result with no matching request* a queryable condition, and is the only way to correlate asynchronous tool calls. `AOC-01`'s false completion report is precisely a request/result mismatch.
 - **Tool ACL / Required Scope stays SHOULD**: five attacks cite it, but every one presupposes meaningful delegation.
-- **Tool Definition Digest is SHOULD, and the demotion still exposes a corpus gap rather than a weak field.** No catalogued attack is a tool-definition rug-pull: `TA-12` and `TA-13` are MCP-mediated but neither turns on mutated tool metadata, and CoSAI's MCP Security paper names Tool Poisoning and Full Schema Poisoning as threat classes without supplying a documented instance ([B.5](#b5-corpus-additions-the-mcp-paper-makes-available)). **MUST for deployments consuming third-party or dynamically-discovered tools.**
-- **MCP Server Identity & Primitive is SHOULD on the modality gate alone.** Its former rationale, that the corpus held no MCP-specific attack, no longer holds: the corpus now carries three MCP incidents (`TA-11` to `TA-13`), two of which this field cites directly (`TA-12`, `TA-13`) as documented MCP-mediated exploitation. What remains is the modality gate, since a deployment running no MCP surface has nothing to record. **MUST wherever MCP is in use**; server name and version are as cheap as Tool Name and should be adopted first. Re-running this tier is [open question 12](#open-questions-for-the-working-group).
+- **Tool Definition Digest is SHOULD, and that reflects a corpus gap rather than a weak field.** No catalogued attack is a tool-definition rug-pull: `TA-12` and `TA-13` are MCP-mediated but neither turns on mutated tool metadata, and CoSAI's MCP Security paper names Tool Poisoning and Full Schema Poisoning as threat classes without supplying a documented instance [[18]](#standards--frameworks). **MUST for deployments consuming third-party or dynamically-discovered tools.**
+- **MCP Server Identity & Primitive is SHOULD on the modality gate alone.** The corpus carries three MCP incidents (`TA-11` to `TA-13`), two of which this field cites directly (`TA-12`, `TA-13`) as documented MCP-mediated exploitation, so the evidence gate is cleared. What holds it below MUST is the modality gate, since a deployment running no MCP surface has nothing to record. **MUST wherever MCP is in use**; server name and version are as cheap as Tool Name and should be adopted first. Re-running this tier is [open question 12](#open-questions-for-the-working-group).
 - **Tool Privacy Classification is MAY**: DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
 
 ### J.6 Memory (§10)
@@ -1477,7 +1423,7 @@ The archetype for the MUST/SHOULD split, and it survived the audit unchanged. Tw
 One MUST in a section otherwise SHOULD and MAY, and the reason is categorical: every other field here describes a **state**, while **Capability-Set Change Event** describes a **transition**, and transitions are where attacks are visible.
 
 - Grounded directly in `AOC-09`, where one agent teaches another to acquire a browser/download capability. The security event is the *acquisition*; the previous inference path ("tool-call spike + new Tool Name") fires only once the capability is exercised, and never at all for one acquired and held in reserve. Removal matters symmetrically: a guardrail tool or logging sink quietly dropped is a defence-evasion signal. It is also cheap where least expected to fire: a static capability set emits nothing.
-- **Version and Repository / Software Ref are SHOULD** as supply-chain response primitives. **Version is the closest call in the audit**: 2 attacks and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM cluster. The WG may reasonably promote it.
+- **Version and Repository / Software Ref are SHOULD** as supply-chain response primitives. **Version is the closest call here**: 2 attacks and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM cluster. The WG may reasonably promote it.
 - **The AgBOM cluster is SHOULD**: it requires an inventory-emission capability most deployments lack. Within it: **Component Dependency Graph** is the complete answer to CVE blast radius, since `TA-06` is a vulnerability in a *framework* beneath the agent and reaching it requires transitive edges; **Inventory Attestation Signature** matters because an inventory a compromised agent can rewrite is worth little, with the limit that a signature proves who asserted the inventory, not that the assertion is true, which is §15's subject.
 
 ### J.11 Observability-Plane Integrity (§15)
@@ -1506,8 +1452,6 @@ Two of six are MUST, and both are universal rather than modality-gated.
 
 ## Attack taxonomy: MITRE ATLAS is canonical
 
-**Resolved.** This is a decision of the document, not an open question.
-
 **MITRE ATLAS `AML.Txxxx` is the canonical adversary-technique taxonomy for this field set. The CoSAI `AT10xx` codes are formally deprecated to aliases.**
 
 What that means in practice:
@@ -1526,7 +1470,7 @@ What that means in practice:
 
 Each item is a decision the document *takes a position on* but that requires working-group ratification or resolves a cross-standard tension. Ordered by consequence.
 
-1. **OpenTelemetry submission (and the sampling problem).** Does CoSAI file the [Appendix D.3](#d3-what-cosai-asks-opentelemetry-to-include) asks with the OTel GenAI conventions working group, paired with their [E.2](#e2-what-cosai-asks-ocsf-to-include-summary) OCSF counterparts? The conventions are all at *Development* status and have just moved to a dedicated repository, so the window is favourable and closing. Three decisions inside this: (a) whether to seek a **security guardrail signal by extending `gen_ai.evaluation.*`** or by minting a separate namespace, where the former is likelier to be accepted and the latter is cleaner; (b) whether this document should make the [D.5](#d5-context-propagation-sampling--privacy-three-operational-traps) **sampling requirements normative**: that security-relevant events are never head-sampled and that the sampling configuration is itself logged. Default OTel sampling will silently discard most attack evidence, which makes this arguably the highest-impact operational statement in the document, and it currently sits in an appendix rather than in [Implementation Guidance](#18-implementation-guidance); and (c) **the memory ask ([D.3](#d3-what-cosai-asks-opentelemetry-to-include) item 3) must be re-scoped before it is filed.** Verification against the live registry found that **`gen_ai.memory.*` already exists**, carrying store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span already implemented by `aws-bedrock-agentcore` and `google-adk`. What is genuinely missing is narrower: **provenance** and **footprint**, neither of which appears anywhere in the `gen_ai` registry. Filing the ask as originally drafted would request a namespace that exists; re-scoped to two attributes on an existing span it becomes the cheapest item in D.3 and follows this appendix's rule to ask OTel for what OTel already models. If the WG approves the narrowed form, the summary in [§2.2](#22-for-the-open-source-security-community) needs updating to match.
+1. **OpenTelemetry submission (and the sampling problem).** Does CoSAI file the [Appendix D.3](#d3-what-cosai-asks-opentelemetry-to-include) asks with the OTel GenAI conventions working group, paired with their [E.2](#e2-what-cosai-asks-ocsf-to-include-summary) OCSF counterparts? The conventions are all at *Development* status and have just moved to a dedicated repository, so the window is favourable and closing. Three decisions inside this: (a) whether to seek a **security guardrail signal by extending `gen_ai.evaluation.*`** or by minting a separate namespace, where the former is likelier to be accepted and the latter is cleaner; (b) whether this document should make the [D.5](#d5-context-propagation-sampling--privacy-three-operational-traps) **sampling requirements normative**: that security-relevant events are never head-sampled and that the sampling configuration is itself logged. Default OTel sampling will silently discard most attack evidence, which makes this arguably the highest-impact operational statement in the document, and it currently sits in an appendix rather than in [Implementation Guidance](#18-implementation-guidance); and (c) **the scope of the memory ask ([D.3](#d3-what-cosai-asks-opentelemetry-to-include) item 3).** `gen_ai.memory.*` already exists, carrying store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span, implemented by `aws-bedrock-agentcore` and `google-adk`. What is missing is narrower: **provenance** and **footprint**, neither of which appears anywhere in the `gen_ai` registry. Scoped to two attributes on an existing span, it is the cheapest item in D.3 and follows this appendix's rule to ask OTel for what OTel already models.
 2. **OCSF standardization path & ownership.** Does CoSAI formally submit the [Appendix E](#appendix-e-implications-for-ocsf--aitf-the-standardization-bridge) asks (AI Agent Activity (9001), AI Delegation Activity (9002), an `ai_operation` profile with the MUST tier as *required*, the new objects/enums, and ATLAS-on-findings) to OCSF via AITF? If so, what is the phase sequence ([E.3](#e3-incremental-extension-path-via-aitf)) and who owns each submission? This is the bridge's central next action.
 3. **Content-capture default.** Should the standard *mandate* hash-first + optional raw + redaction flags as the default representation for all content-bearing fields (Model Input, Response, System Prompt, Memory, Retrieved Content), rather than leaving raw-vs-hash to deployment policy?
 4. **Chain-of-thought tier.** A specific case of (3): keep `Observation/Thought` at **SHOULD**, or promote to **MUST-when-available but redaction-gated** given its forensic value in `AOC-01`/`AOC-07`/`IR-02`?
@@ -1537,10 +1481,10 @@ Each item is a decision the document *takes a position on* but that requires wor
 9. **Relationship to OWASP AOS.** Does CoSAI formally position this document as the **requirements layer** to AOS's **exposure layer**, as [Appendix F](#appendix-f-owasp-aos-cross-reference) proposes, with a liaison to submit the [F.5](#f5-what-this-document-contributes-back-to-aos) contributions (trust classification, egress destination, ATLAS tagging, tiering, delegation, observability-plane integrity) upstream? Related and more urgent: **the two documents currently propose different OCSF strategies** ([F.6](#f6-divergences--open-coordination-items) item 1). Aligning before either submits is cheaper than reconciling after.
 10. **Is the observability plane itself in scope?** [§15](#15-observability-plane-integrity) asserts that enforcement availability, fail-open behaviour, instrumentation coverage, and event continuity are security telemetry, while the enforcement *protocol* is not. That line is defensible but it is a genuine scope expansion, the document now specifies telemetry about the telemetry system. Ratify, narrow, or reject. A narrower alternative: keep only **Enforcement-Point Availability & Failure Mode** as MUST and move the remaining three fields to a pipeline-integrity annex.
 11. **Content-bearing additions and the privacy default.** Three new fields carry content or near-content: **Citations** (URLs and document identity), **Protocol Envelope Capture** (raw payloads), and **Content Modality & Attachment Identity** (filenames and hashes). Open question 3's hash-first default should be resolved for these explicitly; attachment *hashes* are the correlation primitive and are low-risk, but filenames and citation URLs can themselves be sensitive.
-12. **Corpus gaps, one of three now closed; re-run the affected tiers.** Fields sat below the tier their reasoning would justify because [Appendix A](#appendix-a-attack--incident-inventory) held **no documented instance** of the attack they detect. `TA-11` to `TA-13` ([B.5](#b5-corpus-additions-the-mcp-paper-makes-available)) change that picture, but unevenly, and the accounting is worth stating precisely because two of the three affected fields are affected differently:
+12. **Corpus gaps, one of three now closed; re-run the affected tiers.** Fields sat below the tier their reasoning would justify because [Appendix A](#appendix-a-attack--incident-inventory) held **no documented instance** of the attack they detect. `TA-11` to `TA-13` ([Appendix A.1](#a1-real-world-attack-vectors)) change that picture, but unevenly, and the accounting is worth stating precisely because two of the three affected fields are affected differently:
 
     - **Closed: cross-tenant agent leakage.** `TA-11` is the documented instance. **Organization / Tenant ID** (§5) is now held at SHOULD by the modality gate alone.
-    - **Changed but not closed: MCP-mediated exploitation.** `TA-12` and `TA-13` are documented MCP exploitations. That removes the "no MCP attack in the corpus" argument for **MCP Server Identity & Primitive** (§9) without supplying the rug-pull described in the next bullet; the two were previously conflated, which is why this bullet is listed separately from the three gaps counted above.
+    - **Changed but not closed: MCP-mediated exploitation.** `TA-12` and `TA-13` are documented MCP exploitations. That removes the "no MCP attack in the corpus" argument for **MCP Server Identity & Primitive** (§9) without supplying the rug-pull described in the next bullet, which is a distinct gap.
     - **Still open: MCP tool poisoning / definition rug-pull.** A well-documented real-world class absent from the inventory, and now the sole remaining evidentiary argument holding **Tool Definition Digest** (§9) at SHOULD. CoSAI's MCP Security paper names Tool Poisoning and Full Schema Poisoning as threat classes but cites no incident.
     - **Still open: attacks on the observability plane.** Enforcement starvation, instrumentation disablement, event suppression, whose absence leaves §15 with no MUST at all, and which is plausibly a *collection artifact*, since such attacks are under-reported precisely because they disable the telemetry that would reveal them.
 
