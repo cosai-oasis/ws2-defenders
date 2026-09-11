@@ -403,12 +403,12 @@ The third row collapsing into the second is the failure to avoid: recording an e
 | **Identities Used (per hop)** | MUST | Attribute every agent→user, agent→agent, agent→tool, tool→infra action to an identity + metadata; detect identity changes across a tool chain. | `AOC-01`,`AOC-02`,`AOC-08`,`AOC-11`,`IR-04`,`TA-05`,`TA-08` |
 | **Verified vs Displayed Identity** | MUST | Distinguish an immutable/verified identifier from a spoofable display identity; record which was used to authorize. | `AOC-08`,`AOC-11`,`AOC-15` |
 | **Originating Principal (on-behalf-of)** | SHOULD | The human/service sponsor at the root of the delegation chain. | `AOC-01`,`AOC-02`,`AOC-08` |
-| **Delegation Chain** | SHOULD | Ordered lineage of prior agent hops carried across the call. | `AOC-04`,`AOC-09`,`AOC-10` |
-| **Granted Authorizations / Scope** | SHOULD | Delegated authority in effect at this hop, with monotonic-narrowing check. | `AOC-02`,`AOC-08`,`AOC-10`,`TA-13` |
+| **Delegation Chain** | SHOULD | Ordered lineage of prior agent hops carried across the call. Each hop carries an **integrity-protected reference to its parent** (issuer, delegation identifier, and a digest of the parent record), so lineage is verifiable from the records rather than asserted; a digest that does not match the resolved parent fails chain validation closed. | `AOC-04`,`AOC-09`,`AOC-10` |
+| **Granted Authorizations / Scope** | SHOULD | Delegated authority in effect at this hop, with monotonic-narrowing check. Record the **rules the check ran against** (ODIS `attenuation_profile_ref`: a versioned identifier and content digest for the normalization and comparison rules), since "narrower" is a semantic comparison and two profiles can disagree on the same pair of scopes. | `AOC-02`,`AOC-08`,`AOC-10`,`TA-13` |
 | **Resource Indicators + Constraints** | SHOULD | Target resource audience + time/purpose/rate/locality/`data_classification` narrowing. | `AOC-03`,`AOC-05`,`TA-01` |
 | **Credential Minting & Scope-Narrowing Check** **[CPEX]** | SHOULD | The credential-exchange event at each hop: grant type (token exchange / client assertion / client credentials), whose identity the minted token represents (**end user / client application / calling workload / the enforcement point itself**), target **audience**, issuer, lifetime, and the **requested-vs-granted scope delta** verified after minting. Detects both over-broad credentials and forwarded inbound tokens that were never narrowed. | `AOC-02`,`AOC-08`,`IR-04`,`TA-08` |
 | **Trust-Domain Crossing & Delegation Depth** | SHOULD | The counterparty's **trust domain** and the **depth of the delegation chain** at this hop, plus whether either crossed a configured limit. Records that authority left the domain that issued it, and how many hops from the originating principal the acting agent now sits. Depth is **derived** from the chain (the OCSF `delegation.parent_uid` lineage or the RFC 8693 `act` chain), not transmitted as a counter; a transmitted copy can disagree with the chain it was derived from. | `AOC-04`,`AOC-09`,`AOC-11`,`TA-11` |
-| **Runtime Credential / Attestation** | SHOULD | Runtime-instance credential: `software_hash`, `attestation_evidence`, issuer, expiry, holder-key binding. | `AOC-08`,`TA-06` |
+| **Runtime Credential / Attestation** | SHOULD | Runtime-instance credential: `software_hash`, `attestation_evidence`, issuer, expiry, holder-key binding. Evidence is recorded **per source, each with its own issuer, validity and verification outcome**: software-provenance and runtime/workload evidence come from independent issuers, and a single collapsed value loses the independence that makes the attestation worth verifying (see **Attribute Source / Trusted-Provenance Marking**, [§16](#16-policy-enforcement--mediation)). | `AOC-08`,`TA-06` |
 | **Lifecycle State** | SHOULD | active / suspended / revoked, supports kill-switch & revocation-fanout. | `AOC-07`,`AOC-10` |
 
 ---
@@ -584,7 +584,7 @@ One source per real-world attack vector, each mapping to a `TA-` ID in [Appendix
 23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 55 risks / 68 controls: PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`; risk IDs migrated to the `risk`+camelCase convention.
 24. **CoSAI MCP Security**: Coalition for Secure AI, Workstream 4 (Secure Design Patterns for Agentic Systems): *Model Context Protocol (MCP) Security*, approved 8 January 2026. Twelve threat categories (MCP-T1…T12), ~40 threats. <https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf>
 25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
-26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in §6: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context / Policy Engine Feed (6.4). <https://github.com/cosai-oasis/ws4-odis/blob/main/RFCs/ODIS.md>
+26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in §6: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [Appendix C](#appendix-c-aitf--odis-cross-reference) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
 27. **OWASP Top 10 for LLM Applications (2025)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/>
 28. **OWASP Top 10 for Agentic Applications (2026)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>
 29. **MITRE ATT&CK**: adversary tactics & techniques knowledge base (ATLAS-aligned). MITRE. <https://attack.mitre.org/>
@@ -801,7 +801,7 @@ This document is, in effect, the implementation spec for the risk map's **detect
 
 ## Appendix C: AITF & ODIS Cross Reference
 
-Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry) attribute namespace and to the relevant [ODIS](https://github.com/cosai-oasis/ws4-odis/blob/main/RFCs/ODIS.md) data-model field. Per the brief, ODIS coverage is **selective**: it targets the delegation/identity fields relevant to detection & response, not the full ODIS spec.
+Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry) attribute namespace and to the relevant [ODIS](https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md) data-model field, verified against ODIS at commit `148dc41` (8 September 2026). Per the brief, ODIS coverage is **selective**: it targets the delegation/identity fields relevant to detection & response, not the full ODIS spec. The ODIS column resolves **names**, not shapes: ODIS defines abstract schemas that implementations bind to a wire format, and this document is a requirements layer rather than a binding ([§3.1](#31-in-scope)). Where cardinality or structure is normative for an ask, it is stated in [Appendix E](#appendix-e-implications-for-ocsf--aitf-the-standardization-bridge).
 
 > **The `Cls` column is reproduced from the [classification summary](#45-classification-summary) for convenience and is not normative.** [§4.5](#45-classification-summary) and the section tables in §§5 to 16 govern; any disagreement between them and this column is a defect in this table.
 
@@ -818,10 +818,10 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Execution Status | MUST | span status + `error.type` | n/a |
 | Stop Reason | SHOULD | `gen_ai.response.finish_reasons` | n/a |
 | Surface / App | MUST | `gen_ai.*` (surface attr) | n/a (policy input) |
-| System Prompt / Instruction Config | MUST | `gen_ai.*` (system message / request) | `policy_profile_ref` (6.1) |
+| System Prompt / Instruction Config | MUST | `gen_ai.*` (system message / request) | n/a (see note) |
 | Autonomy Level | SHOULD | `gen_ai.agent.state` | n/a |
 | Model Input | MUST | `gen_ai.prompt` / input events | `action.parameters` (6.4) |
-| Input Source / Channel | MUST | `gen_ai.*` / `rag.*` / `mcp.*` source | `delegation_chain[]` origin (6.3) |
+| Input Source / Channel | MUST | `gen_ai.*` / `rag.*` / `mcp.*` source | `delegation_chain` origin (6.3) |
 | Input Trust Classification | MUST | `security.*` (trust/threat) | `constraints` (6.3) |
 | Source host / IP + request metadata | MUST | `security.*` / resource attrs | n/a (policy input) |
 | Guardrail (Input) Verdict | MUST | `security.guardrail.type`, `security.blocked`, `security.threat_type` | n/a |
@@ -833,7 +833,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Citations / Source Attribution | MUST | `rag.*` (source) + output citation attrs | n/a |
 | Output Egress Destination | MUST | `gen_ai.tool.call.arguments`, `security.pii.*` | `resource_indicators` (6.3) |
 | Observation / Thought (reasoning trace) | SHOULD | `gen_ai.agent.step.thought` | n/a |
-| Guardrail (Output) Verdict | MUST | `security.guardrail.*`, `security.pii.*` | `constraints.data_classification` (6.3) |
+| Guardrail (Output) Verdict | MUST | `security.guardrail.*`, `security.pii.*` | `constraints` (6.3) |
 | LLM Refusal | MUST | `gen_ai.response.finish_reasons`, `security.*` | n/a |
 | Model Name + Version | MUST | `gen_ai.request.model`, `gen_ai.provider.name` | `approved_software_refs` (6.1) |
 | Provider / Endpoint Identity | MAY | `gen_ai.provider.name` | n/a |
@@ -853,7 +853,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | MCP Server Identity & Primitive | MUST | `mcp.server.name/version`, primitive attr | n/a |
 | Tool Error / Exception | MUST | `mcp.*` error, `security.*` | n/a |
 | Tool ACL / Required Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations` (6.3) |
-| Tool Privacy Classification | MAY | `security.pii.*`, `compliance.*` | `constraints.data_classification` (6.3) |
+| Tool Privacy Classification | MAY | `security.pii.*`, `compliance.*` | `constraints` (6.3) |
 | Tool Selection Rationale | SHOULD | `gen_ai.agent.step.thought` (per-step) | n/a |
 | Memory Write Event, Memory Read / Injection Event | MUST | `memory.*` | n/a |
 | Memory Provenance / Source | MUST | `memory.provenance` | n/a |
@@ -862,10 +862,10 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Declared Memory Configuration | MAY | `memory.*` config attrs | n/a |
 | Memory Write Rationale | SHOULD | `gen_ai.agent.step.thought` (per-step) | n/a |
 | Retrieval Event | MUST | `rag.*` | n/a |
-| Retrieved-Content Source / Provenance | MUST | `rag.*` (source) | `delegation_chain[]`/`constraints` (6.3) |
+| Retrieved-Content Source / Provenance | MUST | `rag.*` (source) | `delegation_chain`/`constraints` (6.3) |
 | Retrieved-Content / Metadata Integrity Signal | SHOULD | `rag.*`, `security.*` | n/a |
 | Declared Knowledge-Source Configuration | MAY | `rag.*` config/index attrs | n/a |
-| Inter-Agent Message | MUST | `gen_ai.agent.*`, delegation activity (OCSF 9002) | `delegation_chain[]` (6.3) |
+| Inter-Agent Message | MUST | `gen_ai.agent.*`, delegation activity (OCSF 9002) | `delegation_chain` (6.3) |
 | A2A Task Lifecycle Event | SHOULD | delegation activity (OCSF 9002); a2a attrs | `delegation_id`, `parent_delegation_ref` (6.3) |
 | Peer Agent Card / Descriptor | SHOULD | `gen_ai.agent.*` peer attrs | `agent_id`, `approved_software_refs` (6.1) |
 | Background / Scheduled Task Event | MUST | `gen_ai.agent.next_action` / step events | n/a |
@@ -876,10 +876,10 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Identities Used (per hop) | MUST | `identity.*` (OCSF Authentication 3002) | `actor`, chain (6.3) |
 | Verified vs Displayed Identity | MUST | `identity.auth.method`, `identity.auth.result` | `originating_principal`/`actor` (6.3) |
 | Originating Principal (on-behalf-of) | SHOULD | `identity.*` | `originating_principal` (6.3) |
-| Delegation Chain | SHOULD | delegation activity (OCSF 9002) | `delegation_chain[]`, `delegation_id`, `parent_delegation_ref` (6.3) |
-| Granted Authorizations / Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations` (6.3) |
+| Delegation Chain | SHOULD | delegation activity (OCSF 9002) | `delegation_chain`, `delegation_id`, `parent_delegation_ref` (6.3) |
+| Granted Authorizations / Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations`, `attenuation_profile_ref` (6.3) |
 | Resource Indicators + Constraints | SHOULD | `identity.*`, `compliance.*` | `resource_indicators`, `constraints` (6.3) |
-| Trust-Domain Crossing & Delegation Depth | SHOULD | `identity.*` domain/depth attrs | `trust_domain` (6.1), `max_depth` (6.3) |
+| Trust-Domain Crossing & Delegation Depth | SHOULD | `identity.*` domain/depth attrs | `trust_domain` (6.1, 6.2), `max_depth` (6.3) |
 | Runtime Credential / Attestation | SHOULD | `identity.auth.method` (mTLS/SPIFFE/OAuth/DID-VC), `identity.trust.method` | `attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2) |
 | Lifecycle State | SHOULD | `identity.lifecycle.operation` | `lifecycle_state` (6.1) |
 | Tool/Agent Version, Repository / Code Path / Software Ref | SHOULD | `supply_chain.*`, `asset.*` | `approved_software_refs` (6.1) |
@@ -890,9 +890,9 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Description, Status (active/disabled), Creator ID / Oncall / Creation & Update dates, Surfaces Supported | MAY | `asset.*` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
 | Fleet counts | MAY | (derived) | n/a |
 | Credential Minting & Scope-Narrowing Check | SHOULD | `identity.auth.scope_granted` + token-exchange attrs | `granted_authorizations`, `binding_profile` (6.2/6.3) |
-| Authorization Decision Record | MUST | `security.*` decision + `compliance.control_id` | `policy_profile_ref` (6.1) |
+| Authorization Decision Record | MUST | `security.*` decision + `compliance.control_id` | n/a (see note) |
 | Attribute Source / Trusted-Provenance Marking | MUST ‡ | n/a | `attestation_evidence` (6.2, partial) |
-| Session Taint Labels & Information-Flow Decisions | SHOULD | `security.*` labels | `constraints.data_classification` (6.3) |
+| Session Taint Labels & Information-Flow Decisions | SHOULD | `security.*` labels | `constraints` (6.3) |
 | Human Approval / Elicitation Event | SHOULD | `identity.*` approver + approval attrs | `originating_principal` (6.3, partial) |
 | Backend / Route Restriction Decision | SHOULD | `gen_ai.provider.name` + routing constraint attrs | `resource_indicators`, `constraints` (6.3) |
 | Mediation Coverage & Bypass Path | SHOULD | n/a | n/a |
@@ -907,7 +907,11 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 
 > **Policy-engine consumption and telemetry emission are orthogonal.** A field presented to a policy engine is not thereby excluded from telemetry, and the reverse also holds; §16's **Authorization Decision Record** exists to record a decision together with the attributes it turned on. Inclusion here is decided by detection and response value, not by how ODIS §6.4 classifies a field.
 >
-> **ODIS fields intentionally out of telemetry scope** (identity/authority mechanics rather than detection signals): `approved_runtime_issuers`, `trust_domain`, `policy_profile_ref`, `permitted_delegation_modes`, `provider_entitlements`, and the cryptographic details of `binding_profile` (DPoP/mTLS/TLS-session). These are consumed by the policy engine (ODIS §6.4 Identity Context) rather than emitted as security telemetry, `trust_domain` and `max_depth` are the exception: §13's **Trust-Domain Crossing & Delegation Depth** field carries them as telemetry, because both become detection-grade once a delegation chain leaves the domain that issued it (see [§4.7](#47-agents-you-do-not-operate)).
+> **ODIS fields intentionally out of telemetry scope** (identity/authority mechanics rather than detection signals): `approved_runtime_issuers`, `policy_profile_ref`, `permitted_delegation_modes`, `provider_entitlements`, and the details of `binding_profile` — the token-binding method (DPoP, mTLS, or TLS session binding via `tls_exp`) together with key custody and which component is authorized to present the derived credential. These are consumed by the policy engine (ODIS §6.4 Identity Context) rather than emitted as security telemetry. `policy_profile_ref` names the policy profile in force; it is neither the content of an instruction configuration nor the record of a decision, so **System Prompt / Instruction Config** and **Authorization Decision Record** carry no ODIS mapping above.
+>
+> **`trust_domain` and `max_depth` are the exception and are in scope.** §13's **Trust-Domain Crossing & Delegation Depth** carries both as telemetry, because each becomes detection-grade once a delegation chain leaves the domain that issued it (see [§4.7](#47-agents-you-do-not-operate)). `trust_domain` appears in both the registration record (6.1) and the runtime credential descriptor (6.2).
+>
+> **Data classification travels as a constraint.** ODIS defines `constraints` (6.3) as time, purpose, rate, locality "or other narrowing constraints" and enumerates no keys, so the data-classification narrowing recorded by **Guardrail (Output) Verdict** (§7), **Tool Privacy Classification** (§9) and **Session Taint Labels** (§16) is an illustrative key of that object rather than an ODIS-defined field name.
 
 ---
 
