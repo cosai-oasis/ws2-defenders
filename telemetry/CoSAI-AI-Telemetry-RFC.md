@@ -731,7 +731,7 @@ Each catalogued attack mapped to its primary ATLAS technique(s). This is the cro
 | **TA-15** MCP tool-description poisoning | `AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0098` Tool Credential Harvesting; `AML.T0086` Exfiltration via Tool Invocation | ATLAS case study `AML.CS0054` |
 | **TA-16** `postmark-mcp` rug pull | `AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.001` AI Agent Tool Poisoning: Implementation; `AML.T0073` Impersonation; `AML.T0086` | ATLAS case study `AML.CS0053` |
 | **TA-17** DifyTap | `AML.T0057` LLM Data Leakage; `AML.T0048` External Harms | Observability plane repurposed as the exfiltration channel |
-| **TA-18** ChatGPT memory poisoning | `AML.T0051.001` Indirect Prompt Injection; `AML.T0080.000` Persistence: Memory; `AML.T0093` Prompt Infiltration | ATLAS case study `AML.CS0040` |
+| **TA-18** ChatGPT memory poisoning | `AML.T0051.001` Indirect Prompt Injection; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0093` Prompt Infiltration | ATLAS case study `AML.CS0040` |
 | **TA-19** Delayed tool invocation | `AML.T0094` Delay Execution of LLM Instructions; `AML.T0051.001`; `AML.T0053`; `AML.T0085.001` | ATLAS case study `AML.CS0038` |
 | **IR-01** Breaking the Prompt Wall | `AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053` | See A.2 |
 | **IR-02** MINJA | `AML.T0051`, `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067` | Memory injection/feedback |
