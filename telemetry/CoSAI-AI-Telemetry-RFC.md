@@ -178,7 +178,7 @@ Fields are organized under the CoSAI Risk Map fine-grained components. The compo
 
 ### 4.5 Classification summary
 
-The complete field-by-component classification, before the detailed tables that follow. It is an index rather than a definition: each field name is defined, with what to capture, when it applies, and the attacks that motivate it, in the section shown against it. The table is a catalogue, not a claim that every deployment or every event emits every field; the [applicability rules](#42-classification-legend) determine each deployment's required subset. The reasoning behind each tier (why the MUSTs are MUST, and where the boundaries are closest) is in **[Appendix J](#appendix-j-tiering-rationale)**, ordered to match this table.
+The complete field-by-component classification, before the detailed tables that follow: **98 fields, of which 50 are MUST, 33 SHOULD and 15 MAY.** It is an index rather than a definition: each field name is defined, with what to capture, when it applies, and the attacks that motivate it, in the section shown against it. The table is a catalogue, not a claim that every deployment or every event emits every field; the [applicability rules](#42-classification-legend) determine each deployment's required subset. The reasoning behind each tier (why the MUSTs are MUST, and where the boundaries are closest) is in **[Appendix J](#appendix-j-tiering-rationale)**, ordered to match this table.
 
 | Component (risk-map) | MUST fields | SHOULD fields | MAY fields |
 | :-------- | :---------------------------------- | :------------------------------------------ | :---------------- |
