@@ -261,6 +261,28 @@ While many additional controls are necessary for Zero Trust adoption, the table 
 
 <table style="border-collapse:collapse;font-size:12px;font-family:Arial,Helvetica,sans-serif;width:100%">
     <tr>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#c1e4f5;" colspan="2"><strong>Legend</strong></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#cfe2f3;"><strong>Prerequisite</strong></td>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#cfe2f3;">Prerequisites - do these first</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#d9ead3;"><strong>Initial</strong></td>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#d9ead3;">Initial implementation of controls for Zero Trust principles for AI Systems.</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#fff2cc;"><strong>Intermediate</strong></td>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#fff2cc;">Intermediate controls that require both initial and advanced activities.</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#f4cccc;"><strong>Advanced</strong></td>
+      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#f4cccc;">Controls that require advanced Zero Trust maturity and involve use of ML/AI to enhance capabilities.</td>
+    </tr>
+</table>
+
+<table style="border-collapse:collapse;font-size:12px;font-family:Arial,Helvetica,sans-serif;width:100%">
+    <tr>
       <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#c1e4f5;"><strong>Control</strong></td>
       <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#c1e4f5;"><strong>Maturity</strong></td>
       <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#c1e4f5;"><strong>Risk Map Control</strong></td>
@@ -387,28 +409,6 @@ While many additional controls are necessary for Zero Trust adoption, the table 
     </tr>
 </table>
 
-<table style="border-collapse:collapse;font-size:12px;font-family:Arial,Helvetica,sans-serif;width:100%">
-    <tr>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#c1e4f5;" colspan="2"><strong>Legend</strong></td>
-    </tr>
-    <tr>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#cfe2f3;"><strong>Prerequisite</strong></td>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#cfe2f3;">Prerequisites - do these first</td>
-    </tr>
-    <tr>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#d9ead3;"><strong>Initial</strong></td>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#d9ead3;">Initial implementation of controls for Zero Trust principles for AI Systems.</td>
-    </tr>
-    <tr>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#fff2cc;"><strong>Intermediate</strong></td>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#fff2cc;">Intermediate controls that require both initial and advanced activities.</td>
-    </tr>
-    <tr>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#f4cccc;"><strong>Advanced</strong></td>
-      <td style="border:1px solid #b0b0b0;padding:6px 8px;vertical-align:top;background-color:#f4cccc;">Controls that require advanced Zero Trust maturity and involve use of ML/AI to enhance capabilities.</td>
-    </tr>
-</table>
-
 Table 2\. Zero Trust control matrix for AI systems
 
 # 4\. Conclusion
@@ -432,6 +432,7 @@ The term “Zero Trust” has been adopted by many organizations and has been co
 The timeline below shows key milestones that have propelled the industry revolution making Zero Trust one of the top security priorities for all CIO’s around the world.  
     
 ![Short history of Zero Trust](zero-trust-history.png)
+Figure A.1\. Short history of Zero Trust
 
 Zero Trust emerged as a security paradigm in response to the limitations of traditional perimeter-based security models that assumed everything inside a network could be trusted. Among the first to articulate the Zero Trust principles was security researcher John Kindervag from Forrester in 2010[^17], who recognized that the conventional "chewy center" approach was fundamentally flawed in an era of cloud computing, mobile devices, and sophisticated cyber threats. Kindervag observed that organizations were experiencing breaches despite having strong perimeter defenses, leading him to propose a model where trust is never assumed and verification is required from everyone trying to access systems, regardless of their location.
 
@@ -511,6 +512,8 @@ Below is a summary comparison across core criteria for each framework:
 | **Analytics and AI/ML** | Loosely mentioned; not well defined.  AI/ML is mentioned as a threat to zero trust architectures through use of non-person entities (NPEs). | Core pillar; required for response orchestration.  AI/ML capabilities explicitly mentioned. | Enabler; supports implementation of capabilities in 5 pillars and has its own maturity level mapping |
 
 Table 3. Zero Trust publication frameworks comparison
+
+<!--\newpage-->
 
 # Acknowledgements
 
