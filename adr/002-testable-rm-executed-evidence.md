@@ -1,4 +1,4 @@
-# ADR-WS2-002: Executed evidence that a CoSAI control mitigates a CoSAI risk
+# ADR-WS2-002: Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk
 
 **Status:** Draft
 **Date:** 2026-09-21

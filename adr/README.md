@@ -46,7 +46,7 @@ over, so the sequencing needs to outlive the people who agreed it.
 | # | Title | Status | Date |
 | --- | --- | --- | --- |
 | [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft | 2026-09-21 |
-| [ADR-WS2-002](002-executed-evidence-for-risk-control-claims.md) | Executed evidence that a CoSAI control mitigates a CoSAI risk | Draft | 2026-09-21 |
+| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft | 2026-09-21 |
 
 ### Reserved
 
