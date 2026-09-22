@@ -27,6 +27,12 @@ with one change.
 - **Lifecycle:** land as `Draft`; a maintainer flips it to `Accepted`; a replaced ADR
   becomes `Superseded by ADR-WS2-XXX` and links forward. Amendments may live inside an ADR
   as a dated section rather than forcing a new number.
+- **A Draft can carry a date it becomes binding.** ADR-WS2-001 and -002 both do: Fall week
+  1, the week of **2026-09-28**. Before that date they are a first specification nobody has
+  approved and argument is free. After it the D-numbers are the contract the cohort builds
+  against, so a change is a dated amendment rather than an edit, and a reversal needs a
+  superseding ADR. The date is stated in each ADR's Status line and again above its
+  Context, because a reader who skips the header is exactly the reader who needs it.
 
 ## Where a decision belongs
 
@@ -44,8 +50,8 @@ over, so the sequencing needs to outlive the people who agreed it.
 
 | # | Title | Status | Date |
 | --- | --- | --- | --- |
-| [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft | 2026-09-21 |
-| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft | 2026-09-21 |
+| [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft — binding 2026-09-28 | 2026-09-21 |
+| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft — binding 2026-09-28 | 2026-09-21 |
 
 ### Reserved
 

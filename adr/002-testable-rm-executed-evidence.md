@@ -1,10 +1,16 @@
 # ADR-WS2-002: Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk
 
-**Status:** Draft
+**Status:** Draft — binding from Fall week 1 (2026-09-28)
 **Date:** 2026-09-21
 **Authors:** Vinay Bansal (Lead), Josiah Hagen (Co-Lead)
 
 ---
+
+> **These decisions become binding in Fall week 1 — the week of 2026-09-28.** Until then
+> this is a first specification that nobody has approved, and any part of it is open to
+> being argued with at no cost. From week 1 the D-numbers below are the contract the
+> cohort builds against and CI cites: changing one is an amendment with a dated section,
+> not an edit, and a reversal needs a superseding ADR. Raise objections before then.
 
 ## Context
 
