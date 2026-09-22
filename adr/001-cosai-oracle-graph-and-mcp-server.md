@@ -36,11 +36,12 @@ express the relationships #388 asks of it. Neither surface is queryable, and nei
 state what it does not know.
 
 **Already built:** the contribution graph, the citation layer and a v1.x meetings layer
-(`plan.md` §10.0), 421 tests passing. **Step 3 of `NEXT-STEPS.md` also landed on
-2026-09-22** — the meetings layer reads CoSAI's own list archives from the groups.io
-API rather than one contributor's mailbox export, which makes that layer reproducible by
-anyone with their own key and removes the 32-day ceiling. Steps 1, 2 and 4–7 are
-designed and not built.
+(`plan.md` §10.0). **Step 3 of `NEXT-STEPS.md` is built but not done.** A fetcher for
+CoSAI's own list archives on groups.io replaces one contributor's mailbox export, but on
+its first live run (2026-09-22) the archive export refused an ordinary member's key for
+all eight lists (`inadequate_permissions`). Until export access is granted
+(`TSC-QUESTIONS.md` item 8), the meetings layer still reads that mailbox export and its
+32-day window. Steps 1, 2 and 4–7 are designed and not built.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
 and ordering of steps 1–7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
@@ -205,8 +206,9 @@ addresses the IRIs; §8 allocates weeks 1–2 to the learning curve.
 
 Three decisions this one implies but does not make: **ADR-WS2-003** (critical user journeys
 and tool surface) and **ADR-WS2-004** (graph store) in week 2; **ADR-WS2-005** (hosting) only
-if §6's preconditions hold. Three items in `TSC-QUESTIONS.md` gate parts of the work: address
-aggregation (1), member-restricted Drive minutes (2), contributing the skills upstream (4).
+if §6's preconditions hold. Four items in `TSC-QUESTIONS.md` gate parts of the work: address
+aggregation (1), member-restricted Drive minutes (2), contributing the skills upstream (4),
+export access to the list archives (8).
 
 ---
 
@@ -320,7 +322,9 @@ serves as both the work and a source of test data.
 
 - Short-lived branches, PR to `main`, one review, CI green. A contributor's first PR gets
   reviewed same-week — latency is what loses volunteers.
-- The 421-test baseline never goes down.
+- Test quality and coverage, not test count. Every behavior a tool promises, and every
+  failure mode it reports, has a test that would fail if it broke; a PR that removes one
+  says what now covers it.
 - Every parser lands with its fixture in `tests/fixtures/` **before** it lands with its code.
 - Unresolved anything — a person line, a name variant, an RM id — goes to a report under
   `reports/`, never to a guess. This is the single most important habit in the project.
@@ -354,8 +358,7 @@ backlog good enough to attract volunteers.
 2. **Cadence.** Fix the §2 slots for the term against the CoSAI meeting calendar, so
    conflicts surface now rather than in week 5.
 3. **Environment.** Everyone runs the repo before Friday: `pip install -e ".[dev]"`, fetch,
-   build, `pytest -q`, 421 passing. Python ≥3.11. Note anaconda's `gh` shadows
-   `/usr/bin/gh`, which `ingest/fetch.py` needs.
+   build, `pytest -q`, all passing. Python ≥3.11.
 4. **Recruit 2–5 CoSAI contributors — Co-Lead owns this, and it is a week-1 deliverable, not
    an aspiration.** The pitch goes to the WS2 and WS4 lists and to the TSC and PGB calls,
    and the ask is concrete: *"a 90-minute evening, reviewing twenty name lines, and your
@@ -593,7 +596,7 @@ protects the committed scope.
 | **Demo question** | "How often does WS4 actually meet, who attends, and what was this person's affiliation in March 2026?" |
 | **Correct answer shape** | An attendance rate **with its denominator named**; an affiliation with `bounds_known: false` and an inferred change window carrying `notBefore`/`notAfter`; a date between two attested spans returns **nothing**, not an interpolation |
 | **Committed** | Step 1 entire: `ingest/minutes.py`, `build/minutes.py`, `governance-roles.yaml`, split meetings graphs each with its own shape, the three tools, updated orientation skill |
-| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**. Step 3, the groups.io re-point, was carried here as stretch and is **done** — see Context |
+| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**. Step 3, the groups.io re-point, is carried here as stretch: the fetcher is built, and what remains is export access (`TSC-QUESTIONS.md` item 8) and a first pull. See Context |
 | **Tests** | ≥3 per parser; the 2024-09-27 pre-format file; a `(PGB co-chair, Google alternate \- left 35 min. in)` regression; both known graph contradictions resolved or reported |
 | **Gate** | Registry diff reviewed and countersigned. No person or affiliation entered the graph without a human reading the line it came from |
 
@@ -897,7 +900,7 @@ evening and a student's week live in the same backlog. Difficulty is **E**asy / 
 
 | Artifact | Value | Diff. | Best done by |
 | --- | --- | --- | --- |
-| **A test** | Non-negotiable; the 421-test baseline never drops. Three per parser, per `plan.md` §11 | M | Students |
+| **A test** | Non-negotiable. Judged by what it guards, not by how many there are: a regression that is named, a fixture from real data, a failure mode that would otherwise pass silently. Three per parser, per `plan.md` §11 | M | Students |
 | **A parser or pipeline PR** | The milestone itself. Determinism is the bar: same inputs, same graph, every time | H | Student pairs |
 | **A new ontology term** | Permanent and expensive to change. Needs a BFO/CCO parent, a label and a comment, and review before merge | H | Ontology owner + Lead |
 | **An MCP tool** | Where the graph becomes usable by anyone who isn't us | M | Students |
@@ -935,6 +938,7 @@ asserted** — and a contribution that adds another is worth more than one that 
 | **PII handling** | Contributors may assume CoSAI data is theirs to copy | §7 Q1 rules stated at onboarding, not discovered |
 | **Hosting eats a milestone** | It looks like a deploy and costs a classification change; it is the most tempting scope creep available | Preconditions in §6.3 are all-or-nothing; decided once at the week-6 gate; Phase A is the default answer |
 | **A hosted service outlives its operator** | Students graduate mid-Winter; an unowned endpoint serving coalition data is a liability | A named operator with a term beyond the cohort, and a **dated** decommission runbook written before launch, not after |
+| **Meetings coverage is one mailbox until export access lands** | The v1 demo question ("How often does WS4 actually meet…") is only as good as a 32-day window, and a short window looks like a quiet group | Coverage windows are reported per list, so every rate carries its denominator (D8). Export access was raised as `TSC-QUESTIONS.md` item 8 on 2026-09-22 |
 | **Bus factor** | At 2 students, one leaving is half the build lane | Pairs, not solos. Conventions written down in week 4, not week 8 |
 | **Student availability** | Midterms and exam weeks | Week 8 ends 2026-11-20, clear of Thanksgiving; Winter wk 3 light around MLK Day |
 | **Token budget overrun** | A shared account and enthusiastic parallel exploration | Weekly cap set in week 1; fresh tight-scope sessions over long ones |

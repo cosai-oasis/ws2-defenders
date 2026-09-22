@@ -341,9 +341,9 @@ with latency started.
 2. **Cadence.** Fix the §2 slots against the CoSAI meeting calendar so conflicts surface now rather
    than in week 5.
 3. **Environment.** Everyone clones `secure-ai-tooling` (`develop`) and `ws2-defenders` and runs
-   `pre-commit run --all-files` and `pytest` green before Friday. Python ≥3.11. Note that anaconda's
-   `gh` shadows `/usr/bin/gh`, and that `gh issue view` currently fails on this repo with a
-   Projects-classic GraphQL deprecation error — use `gh api repos/.../issues/N`.
+   `pre-commit run --all-files` and `pytest` green before Friday. Python ≥3.11. Note that
+   `gh issue view` currently fails on this repo with a Projects-classic GraphQL deprecation
+   error — use `gh api repos/.../issues/N`.
 4. **Pin the corpus.** Record the `develop` commit of `risk-map/yaml/` in the charter. Everything
    this term is stated against that pin. Re-pinned at every gate (D11).
 5. **Paperwork, now, because it has latency.** OASIS Open Project iCLA on file for every student and
