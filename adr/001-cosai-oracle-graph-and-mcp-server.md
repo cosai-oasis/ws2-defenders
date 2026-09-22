@@ -30,8 +30,11 @@ express the relationships #388 asks of it. Neither surface is queryable, and nei
 state what it does not know.
 
 **Already built:** the contribution graph, the citation layer and a v1.x meetings layer
-(`plan.md` §10.0), 393 tests passing. Steps 1–7 of `NEXT-STEPS.md` are designed and not
-built.
+(`plan.md` §10.0), 421 tests passing. **Step 3 of `NEXT-STEPS.md` also landed on
+2026-09-22** — the meetings layer reads CoSAI's own list archives from the groups.io
+API rather than one contributor's mailbox export, which makes that layer reproducible by
+anyone with their own key and removes the 32-day ceiling. Steps 1, 2 and 4–7 are
+designed and not built.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
 and ordering of steps 1–7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
@@ -98,6 +101,10 @@ stdio transport, no credentials in the request path, purpose-built narrow tools,
 and `stderr`-only diagnostics because stdout carries the JSON-RPC stream. No tool calls a
 model; synthesis belongs to a skill over the tools.
 
+Credentials exist at **build** time only and the server holds none: `gh` for the corpus,
+and a personal groups.io API key for the list archives. Each is the operator's own and
+revocable; none is shared, and none reaches a request.
+
 ### D10. `SERVICE` and `LOAD` are refused at the `sparql` boundary
 
 A `SELECT` carrying `SERVICE` is an arbitrary egress primitive — verified against this store,
@@ -108,6 +115,13 @@ sufficient.
 ### D11. A hosted build carries no plaintext addresses and no `sparql` tool
 
 If hosting happens, the boundary is the build, not a default flag.
+
+List mail sharpens this rather than changing it. A downloaded group archive carries every
+member's address in plaintext, and unlike a whitepaper's acknowledgements those were not
+published for citation. The ingest emits `sha256` only, nothing above it sees an address,
+and the archives themselves stay local and untracked — so the address question D11 defers
+to the TSC is confined to the 78 already-published contributor addresses and does not grow
+with the mail layer.
 
 ### D12. The tool surface is decided before the store
 
@@ -300,7 +314,7 @@ serves as both the work and a source of test data.
 
 - Short-lived branches, PR to `main`, one review, CI green. A contributor's first PR gets
   reviewed same-week — latency is what loses volunteers.
-- The 393-test baseline never goes down.
+- The 421-test baseline never goes down.
 - Every parser lands with its fixture in `tests/fixtures/` **before** it lands with its code.
 - Unresolved anything — a person line, a name variant, an RM id — goes to a report under
   `reports/`, never to a guess. This is the single most important habit in the project.
@@ -334,7 +348,7 @@ backlog good enough to attract volunteers.
 2. **Cadence.** Fix the §2 slots for the term against the CoSAI meeting calendar, so
    conflicts surface now rather than in week 5.
 3. **Environment.** Everyone runs the repo before Friday: `pip install -e ".[dev]"`, fetch,
-   build, `pytest -q`, 393 passing. Python ≥3.11. Note anaconda's `gh` shadows
+   build, `pytest -q`, 421 passing. Python ≥3.11. Note anaconda's `gh` shadows
    `/usr/bin/gh`, which `ingest/fetch.py` needs.
 4. **Recruit 2–5 CoSAI contributors — Co-Lead owns this, and it is a week-1 deliverable, not
    an aspiration.** The pitch goes to the WS2 and WS4 lists and to the TSC and PGB calls,
@@ -573,7 +587,7 @@ protects the committed scope.
 | **Demo question** | "How often does WS4 actually meet, who attends, and what was this person's affiliation in March 2026?" |
 | **Correct answer shape** | An attendance rate **with its denominator named**; an affiliation with `bounds_known: false` and an inferred change window carrying `notBefore`/`notAfter`; a date between two attested spans returns **nothing**, not an interpolation |
 | **Committed** | Step 1 entire: `ingest/minutes.py`, `build/minutes.py`, `governance-roles.yaml`, split meetings graphs each with its own shape, the three tools, updated orientation skill |
-| **Stretch** | Step 3 (groups.io re-point — lifts the mail layer's 32-day ceiling); step 2 (Drive minutes) **only if TSC question 2 is answered** |
+| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**. Step 3, the groups.io re-point, was carried here as stretch and is **done** — see Context |
 | **Tests** | ≥3 per parser; the 2024-09-27 pre-format file; a `(PGB co-chair, Google alternate \- left 35 min. in)` regression; both known graph contradictions resolved or reported |
 | **Gate** | Registry diff reviewed and countersigned. No person or affiliation entered the graph without a human reading the line it came from |
 
@@ -877,7 +891,7 @@ evening and a student's week live in the same backlog. Difficulty is **E**asy / 
 
 | Artifact | Value | Diff. | Best done by |
 | --- | --- | --- | --- |
-| **A test** | Non-negotiable; the 393-test baseline never drops. Three per parser, per `plan.md` §11 | M | Students |
+| **A test** | Non-negotiable; the 421-test baseline never drops. Three per parser, per `plan.md` §11 | M | Students |
 | **A parser or pipeline PR** | The milestone itself. Determinism is the bar: same inputs, same graph, every time | H | Student pairs |
 | **A new ontology term** | Permanent and expensive to change. Needs a BFO/CCO parent, a label and a comment, and review before merge | H | Ontology owner + Lead |
 | **An MCP tool** | Where the graph becomes usable by anyone who isn't us | M | Students |
