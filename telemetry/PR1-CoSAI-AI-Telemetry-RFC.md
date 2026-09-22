@@ -227,7 +227,7 @@ Read every field in §§5 to 16 against one of these **knowability** tiers:
 | Tier | What you have | How the field set applies |
 | :------- | :------------------------- | :------------------------------------------------ |
 | **Mediated** | You own the boundary the interaction crosses | Full boundary telemetry: §§6, 7, 9, 16 apply as written. The counterparty's internals are absent, and their absence is expected rather than a gap |
-| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed AgBOM, agent card) | Record the claim **and its verification outcome**. **Attribute Source / Trusted-Provenance Marking** (§16) is the mechanism: an unverified claim is `self-asserted`, whatever it asserts |
+| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed AgBOM, agent card) | Record the claim **and its verification outcome**. **Attribute Source / Trusted-Provenance Marking** (§16) records who made the claim; verification records whether it was verified. An unverified claim is `self-asserted`, whatever it asserts |
 | **Opaque** | Only the wire interaction | §§6, 7, 12 at the protocol surface, and nothing more. **Do not synthesize** fields you cannot observe. An opaque counterparty should be visibly opaque in the telemetry, not silently defaulted |
 
 The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. `AOC-08` is that failure in miniature, and `AOC-11` is its consequence at scale.
