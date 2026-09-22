@@ -21,7 +21,7 @@ versions it ran against, and a claim-strength tier that says what the answer doe
 license. The same motion tests the RFC: a MUST field that cannot evidence the outcome it exists to
 evidence is a finding about the RFC, not a gap to paper over.
 
-**Four things already exist**, which makes this wiring rather than research: the Risk Map on
+**Four inputs already exist**, so the work is integration rather than new research: the Risk Map on
 `develop` (36 risks, 37 controls, 42 components, 10 personas, reciprocal `risk.controls` ↔
 `control.risks` edges) as the claim under test; Telemetry RFC v0.5 with 98 fields and **49
 documented attacks**, serving as both attack corpus and observation contract; `secure-ai-tooling`
@@ -121,46 +121,45 @@ Attack, control, mutant, benign case, fixtures, run record, countersigned verdic
 
 ## Consequences
 
-### Positive — what executed evidence buys
+### Positive
 
-Running attacks is the expensive way to establish a risk↔control relationship, and a reader coming
-from the Risk Map will reasonably ask why assertion is not enough. Four answers.
+Executing attacks is more costly than asserting a risk↔control relationship. Four effects
+justify the cost.
 
-**1. It converts an editorial judgment into a measurement.** Today a risk↔control edge is an
-expert's claim, and there is no way for it to be wrong in public. A harness run makes it falsifiable:
-a **positive control** first, proving the attack reaches the manifested state against an undefended
-target, and only then a defended run that is allowed to pass. Without the positive control a green
-result is indistinguishable from a broken test, which is the most common way security evidence
-lies — and why D1 fails closed on a pair whose positive control did not fire.
+**1. It converts an editorial judgment into a measurement.** A risk↔control edge is currently an
+expert assertion with no procedure that could falsify it. A harness run supplies one: a
+**positive control** first, establishing that the attack reaches the manifested state against an
+undefended target, and only then a defended run eligible to pass. Without the positive control, a
+passing result is indistinguishable from a non-functioning test. D1 therefore fails closed on a
+pair whose positive control did not fire.
 
 **2. One experiment tests two artifacts.** Because the verdict derives from emitted telemetry rather
 than bespoke assertions, every run exercises the Telemetry RFC's 98 fields as an *observation
 contract* at the same time as it exercises the control. A field the RFC marks MUST that cannot
-evidence the outcome it exists to evidence is a finding against the RFC — a result the RFC cannot
-produce about itself, and one this project gets for free from work it was doing anyway.
+evidence its intended outcome is a finding against the RFC — a result the RFC cannot produce
+about itself, obtained here as a by-product of the same run.
 
-**3. Absence becomes countable.** Coverage stops being a feeling: which pairs have executed
-evidence, which do not, and — most valuable — which controls are written so that no experiment
-could ever falsify them. A control nobody can make fail is not a strong control; it is an
-unfalsifiable one, and naming those is plausibly the highest-value output of the Fall term. Nothing
-else in the coalition's toolchain is positioned to find them.
+**3. Coverage becomes countable.** The report states which pairs have executed evidence, which do
+not, and which controls are specified such that no experiment could falsify them. That third
+category is unfalsifiable rather than strong, and identifying it is a primary output of the Fall
+term; no other artifact in the coalition currently produces it.
 
 **4. The run records are an index into the Risk Map.** Every record is keyed by risk id, control id,
-attack id, component and telemetry field, so evidence joins straight back to the RM catalog — and
-through those same ids to the sibling project's ontology, which is what makes Winter §5.3 a join
-rather than an integration. *Which controls have been tested, against what, when, and how strongly*
-becomes a query instead of a memory. It is also why the ids must be the Risk Map's own and never
-invented (D4): a run record keyed to a ghost id is evidence about nothing.
+attack id, component and telemetry field, so evidence joins back to the RM catalog and, through
+the same ids, to the sibling project's ontology — which is why Winter §5.3 is a join rather than
+an integration. *Which controls have been tested, against what, when, and at what strength*
+becomes a query. The ids must therefore be the Risk Map's own and never invented (D4); a record
+keyed to a non-existent id supports no claim.
 
-### Negative — the bill
+### Negative
 
-A target range has to exist before anything can be measured, and there is none — the top scope
-risk in the project (§9), and the reason week 2 decides its shape rather than building it. Runs
-are slow and flaky next to unit tests. Most early results will be negative or inconclusive, and a
-team that reads a negative as failure will tune until the light goes green, destroying the
-evidence it was gathering. And executed evidence decays: pinned to a model, a range commit and a
-corpus commit, so what Tier B licenses about one model on one date it does not license six months
-later — re-running is maintenance, not rework (D11).
+A target range must exist before anything can be measured, and none does; this is the top scope
+risk (§9) and the reason week 2 decides its shape rather than building it. Runs are slower and
+less deterministic than unit tests. Most early results will be negative or inconclusive, and
+treating a negative as a failure to be tuned away invalidates the evidence being gathered.
+Executed evidence also expires: it is pinned to a model, a range commit and a corpus commit, so a
+Tier B claim about one model on one date does not extend six months. Re-running is recurring
+maintenance, not rework (D11).
 
 ### Follow-up
 
@@ -216,7 +215,8 @@ week is a plan that slips.
 
 > **Volunteer work is detachable.** Contributor work here is corpus judgment: which attack in the
 > RFC corpus grounds which risk, whether a control description is implementable as written, whether
-> a verdict is warranted by what the run showed. Each is one evening, and nothing committed sits behind it.
+> a verdict is warranted by what the run showed. Each fits a single sitting, and no committed
+> scope depends on it.
 
 `@HarperZ9` is already engaged on the issue and has proposed a bounded contribution. Treat them as a
 contributor under §1's rules from week 1, with the harness-contract review (§3 week 2) as the
@@ -390,7 +390,7 @@ as a product to admire.
 | **CALDERA** | What run-state distinctions does an execution record need (skipped / executed / failed), and which of ours are missing? |
 | **PyRIT** | It separates execution from scoring, which is our §1 team split. Can its orchestrator/scorer seam be our Tier B/C substrate? (Raised at TSC 2026-09-15, incl. the 1.1.0 GUI) |
 | **garak** | Probe/detector split ≈ attack/telemetry-assertion split. What does its detector library already cover? |
-| **AgentDojo** | The closest prior art: agent prompt-injection benchmark with a **dual utility+security metric**. How do they prove the attack fired, and what is their benign-utility baseline? This is our D1 in someone else's hands |
+| **AgentDojo** | The closest prior art: agent prompt-injection benchmark with a **dual utility+security metric**. How do they prove the attack fired, and what is their benign-utility baseline? Their treatment of D1 |
 | **promptfoo / DeepTeam** | Is a declarative config sufficient, or does a pair need code? |
 | **Inspect (UK AISI)** | Solver/scorer model — does it fit better than pytest for Tier C? |
 | **pytest + `secure-ai-tooling`'s hook framework** | If the harness lands in that repo, what does ADR-025/ADR-037 compel? |
@@ -483,8 +483,8 @@ primary source.
 
 **Blue.** The control as the RM describes it, its known-bad mutant, and the benign negative control.
 
-**Week 3 selection — the whole backlog, ranked.** The other deliverable of this week, and the one the
-user's brief calls out: choose the batch by capacity, with a written rubric rather than by appetite.
+**Week 3 selection — the backlog, ranked.** The week's second deliverable, called out in the
+brief: choose the batch by capacity, against a written rubric rather than by preference.
 
 A candidate pair scores on:
 
@@ -666,11 +666,11 @@ Three deliverables, in dependency order:
 
 1. **Project run records into RDF.** Each record becomes evidence attached to a `cosai:` risk↔control
    edge, carrying its tier, its corpus pin, its model version and its date. Cheap, if §3 week 3 held.
-2. **`rm_evidence_coverage`.** The query the whole term was for: *which risk↔control edges have
-   executed evidence, at what tier, and which have none.* It turns their `rm_uncontrolled_risks` —
-   which today can only report edges absent from the YAML — into a tool that can also report edges
-   present in the YAML and unevidenced in reality. **The absence is the finding, and now it is
-   queryable.**
+2. **`rm_evidence_coverage`.** The term's target query: *which risk↔control edges have executed
+   evidence, at what tier, and which have none.* It extends `rm_uncontrolled_risks`, which today
+   reports only edges absent from the YAML, to also report edges present in the YAML and
+   unevidenced in practice. Per D9, the unevidenced set is a reportable result, and this makes it
+   queryable.
 3. **Meet their constraint-enrichment work from the other side.** Their Winter week 3 turns the
    corpus's RFC-2119 statements into SHACL shapes; the Telemetry RFC's 50 MUST fields *are* RFC-2119
    normative statements. A shape says a deployment must emit field X; a harness run either does or
@@ -793,7 +793,7 @@ because the control was silently reinterpreted until it passed.
 | Risk | Why it bites *this* team shape | Mitigation |
 | --- | --- | --- |
 | **The range eats the term** — top risk | Every attack wants a different surface, and "build a small agent platform" is a term's work on its own | ADR-H2's minimality rule. Surfaces added only by the pair that needs one. **Tier A needs no range, so v0 survives total range failure** |
-| **Vacuous green** — the one that discredits the project | A harness that reports mitigation when the attack never fired launders a false assurance claim into a coalition artifact. This repo has been fooled three times already (#480, ADR-025 D10, ADR-037) | D1 and D2; the positive control; the mutant; fail-closed discovery; a run with no evidence returns **invalid**, not pass |
+| **Vacuous green** — highest-impact failure | A harness that reports mitigation when the attack never fired publishes a false assurance claim as a coalition artifact. This repository has produced three prior instances (#480, ADR-025 D10, ADR-037) | D1 and D2; the positive control; the mutant; fail-closed discovery; a run with no evidence returns **invalid**, not pass |
 | **Claim overreach downstream** | Someone quotes "CoSAI proved control X mitigates risk Y" from a Tier A fixture | The tier is printed on every verdict and stated in the presentation. D6. The TSC sponsor signs off on the claim language at gate v3 |
 | **Red and Blue become adversaries rather than a cross-check** | Natural dynamic of the naming | Pairs land together or not at all. Neither scores. Both are measured on landed pairs, not on wins |
 | **Harness becomes a service desk** | Two people, N pairs, bespoke glue | The contract is frozen at v0. Per-pair harness work after week 4 is logged as a contract defect and fixed at the contract |
@@ -814,5 +814,5 @@ because the control was silently reinterpreted until it passed.
 system. Cite them by number in review comments, commit messages and harness output, so a check can
 always name the decision it enforces.
 
-The three that decide whether this project is believed: **D1** the positive control, **D2** nobody
-scores their own run, **D6** the printed tier.
+The three that determine whether a result is credible: **D1** the positive control, **D2**
+separation of scoring from authorship, **D6** the printed tier.

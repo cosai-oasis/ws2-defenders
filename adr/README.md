@@ -17,8 +17,7 @@ with one change.
 - **Stable sub-decision IDs.** Multi-part decisions use `### D1.`, `### D2.`, and
   `#### D3a.` for internal layering. Cross-references cite `D3b`, never `§3`. This is what
   lets a validator, a CI error string or another ADR name the exact decision it enforces —
-  upstream does this pervasively (`ADR-033 D2a`, `ADR-017 D4`, `ADR-037 D1`), and it is the
-  single most useful convention they have.
+  upstream applies this throughout (`ADR-033 D2a`, `ADR-017 D4`, `ADR-037 D1`).
 - **Numbering is qualified: `ADR-WS2-NNN`.** The change from upstream. `secure-ai-tooling`
   numbers bare (`ADR-001`), which collides the moment two CoSAI repositories both keep
   ADRs. The workstream infix keeps IDs unique across the coalition, so an ADR can be cited

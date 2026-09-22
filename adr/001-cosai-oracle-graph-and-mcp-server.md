@@ -21,7 +21,7 @@ truthfully.  It's easy to build functionality that answers other user questions 
 such as what groups are meeting and what are they doing, along the way to creating the full
 structured representation and providing immediate benefit.
 
-Concretely, two problems. Contribution credit sits in prose "Contributors and
+Two problems. Contribution credit sits in prose "Contributors and
 Acknowledgements" sections at the end of eleven whitepapers across five repositories, in
 three structural formats, with inconsistent role labels, inconsistent organization names,
 two email addresses for one person, and no stable identifiers — so "what has this person
@@ -31,7 +31,7 @@ state what it does not know.
 
 **Already built:** the contribution graph, the citation layer and a v1.x meetings layer
 (`plan.md` §10.0), 393 tests passing. Steps 1–7 of `NEXT-STEPS.md` are designed and not
-built. Nobody starts from an empty repository.
+built.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
 and ordering of steps 1–7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
@@ -58,7 +58,7 @@ with SPDX 3.1 Core and PROV-O is by `skos:closeMatch`. **No `owl:equivalentClass
 People, organizations, workstreams, publications and manifestations are continuants.
 Publication, revision, authoring, affiliation-gain and -loss, citation and meeting events are
 occurrents occupying temporal regions. Credited and affiliation roles are reified, so one
-person can bear several at once. What this buys is set out under Consequences.
+person can bear several at once. The effects are listed under Consequences.
 
 ### D3. No fabricated bounds
 
@@ -85,8 +85,8 @@ Attribution errors are the one class of defect this must not ship.
 ### D7. One OWL entry per Risk Map YAML id, never invented
 
 A missing concept is fixed in the YAML upstream first. Validators and telemetry that look up
-a `component_id` must not find a ghost. The catalog is regenerated, never curated — the
-opposite of the people and organization registries, deliberately.
+a `component_id` must resolve to a real entry. The catalog is regenerated rather than
+curated, unlike the people and organization registries.
 
 ### D8. A rate without a named denominator does not ship
 
@@ -137,9 +137,9 @@ question about which queries must work. Hosting, if it happens, is **ADR-WS2-005
 
 ## Consequences
 
-### Positive — what the entity-event model buys
+### Positive
 
-`plan.md` §4.3 is the model itself, with worked Turtle. Four things follow from D2.
+Four effects follow from D2. `plan.md` §4.3 gives the model with worked Turtle.
 
 **1. It lets the graph say what is known, and nothing more.** A flat edge — *person
 `affiliatedWith` org* — asserts a present-tense fact. The corpus contains no present-tense
@@ -147,43 +147,39 @@ facts. It contains a person credited under an employer in a document published o
 Modeling affiliation as a **role borne over a temporal region**, gained and lost by events,
 is what makes `boundsKnown false` and `notBefore`/`notAfter` expressible at all. In a flat
 model the only ways to record *"credited under Trend Micro on 2025-07-14 and 2025-10-27,
-start and end unknown"* are to invent a start date or to drop the dates. Both are wrong
-answers about a real person. The same split is what keeps a credit carried across a revision
-dated to the original publication, which is the difference between silence and a fabricated
-"Bill Stout returned to ServiceNow in August 2026".
+start and end unknown"* are to invent a start date or to drop the dates. Both produce an
+incorrect statement about a named individual. The same separation dates a credit carried
+across a revision to the original publication, which is what prevents the unsupported
+reading "Bill Stout returned to ServiceNow in August 2026".
 
 **2. Events carry provenance, so conflicts surface instead of resolving.** Every occurrent
 names its participants, the instant or interval it occupies, and the source that attested
 it. Two sources asserting about one meeting produce two events, not one silently doubled
-edge — which is why the store partitions by provenance and validates each partition alone.
-The contradictions the minutes already throw at the graph (*Bill Stout (AI Alliance
-non-voting)* — an affiliation not held) are findings this model can **hold and report**. A
-flat model has to pick a winner at ingest, and picking silently is how an attribution error
-ships.
+edge, which is why the store partitions by provenance and validates each partition
+separately. Conflicts already present between the minutes and the graph (*Bill Stout (AI
+Alliance non-voting)*, an affiliation not otherwise attested) are retained and reported. A
+flat model resolves such a conflict at ingest, and an unreported resolution is an
+attribution error.
 
-**3. The event layer is the index.** The least obvious benefit and the most important one for
-GraphRAG. Because every event occupies a temporal region and names its participants, the set
-of events is a *semantically meaningful join* across every entry point a question can start
-from: a person, an organization, a document, a section, a meeting series, a date range, and
+**3. The event layer serves as the index.** Because every event occupies a temporal region and names its participants, the set
+of events forms a join across every entry point a question can start from: a person, an organization, a document, a section, a meeting series, a date range, and
 from v3 a Risk Map entity. The `PublicationEvent` reached from "what did this person work
 on", from "what was published in Q3 2026", and from "who wrote about this risk" is **one
-node**, not three secondary indexes to keep in sync. The text index (v2) supplies content;
-the event graph supplies the path to it and the citation for it. That is also why the
-milestones compose rather than merely stack — v1's meetings, v2's sections and v3's RM
-entities all attach to the same occurrents, so each one makes its predecessors more
-answerable.
+node**, not three secondary indexes requiring synchronization. The text index (v2) supplies
+content; the event graph supplies the path to it and the citation for it. The milestones
+compose for the same reason: v1's meetings, v2's sections and v3's RM entities attach to the
+same occurrents, so each extends the queries the earlier ones support.
 
 **4. Roles are reified, so effort is distinguishable from credit.** One person can bear
 several roles at once: Akila Srinivasan is both Reviewer and TSC Co-Chair on a single
 document. Keeping `GitHubContributorRole` a separate class from the credited roles (step 5)
-is what stops "committed" from ever reading as "credited", and stops a typo fix from being
-conflated with writing a section.
+keeps "committed" distinct from "credited", so a typo fix is not counted as authorship.
 
-### Negative — the bill
+### Negative
 
-More triples, more classes, opaque numeric CCO IRIs, and a real ramp for a student who has
-written SQL but not SPARQL. D1's mitigations are the answer to the last two, and the ramp is
-budgeted into weeks 1–2 (§8) rather than discovered in week 3.
+More triples and more classes than a flat model; opaque numeric CCO IRIs; and a learning
+curve for contributors familiar with SQL but not SPARQL. D1's labelling requirement
+addresses the IRIs; §8 allocates weeks 1–2 to the learning curve.
 
 ### Follow-up
 
@@ -253,8 +249,8 @@ runs one milestone ahead on scaffolding only (fixtures, fetchers, skeleton modul
 on the same files.
 
 **Curation lane** — CoSAI contributors plus any student overflow, on a standing backlog of
-issues. Curation work is where domain judgment beats code, which is exactly what CoSAI
-contributors bring, and it is the highest-value-per-hour work in the project: the registry
+issues. Curation work depends on domain judgment rather than code, which is what CoSAI
+contributors supply, and it has the highest value per hour in the project: the registry
 gate, the document↔RM candidate rows, framework mapping judgment, golden questions. The lane
 always works **one milestone ahead** of the build lane, so its output arrives before it is
 needed rather than after.
@@ -297,8 +293,8 @@ Contributors are invited to the Wednesday session and obligated to none of it. T
 interface is the issue tracker; the wrangler's job is that the tracker always has something
 worth an evening.
 
-There is a pleasant recursion worth naming: the meetings the rotating student attends are the
-same meetings v1 is modeling. Attendance is both the work and the data.
+The meetings the rotating student attends are the same meetings v1 models, so attendance
+serves as both the work and a source of test data.
 
 ### Working rules
 
@@ -438,7 +434,7 @@ Criteria, in this weight order:
    partition validated alone against a class allowlist, cannot be built without it.
 2. **Reasoning** — which profile do we *actually* need: OWL-RL materialization, EL
    classification, or Datalog rules? Answer with a query we want to work and that today does
-   not — which is exactly what ADR-WS2-003's journeys supply — before ranking any engine.
+   not, which ADR-WS2-003's journeys supply, before ranking any engine.
 3. **SHACL** — native, or `pyshacl` alongside.
 4. **Deployment posture** — a store needing a network-listening process changes the MCP
    Security §3.3.1 Level 1 / DP1 classification this project is registered under
@@ -499,8 +495,8 @@ unblocks 1.4.
 - **1.8 Skill update** — flip the orientation skill's attendance refusals.
 
 **Week 4 — curation lane.** Contributors review the proposed registry diff line by line. This
-is the highest-value volunteer hour in the whole term: people who were in those rooms
-reviewing claims about who was in those rooms.
+is the highest-value use of volunteer time in the term: the reviewers were present at the
+meetings whose attendance records they are checking.
 
 ---
 
@@ -536,7 +532,7 @@ input, arriving six weeks early, which is how a four-week Winter becomes feasibl
 ### Weeks 7–8 → **v3: CoSAI RM as OWL/RDF**
 
 `NEXT-STEPS.md` §6.6 steps **1 and 2 only**. Steps 3–6 are Winter and beyond, and saying so
-in week 1 rather than discovering it in November is the point of §4's committed/stretch split.
+in week 1 is the purpose of §4's committed/stretch split.
 
 **Week 7 — build lane.** **6.6.1 The generator** over `risk-map/yaml` on `develop`, emitting
 the `cosai:` namespace (reserved and unused until now). **One OWL entry per YAML id. Never
@@ -650,7 +646,7 @@ Turn the corpus's **normative recommendations** into machine-checkable constrain
 2. **Curate** — harvesting is assistive only. Every candidate is human-reviewed before it
    becomes a shape, under the registry gate's rule: **never auto-emit a constraint from
    extracted text.** A wrong SHACL shape asserts that a real organization's system is
-   non-conformant, which is the `plan.md` §13 attribution-error class wearing a different hat.
+   non-conformant, which is the `plan.md` §13 attribution-error class in another form.
    Curation lane work, and the best use of a CoSAI contributor's judgment all term.
 3. **Express** — each curated recommendation becomes a shape carrying, as annotations, the
    publication and heading it came from and its RFC-2119 strength. A violation must be able to
@@ -697,9 +693,9 @@ with preconditions rather than as a milestone with a date.
   the coalition.
 - **Adoption.** Answering a question live in a TSC or PGB call is worth more than a repo
   link, and it is the shortest path from "interesting student project" to "thing CoSAI uses".
-- **Dogfooding, with a nice recursion.** A CoSAI-facing server secured against CoSAI's own
-  *MCP Security* guidance is itself an artifact worth publishing — and the paper that governs
-  the deployment is in the corpus the server serves.
+- **Dogfooding.** A CoSAI-facing server secured against CoSAI's own *MCP Security* guidance
+  is itself an artifact worth publishing, and that guidance is in the corpus the server
+  serves.
 
 ### 6.2 What it costs: the classification change
 
@@ -834,7 +830,7 @@ matching key — and §6.5 adopts that fallback for any hosted build regardless 
 ## 8. Skills ramp
 
 Nobody arrives with all of this. Weeks 1–2 are where the gaps get named. Contributors need
-only the bottom half of the table, which is the point — their contribution is judgment, not
+only the bottom half of the table; their contribution is domain judgment, not
 Turtle.
 
 | Capability | Who | Depth |
@@ -865,7 +861,7 @@ evening and a student's week live in the same backlog. Difficulty is **E**asy / 
 | ★ **A fixture from an observed line variant** | Freezes a real-world variant forever. The corpus's variance is the whole difficulty; each fixture retires a class of future bug | E | Contributors, new students |
 | ★ **A one-page brief** on a background material | Turns one person's reading into the team's knowledge. Cheap for someone who already knows the material, expensive for everyone else to acquire | E–M | Contributors, week 2 |
 | **A golden question + expected answer** | Defines "correct" before the code exists, which is the only order in which it cannot be fitted to the result | E–M | Contributors |
-| **A demo** (5 min, working software) | Forces integration weekly instead of at the gate, and is the cheapest possible early warning | E | Whoever has something running |
+| **A demo** (5 min, working software) | Forces integration weekly instead of at the gate, and gives the earliest warning of integration failure | E | Whoever has something running |
 
 ### Artifacts that carry domain judgment
 
@@ -873,7 +869,7 @@ evening and a student's week live in the same backlog. Difficulty is **E**asy / 
 | --- | --- | --- | --- |
 | **A reviewed registry row** (person, org, governance role) | The highest-value volunteer hour available. Attribution correctness is the top project risk; this is the control that mitigates it, and it cannot be automated | M | **CoSAI contributors** — people who were in the room |
 | **A document↔RM mapping row** | Cannot be extracted — zero RM ids in the corpus. Every row is irreplaceable human work, and Winter's schedule depends on rows existing before Winter | M | Contributors + students, Fall wks 5–8 |
-| **A curated SHACL constraint** with its citing passage | Turns published prose into something a real system can be checked against. This is the project's end state in one artifact | H | Contributor judgment + student implementation, paired |
+| **A curated SHACL constraint** with its citing passage | Turns published prose into a check a real system can be evaluated against; the terminal deliverable of both terms | H | Contributor judgment + student implementation, paired |
 | **A framework alignment file** pinned to a release | Answers "I run D3FEND — what does that cover?", the query #388 opens with. Hard because a shared term is not a shared meaning | H | Contributors with framework depth |
 | **An upstream issue against the RM YAML** | A gap found by the one-entry-per-id rule, reported where it can be fixed. Contribution to CoSAI as a by-product of building | E–M | Contributors — needs standing in the coalition |
 
@@ -894,7 +890,7 @@ evening and a student's week live in the same backlog. Difficulty is **E**asy / 
 | --- | --- | --- | --- |
 | **An upstream PR to CoSAI** | The point of the project. Latency is in the iCLA and the review, not the code — which is why week 1 starts it | M (process, not code) | Students, Co-Lead shepherding |
 | **A talk to a workstream** | Recruits the next cohort and earns the standing that makes the next gate answerable | M | Co-Lead + a student |
-| ★ **A release with a pre-built `graph.db`** (§6.4 Phase A) | Most of hosting's reach for none of its governance cost — a consumer skips fetch and build entirely. The best value-per-hour artifact in the whole plan | E | A student, Fall wk 8 or Winter wk 4 |
+| ★ **A release with a pre-built `graph.db`** (§6.4 Phase A) | Most of hosting's reach for none of its governance cost — a consumer skips fetch and build entirely. The highest value per hour of any artifact in the plan | E | A student, Fall wk 8 or Winter wk 4 |
 | **A hosted demo endpoint** (§6.4 Phase B) | Turns a repo link into a live answer in a TSC call. Hard because it is a classification change, not a deploy | H | Two students + a named operator, Winter stretch |
 | **The Fall / Winter report** | The handover. A four-week Winter only works if the Fall handover is written, not remembered | M | Everyone, one section each |
 

@@ -27,8 +27,8 @@ specific component without depending on heading text.
 
 ## Alternatives Considered
 
-One short paragraph each: what it was, and the specific reason it lost. Rejected options are
-the point — they stop the same debate reopening without new information.
+One short paragraph each: what it was, and the specific reason it was not chosen. Recording
+rejected options prevents the same debate reopening without new information.
 
 - **Option A** — summary; rejected because …
 - **Option B** — summary; rejected because …
@@ -36,11 +36,11 @@ the point — they stop the same debate reopening without new information.
 ## Consequences
 
 ### Positive
-What this buys, concretely.
+What the decision provides.
 
 ### Negative
-What it costs, what new ways to get it wrong it introduces, what debt it takes on. Write this
-one honestly or the ADR is marketing.
+What it costs, what new failure modes it introduces, what debt it takes on. State these as
+plainly as the Positive section.
 
 ### Follow-up
 Work this decision implies but does not itself perform — later ADRs, issues, PRs.
@@ -63,5 +63,5 @@ stretch scope, gates, artifacts, risks. Omit for decisions that are simply true 
 - One decision per ADR. Two decisions means two ADRs — except where they are genuinely one
   choice with parts, which is what `D1…Dn` is for.
 - Cite commits, PRs and issues concretely. Retroactive ADRs need this most.
-- Lead the title with what it achieves, not how it is built. A reader scanning the index is
-  deciding whether to open it.
+- Lead the title with what the decision achieves, not how it is implemented; the index is read
+  as a list of titles.
