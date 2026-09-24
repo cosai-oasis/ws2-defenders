@@ -35,20 +35,19 @@ worked on?" means reading eleven documents by hand. And the Risk Map is YAML tha
 express the relationships #388 asks of it. Neither surface is queryable, and neither can
 state what it does not know.
 
-**Already built:** the contribution graph, the citation layer and a v1.x meetings layer
-(`plan.md` §10.0). **Step 3 of `NEXT-STEPS.md` is built, and all eight lists are
-pulled.** The meetings layer reads CoSAI's own list archives, which `ingest/groupsio.py`
+**Already built:** the contribution graph, the citation layer and the meetings layer
+(`plan.md` §10.0). The meetings layer reads CoSAI's own list archives, all eight lists, which `ingest/groupsio.py`
 pages through the groups.io `getmessages` API. That needs only the archive visibility an
 open list grants, so any member's own key works. Each list is pulled with its full
 history: 2,886 messages, back to June 2024 for the oldest list. The TSC and PGB are
 modeled as governing bodies, distinct from the four workstreams that produce
-publications. Steps 1, 2 and 4 to 8 are designed and not built. Step 8 extracts what the
-archives hold and the graph does not yet emit: agendas, schedule-change notices, the
-meeting date of each summary, and one governance action per decision. Step numbers are
-stable identifiers, so a finished step's number is retired, never reused.
+publications. Steps 1 to 7 of `NEXT-STEPS.md` are designed and not built. Step 3
+extracts what the archives hold and the graph does not yet emit: agendas,
+schedule-change notices, the meeting date of each summary, and one governance action per
+decision.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
-and ordering of steps 1 to 8; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
+and ordering of steps 1 to 7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
 ADR is canonical for the decisions below and for who builds them, when.
 
 Those three, and the `registry/` and `reports/` paths cited throughout, live in the
@@ -60,8 +59,9 @@ require reading the repository.
 including the contributor email addresses published in them, and its open groups.io
 mailing lists and their archives are public repositories of **TLP:CLEAR** information.
 Every source this ADR ingests is one of these, so no data here is restricted by its
-classification. The one restricted source, member-only Drive documents, stays out of scope
-(§7 Q2).
+classification. That includes workstream and SIG minutes once a group commits them to
+its public repository: the Oracle reads the committed folder, never Drive, so it holds
+no member-only source and no Drive credential.
 
 ## Decision
 
@@ -146,6 +146,57 @@ The critical user journeys and the MCP tool surface land as **ADR-WS2-003**, ahe
 graph-store choice in **ADR-WS2-004**, because "which reasoning profile do we need" is a
 question about which queries must work. Hosting, if it happens, is **ADR-WS2-005**.
 
+### D13. The Oracle is maintained, not only built
+
+The graph, its OWL/RDF (the `cosaic:` ontology, its shapes and alignments, and the
+`cosai:` Risk Map catalog) and the MCP server are kept current and correct after the
+Fall and Winter milestones end. Maintenance is event-driven, and each event has one
+response:
+
+- **An upstream source changes.** A new publication, a corpus pin advanced, or new list
+  mail produces a registry diff for review under D5, never a silent overwrite. New
+  people, affiliations and meeting series pass the same human gate as the first build.
+- **The Risk Map YAML moves.** The catalog is regenerated under D7, and a renamed or
+  removed id is deprecated before it is removed, under D14, so
+  telemetry that recorded the old id still resolves.
+- **A dependency or MCP SDK release.** The server's posture is re-verified before
+  release: Level 1 / DP1 under D9, and the `SERVICE`/`LOAD` refusal under D10. The test
+  suite is the gate; a failing test blocks the release.
+- **A tool is added, renamed or removed.** The skills and their evals change in the same
+  commit, and `graph_schema` names only relations the ontology declares; tests enforce
+  both.
+
+The Lead owns maintenance and holds merge authority for it. Handing it to another named
+maintainer is a change to this decision, recorded as an amendment, so the Oracle always
+has one.
+
+### D14. Ontologies are versioned by SemVer, and the Risk Map's OWL/RDF form is `2.0.0`
+
+Every ontology this project publishes carries a `MAJOR.MINOR.PATCH` version, the
+standard `secure-ai-tooling#534` proposes for the Risk Map and CoSAI's other artifacts.
+MAJOR is a change that invalidates data written against the previous version, or
+changes what a term means, and a new schema is one. MINOR adds terms and leaves
+existing data valid, as a new risk, control, component or persona does. PATCH changes
+no entailment. `plan.md` §4.4 gives the rules in full.
+
+- **Term IRIs carry no version.** The ontology header does: `owl:versionInfo`,
+  `owl:versionIRI` as `<namespace>/<X.Y.Z>`, and `owl:priorVersion`, with each release
+  recorded in a changelog.
+- **A term is deprecated before it is removed**: `owl:deprecated` with
+  `dcterms:isReplacedBy` in a MINOR release, removal only in a later MAJOR one. A
+  renamed Risk Map id keeps resolving, to its replacement, so recorded telemetry does
+  not break.
+- **The Risk Map has one version line across its representations.** The YAML is
+  `1.y.z` from its first tagged release; the OWL/RDF Risk Map is its major bump to
+  **`2.0.0`**. From `2.0.0` on, the YAML and the OWL carry the same number, and the
+  generator refuses to emit when they differ.
+- **`cosaic:`, this project's contribution ontology, keeps its own line**, at `0.2.0`
+  and `1.0.0` from its first tagged release. It moves only when its own terms change.
+- **What depends on a version names it.** The Risk Map catalog pins the YAML version it
+  was generated from, each framework bridge pins a framework release, and the
+  document-to-Risk-Map mapping names the Risk Map version it was curated against, to be
+  re-reviewed at each MAJOR.
+
 ## Alternatives Considered
 
 - **D3FEND 1.6.0 as the grounding ontology** — rejected. Not BFO-derived: no `owl:imports` at
@@ -203,7 +254,7 @@ same occurrents, so each extends the queries the earlier ones support.
 
 **4. Roles are reified, so effort is distinguishable from credit.** One person can bear
 several roles at once: Akila Srinivasan is both Reviewer and TSC Co-Chair on a single
-document. Keeping `GitHubContributorRole` a separate class from the credited roles (step 5)
+document. Keeping `GitHubContributorRole` a separate class from the credited roles (step 6)
 keeps "committed" distinct from "credited", so a typo fix is not counted as authorship.
 
 ### Negative
@@ -216,14 +267,15 @@ addresses the IRIs; §8 allocates weeks 1–2 to the learning curve.
 
 Three decisions this one implies but does not make: **ADR-WS2-003** (critical user journeys
 and tool surface) and **ADR-WS2-004** (graph store) in week 2; **ADR-WS2-005** (hosting) only
-if §6's preconditions hold. Two items in `TSC-QUESTIONS.md` gate parts of the work:
-member-restricted Drive minutes (2) and contributing the skills upstream (4).
+if §6's preconditions hold. No item in `TSC-QUESTIONS.md` gates committed work. The
+orientation and contribution skills stay in this project, owned by this group, until a
+need to move them arises.
 
 ---
 
 # Project plan
 
-Eight weeks in Fall, four in Winter, delivering D1–D12 in the order below. Where this plan
+Eight weeks in Fall, four in Winter, delivering D1–D14 in the order below. Where this plan
 and `NEXT-STEPS.md` disagree on *what* a step contains, `NEXT-STEPS.md` wins; on *when* or
 *who*, this plan wins.
 
@@ -231,7 +283,7 @@ and `NEXT-STEPS.md` disagree on *what* a step contains, `NEXT-STEPS.md` wins; on
 
 | | Count | Commitment | Obligation |
 | --- | --- | --- | --- |
-| **Lead** — Josiah Hagen | 1 | Weekly | Technical direction, merge authority, the invariants D1–D12, registry gate countersign |
+| **Lead** — Josiah Hagen | 1 | Weekly | Technical direction, merge authority, the invariants D1–D14, registry gate countersign |
 | **Co-Lead** — Vinay Bansal | 1 | Weekly | Coalition interface, contributor recruiting and onboarding, TSC escalation, meeting slots |
 | **Students** | 2–5 | 8–10 hrs/wk, fixed calendar | The critical path. Milestones v1/v2/v3 are theirs |
 | **CoSAI contributors** | 2–5 | 2–4 hrs/wk, variable, may lapse | Issue-based. **Never on the critical path** |
@@ -265,7 +317,7 @@ student calendar time. The arithmetic is why §4 splits every milestone into *co
 | 2 students, 2 contributors | ~110 | ~35 | ≈ 1 expert week |
 | 5 students, 5 contributors | ~270 | ~90 | ≈ 2.5 expert weeks |
 
-Steps 1 + 4 + 6.6.1–2 are roughly 4–6 expert weeks at full scope. **Full scope does not fit,
+Steps 1 + 4 + 5.1–5.2 are roughly 4–6 expert weeks at full scope. **Full scope does not fit,
 at either end of the range.** The committed scope in §4 does.
 
 ---
@@ -349,11 +401,11 @@ serves as both the work and a source of test data.
 | 1 | 2026-09-28 | Form, cadence, recruit | Recruit, backlog | Charter + 10 ready issues |
 | 2 | 2026-10-05 | Background evaluation, tool surface, store decision | Briefs, CUJs | **ADR-WS2-003 + ADR-WS2-004** |
 | 3 | 2026-10-12 | Step 1.1–1.4 minutes | `governance-roles.yaml` seed | |
-| 4 | 2026-10-19 | Step 1.5–1.10, tools | Registry review | **v1** |
+| 4 | 2026-10-19 | Step 1.5–1.9, tools | Registry review | **v1** |
 | 5 | 2026-10-26 | Step 4.1 sections | Golden questions for search | |
 | 6 | 2026-11-02 | Step 4 chunks, FTS5, tools | Doc↔RM candidate scouting | **v2** + hosting decision (§6.8) |
-| 7 | 2026-11-09 | 6.6.1 RM generator | RM YAML gap review | |
-| 8 | 2026-11-16 | 6.6.2 namespace + policy | Deprecation policy review | **v3** |
+| 7 | 2026-11-09 | Step 5.1 RM generator | RM YAML gap review | |
+| 8 | 2026-11-16 | Step 5.2 namespace + policy | Deprecation policy review | **v3** |
 
 ---
 
@@ -385,7 +437,7 @@ backlog good enough to attract volunteers.
    contribute upstream needs an OASIS Open Project iCLA on file. The repo is Apache-2.0;
    upstream contribution rules are CoSAI's. Started in week 1 or it blocks the Winter PR.
 7. **Budget.** Who owns the model API account, and the weekly cap. `NEXT-STEPS.md` prices
-   step 6 alone at $558–1,255 on Opus 5. The cheap lever it names is fewer cache
+   step 5 alone at $558–1,255 on Opus 5. The cheap lever it names is fewer cache
    invalidations — **fresh sessions with tight scope**, not terser work.
 
 **Exit criteria.** A one-page charter in the repo (pairs, roles, cadence, budget cap,
@@ -439,7 +491,7 @@ What this ADR specifies:
   WS4 meet and who actually attends*, *which passage says how to contain an agent*, *what
   risks does this component carry and has its id been renamed*. Each CUJ names its actor —
   practitioner, newcomer, TSC member, workstream lead — and what they do with the answer.
-- **The tool that serves each**, against the twelve already built (`plan.md` §9) and the
+- **The tool that serves each**, against the nineteen already built (`plan.md` §9) and the
   ones each milestone adds: `meeting_attendance` / `attendance_rate` / `who_leads` at v1,
   `search_documents` / `get_section` at v2, `rm_search` / `rm_entity` / `rm_change_log` at
   v3. A journey with no tool is either a gap to schedule or a journey to drop; a tool with
@@ -457,7 +509,7 @@ against it, and §4's demo questions become its acceptance tests.
 
 **ADR-WS2-004 — the graph store.** A real decision. The incumbent is `pyoxigraph` + sqlite FTS5
 behind `src/cosai_graphrag/store.py`, chosen when the graph was ~15k triples of asserted
-facts. Step 6 changes the requirement: `NEXT-STEPS.md` §6.1 wants the corpus **deductively
+facts. Step 5 changes the requirement: `NEXT-STEPS.md` step 5 wants the corpus **deductively
 expressed**, and pyoxigraph has no reasoner.
 
 Criteria, in this weight order:
@@ -494,7 +546,7 @@ decision is to swap, a spike branch proving `store.py` absorbs it without touchi
 
 ### Weeks 3–4 → **v1: CoSAI publications and meetings**
 
-`NEXT-STEPS.md` step 1. Read §1.1–1.11 in full; this does not repeat it.
+`NEXT-STEPS.md` step 1. Read it in full; this does not repeat it.
 
 **Week 3 — build lane**
 
@@ -520,10 +572,10 @@ unblocks 1.4.
   *Dalton House (Trend Micro)* a person not known.
 - **1.6 `build/minutes.py`** with its own SHACL shape.
 - **1.7 Tools** — `meeting_attendance`, `attendance_rate(group, by=…)`, `who_leads(group)`.
+  `Present ∪ Guests` over *what*? Each rate states its denominator in the tool output (D8).
 - **1.9 Model additions** — `MemberAttendance` / `GuestAttendance`; `DeclaredAbsence`, which
   is **not a role**; `GroupLeadershipRole`, `AlternateRole`, voting status, all
   evidence-anchored with open bounds like `AffiliationRole`.
-- **1.10 Denominator** — `Present ∪ Guests` over *what*? State it in the tool output.
 - **1.8 Skill update** — flip the orientation skill's attendance refusals.
 
 **Week 4 — curation lane.** Contributors review the proposed registry diff line by line. This
@@ -563,10 +615,10 @@ input, arriving six weeks early, which is how a four-week Winter becomes feasibl
 
 ### Weeks 7–8 → **v3: CoSAI RM as OWL/RDF**
 
-`NEXT-STEPS.md` §6.6 steps **1 and 2 only**. Steps 3–6 are Winter and beyond, and saying so
+`NEXT-STEPS.md` steps **5.1 and 5.2 only**. Steps 5.3 to 5.6 are Winter and beyond, and saying so
 in week 1 is the purpose of §4's committed/stretch split.
 
-**Week 7 — build lane.** **6.6.1 The generator** over `risk-map/yaml` on `develop`, emitting
+**Week 7 — build lane.** **5.1 The generator** over `risk-map/yaml` on `develop`, emitting
 the `cosai:` namespace (reserved and unused until now). **One OWL entry per YAML id. Never
 invent one** — if a concept is missing (PDP, PEP, tool registry, wallet, merchant, payment
 network) the YAML changes first, upstream. The RM **tracks** upstream rather than snapshotting
@@ -575,11 +627,11 @@ a commit per milestone, re-pin at each gate, review the diff. The catalog is **r
 never curated** — the opposite of the people/org registries, and the team should be able to
 say why. Rows are individuals, categories are classes. Matching is SKOS.
 
-**Week 8 — build lane.** **6.6.2 Versioned namespace and deprecation policy** — a
+**Week 8 — build lane.** **5.2 Versioned namespace and deprecation policy** — a
 prerequisite, not polish: emitted telemetry is an immutable historical record, so a renamed id
 silently invalidates every stored event carrying it. Write the policy as a document first,
-implement second. Then the RM partition's SHACL shape, the freeze, the tag, and a written
-handover to Winter.
+implement second, to D14's rules. Then the RM partition's SHACL shape, the freeze, the
+`2.0.0` tag, and a written handover to Winter.
 
 **Curation lane, weeks 7–8.** Every concept the one-entry-per-id rule shows to be *missing*
 from the upstream YAML becomes an issue filed against the Risk Map repository. That is a
@@ -605,7 +657,7 @@ protects the committed scope.
 | **Demo question** | "How often does WS4 actually meet, who attends, and what was this person's affiliation in March 2026?" |
 | **Correct answer shape** | An attendance rate **with its denominator named**; an affiliation with `bounds_known: false` and an inferred change window carrying `notBefore`/`notAfter`; a date between two attested spans returns **nothing**, not an interpolation |
 | **Committed** | Step 1 entire: `ingest/minutes.py`, `build/minutes.py`, `governance-roles.yaml`, split meetings graphs each with its own shape, the three tools, updated orientation skill |
-| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**; step 8 (agendas, schedule changes and governance actions from the list archives), which has no gate and so can start whether or not question 2 is answered |
+| **Stretch** | Step 2 (workstream and SIG minutes from GitHub), for each group that has committed its `meeting_minutes/` folder; step 3 (agendas, schedule changes and governance actions from the list archives). Neither has a gate |
 | **Tests** | ≥3 per parser; the 2024-09-27 pre-format file; a `(PGB co-chair, Google alternate \- left 35 min. in)` regression; both known graph contradictions resolved or reported |
 | **Gate** | Registry diff reviewed and countersigned. No person or affiliation entered the graph without a human reading the line it came from |
 
@@ -626,8 +678,8 @@ protects the committed scope.
 | --- | --- |
 | **Demo question** | "What is this Risk Map component, which risks does it carry, which controls address them — and has its id ever been renamed?" |
 | **Correct answer shape** | Every entity traceable to exactly one upstream YAML id; a rename surfaced, never silently applied |
-| **Committed** | The generator tracking `develop`; the `cosai:` catalog; the versioned namespace and a **written** deprecation policy; `rm_search` and `rm_entity`; the RM SHACL shape |
-| **Stretch** | `rm_change_log` implemented rather than specified; `rm_component_exposure`, `rm_persona_profile`, `rm_lifecycle_view`; step 5 (GitHub contribution activity) |
+| **Committed** | The generator tracking `develop`; the `cosai:` catalog released as Risk Map **`2.0.0`** under D14; the versioned namespace and a **written** deprecation policy; `rm_search` and `rm_entity`; the RM SHACL shape |
+| **Stretch** | `rm_change_log` implemented rather than specified; `rm_component_exposure`, `rm_persona_profile`, `rm_lifecycle_view`; step 6 (GitHub contribution activity) |
 | **Tests** | Round-trip every YAML id to exactly one OWL entry and back; a fabricated-id test that **must fail the build**; regeneration against a newer upstream commit produces a reviewable diff |
 | **Gate** | Deprecation policy reviewed by the CoSAI sponsor — telemetry consumers are downstream of it |
 
@@ -635,7 +687,7 @@ protects the committed scope.
 
 ## 5. Winter — cross-framework mapping and constraint enrichment (4 weeks)
 
-`NEXT-STEPS.md` §6.6 steps **3, 4 and part of 6**, plus the constraint work the Fall
+`NEXT-STEPS.md` steps **5.3, 5.4 and part of 5.6**, plus the constraint work the Fall
 milestones make possible. Depends on v2's section index and v3's stable namespace; if either
 slipped, Winter week 1 absorbs the slip and week 4's scope is cut, not week 1's quality.
 
@@ -700,13 +752,23 @@ Committed: ~10 curated shapes, end to end, with citations. Stretch: `assurance_p
   it. The payoff of every prior milestone in one tool.
 - **Upstream.** One contribution PR to CoSAI, iCLA already on file from Fall week 1. Likely
   candidates: RM YAML gaps found by the one-entry-per-id rule, the citation candidates in
-  `reports/discovered-candidates.json` in CoSAI's own schema, and the fetcher divergence in
-  `TSC-QUESTIONS.md` §6.
+  `reports/discovered-candidates.json` in CoSAI's own schema.
 - **A talk** to the relevant workstream — which is also next cohort's recruiting.
 
 **Winter demo question.** "I run NIST AI RMF and D3FEND. Which CoSAI risks does that cover,
 which controls am I missing, what does CoSAI say to do about each, and which of my choices
 violates a published recommendation — with the sentence that says so?"
+
+### Not scheduled
+
+What `NEXT-STEPS.md` step 5 contains beyond Fall v3 and the four Winter weeks. None is
+committed or stretch in either term.
+
+| Item | Source |
+| --- | --- |
+| **Telemetry bridge**, from the Telemetry RFC's Appendix B and C | `NEXT-STEPS.md` step 5.5 |
+| **The rest of the tools**: the gap-analysis, cross-framework, guidance, telemetry and provenance tools that Fall v3 and Winter week 4 do not build | `NEXT-STEPS.md` step 5.6 and step 5's tool families |
+| **Hosting the MCP server** | §6, optional, decided once at the v2 gate |
 
 ---
 
@@ -798,7 +860,7 @@ That verification was a local curiosity. On a hosted cloud VM it is the classic
 instance-credential exfiltration path, and the query text is now composed by *someone else's*
 model reading *your* documents. So:
 
-- **Default: `sparql` is not in the hosted tool surface.** The twelve purpose-built retrieval
+- **Default: `sparql` is not in the hosted tool surface.** The eighteen purpose-built retrieval
   tools are the hosted product.
 - If it is kept for an invited Phase B audience: per-session statement and wall-clock budgets,
   a result-row cap, the `SERVICE`/`LOAD` scanner tested at the boundary, and egress blocked at
@@ -830,13 +892,12 @@ as a maybe.
 
 | # | Gate | Blocks | Owner | Needed by |
 | --- | --- | --- | --- | --- |
-| Q2 | Attendance from member-restricted Drive documents | Step 2 entirely — a v1 *stretch* item, so nothing committed is at risk | TSC | Week 3 |
-| Q3 | Attributing paraphrased statements to named people | Narrative extraction — **out of scope regardless** | TSC | n/a |
-| Q4 | Contributing the skills upstream | The Winter upstream PR | TSC | Winter wk 1 |
+| — | Each workstream commits its `meeting_minutes/` folder, backfilled by one fetcher run | Step 2's coverage, group by group; nothing committed waits on it | Each workstream, proposed by the Co-Lead | From week 1 |
+| Q1 | Attributing paraphrased statements to named people | Narrative extraction — **out of scope regardless** | TSC | n/a |
+| Q2 | The ADR-033 D2a member-company gap | Citing a member company in a skill example; nothing scheduled | TSC | n/a |
 | — | OASIS iCLA per person | Any upstream contribution | Co-Lead | Week 1 |
 | — | RM `develop` churn | v3 and all of Winter | Build lane | Re-pinned each gate |
-| — | `gws` install + OAuth | Step 2, alongside Q2 | Build lane | Week 3 |
-| Q8 | **May a service serve aggregated CoSAI data publicly, and under what name?** (§6.3) | Hosting Phases B and C only — Phase A is ungated | TSC | Week 6, if hosting is on the table at all |
+| — | **May a service serve aggregated CoSAI data publicly, and under what name?** (§6.3), raised as a `TSC-QUESTIONS.md` item only if hosting goes ahead | Hosting Phases B and C only — Phase A is ungated | TSC | Week 6, if hosting is on the table at all |
 
 **On addresses.** `registry/people.yaml` holds 78 contributor email addresses, each
 published in a CoSAI whitepaper in a public OASIS GitHub repository. Those and the open
@@ -927,10 +988,10 @@ asserted** — and a contribution that adds another is worth more than one that 
 | **Attribution correctness** — the top risk, inherited | Fewer hands, so less cross-checking by default | The registry gate, countersigned, never by the parser's author. Contributors review because they were there |
 | **Volunteer time evaporates** | 2–5 contributors at 2–4 hrs/wk is 8–20 hrs/wk of *hoped-for* effort | Nothing committed sits in the curation lane. The wrangler keeps ≥10 ready issues; first PRs reviewed same-week |
 | **The two Leads are the bottleneck** | Merge authority, gate countersign, coalition interface and recruiting all sit in two people | Lead and Co-Lead can each countersign. Release manager rotates to a student from v2 |
-| **Scope of step 6** | 6–10 expert weeks does not fit in two student weeks | Fall v3 is `NEXT-STEPS.md` §6.6 steps 1–2 only, committed/stretch split stated in week 1 |
+| **Scope of step 5** | 6–10 expert weeks does not fit in two student weeks | Fall v3 is `NEXT-STEPS.md` steps 5.1–5.2 only, committed/stretch split stated in week 1 |
 | **False temporal precision** | The instinct is to fill in a start date | `boundsKnown` / `inferred` mandatory, surfaced in tool output, asserted by a test |
 | **Upstream RM churn** | The target moves during the term | Pin per milestone, re-pin at gates, review the diff |
-| **Restricted data slips into a TLP:CLEAR corpus** | Every source is public, so nobody expects to check. Member-only Drive documents are the one exception, and they sit a link away from list mail | Only the public sources in Context are ingested. Drive stays out of scope (§7 Q2), and summary pointers record `accessRestricted` rather than fetching |
+| **Restricted data slips into a TLP:CLEAR corpus** | Every source is public, so nobody expects to check. Minutes start in member-only Drive folders, and a chat log or attendance sheet carries members' own words and presence | The Oracle reads only what a group has committed to its public repository, never Drive. Committing chat logs and attendance sheets is each group's explicit decision, and summary pointers record `accessRestricted` rather than fetching |
 | **Hosting eats a milestone** | It looks like a deploy and costs a classification change; it is the most tempting scope creep available | Preconditions in §6.3 are all-or-nothing; decided once at the week-6 gate; Phase A is the default answer |
 | **A hosted service outlives its operator** | Students graduate mid-Winter; an unowned endpoint serving coalition data is a liability | A named operator with a term beyond the cohort, and a **dated** decommission runbook written before launch, not after |
 | **Meetings coverage is uneven across lists** | The v1 demo question ("How often does WS4 actually meet…") is only as good as the list's window, and a short window looks like a quiet group. Every list is pulled with full history via `getmessages`, but the lists began on different dates, so their windows differ | Coverage windows are reported per list, so every rate carries its denominator (D8) |
@@ -942,7 +1003,7 @@ asserted** — and a contribution that adds another is worth more than one that 
 
 ## 11. Rules that do not bend
 
-**D1–D12 above.** They are not style preferences: each exists because violating it produces a
+**D1–D14 above.** They are not style preferences: each exists because violating it produces a
 specific wrong answer about a real person or a real system. Cite them by number in review
 comments, commit messages and validator output, so a check can always name the decision it
 enforces.
