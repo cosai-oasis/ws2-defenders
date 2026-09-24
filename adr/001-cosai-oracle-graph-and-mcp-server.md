@@ -42,10 +42,13 @@ pages through the groups.io `getmessages` API. That needs only the archive visib
 open list grants, so any member's own key works. Each list is pulled with its full
 history: 2,886 messages, back to June 2024 for the oldest list. The TSC and PGB are
 modeled as governing bodies, distinct from the four workstreams that produce
-publications. Steps 1, 2 and 4–7 are designed and not built.
+publications. Steps 1, 2 and 4 to 8 are designed and not built. Step 8 extracts what the
+archives hold and the graph does not yet emit: agendas, schedule-change notices, the
+meeting date of each summary, and one governance action per decision. Step numbers are
+stable identifiers, so a finished step's number is retired, never reused.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
-and ordering of steps 1–7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
+and ordering of steps 1 to 8; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
 ADR is canonical for the decisions below and for who builds them, when.
 
 Those three, and the `registry/` and `reports/` paths cited throughout, live in the
@@ -602,7 +605,7 @@ protects the committed scope.
 | **Demo question** | "How often does WS4 actually meet, who attends, and what was this person's affiliation in March 2026?" |
 | **Correct answer shape** | An attendance rate **with its denominator named**; an affiliation with `bounds_known: false` and an inferred change window carrying `notBefore`/`notAfter`; a date between two attested spans returns **nothing**, not an interpolation |
 | **Committed** | Step 1 entire: `ingest/minutes.py`, `build/minutes.py`, `governance-roles.yaml`, split meetings graphs each with its own shape, the three tools, updated orientation skill |
-| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered** |
+| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**; step 8 (agendas, schedule changes and governance actions from the list archives), which has no gate and so can start whether or not question 2 is answered |
 | **Tests** | ≥3 per parser; the 2024-09-27 pre-format file; a `(PGB co-chair, Google alternate \- left 35 min. in)` regression; both known graph contradictions resolved or reported |
 | **Gate** | Registry diff reviewed and countersigned. No person or affiliation entered the graph without a human reading the line it came from |
 
