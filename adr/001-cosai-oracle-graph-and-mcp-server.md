@@ -36,22 +36,29 @@ express the relationships #388 asks of it. Neither surface is queryable, and nei
 state what it does not know.
 
 **Already built:** the contribution graph, the citation layer and a v1.x meetings layer
-(`plan.md` §10.0). **Step 3 of `NEXT-STEPS.md` is built but not done.** A fetcher for
-CoSAI's own list archives on groups.io replaces one contributor's mailbox export, but on
-its first live run (2026-09-22) the archive export refused an ordinary member's key for
-all eight lists (`inadequate_permissions`). Until export access is granted
-(`TSC-QUESTIONS.md` item 8), the meetings layer still reads that mailbox export and its
-32-day window. Steps 1, 2 and 4–7 are designed and not built.
+(`plan.md` §10.0). **Step 3 of `NEXT-STEPS.md` is built, and all eight lists are
+pulled.** The meetings layer reads CoSAI's own list archives, which `ingest/groupsio.py`
+pages through the groups.io `getmessages` API. That needs only the archive visibility an
+open list grants, so any member's own key works. Each list is pulled with its full
+history: 2,886 messages, back to June 2024 for the oldest list. The TSC and PGB are
+modeled as governing bodies, distinct from the four workstreams that produce
+publications. Steps 1, 2 and 4–7 are designed and not built.
 
 **Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
 and ordering of steps 1–7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
 ADR is canonical for the decisions below and for who builds them, when.
 
 Those three, and the `registry/` and `reports/` paths cited throughout, live in the
-`cosai-graphrag-mcp` working repository. It is private pending `TSC-QUESTIONS.md` item 1 —
-whether an aggregated index of 78 contributor email addresses may be published — so the
-findings this ADR relies on are restated here rather than left behind a link. Reviewing the
-decisions does not require reading it.
+`cosai-graphrag-mcp` working repository, which is private. The findings this ADR relies on
+are restated here rather than left behind a link, so reviewing the decisions does not
+require reading the repository.
+
+**Data classification.** CoSAI is an open OASIS project. Its GitHub repositories,
+including the contributor email addresses published in them, and its open groups.io
+mailing lists and their archives are public repositories of **TLP:CLEAR** information.
+Every source this ADR ingests is one of these, so no data here is restricted by its
+classification. The one restricted source, member-only Drive documents, stays out of scope
+(§7 Q2).
 
 ## Decision
 
@@ -119,16 +126,16 @@ where a probe at the cloud metadata address hung for two minutes. The query text
 by a model that has just read untrusted document prose. Read-only enforcement is not
 sufficient.
 
-### D11. A hosted build carries no plaintext addresses and no `sparql` tool
+### D11. Sources are TLP:CLEAR under OASIS policy; a hosted build has no `sparql` tool
 
-If hosting happens, the boundary is the build, not a default flag.
+Contributor addresses in GitHub and message content in the open list archives are
+TLP:CLEAR (see Data classification under Context), so the graph, its tools and any hosted
+build carry them as published. `emailSha256` is the identity matching key. The `data/mail/`
+archives are untracked because they are fetched artifacts that anyone with a key can
+reproduce.
 
-List mail sharpens this rather than changing it. A downloaded group archive carries every
-member's address in plaintext, and unlike a whitepaper's acknowledgements those were not
-published for citation. The ingest emits `sha256` only, nothing above it sees an address,
-and the archives themselves stay local and untracked — so the address question D11 defers
-to the TSC is confined to the 78 already-published contributor addresses and does not grow
-with the mail layer.
+If hosting happens, the boundary is the tool surface: `sparql` is absent from
+the hosted profile (§6.6) because of what it can reach, not because of the data it reads.
 
 ### D12. The tool surface is decided before the store
 
@@ -206,9 +213,8 @@ addresses the IRIs; §8 allocates weeks 1–2 to the learning curve.
 
 Three decisions this one implies but does not make: **ADR-WS2-003** (critical user journeys
 and tool surface) and **ADR-WS2-004** (graph store) in week 2; **ADR-WS2-005** (hosting) only
-if §6's preconditions hold. Four items in `TSC-QUESTIONS.md` gate parts of the work: address
-aggregation (1), member-restricted Drive minutes (2), contributing the skills upstream (4),
-export access to the list archives (8).
+if §6's preconditions hold. Two items in `TSC-QUESTIONS.md` gate parts of the work:
+member-restricted Drive minutes (2) and contributing the skills upstream (4).
 
 ---
 
@@ -596,7 +602,7 @@ protects the committed scope.
 | **Demo question** | "How often does WS4 actually meet, who attends, and what was this person's affiliation in March 2026?" |
 | **Correct answer shape** | An attendance rate **with its denominator named**; an affiliation with `bounds_known: false` and an inferred change window carrying `notBefore`/`notAfter`; a date between two attested spans returns **nothing**, not an interpolation |
 | **Committed** | Step 1 entire: `ingest/minutes.py`, `build/minutes.py`, `governance-roles.yaml`, split meetings graphs each with its own shape, the three tools, updated orientation skill |
-| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered**. Step 3, the groups.io re-point, is carried here as stretch: the fetcher is built, and what remains is export access (`TSC-QUESTIONS.md` item 8) and a first pull. See Context |
+| **Stretch** | Step 2 (Drive minutes) **only if TSC question 2 is answered** |
 | **Tests** | ≥3 per parser; the 2024-09-27 pre-format file; a `(PGB co-chair, Google alternate \- left 35 min. in)` regression; both known graph contradictions resolved or reported |
 | **Gate** | Registry diff reviewed and countersigned. No person or affiliation entered the graph without a human reading the line it came from |
 
@@ -728,7 +734,7 @@ with preconditions rather than as a milestone with a date.
 | Users | One, the operator | Many, some unknown |
 | Level (*MCP Security* §3.3.1) | **1 — Sandbox** | **2+**, via §3.3.2's data-isolation row |
 | Credentials in request path | None | Still none — but session and authn state now exist, which is new attack surface |
-| New obligations | — | Redacted structured logging; per-user separation; schema validation rejecting undeclared parameters; a documented server inventory entry |
+| New obligations | — | Structured logging; per-user separation; schema validation rejecting undeclared parameters; a documented server inventory entry |
 | Worst case | A local process dials itself | Network-reachable MCP-T3/T4/T10, plus abuse and availability |
 
 `plan.md` §12.2 already records the reasoning that keeps this at Level 1: the corpus is
@@ -744,8 +750,8 @@ even though the data does not change.
    questions: may a service serve aggregated CoSAI contribution data to the public, and may
    it be presented under any CoSAI-associated name or domain? Default to **no** CoSAI
    branding — an unofficial service that looks official is a worse outcome than no service.
-3. **Data posture settled** — TSC question 1 answered, *or* the redacted build of §6.5
-   adopted, which makes the hosting path independent of that answer rather than blocked on it.
+3. **Data posture settled.** Met: the sources are TLP:CLEAR under OASIS policy (D11,
+   §6.5).
 4. **A named operator whose term outlasts the cohort, and a decommission date.** Students
    graduate. A hosted service that outlives the people who understand it is a liability, not
    a legacy.
@@ -772,17 +778,11 @@ CoSAI members; hard request caps; the `sparql` tool absent from the profile (§6
 **Phase C — Multi-user public hosting.** *Hard. Winter at the earliest, realistically the
 next cohort.* The full Level 2+ obligation set, operated.
 
-### 6.5 The hosted build is a redacted build
+### 6.5 The hosted build is the same build
 
-The hosted artifact contains **no plaintext email addresses**, whatever the TSC decides about
-question 1. `emailSha256` plus domain only — already the matching key, so nothing breaks —
-and `include_addresses` is not merely defaulted off but **absent from the hosted tool
-surface**. `plan.md` §12.2 is explicit that the default flag is "an ergonomic default, not a
-security boundary"; on a hosted server the boundary has to be the build, not the flag.
-
-This is the same fallback `TSC-QUESTIONS.md` §1 already names as low-cost, which is the neat
-part: adopting it for the hosted profile removes the governance dependency instead of waiting
-it out.
+The hosted artifact is the local build, because the data is TLP:CLEAR (D11). What changes
+when hosting is the *multi-user* axis of §6.2 (sessions, authentication, abuse), not the
+data.
 
 ### 6.6 The `sparql` escape hatch does not survive hosting unchanged
 
@@ -806,10 +806,8 @@ model reading *your* documents. So:
 - **ADR-WS2-005** — the classification change, the profile, the rejected options, and the
   conditions under which hosting should be switched off again.
 - A transport profile split in `server.py` (`stdio` | `http`), config-selected, one code path.
-- The redacted build profile in the build pipeline, with a test asserting no `addressValue`
-  triple reaches the hosted artifact.
 - A per-profile tool-surface allowlist, tested.
-- Structured logging with redaction — no addresses, no full query text at info level.
+- Structured logging, with no full query text at info level.
 - Schema validation rejecting undeclared parameters (a Level 2 obligation, not optional).
 - A server inventory entry — **in** version control this time, per §3.3.2's supply-chain row.
 - Rate limits, a stated uptime expectation (best-effort), and the decommission runbook, dated.
@@ -829,7 +827,6 @@ as a maybe.
 
 | # | Gate | Blocks | Owner | Needed by |
 | --- | --- | --- | --- | --- |
-| Q1 | Publishing an aggregated index of 78 contributor addresses | Whether the repo can go public; how the team handles `people.yaml` | TSC | Week 2 |
 | Q2 | Attendance from member-restricted Drive documents | Step 2 entirely — a v1 *stretch* item, so nothing committed is at risk | TSC | Week 3 |
 | Q3 | Attributing paraphrased statements to named people | Narrative extraction — **out of scope regardless** | TSC | n/a |
 | Q4 | Contributing the skills upstream | The Winter upstream PR | TSC | Winter wk 1 |
@@ -838,15 +835,10 @@ as a maybe.
 | — | `gws` install + OAuth | Step 2, alongside Q2 | Build lane | Week 3 |
 | Q8 | **May a service serve aggregated CoSAI data publicly, and under what name?** (§6.3) | Hosting Phases B and C only — Phase A is ungated | TSC | Week 6, if hosting is on the table at all |
 
-**On Q1, because it affects everyone directly.** `registry/people.yaml` holds 78 plaintext
-email addresses. Each is individually public in a whitepaper, but a machine-readable file
-keyed by canonical person is a different exposure, and aggregation is what makes it
-scrapeable. Until the TSC answers: the repository stays private, no tool returns an address
-by default, and **nobody copies `people.yaml` outside the repo** — not into a notebook
-output, not into a shared drive, not into a model context that logs. This applies to CoSAI
-contributors too, who may reasonably assume the data is already theirs to handle. The fallback
-if the answer is no costs little: tracked files carry `emailSha256` plus domain, already the
-matching key — and §6.5 adopts that fallback for any hosted build regardless of the answer.
+**On addresses.** `registry/people.yaml` holds 78 contributor email addresses, each
+published in a CoSAI whitepaper in a public OASIS GitHub repository. Those and the open
+list archives are TLP:CLEAR (D11), so tools may return addresses. The rule is provenance:
+every address in the graph traces to the public document or list message it came from.
 
 ---
 
@@ -935,10 +927,10 @@ asserted** — and a contribution that adds another is worth more than one that 
 | **Scope of step 6** | 6–10 expert weeks does not fit in two student weeks | Fall v3 is `NEXT-STEPS.md` §6.6 steps 1–2 only, committed/stretch split stated in week 1 |
 | **False temporal precision** | The instinct is to fill in a start date | `boundsKnown` / `inferred` mandatory, surfaced in tool output, asserted by a test |
 | **Upstream RM churn** | The target moves during the term | Pin per milestone, re-pin at gates, review the diff |
-| **PII handling** | Contributors may assume CoSAI data is theirs to copy | §7 Q1 rules stated at onboarding, not discovered |
+| **Restricted data slips into a TLP:CLEAR corpus** | Every source is public, so nobody expects to check. Member-only Drive documents are the one exception, and they sit a link away from list mail | Only the public sources in Context are ingested. Drive stays out of scope (§7 Q2), and summary pointers record `accessRestricted` rather than fetching |
 | **Hosting eats a milestone** | It looks like a deploy and costs a classification change; it is the most tempting scope creep available | Preconditions in §6.3 are all-or-nothing; decided once at the week-6 gate; Phase A is the default answer |
 | **A hosted service outlives its operator** | Students graduate mid-Winter; an unowned endpoint serving coalition data is a liability | A named operator with a term beyond the cohort, and a **dated** decommission runbook written before launch, not after |
-| **Meetings coverage is one mailbox until export access lands** | The v1 demo question ("How often does WS4 actually meet…") is only as good as a 32-day window, and a short window looks like a quiet group | Coverage windows are reported per list, so every rate carries its denominator (D8). Export access was raised as `TSC-QUESTIONS.md` item 8 on 2026-09-22 |
+| **Meetings coverage is uneven across lists** | The v1 demo question ("How often does WS4 actually meet…") is only as good as the list's window, and a short window looks like a quiet group. Every list is pulled with full history via `getmessages`, but the lists began on different dates, so their windows differ | Coverage windows are reported per list, so every rate carries its denominator (D8) |
 | **Bus factor** | At 2 students, one leaving is half the build lane | Pairs, not solos. Conventions written down in week 4, not week 8 |
 | **Student availability** | Midterms and exam weeks | Week 8 ends 2026-11-20, clear of Thanksgiving; Winter wk 3 light around MLK Day |
 | **Token budget overrun** | A shared account and enthusiastic parallel exploration | Weekly cap set in week 1; fresh tight-scope sessions over long ones |
