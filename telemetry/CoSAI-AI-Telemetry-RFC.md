@@ -883,7 +883,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Tool ID | MAY | `mcp.server.name` + tool id | n/a |
 | Tool Execution ID | MUST | `gen_ai.tool.call.id` | n/a |
 | Tool Definition Digest | MUST | `mcp.tool.*` schema/description hash | `approved_software_refs` (6.1) |
-| Execution Environment / Sandbox | MUST | `supply_chain.*` + runtime/sandbox attrs | `binding_profile` (6.2, partial) |
+| Execution Environment / Sandbox | MUST | `supply_chain.*` + runtime/sandbox attrs | `attestation_evidence` (6.2, partial) |
 | MCP Server Identity & Primitive | MUST | `mcp.server.name/version`, primitive attr | n/a |
 | Tool Error / Exception | MUST | `mcp.*` error, `security.*` | n/a |
 | Tool ACL / Required Scope | SHOULD | `identity.auth.scope_granted` | `granted_authorizations` (6.3) |
