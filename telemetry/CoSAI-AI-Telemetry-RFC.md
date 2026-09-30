@@ -154,15 +154,23 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119
 
 ### 4.3 Component taxonomy
 
-Fields are organized under the CoSAI Risk Map fine-grained components. The component IDs used below are the canonical IDs from [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/main/risk-map/yaml/components.yaml):
+Fields are organized under the CoSAI Risk Map fine-grained components. The table lists all 42 by risk-map category and subcategory, using the canonical IDs from [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/main/risk-map/yaml/components.yaml), with the sections whose fields each component emits:
 
-| Category | Components referenced in this document |
+| Category / subcategory | Components and sections |
 | :-------------------- | :-------------------------------------------------------------------------------- |
-| **Application (Core)** | `componentApplication`, `componentApplicationInputHandling`, `componentApplicationOutputHandling` |
-| **Application (Agent)** | `componentReasoningCore`, `componentAgentUserQuery`, `componentAgentSystemInstruction`, `componentAgentInputHandling`, `componentAgentOutputHandling` |
-| **Model (Orchestration)** | `componentOrchestrationInputHandling`, `componentOrchestrationOutputHandling`, `componentTools`, `componentMemory`, `componentRAGContent` |
-| **Model (Core / Training)** | `componentTheModel`, `componentModelFrameworksAndCode`, `componentModelEvaluation` |
-| **Infrastructure (Deployment / Data)** | `componentModelServing`, `componentModelStorage`, `componentDataStorage`, `componentDataSources` |
+| **Application / Core** | `componentApplication` §5, §14; `componentApplicationInputHandling` §6; `componentApplicationOutputHandling` §7; `componentApplicationConsentSurface` §16; `componentApplicationNetworkPolicyEnforcementPoint` §16 |
+| **Application / Agent** | `componentReasoningCore` §5, §12, §13; `componentAgentUserQuery` §5; `componentAgentSystemInstruction` §5; `componentAgentInputHandling` §6; `componentAgentOutputHandling` §7; `componentAgentToolTransport` §9; `componentAgentConsentSurface` §16; `componentAgentNetworkPolicyEnforcementPoint` §16 |
+| **Model / Orchestration** | `componentOrchestrationInputHandling` §6, §12; `componentOrchestrationOutputHandling` §7, §12; `componentMemory` §10; `componentRAGContent` §11 |
+| **Model / Core** | `componentTheModel` §8; `componentModelServing` §8, §13 |
+| **Model / Training** | `componentModelFrameworksAndCode` §14; `componentModelTrainingTuning`, `componentModelEvaluation`: none |
+| **External Tools / Tool Invocation Path** | `componentTools` §9, §13, §14; `componentToolServer` §9; `componentToolInputHandling` §9; `componentToolOutputHandling` §9; `componentAuthorizationPolicyEnforcementPoint` §16 |
+| **External Tools / Tool Network Controls** | `componentToolNetworkPolicyEnforcementPoint` §16 |
+| **Infrastructure / Identity** | `componentIdentityProvider` §13; `componentFederationProxy` §13; `componentAuthorizationPolicyDecisionPoint` §16 |
+| **Infrastructure / Registries** | `componentModelRegistry` §8, §14; `componentToolRegistry` §9, §14 |
+| **Infrastructure / Deployment** | `componentModelStorage` §8; `componentIsolationRuntime` §9; `componentToolHosting` §9; `componentAuditRecordRepository` §15; `componentRuntimeHosting`: none |
+| **Infrastructure / Data** | `componentDataSources`, `componentDataFilteringAndProcessing`, `componentTrainingData`, `componentDataStorage`: none |
+
+**The field set covers the runtime path.** No corpus entry attacks the training pipeline (`IR-05` and `AOC-10` carry `AML.T0020` but poison memory and retrieval at runtime), so the evidence gate admits no field for the data and training components. `componentRuntimeHosting` has none: no field records the substrate that first-party workloads run on.
 
 > **Component attribution is a mapping, not an emitted attribute.** Events do not carry a risk-map `component_id`. Attribution is established by this section, [Appendix B](#appendix-b-mapping-to-the-cosai-risk-map-risks--controls) and [Appendix C](#appendix-c-aitf--odis-cross-reference), which is sufficient for a static cross reference and costs nothing at runtime. A runtime identifier would need a resolvable namespace and a deprecation policy before it could be emitted safely, since events are immutable records and a component renamed upstream would invalidate every event already carrying it. That is tracked as part of the CoSAI Risk Map ontology work ([secure-ai-tooling#388](https://github.com/cosai-oasis/secure-ai-tooling/issues/388)); if that effort settles a stable namespace, the field belongs in [§14](#14-asset-inventory--fleet-aggregates-mostly-may) at MAY.
 
@@ -298,7 +306,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 8. The Model & Model Serving
-**Components:** `componentTheModel`, `componentModelServing`, `componentModelStorage`
+**Components:** `componentTheModel`, `componentModelServing`, `componentModelStorage`, `componentModelRegistry` (provenance)
 
 *Supply-chain integrity, resource/DoS signals, and pre-inference integrity.*
 
@@ -316,7 +324,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 9. Tools & External Services
-**Component:** `componentTools`
+**Components:** `componentTools`, `componentToolServer`, `componentToolInputHandling`, `componentToolOutputHandling`, `componentAgentToolTransport`, `componentToolRegistry` (approved baseline), `componentIsolationRuntime` and `componentToolHosting` (execution environment)
 
 *The security perimeter between AI reasoning and real-world consequences. When an agent calls a tool it crosses from "thinking" to "acting."*
 
@@ -397,7 +405,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 13. Identity, Delegation & Attribution *(ODIS-aligned; mostly SHOULD)*
-**Cross-cutting:** spans `componentReasoningCore`, `componentTools`, `componentModelServing` and binds them into an accountable chain.
+**Components:** `componentIdentityProvider`, `componentFederationProxy`; cross-cutting across `componentReasoningCore`, `componentTools` and `componentModelServing`, which it binds into an accountable chain.
 
 *The "Quadruple Identity" problem: a **principal** authorizes an **agent** which (possibly via **other agents**) calls a **tool** that acts on **infrastructure**. Without identity at each hop, accountability collapses and confused-deputy attacks succeed. This is the ODIS problem space; delegation fields are **SHOULD** by the classification rule. Two of these identities already have homes in the adjacent standards and should be emitted there rather than in a private namespace: the originating principal as OpenTelemetry `audit.actor.*` (OCSF `actor.user.uid`) and the acting agent as `gen_ai.agent.*` (OCSF `ai_agent.uid`). The OTel audit model has a single actor slot that its guidance fills with the human, so the acting agent must travel in `gen_ai.agent.*` to keep "who authorized" and "which agent acted" separable.*
 
@@ -417,7 +425,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 14. Asset Inventory & Fleet Aggregates *(mostly MAY)*
-**Components:** `componentTools`, `componentApplication`, `componentModelFrameworksAndCode` (inventory); fleet-level metrics are cross-component.
+**Components:** `componentTools`, `componentApplication`, `componentModelFrameworksAndCode` (inventory), `componentModelRegistry` and `componentToolRegistry` (admission); fleet-level metrics are cross-component.
 
 *These define the inventory and posture rather than per-request activity. Most are governance and CVE-response signals rather than detection signals, hence mostly MAY. The exceptions are the **change** signal, which is detection-grade and MUST, and the AgBOM cluster, which is the structural counterpart to OWASP AOS's **Inspect** pillar.*
 
@@ -438,7 +446,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 15. Observability-Plane Integrity
-**Cross-cutting:** applies to the instrumentation and enforcement layer itself, not to any one pipeline component.
+**Cross-cutting:** applies to the instrumentation and enforcement layer itself, not to any one pipeline component; its records land in `componentAuditRecordRepository`.
 
 > **Scope.** This section records **when the observability plane fails**; it does not defend it. Authenticating emitters, securing transport and storage, and establishing chain of custody are excluded by [§3.2](#32-not-in-scope) and left to subsequent work. The line is the one drawn in [§4.1](#41-use-case-priorities): a signal that makes a silent failure distinguishable from a clean result is detection material, and every field below is that. The CoSAI Risk Map reaches the same conclusion from the control side, carrying `controlAuditTrailCompleteness`, `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; this section is the telemetry those controls presuppose. The realization those controls describe is a signed head or checkpoint published to a witness outside the emitter's trust domain; **RFC 9943** [[53]](#standards--frameworks) and **RFC 9942** [[54]](#standards--frameworks) are the standards form of it. Naming the exit keeps this section a hand-off rather than a gap, without committing the field set to a format.
 
@@ -456,7 +464,7 @@ The third row collapsing into the second is the failure to avoid: recording an e
 ---
 
 ## 16. Policy Enforcement & Mediation
-**Cross-cutting:** the reference-monitor layer between the agent and every capability it invokes, tools, prompts, resources, inference providers, and inter-agent methods.
+**Components:** `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint`, the network enforcement points (`componentAgentNetworkPolicyEnforcementPoint`, `componentApplicationNetworkPolicyEnforcementPoint`, `componentToolNetworkPolicyEnforcementPoint`), and for approvals `componentAgentConsentSurface` and `componentApplicationConsentSurface`. **Cross-cutting:** the reference-monitor layer between the agent and every capability it invokes, tools, prompts, resources, inference providers, and inter-agent methods.
 
 *§§5 to 14 record what the agent **did**; §15 records whether the observability plane **worked**. Neither records what policy **decided**, or on what basis. This section closes that gap, and it is grounded in the [CPEX](https://contextforge-org.github.io/cpex/) threat model, whose starting assumption is stronger than this document's has been: **the LLM is the adversary**. Prompt injection can arrive through any content the model reads; an injected instruction becomes a tool call; the model has no security properties and cannot be relied on to enforce anything. Everything on the agent side of the monitor is hostile, so nothing a policy reads (and, this section argues, nothing security telemetry treats as authoritative) may originate there.*
 
