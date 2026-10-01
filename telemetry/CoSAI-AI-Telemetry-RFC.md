@@ -66,15 +66,15 @@ One decision cannot be delegated to engineering: how much prompt, response, and 
 
 ### 3.2 For builders of AI solutions
 
-One telemetry set covers **detection** while a run is in flight, **response** afterwards, **debugging** of behaviour, and **compliance audit**. Instrumenting once for all four is cheaper than retrofitting each purpose later.
+To instrument a live AI system:
 
-Work from the **per-component breakdown**. The field set is organized by the components of an AI system (reasoning core, input handling, output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) so you can take the components you actually build and read off what each must emit. Every field states what to capture and the attacks that make it necessary. The [correlation patterns](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) show how fields combine into detections, and are usually the fastest way to see why a given field earns its place.
-
-Practical notes:
-
-- **Do not invent a schema.** XM §§2 to 4 give the OpenTelemetry attribute names, signal placement, and the OCSF mapping. Emit over OpenTelemetry today; the bindings are already specified.
-- **Do not head-sample security events.** [§5.2](#52-conformance) makes this normative.
-- **Propagate trace context across every hop**, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls. Without it, multi-agent activity cannot be reassembled into a single incident.
+1. **Scope.** Map what you run onto the risk-map components ([§5.3](#53-components)). Fields for components you do not run are not applicable ([§5.2](#52-conformance)).
+2. **Select.** From the field catalogue ([§5.4](#54-field-catalogue)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§5.1](#51-tiers)). That list is your baseline.
+3. **Define.** Read each field's capture definition and evidence in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables).
+4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge), the OCSF mapping in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-implications-for-ocsf--aitf-the-standardization-bridge), and the AITF names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference). Do not invent a schema.
+5. **Conform.** Hash every content-bearing field under a declared canonicalization, never head-sample security events, and record the sampling configuration ([§5.2](#52-conformance)). Propagate trace context across every hop, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
+6. **Sequence.** Build in the adoption order ([§5.5](#55-adoption-order)): identifiers first, then content and trust classification, then tools.
+7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamp each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)).
 
 ---
 
@@ -97,7 +97,7 @@ Availability and provider-policy signals are in scope where they make a silent f
 
 ### 4.2 Evidence sets the tier
 
-A field earns its tier from documented instances, not from a judgement that it would be useful. MUST requires at least two independent instances in the attack corpus, or one where the field is especially useful for detection or response, and the field must be implementable wherever its component exists. Two further gates apply in order: the priority order in §4.1 keeps fields whose value is mainly debugging or audit below MUST, and a field serving a modality at the edge of current practice stays SHOULD however much evidence accumulates. The test is stated in §5.1; what counts as a documented instance, and the corpus itself, are in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
+A field earns its tier from documented instances, not from a judgement that it would be useful. MUST requires at least two independent instances in the attack corpus, or one where the field is especially useful for detection or response, and implementability wherever its component exists. Two gates then cap the tier, independently of each other: the priority order in §4.1 keeps fields whose value is mainly debugging or audit below MUST, and a field serving a modality at the edge of current practice stays SHOULD however much evidence accumulates. The test is stated in §5.1; what counts as a documented instance, and the corpus itself, are in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
 
 ### 4.3 Untrusted instruction is the attack state
 
