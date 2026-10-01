@@ -6,7 +6,7 @@
 
 ---
 
-### Proposals by community
+### For the open source security community
 
 Each section below states what the field set already maps onto in one adjacent specification, what that specification cannot currently express, and the additions proposed.
 
@@ -24,6 +24,8 @@ Each section below states what the field set already maps onto in one adjacent s
 - **Emission and consumption move together.** A field OpenTelemetry emits but OCSF cannot represent arrives at the SIEM as unstructured overflow; a field OCSF defines but no instrumentation produces stays theoretical. Paired asks are the intent.
 
 CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on this work, and welcomes input from the wider open source security community in turn. The timing favours it: every OpenTelemetry GenAI convention is at *Development* status and has just moved to a dedicated repository, so contributions land more cheaply now than after stabilization.
+
+What is wanted in return: corrections to the mappings, and attacks the corpus is missing.
 
 ### Agents you do not operate
 
@@ -79,7 +81,7 @@ This document is, in effect, the implementation spec for the risk map's **detect
 
 - **No new pipeline components required.** `componentMemory` and `componentRAGContent` exist. Two clarifications stand: confirm `componentMemory` scope explicitly covers *persistent long-term* memory, which `riskAgentMemoryPoisoning` targets; and note that **background and scheduled execution** (heartbeats, cron, self-scheduled loops; AD §1.8) still has no dedicated component, despite being a distinct autonomy surface (`AOC-04`, `AOC-10`).
 - **Identity and delegation is now well covered by controls.** The recommendation to document an identity/delegation control-plane view is largely satisfied by `controlComponentIdentityAuthentication`, `controlComponentIdentityRegistration`, `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, and `controlSenderConstrainedCredentials`. AD §1.9 telemetry now has an explicit home.
-- **`controlAuditRecordRepositoryIndependence` intersects this document's stated scope boundary.** [RFC §3.2](CoSAI-AI-Telemetry-RFC.md#32-not-in-scope) excludes securing the telemetry pipeline and defers it to subsequent work. That control now names part of the problem (repository independence from the workload being recorded) which strengthens the case for taking the deferred work up, and gives it a control to map onto when it is.
+- **`controlAuditRecordRepositoryIndependence` intersects this document's stated scope boundary.** [RFC §2.2](CoSAI-AI-Telemetry-RFC.md#22-not-in-scope) excludes securing the telemetry pipeline and defers it to subsequent work. That control now names part of the problem (repository independence from the workload being recorded) which strengthens the case for taking the deferred work up, and gives it a control to map onto when it is.
 - **The audit-trail controls are where defending the telemetry plane lands.** The CoSAI Risk Map reaches the same conclusion from the control side, carrying `controlAuditTrailCompleteness`, `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; RFC AD §1.11 is the telemetry those controls presuppose. The realization those controls describe is a signed head or checkpoint published to a witness outside the emitter's trust domain; **RFC 9943** [[53]](#standards--frameworks) and **RFC 9942** [[54]](#standards--frameworks) are the standards form of it. Naming the exit keeps RFC AD §1.11 a hand-off rather than a gap, without committing the field set to a format.
 - **Augment `controlThreatDetection`** to require the **ATLAS technique tag** on emitted detections, tying this appendix to [§3](#3-implications-for-ocsf--aitf-the-standardization-bridge).
 
@@ -227,7 +229,7 @@ AITF lets adopters emit this telemetry **before** OCSF ratifies it, and stages t
 
 ## 4. AITF & ODIS Cross Reference
 
-Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry) attribute namespace and to the relevant [ODIS](https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md) data-model field, verified against ODIS at commit `148dc41` (8 September 2026). Per the brief, ODIS coverage is **selective**: it targets the delegation/identity fields relevant to detection & response, not the full ODIS spec. The ODIS column resolves **names**, not shapes: ODIS defines abstract schemas that implementations bind to a wire format, and this document is a requirements layer rather than a binding ([RFC §3.1](CoSAI-AI-Telemetry-RFC.md#31-in-scope)). Where cardinality or structure is normative for an ask, it is stated in [§3](#3-implications-for-ocsf--aitf-the-standardization-bridge).
+Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry) attribute namespace and to the relevant [ODIS](https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md) data-model field, verified against ODIS at commit `148dc41` (8 September 2026). Per the brief, ODIS coverage is **selective**: it targets the delegation/identity fields relevant to detection & response, not the full ODIS spec. The ODIS column resolves **names**, not shapes: ODIS defines abstract schemas that implementations bind to a wire format, and this document is a requirements layer rather than a binding ([RFC §2.1](CoSAI-AI-Telemetry-RFC.md#21-in-scope)). Where cardinality or structure is normative for an ask, it is stated in [§3](#3-implications-for-ocsf--aitf-the-standardization-bridge).
 
 > **The `Cls` column is reproduced from the [classification summary](CoSAI-AI-Telemetry-RFC.md#44-classification-summary) for convenience and is not normative.** [RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-classification-summary) and the section tables in AD §§1.1 to 1.12 govern; any disagreement between them and this column is a defect in this table.
 

@@ -36,9 +36,29 @@ Four fields, none exotic. Their absence is the difference between a detection an
 
 ---
 
-## 2. How To Use This Doc
+## 2. Scope
 
-### 2.1 For CISOs
+### 2.1 In scope
+
+The security-relevant telemetry an AI system should produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF, ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF and AI RMF, and ISO/IEC 42001.
+
+Telemetry for **agents the deployment does not operate** is in scope, with the limits that implies: what is observable at your own boundary, plus whatever the counterparty presents and can be verified. [§4.6](#46-agents-you-do-not-operate) sets out how the field set applies in that case.
+
+The framing implies three limits. This is **not a wire format**: the bindings are in the Cross-Mapping Addendum. It does **not specify detection logic**, only the fields detections consume. And it covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
+
+### 2.2 Not in scope
+
+Two areas are excluded deliberately, and both are intended for subsequent work.
+
+**Privacy compliance.** The implementation guidance recommends handling practices (access control, tiered retention, redaction, hash-first correlation) because content-bearing fields carry evident risk. Those are handling practices, not a compliance programme. Lawful basis, data-subject rights, cross-border transfer, and impact-assessment obligations are not addressed, and meeting the MUST tier does not discharge them.
+
+**Security of the telemetry itself.** The field set treats the telemetry plane as an asset only insofar as it must report its own failure: the observability-plane section covers detecting suppressed events, unreached enforcement points, and incomplete instrumentation. Defending the pipeline is a different problem and is not solved here: authenticating emitters, securing transport and storage, controlling access to collected content, and establishing the tamper-evidence and chain of custody that evidentiary use requires. This is a genuine tension with the immutable, tamper-evident logging that classic audit practice expects, and it is an exclusion of *this document's* scope rather than a claim that the problem does not matter: the CoSAI Risk Map now carries `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence` for it, and [AD §1.11](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) records when the plane fails even though it does not defend it. **Conformance to this document's field catalogue alone does not satisfy those integrity controls**; adopters needing audit-grade evidence must implement them separately.
+
+---
+
+## 3. How To Use This Doc
+
+### 3.1 For CISOs
 
 Go to the **classification summary** ([§4.4](#44-classification-summary), every field by emitting component and tier) and treat the **applicable subset of the MUST column** as the baseline each AI deployment should meet. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.2](#42-classification-legend). The catalogue contains 50 MUST fields; a deployment's baseline consists of those whose defining component, operation, or event exists in that deployment. This is the artifact to take into an engineering plan or a budget discussion.
 
@@ -48,13 +68,7 @@ Go to the **classification summary** ([§4.4](#44-classification-summary), every
 
 One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who may read it. The MUST tier can be met with hashes and classifications where raw content is too sensitive to keep, but that is a policy call, and it should be made deliberately rather than defaulted into.
 
-### 2.2 For the open source security community
-
-Each adjacent open specification has its own section of the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md), stating what this field set already maps onto, what that standard cannot currently express, and the specific additions proposed; [its introduction](Telemetry-Cross-Mapping-Addendum.md#proposals-by-community) summarizes the proposals by community. Start with yours.
-
-What is wanted in return: corrections to the mappings, and attacks the corpus is missing.
-
-### 2.3 For builders of AI solutions
+### 3.2 For builders of AI solutions
 
 One telemetry set covers **detection** while a run is in flight, **response** afterwards, **debugging** of behaviour, and **compliance audit**. Instrumenting once for all four is cheaper than retrofitting each purpose later.
 
@@ -65,26 +79,6 @@ Practical notes:
 - **Do not invent a schema.** XM §§2 to 4 give the OpenTelemetry attribute names, signal placement, and the OCSF mapping. Emit over OpenTelemetry today; the bindings are already specified.
 - **Do not head-sample security events.** [§5](#5-implementation-guidance) makes this normative.
 - **Propagate trace context across every hop**, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls. Without it, multi-agent activity cannot be reassembled into a single incident.
-
----
-
-## 3. Scope
-
-### 3.1 In scope
-
-The security-relevant telemetry an AI system should produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF, ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF and AI RMF, and ISO/IEC 42001.
-
-Telemetry for **agents the deployment does not operate** is in scope, with the limits that implies: what is observable at your own boundary, plus whatever the counterparty presents and can be verified. [§4.6](#46-agents-you-do-not-operate) sets out how the field set applies in that case.
-
-The framing implies three limits. This is **not a wire format**: the bindings are in the Cross-Mapping Addendum. It does **not specify detection logic**, only the fields detections consume. And it covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
-
-### 3.2 Not in scope
-
-Two areas are excluded deliberately, and both are intended for subsequent work.
-
-**Privacy compliance.** The implementation guidance recommends handling practices (access control, tiered retention, redaction, hash-first correlation) because content-bearing fields carry evident risk. Those are handling practices, not a compliance programme. Lawful basis, data-subject rights, cross-border transfer, and impact-assessment obligations are not addressed, and meeting the MUST tier does not discharge them.
-
-**Security of the telemetry itself.** The field set treats the telemetry plane as an asset only insofar as it must report its own failure: the observability-plane section covers detecting suppressed events, unreached enforcement points, and incomplete instrumentation. Defending the pipeline is a different problem and is not solved here: authenticating emitters, securing transport and storage, controlling access to collected content, and establishing the tamper-evidence and chain of custody that evidentiary use requires. This is a genuine tension with the immutable, tamper-evident logging that classic audit practice expects, and it is an exclusion of *this document's* scope rather than a claim that the problem does not matter: the CoSAI Risk Map now carries `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence` for it, and [AD §1.11](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) records when the plane fails even though it does not defend it. **Conformance to this document's field catalogue alone does not satisfy those integrity controls**; adopters needing audit-grade evidence must implement them separately.
 
 ---
 
