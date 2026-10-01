@@ -245,7 +245,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Trigger Type & Source Event | MUST | `gen_ai.agent.*` trigger attrs | n/a |
 | Action Type | MUST | `gen_ai.agent.step.type` | `action.{tool,method}` (6.4) |
 | Execution Status | MUST | span status + `error.type` | n/a |
-| Stop Reason | SHOULD | `gen_ai.response.finish_reasons` | n/a |
+| Stop Reason | MUST | `gen_ai.response.finish_reasons` | n/a |
 | Surface / App | MUST | `gen_ai.*` (surface attr) | n/a (policy input) |
 | System Prompt / Instruction Config | MUST | `gen_ai.*` (system message / request) | n/a (see note) |
 | Autonomy Level | SHOULD | `gen_ai.agent.state` | n/a |
