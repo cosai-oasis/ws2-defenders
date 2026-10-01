@@ -40,7 +40,7 @@ These are four fields, none exotic. Without them a detection has nothing to read
 
 ### 2.1 In scope
 
-In scope is the security telemetry an AI system needs to produce: each field, the documented attacks that justify it, and its tier (**MUST**, **SHOULD**, or **MAY**, against the test in [§5.1](#51-tiers)), listed in implementation order with the component that emits it ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how attacks motivate field inclusion and how those fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF [[25]](#standards--frameworks), ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
+In scope is the security telemetry an AI system needs to produce: each field, the documented attacks that justify it, and its tier (**MUST**, **SHOULD**, or **MAY**, against the test in [§4.7](#47-tiers)), listed in implementation order with the component that emits it ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how attacks motivate field inclusion and how those fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF [[25]](#standards--frameworks), ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
 
 Telemetry for **agents the deployment does not operate** is in scope, within the limits set in [§4.6](#46-record-your-boundary-not-their-internals).
 
@@ -60,23 +60,23 @@ It does **not specify detection logic**, only the fields detections consume.
 
 ### 3.1 For CISOs
 
-Go to the **field catalogue** ([§6](#6-field-catalogue), every field by implementation step and tier, with its emitting component) and treat the **applicable subset of the MUST column** as the baseline for each AI deployment ([§5.2](#52-conformance) defines applicability). The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§5.1](#51-tiers). The catalogue contains 53 MUST fields. This is the artifact to take into an engineering plan or a budget discussion.
+Go to the **field catalogue** ([§6](#6-field-catalogue), every field by implementation step and tier, with its emitting component) and treat the **applicable subset of the MUST column** as the baseline for each AI deployment ([§5](#5-conformance) defines applicability). The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.7](#47-tiers). The catalogue contains 53 MUST fields. This is the artifact to take into an engineering plan or a budget discussion.
 
 - **The justification is evidentiary.** Every MUST field cites attacks and incidents from a documented corpus. The ask is "these fields catch these attacks," not "best practice suggests." [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale) sets out that reasoning per component if it is challenged.
 - **There is a build order.** The catalogue is ordered by implementation step ([§6](#6-field-catalogue)).
 - **Compliance follows detection.** Fields built for detection also give an auditor the event content. Audit-grade evidence also needs the integrity and retention controls that §2.2 excludes. Fields built only for audit produce no detection. The NIST and ISO/IEC 42001 mappings are in [XM §§7 and 8](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
 
-One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who can read it. For content-bearing fields the MUST tier requires a content hash, not the raw content ([§5.2](#52-conformance)); keeping raw content is a policy call, to be made deliberately rather than by default.
+One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who can read it. For content-bearing fields the MUST tier requires a content hash, not the raw content ([§5](#5-conformance)); keeping raw content is a policy call, to be made deliberately rather than by default.
 
 ### 3.2 For defenders of AI systems
 
 To operationalize telemetry collection for a live AI system:
 
-1. **Scope.** Map what you run onto the risk-map components ([§6](#6-field-catalogue)). Fields for components you do not run are not applicable ([§5.2](#52-conformance)).
-2. **Select.** From the field catalogue ([§6](#6-field-catalogue)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§5.1](#51-tiers)). That list is your baseline.
+1. **Scope.** Map what you run onto the risk-map components ([§6](#6-field-catalogue)). Fields for components you do not run are not applicable ([§5](#5-conformance)).
+2. **Select.** From the field catalogue ([§6](#6-field-catalogue)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§4.7](#47-tiers)). That list is your baseline.
 3. **Define.** Read each field's capture definition and evidence in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables).
 4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge), the OCSF mapping in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-implications-for-ocsf--aitf-the-standardization-bridge), and the AITF names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference). Do not invent a schema.
-5. **Conform.** Meet the hashing and sampling rules in [§5.2](#52-conformance). Propagate trace context across every hop you operate, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
+5. **Conform.** Meet the hashing and sampling rules in [§5](#5-conformance). Propagate trace context across every hop you operate, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
 6. **Sequence.** Build in the order of [§6](#6-field-catalogue): each subsection is one step. §6.1 comes first because every later step resolves through its identifiers.
 7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamp each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)).
 
@@ -101,7 +101,7 @@ Availability and provider-policy signals are in scope where they make a silent f
 
 ### 4.2 Evidence sets the tier
 
-A field earns its tier from documented instances, directly or through a MUST field it is needed to read, not from a judgement that it would be useful. Two gates then cap the tier, independently of each other: the priority order (§4.1), and the modality of the deployment, since a field serving a modality at the edge of current practice stays SHOULD however much evidence accumulates. The test is in §5.1; the corpus is in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
+A field earns its tier from documented instances, directly or through a MUST field it is needed to read, not from a judgement that it would be useful. Two gates then cap the tier, independently of each other: the priority order (§4.1), and the modality of the deployment, since a field serving a modality at the edge of current practice stays SHOULD however much evidence accumulates. The test is in §4.7; the corpus is in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
 
 ### 4.3 Untrusted instruction is the attack state
 
@@ -113,7 +113,7 @@ The threat model in [XM §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat
 
 ### 4.5 A missing verdict is not an allow
 
-Every detection assumes the telemetry and enforcement path worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. The field set therefore records the plane's own failures: **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). The same reasoning makes the sampling rules normative (§5.2): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope (§2.2).
+Every detection assumes the telemetry and enforcement path worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. The field set therefore records the plane's own failures: **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). The same reasoning makes the sampling rules normative (§5): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope (§2.2).
 
 ### 4.6 Record your boundary, not their internals
 
@@ -129,48 +129,30 @@ Read every field in §6 against one of these **knowability** tiers:
 
 The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. `AOC-08` is that failure in miniature, and `AOC-11` is its consequence at scale.
 
----
-
-## 5. Tiers and conformance
-
-### 5.1 Tiers
+### 4.7 Tiers
 
 The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119** [[51]](#standards--frameworks), as updated by **RFC 8174** [[52]](#standards--frameworks): they carry that meaning only in capitals, so lowercase `optional` or `should` elsewhere in this document is ordinary prose. Each field carries one keyword; the table gives its obligation and the test that assigns it.
 
 | Tag | Meaning | Test |
 | :---- | :-------------------- | :------------------------------------------------------------------------------ |
-| **MUST** | The baseline, wherever the field applies ([§5.2](#52-conformance)). | At least **two independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) require it, or an applicable MUST field **cannot be read without it**: that field's value would be ambiguous between states a detection has to distinguish, or inaccurate. In either case the field is implementable wherever its component, operation, or event exists. |
+| **MUST** | The baseline, wherever the field applies ([§5](#5-conformance)). | At least **two independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) require it, or an applicable MUST field **cannot be read without it**: that field's value would be ambiguous between states a detection has to distinguish, or inaccurate. In either case the field is implementable wherever its component, operation, or event exists. |
 | **SHOULD** | Applies once a deployment runs the modality it serves. | Serves a modality or threat scenario at the **edge of current agentic practice**: **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding can be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not needed to catch the core attack classes. | The field's dominant value is **Q or A**; or its attack motivation is thin (single weak instance, or none); or it is a research-grade signal, a derived detector output, or redundant with a MUST field. |
 
 Two instances are independent when they are separate incidents, not two accounts of the same event. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalogue).
 
-**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is **not running the modality the field serves**, or, for the provider-gated fields below, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons. The modalities and their fields are:
+**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is **not running the modality the field serves**, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons. Each SHOULD row in §6 names the modality it serves, or marks the field **provider-gated** when provider availability and privacy policy gate it instead.
 
-- Delegated authority → Originating Principal, Delegation Chain, Granted Authorizations / Scope, Resource Indicators + Constraints, and Trust-Domain Crossing & Delegation Depth (§6.6), plus Tool ACL / Required Scope (§6.3).
-- Token exchange → Credential Minting & Scope-Narrowing Check (§6.6).
-- Cryptographic agent identity → Runtime Credential / Attestation and Lifecycle State (§6.6).
-- Multi-tenancy → Organization / Tenant ID (§6.1).
-- A2A → A2A Task Lifecycle Event and Peer Agent Card / Descriptor (§6.5).
-- Autonomous action → Autonomy Level (§6.1) and Task / Intent Declaration (§6.5).
-- Dynamic third-party capability composition → Tool/Agent Version and Repository / Code Path / Software Ref (§6.6).
-- Supply-chain attestation → Model Provenance / Signing / Hash (§6.1), and AgBOM / Inventory Snapshot, Component Dependency Graph, and Inventory Attestation Signature (§6.6).
-- Self-attesting instrumentation → Event Sequence Continuity (§6.6).
-- Reference monitor in the request path → Mediation Coverage & Bypass Path (§6.3).
-- Information-flow control → Session Taint Labels & Information-Flow Decisions (§6.3).
-- Out-of-band human approval → Human Approval / Elicitation Event (§6.3).
-- Policy-driven backend selection → Backend / Route Restriction Decision (§6.3).
+---
 
-The provider-gated fields are Observation / Thought (§6.2), Tool Selection Rationale (§6.3), Memory Write Rationale and Memory Integrity / Poisoning Signal (§6.4), and Retrieved-Content / Metadata Integrity Signal (§6.4). Provider availability and privacy policy gate them, not modality.
+## 5. Conformance
 
-### 5.2 Conformance
-
-#### Applicability and emission
+### Applicability and emission
 
 1. **A field applies only where its defining component, operation, or event exists.** AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** when an agent-to-agent message is sent. An inapplicable field is marked **not applicable** in the conformance statement; a deployment does not add a component, manufacture an event, or emit a synthetic value to fill it.
 2. **Every applicable MUST field is supported, and emitted whenever its event occurs.** Each event carries only the fields that apply to its class: a field absent because its event did not occur is not a defect, and a field omitted from an event it applies to is.
 
-#### Sampling
+### Sampling
 
 Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores security relevance, so where OpenTelemetry carries security telemetry ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps) gives the rationale):
 
@@ -178,7 +160,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
 3. **The sampling configuration in force MUST itself be recorded as telemetry**, in **Instrumentation Coverage / Hook Attestation** (§6.2), for the reason in [§4.5](#45-a-missing-verdict-is-not-an-allow).
 
-#### Content hashing
+### Content hashing
 
 1. **Every content-bearing field MUST carry a content hash.** Whether raw content accompanies it is deployment policy.
 2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer.
@@ -188,7 +170,7 @@ The hash is the correlation primitive the corpus turns on: `TA-04` (verbatim rep
 
 ## 6. Field catalogue
 
-Every field in the set, **98 in all: 53 MUST, 30 SHOULD and 15 MAY**, grouped by implementation step, then by tier. Within a step the MUST fields form the baseline, SHOULD fields wait for their modality ([§5.1](#51-tiers)), and MAY fields can be added at any point. Together the MUST fields cover prompt injection, data disclosure, memory and retrieval poisoning, exfiltration, resource abuse and denial of service, identity spoofing, runaway multi-agent loops, and unauthorized action. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The reasoning behind each tier is in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
+Every field in the set, **98 in all: 53 MUST, 30 SHOULD and 15 MAY**, grouped by implementation step, then by tier. Within a step the MUST fields form the baseline, SHOULD fields wait for their modality ([§4.7](#47-tiers)), and MAY fields can be added at any point. Together the MUST fields cover prompt injection, data disclosure, memory and retrieval poisoning, exfiltration, resource abuse and denial of service, identity spoofing, runaway multi-agent loops, and unauthorized action. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The reasoning behind each tier is in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
 
 Fields are organized under the fine-grained components of the CoSAI Risk Map [[23]](#standards--frameworks), using the canonical IDs in [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/main/risk-map/yaml/components.yaml). The "Emitted by" column documents which component produces each field; events do not carry a risk-map component identifier ([XM §1.3](Telemetry-Cross-Mapping-Addendum.md#13-component--control-refinements) explains why). The field set covers the runtime path: no corpus entry attacks the training pipeline (`IR-05` and `AOC-10` carry `AML.T0020` but poison memory and retrieval at runtime), so the evidence gate admits no field for the data and training components. `componentRuntimeHosting` has none: no field records the substrate that first-party workloads run on.
 
@@ -213,9 +195,9 @@ Every later detection resolves through these identifiers; the model and serving 
 | [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
 | [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | W3C trace context carried across every agent and tool hop. | every hop |
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
-| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Declared independence level the run is authorized for. Self-asserted. | `componentReasoningCore` |
-| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | SHOULD | Signed digest or provenance of the served model artifact. | `componentModelServing`, `componentModelRegistry` |
-| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Owning tenant of the agent, the session and the invoking user. | agent, session and user records |
+| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Declared independence level the run is authorized for. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
+| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | SHOULD | Signed digest or provenance of the served model artifact. Modality: supply-chain attestation. | `componentModelServing`, `componentModelRegistry` |
+| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Owning tenant of the agent, the session and the invoking user. Modality: multi-tenancy. | agent, session and user records |
 | [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
 | [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
 | [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Token-entropy anomalies correlated with confabulation. | `componentTheModel` |
@@ -242,10 +224,10 @@ This is the densest detection cluster; with §6.1 it gives a working injection d
 | [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
 | [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
 | [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
-| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. | `componentReasoningCore` |
+| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` |
 | [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MAY | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` |
 
-**Conditional fields.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** applies whenever an enforcement point rewrites rather than blocks ([§5.2](#52-conformance)).
+**Conditional fields.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** applies whenever an enforcement point rewrites rather than blocks ([§5](#5-conformance)).
 
 ### 6.3 Tool calls and policy decisions
 
@@ -262,18 +244,18 @@ These fields carry the highest response value: what the agent did, where it ran,
 | [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | MCP server name, version, transport and endpoint, and the primitive exercised. | `componentToolServer` |
 | [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Failed or blocked tool calls, including the probing that precedes exploitation. | `componentToolServer`, `componentToolInputHandling` |
 | [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | Per mediated operation: decision, reason code, deciding authority and rule. | `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint` |
-| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | The agent's stated reason for a tool call. Self-asserted. | `componentReasoningCore` |
-| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Approval lifecycle: status, IdP-verified approver, and whether it covers the executed arguments. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
-| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | Authority a tool requires and who can invoke it. | `componentAuthorizationPolicyEnforcementPoint` |
-| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. | enforcement points |
-| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Candidate backends, the constraint applied, the choice made. | enforcement points |
-| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. | enforcement points |
+| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | The agent's stated reason for a tool call. Self-asserted. Provider-gated. | `componentReasoningCore` |
+| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Approval lifecycle: status, IdP-verified approver, and whether it covers the executed arguments. Modality: out-of-band human approval. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
+| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | Authority a tool requires and who can invoke it. Modality: delegated authority. | `componentAuthorizationPolicyEnforcementPoint` |
+| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. Modality: information-flow control. | enforcement points |
+| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Candidate backends, the constraint applied, the choice made. Modality: policy-driven backend selection. | enforcement points |
+| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. Modality: reference monitor in the request path. | enforcement points |
 | [Tool ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Unique tool-implementation ID across MCP servers. | `componentTools` |
 | [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Sensitivity class of the data a tool touches. | `componentTools` |
 
 ### 6.4 Memory and retrieval
 
-These apply where the deployment persists state across turns or retrieves content ([§5.2](#52-conformance)).
+These apply where the deployment persists state across turns or retrieves content ([§5](#5-conformance)).
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
@@ -283,9 +265,9 @@ These apply where the deployment persists state across turns or retrieves conten
 | [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Size and growth of memory stores per user or session. | `componentMemory` |
 | [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Query issued, items returned and their scores. | `componentRAGContent` |
 | [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` |
-| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. | `componentMemory` |
-| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. | `componentMemory` |
-| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | SHOULD | Tamper or poisoning indicators on content or its metadata. | `componentRAGContent` |
+| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. Provider-gated. | `componentMemory` |
+| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. Provider-gated. | `componentMemory` |
+| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | SHOULD | Tamper or poisoning indicators on content or its metadata. Provider-gated. | `componentRAGContent` |
 | [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#16-memory) | MAY | A memory store's declared identity, limits and retrieval settings. | `componentMemory` |
 | [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MAY | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` |
 
@@ -299,9 +281,9 @@ These fields cover multi-agent and autonomous execution, where agentic risk comp
 | [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Creation or change of cron jobs, heartbeats and self-scheduled loops. | `componentReasoningCore` |
 | [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Steps per run against baseline; circular exchanges between agents. | `componentReasoningCore` |
 | [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Token, compute, storage and outbound totals per run against a budget. | `componentReasoningCore` |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. | `componentReasoningCore` |
-| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Delegated-task state changes across A2A, including callback registration. | `componentReasoningCore`, `componentAgentToolTransport` |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. | `componentReasoningCore` |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
+| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Delegated-task state changes across A2A, including callback registration. Modality: A2A. | `componentReasoningCore`, `componentAgentToolTransport` |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. Modality: A2A. | `componentReasoningCore` |
 | [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MAY | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` |
 
 ### 6.6 Identity, provenance and inventory
@@ -313,20 +295,20 @@ These fields cover delegated identity, inventory, and the integrity of the event
 | [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MUST | A tool, server, model, knowledge source or memory store added, removed or modified at runtime. | `componentReasoningCore` |
 | [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | The identity behind each agent, tool and infrastructure action, per hop. | `componentIdentityProvider` |
 | [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | Verified identifier against spoofable display name, and which one authorized. | `componentIdentityProvider` |
-| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | The human or service at the root of the delegation chain. | `componentIdentityProvider`, `componentFederationProxy` |
-| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Ordered agent hops, each integrity-bound to its parent. | `componentFederationProxy` |
-| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. | `componentFederationProxy` |
-| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. | `componentFederationProxy` |
-| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. | `componentFederationProxy`, `componentIdentityProvider` |
-| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. | `componentFederationProxy` |
-| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. | `componentIdentityProvider` |
-| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. | `componentIdentityProvider` |
-| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Version of each tool, agent and framework. | `componentToolRegistry`, `componentModelRegistry` |
-| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Source provenance of tool and agent code. | `componentToolRegistry` |
-| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. | `componentApplication`, `componentToolRegistry` |
-| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Dependency edges between inventoried components, including transitive ones. | `componentApplication`, `componentToolRegistry` |
-| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Signature over the emitted inventory, binding it to a signer. | `componentApplication`, `componentToolRegistry` |
-| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. | `componentAuditRecordRepository` |
+| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | The human or service at the root of the delegation chain. Modality: delegated authority. | `componentIdentityProvider`, `componentFederationProxy` |
+| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Ordered agent hops, each integrity-bound to its parent. Modality: delegated authority. | `componentFederationProxy` |
+| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. Modality: delegated authority. | `componentFederationProxy` |
+| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. Modality: delegated authority. | `componentFederationProxy` |
+| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. Modality: token exchange. | `componentFederationProxy`, `componentIdentityProvider` |
+| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. Modality: delegated authority. | `componentFederationProxy` |
+| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. Modality: cryptographic agent identity. | `componentIdentityProvider` |
+| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. Modality: cryptographic agent identity. | `componentIdentityProvider` |
+| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Version of each tool, agent and framework. Modality: dynamic third-party capability composition. | `componentToolRegistry`, `componentModelRegistry` |
+| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Source provenance of tool and agent code. Modality: dynamic third-party capability composition. | `componentToolRegistry` |
+| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: self-attesting instrumentation. | `componentAuditRecordRepository` |
 | [Description](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Declared purpose of a tool, against which behaviour is compared. | `componentToolRegistry` |
 | [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
@@ -338,11 +320,11 @@ These fields cover delegated identity, inventory, and the integrity of the event
 
 ## 7. Conclusion
 
-**Using the document set.** The RFC states what to collect and why: the principles ([§4](#4-principles)), the tiers and conformance rules ([§§5.1 to 5.2](#51-tiers)), and the catalogue of 98 fields in implementation order ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) defines each field and the attacks that require it; the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) binds the field set to OpenTelemetry, OCSF and AITF and relates it to adjacent standards and governance frameworks. A CISO takes the applicable MUST fields as the baseline ([§3.1](#31-for-cisos)); a defender follows the recipe in [§3.2](#32-for-defenders-of-ai-systems) from component inventory to first detections. Field names, tiers and attack IDs are written to be used directly as detection-engineering and triage input.
+**Using the document set.** The RFC states what to collect and why: the principles ([§4](#4-principles)), the tiers and conformance rules ([§§4.7 and 5](#47-tiers)), and the catalogue of 98 fields in implementation order ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) defines each field and the attacks that require it; the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) binds the field set to OpenTelemetry, OCSF and AITF and relates it to adjacent standards and governance frameworks. A CISO takes the applicable MUST fields as the baseline ([§3.1](#31-for-cisos)); a defender follows the recipe in [§3.2](#32-for-defenders-of-ai-systems) from component inventory to first detections. Field names, tiers and attack IDs are written to be used directly as detection-engineering and triage input.
 
 **Built from evidence.** The field set was assembled from documented instances, not from a list of what might be useful: 49 entries, comprising 28 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy). A field enters only where an instance requires it, directly or through a MUST field it is needed to read, and its tier follows a stated test ([§4.2](#42-evidence-sets-the-tier)), so every MUST can be checked against the attacks it cites, and a tier moves when the evidence or the modality changes. The same rule accounts for the gaps: no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§6](#6-field-catalogue)).
 
-**What defenders gain.** Each principle turns a failure seen in the corpus into something a defender can detect. Input trust classification makes an injection visible at the moment untrusted content is consumed as instruction ([§4.3](#43-untrusted-instruction-is-the-attack-state)). The distinction between verified and attested claims keeps detections from resting on what a compromised agent chose to report ([§4.4](#44-the-agent-might-be-lying)). Observability-plane fields and policy decision records make missing evidence distinguishable from clean evidence ([§4.5](#45-a-missing-verdict-is-not-an-allow)). Knowability tiers set what can be recorded about agents a deployment does not operate ([§4.6](#46-record-your-boundary-not-their-internals)). The content-hash and sampling rules keep the record comparable across deployments and complete where it matters ([§5.2](#52-conformance)).
+**What defenders gain.** Each principle turns a failure seen in the corpus into something a defender can detect. Input trust classification makes an injection visible at the moment untrusted content is consumed as instruction ([§4.3](#43-untrusted-instruction-is-the-attack-state)). The distinction between verified and attested claims keeps detections from resting on what a compromised agent chose to report ([§4.4](#44-the-agent-might-be-lying)). Observability-plane fields and policy decision records make missing evidence distinguishable from clean evidence ([§4.5](#45-a-missing-verdict-is-not-an-allow)). Knowability tiers set what can be recorded about agents a deployment does not operate ([§4.6](#46-record-your-boundary-not-their-internals)). The content-hash and sampling rules keep the record comparable across deployments and complete where it matters ([§5](#5-conformance)).
 
 **Scope, and what follows.** This RFC covers the security telemetry of the runtime path: which fields, at which priority, on what evidence. It does not specify detection logic, and it does not define a wire format. Security and privacy of the telemetry itself (access control, retention, redaction, encryption, integrity and chain of custody, and privacy compliance) are left to a later CoSAI publication ([§2.2](#22-not-in-scope)).
 
