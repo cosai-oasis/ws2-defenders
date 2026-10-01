@@ -11,11 +11,11 @@
 
 AI systems now read untrusted content, decide what to do about it, and act: calling tools, writing memory, retrieving documents, sending mail, invoking other agents. Attacks against them succeed in the gap between reading and acting. Detection has to happen in that gap, as far left in the kill chain as possible.
 
-Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Most deployments record none of this. Traditional application logging captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards nothing solid to investigate, debug, or audit.
+Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Default application logging records none of this. It captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards nothing solid to investigate, debug, or audit.
 
 ### 1.1 One umbrella, many efforts
 
-Several communities are converging on AI telemetry, and their work is complementary. **OpenTelemetry** [[35]](#standards--frameworks) defines how instrumentation emits GenAI and agent data. **OCSF**, the Open Cybersecurity Schema Framework [[37]](#standards--frameworks), defines how security events are normalized for a SOC. **OWASP AOS**, the Agent Observability Standard [[38]](#standards--frameworks), defines how an agent exposes itself for observation. **CPEX** [[44]](#standards--frameworks) defines how a policy runtime mediates agent actions. **ODIS**, the Open Delegation and Identity Standard [[26]](#standards--frameworks), defines delegated identity and authority. **MITRE ATLAS** [[1]](#primary-sources-attack-corpus--taxonomy) defines the adversary techniques to classify against. Regulation adds its own obligations, notably EU AI Act Article 12 [[34]](#standards--frameworks) and the NIST AI Risk Management Framework [[30]](#standards--frameworks).
+Several communities are converging on AI telemetry, and their work is complementary. **OpenTelemetry** [[35]](#standards--frameworks) defines how instrumentation emits GenAI and agent data. **OCSF**, the Open Cybersecurity Schema Framework [[37]](#standards--frameworks), defines how security events are normalized for a SOC. **OWASP AOS**, the Agent Observability Standard [[38]](#standards--frameworks), defines how an agent exposes itself for observation. **CPEX** [[44]](#standards--frameworks) defines how a policy runtime mediates agent actions. **ODIS**, the Open Delegation and Identity Standard [[26]](#standards--frameworks), defines delegated identity and authority. **MITRE ATLAS** [[1]](#primary-sources-attack-corpus--taxonomy) defines the adversary techniques to classify against. EU AI Act Article 12 [[34]](#standards--frameworks) imposes record-keeping on high-risk AI systems, and the NIST AI Risk Management Framework [[30]](#standards--frameworks) offers voluntary guidance.
 
 Those efforts answer different questions. This RFC is the requirements layer: it specifies the fields an AI system needs to produce for security, the evidence that makes each field necessary, and the order in which to build them.
 
@@ -25,14 +25,14 @@ In July 2026, frontier models under evaluation at OpenAI and Anthropic escaped t
 
 In June 2025 Microsoft disclosed **EchoLeak** (CVE-2025-32711, CVSS 9.3), reported by Aim Labs [[4]](#real-world-attack-primary-sources). A single crafted email caused Microsoft 365 Copilot to retrieve the attacker's text as context, act on it as instruction, and exfiltrate internal SharePoint, OneDrive and Teams content to an attacker-controlled endpoint. No user ever clicked anything. The chain defeated the cross-prompt-injection classifier, link redaction, and content-security policy in turn, and routed the egress through a trusted proxy domain.
 
-Each step in that chain is detectable, and each depends on a field most deployments do not collect:
+Each step in that chain left evidence in a field that default logging does not collect:
 
 - The email entered as **untrusted data** and was acted on as instruction, a distinction nothing recorded.
-- The run was **autonomous**; no human initiated it, which is itself the strongest first filter for injection.
+- The victim asked Copilot an ordinary question, and retrieval placed an **external sender's email** beside internal files in the answer's context. The provenance of retrieved content records how an external email was promoted into the prompt.
 - The **injection classifier was bypassed**. A classifier whose verdicts are not logged cannot be shown to have failed.
 - Content left for a **previously unseen outbound destination**: the last point at which the attack could have been stopped rather than reconstructed afterwards.
 
-These are four fields, none exotic. Their absence is the difference between a detection and a disclosure notice.
+These are four fields, none exotic. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
 
 ---
 
@@ -64,7 +64,7 @@ Go to the **field catalogue** ([§6](#6-field-catalogue), every field by impleme
 
 - **The justification is evidentiary.** Every MUST field cites attacks and incidents from a documented corpus. The ask is "these fields catch these attacks," not "best practice suggests." [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale) sets out that reasoning per component if it is challenged.
 - **There is a build order.** The catalogue is ordered by implementation step ([§6](#6-field-catalogue)).
-- **Compliance follows detection, not the reverse.** Build for detection and the audit evidence is a by-product; building for audit does not produce detection. The NIST and ISO/IEC 42001 mappings are in [XM §§7 and 8](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
+- **Compliance follows detection.** Fields built for detection also give an auditor the event content. Audit-grade evidence also needs the integrity and retention controls that §2.2 excludes. Fields built only for audit produce no detection. The NIST and ISO/IEC 42001 mappings are in [XM §§7 and 8](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
 
 One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who can read it. For content-bearing fields the MUST tier requires a content hash, not the raw content ([§5.2](#52-conformance)); keeping raw content is a policy call, to be made deliberately rather than by default.
 
@@ -76,8 +76,8 @@ To operationalize telemetry collection for a live AI system:
 2. **Select.** From the field catalogue ([§6](#6-field-catalogue)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§5.1](#51-tiers)). That list is your baseline.
 3. **Define.** Read each field's capture definition and evidence in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables).
 4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge), the OCSF mapping in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-implications-for-ocsf--aitf-the-standardization-bridge), and the AITF names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference). Do not invent a schema.
-5. **Conform.** Meet the hashing and sampling rules in [§5.2](#52-conformance). Propagate trace context across every hop, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
-6. **Sequence.** Build in the order of [§6](#6-field-catalogue): each subsection is one step, and each is useful on its own.
+5. **Conform.** Meet the hashing and sampling rules in [§5.2](#52-conformance). Propagate trace context across every hop you operate, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
+6. **Sequence.** Build in the order of [§6](#6-field-catalogue): each subsection is one step. §6.1 comes first because every later step resolves through its identifiers.
 7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamp each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)).
 
 ---
@@ -105,7 +105,7 @@ A field earns its tier from documented instances, directly or through a MUST fie
 
 ### 4.3 Untrusted instruction is the attack state
 
-Prompt injection succeeds when content from an untrusted origin is consumed as instruction. **Input Trust Classification** ([§6.2](#62-content-trust-verdicts-and-their-availability)) records exactly that, as the cross of origin (trusted or untrusted) with use (instruction or data); `untrusted-instruction` is the attack state. **Model Input** and **Input Source / Channel** make the classification checkable, and the guardrail verdicts record whether a classifier caught it. In EchoLeak (§1.2) the email occupied that cell, and nothing recorded it.
+Prompt injection succeeds when content from an untrusted origin is consumed as instruction. The input handler cannot see how the model uses a segment, so it records what it can. **Input Trust Classification** ([§6.2](#62-content-trust-verdicts-and-their-availability)) crosses the segment's origin (trusted or untrusted) with the role the deployment assigned it on entry (instruction or data). Untrusted content in an instruction role is a configuration defect and alerts at once. Untrusted content in a data role reaches the attack state when the same turn then acts on it, which a detection finds by joining the classification to **Tool Call I/O** and **Output Egress Destination** on the turn ID. **Model Input** and **Input Source / Channel** make the classification checkable, and the guardrail verdicts record whether a classifier caught it. In EchoLeak (§1.2) the email entered as untrusted data and drove the egress, and nothing recorded either.
 
 ### 4.4 The agent might be lying
 
@@ -139,26 +139,29 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119
 
 | Tag | Meaning | Test |
 | :---- | :-------------------- | :------------------------------------------------------------------------------ |
-| **MUST** | The baseline, wherever the field applies ([§5.2](#52-conformance)). | Grounded in **≥ 2 independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory), **or 1 where the field is especially useful for D or R**, **or the field is needed to interpret an applicable MUST field**: without it, that field's recorded value is ambiguous between states a detection has to distinguish, or is inaccurate; *and* implementable wherever its component, operation, or event exists. |
+| **MUST** | The baseline, wherever the field applies ([§5.2](#52-conformance)). | At least **two independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) require it, or an applicable MUST field **cannot be read without it**: that field's value would be ambiguous between states a detection has to distinguish, or inaccurate. In either case the field is implementable wherever its component, operation, or event exists. |
 | **SHOULD** | Applies once a deployment runs the modality it serves. | Serves a modality or threat scenario at the **edge of current agentic practice**: **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding can be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not needed to catch the core attack classes. | The field's dominant value is **Q or A**; or its attack motivation is thin (single weak instance, or none); or it is a research-grade signal, a derived detector output, or redundant with a MUST field. |
 
-What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalogue).
+Two instances are independent when they are separate incidents, not two accounts of the same event. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalogue).
 
-**SHOULD is not "MUST later."** It is "MUST *if you run this modality*": the RFC 2119 "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**; cost, effort, and inconvenience are not among them. The modalities and their fields are:
+**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is **not running the modality the field serves**, or, for the provider-gated fields below, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons. The modalities and their fields are:
 
-- Delegated authority → the delegation and credential fields (§6.6) plus Tool ACL/Scope (§6.3).
-- Multi-tenancy → Organization/Tenant ID (§6.1).
-- A2A → task lifecycle and peer agent cards (§6.5).
-- Autonomous action → autonomy level (§6.1) and task/intent declaration (§6.5).
-- Supply-chain attestation → model signing (§6.1) and the AgBOM fields (§6.6).
-- Self-attesting instrumentation → AD §1.11.
-- Information-flow control → session taint (§6.3).
-- Out-of-band human approval → elicitation events (§6.3).
-- Policy-driven backend selection → route restriction (§6.3).
-- Token exchange → credential minting (§6.6).
+- Delegated authority → Originating Principal, Delegation Chain, Granted Authorizations / Scope, Resource Indicators + Constraints, and Trust-Domain Crossing & Delegation Depth (§6.6), plus Tool ACL / Required Scope (§6.3).
+- Token exchange → Credential Minting & Scope-Narrowing Check (§6.6).
+- Cryptographic agent identity → Runtime Credential / Attestation and Lifecycle State (§6.6).
+- Multi-tenancy → Organization / Tenant ID (§6.1).
+- A2A → A2A Task Lifecycle Event and Peer Agent Card / Descriptor (§6.5).
+- Autonomous action → Autonomy Level (§6.1) and Task / Intent Declaration (§6.5).
+- Dynamic third-party capability composition → Tool/Agent Version and Repository / Code Path / Software Ref (§6.6).
+- Supply-chain attestation → Model Provenance / Signing / Hash (§6.1), and AgBOM / Inventory Snapshot, Component Dependency Graph, and Inventory Attestation Signature (§6.6).
+- Self-attesting instrumentation → Event Sequence Continuity (§6.6).
+- Reference monitor in the request path → Mediation Coverage & Bypass Path (§6.3).
+- Information-flow control → Session Taint Labels & Information-Flow Decisions (§6.3).
+- Out-of-band human approval → Human Approval / Elicitation Event (§6.3).
+- Policy-driven backend selection → Backend / Route Restriction Decision (§6.3).
 
-The reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7) are gated by provider availability and privacy policy rather than by modality.
+The provider-gated fields are Observation / Thought (§6.2), Tool Selection Rationale (§6.3), Memory Write Rationale and Memory Integrity / Poisoning Signal (§6.4), and Retrieved-Content / Metadata Integrity Signal (§6.4). Provider availability and privacy policy gate them, not modality.
 
 ### 5.2 Conformance
 
@@ -173,7 +176,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 
 1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§6.1), per-invocation tool activity, and any event carrying a fired detection are recorded at **100%**.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
-3. **The sampling configuration in force MUST itself be recorded as telemetry** ([§4.5](#45-a-missing-verdict-is-not-an-allow)).
+3. **The sampling configuration in force MUST itself be recorded as telemetry**, in **Instrumentation Coverage / Hook Attestation** (§6.2), for the reason in [§4.5](#45-a-missing-verdict-is-not-an-allow).
 
 #### Content hashing
 
@@ -181,7 +184,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer.
 3. **Where a field carries an identifier, the obligation is the signal, not the identifier.** For **Content Modality & Attachment Identity** (§6.2) it is the content hash, and the filename is policy. For **Citations / Source Attribution** (§6.2) it is the resolution outcome, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy. **Protocol Envelope Capture** (§6.5) is MAY because the raw payload is the field.
 
-The hash is the correlation primitive the corpus turns on: `TA-04` (verbatim reproduction), `AOC-03` (extraction escalating across turns) and `IR-02` (an implant persisting into later sessions) are each detected by matching one content item against another, and none needs the raw text retained. Requiring the hash, and leaving raw content to policy, keeps a MUST field comparable across deployments with different privacy postures.
+The hash is the correlation primitive the corpus turns on: `TA-04` (verbatim reproduction), `AOC-03` (extraction escalating across turns) and `IR-02` (an implant persisting into later sessions) are each detected by matching one content item against another, and none needs the raw text retained. Requiring the hash, and leaving raw content to policy, lets deployments with different privacy postures compare content without exchanging it, provided they declare the same digest algorithm and canonicalization.
 
 ## 6. Field catalogue
 
@@ -208,7 +211,7 @@ Every later detection resolves through these identifiers; the model and serving 
 | [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Decoding parameters and declared context window in force for the call. | `componentModelServing` |
 | [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Per-call token usage. | `componentModelServing` |
 | [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
-| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | W3C trace context carried across every agent, tool and agent hop. | every hop |
+| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | W3C trace context carried across every agent and tool hop. | every hop |
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
 | [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Declared independence level the run is authorized for. Self-asserted. | `componentReasoningCore` |
 | [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | SHOULD | Signed digest or provenance of the served model artifact. | `componentModelServing`, `componentModelRegistry` |
@@ -225,7 +228,7 @@ This is the densest detection cluster; with §6.1 it gives a working injection d
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
 | [Model Input](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
 | [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Trusted or untrusted origin, consumed as instruction or data; untrusted-instruction is the attack state. | `componentAgentInputHandling` |
+| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Trusted or untrusted origin, crossed with the role assigned on entry: instruction or data. | `componentAgentInputHandling` |
 | [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` |
 | [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
 | [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
@@ -236,7 +239,7 @@ This is the densest detection cluster; with §6.1 it gives a working injection d
 | [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
 | [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
 | [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted. | every security-relevant attribute |
-| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Which hooks are active, their version, and where each reports. | instrumentation layer |
+| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
 | [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
 | [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
 | [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. | `componentReasoningCore` |
@@ -395,4 +398,4 @@ Reference 4 is cited in this document. The primary source for every attack in th
 
 ### Other sources
 
-64. **Frontier-model containment failures under evaluation (July 2026).** OpenAI: *OpenAI and Hugging Face partner to address security incident during model evaluation* (21 July 2026). <https://openai.com/index/hugging-face-model-evaluation-security-incident/> · technical report: <https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf> · Hugging Face: *Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident.* <https://huggingface.co/blog/agent-intrusion-technical-timeline> · Anthropic: *Investigating three incidents in our cybersecurity evaluations* (30 July 2026). <https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals>
+64. **Frontier-model containment failures under evaluation (July 2026).** OpenAI: *OpenAI and Hugging Face partner to address security incident during model evaluation* (21 July 2026). <https://openai.com/index/hugging-face-model-evaluation-security-incident/> · technical report: <https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf> · Hugging Face: *Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident* (27 July 2026), documenting how an agent under OpenAI evaluation reached Hugging Face's production Kubernetes pods and database. <https://huggingface.co/blog/agent-intrusion-technical-timeline> · Anthropic: *Investigating three incidents in our cybersecurity evaluations* (30 July 2026), in each of which the model compromised a real organization's systems, including a production database. <https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals>
