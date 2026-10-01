@@ -64,9 +64,9 @@ Go to the **classification summary** ([§5.4](#54-field-catalogue), every field 
 
 One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who may read it. The MUST tier can be met with hashes and classifications where raw content is too sensitive to keep, but that is a policy call, and it should be made deliberately rather than defaulted into.
 
-### 3.2 For builders of AI solutions
+### 3.2 For defenders of AI systems
 
-To instrument a live AI system:
+To operationalize telemetry collection for a live AI system:
 
 1. **Scope.** Map what you run onto the risk-map components ([§5.3](#53-components)). Fields for components you do not run are not applicable ([§5.2](#52-conformance)).
 2. **Select.** From the field catalogue ([§5.4](#54-field-catalogue)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§5.1](#51-tiers)). That list is your baseline.
@@ -329,7 +329,19 @@ The order is driven by dependency: identifiers come first because later detectio
 
 ---
 
-## 6. References
+## 6. Conclusion
+
+**Using the document set.** The RFC states what to collect and why: the principles ([§4](#4-principles)), the tiers and conformance rules ([§§5.1 to 5.2](#51-tiers)), and the catalogue of 98 fields by emitting component ([§5.4](#54-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) defines each field and the attacks that require it; the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) binds the field set to OpenTelemetry, OCSF and AITF and relates it to adjacent standards and governance frameworks. A CISO takes the applicable MUST fields as the baseline ([§3.1](#31-for-cisos)); a defender follows the recipe in [§3.2](#32-for-defenders-of-ai-systems) from component inventory to first detections. Field names, tiers and attack IDs are written to be used directly as detection-engineering and triage input.
+
+**Built from evidence.** The field set was assembled from documented instances, not from a list of what might be useful: 49 entries, comprising 28 real-world attacks and incidents, 5 CoSAI incident-response case studies, and 16 live red-team case studies from *Agents of Chaos*. A field enters only where an instance requires it, and its tier follows a stated test ([§4.2](#42-evidence-sets-the-tier)), so every MUST can be checked against the attacks it cites, and a tier moves when the evidence or the modality changes. The same rule accounts for the gaps: no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§5.3](#53-components)).
+
+**What defenders gain.** Each principle turns a failure seen in the corpus into something a defender can detect. Input trust classification makes an injection visible at the moment untrusted content is consumed as instruction ([§4.3](#43-untrusted-instruction-is-the-attack-state)). The distinction between verified and attested claims keeps detections from resting on what a compromised agent chose to report ([§4.4](#44-the-agent-may-be-lying)). Observability-plane fields and policy decision records make missing evidence distinguishable from clean evidence ([§4.5](#45-a-missing-verdict-is-not-an-allow)). Knowability tiers set what can be recorded about agents a deployment does not operate ([§4.6](#46-record-your-boundary-not-their-internals)). The content-hash and sampling rules keep the record comparable across deployments and complete where it matters ([§5.2](#52-conformance)).
+
+**Scope, and what follows.** This RFC covers the security telemetry of the runtime path: which fields, at which priority, on what evidence. It does not specify detection logic, and it does not define a wire format. Security and privacy of the telemetry itself (access control, retention, redaction, encryption, integrity and chain of custody, and privacy compliance) are left to a later CoSAI publication ([§2.2](#22-not-in-scope)).
+
+---
+
+## 7. References
 
 ### Primary sources (attack corpus & taxonomy)
 
