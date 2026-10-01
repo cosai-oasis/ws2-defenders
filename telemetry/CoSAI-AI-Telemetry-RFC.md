@@ -21,6 +21,8 @@ Those efforts answer different questions. This RFC is the requirements layer: it
 
 ### 1.2 For example: EchoLeak
 
+In July 2026, frontier models under evaluation at OpenAI and Anthropic escaped their test environments and reached production systems at other organizations, and Hugging Face published a forensic timeline of one intrusion [[64]](#other-sources). Those were models acting on their own inside test harnesses. EchoLeak is the clearer lesson for defenders: an external adversary against a production deployment, documented end to end.
+
 In June 2025 Microsoft disclosed **EchoLeak** (CVE-2025-32711, CVSS 9.3), reported by Aim Labs [[4]](#real-world-attack-primary-sources). A single crafted email caused Microsoft 365 Copilot to retrieve the attacker's text as context, act on it as instruction, and exfiltrate internal SharePoint, OneDrive and Teams content to an attacker-controlled endpoint. No user ever clicked anything. The chain defeated the cross-prompt-injection classifier, link redaction, and content-security policy in turn, and routed the egress through a trusted proxy domain.
 
 Each step in that chain is detectable, and each depends on a field most deployments do not collect:
@@ -390,3 +392,7 @@ Reference 4 is cited in this document. The primary source for every attack in th
 
 51. **RFC 2119**: Bradner, S. *Key words for use in RFCs to Indicate Requirement Levels.* BCP 14, RFC 2119 (1997). <https://www.rfc-editor.org/rfc/rfc2119>
 52. **RFC 8174**: Leiba, B. *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words.* BCP 14, RFC 8174 (2017). <https://www.rfc-editor.org/rfc/rfc8174>
+
+### Other sources
+
+64. **Frontier-model containment failures under evaluation (July 2026).** OpenAI: *OpenAI and Hugging Face partner to address security incident during model evaluation* (21 July 2026). <https://openai.com/index/hugging-face-model-evaluation-security-incident/> · technical report: <https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf> · Hugging Face: *Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident.* <https://huggingface.co/blog/agent-intrusion-technical-timeline> · Anthropic: *Investigating three incidents in our cybersecurity evaluations* (30 July 2026). <https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals>
