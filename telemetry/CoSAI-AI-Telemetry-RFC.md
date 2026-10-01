@@ -162,20 +162,26 @@ The reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7) are
 
 ### 5.2 Conformance
 
-- **Applicability precedes obligation.** A field applies only where its defining component, operation, or event exists: AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** when an agent-to-agent message is sent. A deployment does not add a component or manufacture an event to emit telemetry; it marks the field **not applicable** in its conformance statement and emits no synthetic value.
-- **Schema support and event emission are distinct.** A conformant implementation supports every applicable MUST field and emits it whenever its event occurs; each event carries only the fields that apply to its class. A field absent because its event did not occur is not a defect; a field omitted from an event it applies to is.
+#### Applicability and emission
 
-**Sampling.** Default OpenTelemetry [[36]](#standards--frameworks) head-based sampling discards traces regardless of security relevance. Where OpenTelemetry carries security telemetry, these rules apply (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
+1. **A field applies only where its defining component, operation, or event exists.** AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** when an agent-to-agent message is sent. An inapplicable field is marked **not applicable** in the conformance statement; a deployment does not add a component, manufacture an event, or emit a synthetic value to fill it.
+2. **Every applicable MUST field is supported, and emitted whenever its event occurs.** Each event carries only the fields that apply to its class: a field absent because its event did not occur is not a defect, and a field omitted from an event it applies to is.
 
-1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§6.1), per-invocation tool activity events, and any event carrying a fired detection are recorded at **100%**. A sampled-away `content_filter` stop is a missed guardrail bypass.
+#### Sampling
+
+Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores security relevance, so where OpenTelemetry carries security telemetry ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps) gives the rationale):
+
+1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§6.1), per-invocation tool activity, and any event carrying a fired detection are recorded at **100%**.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
-3. **The sampling configuration in force MUST itself be recorded as telemetry.** The reason is in [§4.5](#45-a-missing-verdict-is-not-an-allow).
+3. **The sampling configuration in force MUST itself be recorded as telemetry**, because an event sampled away is indistinguishable from one that never occurred ([§4.5](#45-a-missing-verdict-is-not-an-allow)).
 
-**Every content-bearing field MUST carry a content hash; whether raw content accompanies it is deployment policy.** The hash is the correlation primitive the corpus turns on: `TA-04` is verbatim reproduction, `AOC-03` escalating extraction across turns, and `IR-02` an implant that persists into later sessions. Each is detectable by matching one content item against another, and none needs the raw text retained. Requiring the hash, and leaving raw content to policy, keeps a MUST field comparable across deployments with different privacy postures.
+#### Content hashing
 
-**Three fields carry identifiers rather than payloads.** For **Content Modality & Attachment Identity** (§6.2) the rule above already mandates the content hash, and the **filename** is policy. For **Citations / Source Attribution** (§6.2) the obligation is the **resolution outcome**, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy. **Protocol Envelope Capture** (§6.5) is MAY because raw payload capture is the field.
+1. **Every content-bearing field MUST carry a content hash.** Whether raw content accompanies it is deployment policy.
+2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer.
+3. **Where a field carries an identifier, the obligation is the signal, not the identifier.** For **Content Modality & Attachment Identity** (§6.2) it is the content hash, and the filename is policy. For **Citations / Source Attribution** (§6.2) it is the resolution outcome, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy. **Protocol Envelope Capture** (§6.5) is MAY because the raw payload is the field.
 
-**A hash is evidence only if a second party can recompute it.** The canonicalization the digest is taken over MUST be declared, by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Two emitters that hash the same tool call under different serializations produce different digests, and the field degrades from evidence to a key that correlates only within one producer.
+The hash is the correlation primitive the corpus turns on: `TA-04` (verbatim reproduction), `AOC-03` (extraction escalating across turns) and `IR-02` (an implant persisting into later sessions) are each detected by matching one content item against another, and none needs the raw text retained. Requiring the hash, and leaving raw content to policy, keeps a MUST field comparable across deployments with different privacy postures.
 
 ## 6. Field catalogue
 
