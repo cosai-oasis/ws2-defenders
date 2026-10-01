@@ -135,52 +135,48 @@ The third row collapsing into the second is the failure to avoid: recording an e
 
 ### 5.1 Tiers
 
-The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119** [[51]](#standards--frameworks), as updated by **RFC 8174** [[52]](#standards--frameworks): they carry that meaning only in capitals, so lowercase `optional` or `should` elsewhere in this document is ordinary prose. Each field carries exactly one keyword, and the table below states both the RFC 2119 obligation and the evidentiary test this document applies to assign it.
+The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119** [[51]](#standards--frameworks), as updated by **RFC 8174** [[52]](#standards--frameworks): they carry that meaning only in capitals, so lowercase `optional` or `should` elsewhere in this document is ordinary prose. Each field carries one keyword; the table gives its obligation and the test that assigns it.
 
 | Tag | Meaning | Test |
 | :---- | :-------------------- | :------------------------------------------------------------------------------ |
-| **MUST** | Baseline. Required whenever the field is applicable under the rules below. | Grounded in **≥ 2 independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory); **or 1 where the field is especially useful for D or R**; *and* implementable on essentially any current system that has the relevant component, operation, or event. |
-| **SHOULD** | Required once a deployment adopts a modality or faces a threat scenario at the **edge of current agentic practice**. | The field serves a deployment modality or threat scenario that is emerging rather than typical; **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, inline enforcement that mutates payloads, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding can be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
+| **MUST** | The baseline, wherever the field applies ([§5.2](#52-conformance)). | Grounded in **≥ 2 independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory), **or 1 where the field is especially useful for D or R**; *and* implementable wherever its component, operation, or event exists. |
+| **SHOULD** | Applies once a deployment runs the modality it serves. | Serves a modality or threat scenario at the **edge of current agentic practice**: **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, inline enforcement that mutates payloads, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding can be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not needed to catch the core attack classes. | The field's dominant value is **Q or A**; or its attack motivation is thin (single weak instance, or none); or it is a research-grade signal, a derived detector output, or redundant with a MUST field. |
 
-What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
+What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§3.2](#32-for-defenders-of-ai-systems).
 
-- **SHOULD is not "MUST later."** It is "MUST *if you run this modality*." This is the RFC 2119 reading applied narrowly: the "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**, and nothing else. Cost, effort, and inconvenience are not among them. For a deployment with cascaded delegation, AD §1.9 applies from day one; a single-agent deployment might never need it.
+**SHOULD is not "MUST later."** It is "MUST *if you run this modality*": the RFC 2119 "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**; cost, effort, and inconvenience are not among them. The modalities and their fields:
 
-  Each modality brings its cluster, adopted as soon as the modality is run:
+- Delegated authority → all of AD §1.9 plus Tool ACL/Scope (§6.4).
+- Multi-tenancy → Organization/Tenant ID (§6.5).
+- A2A → task lifecycle and peer agent cards (§6.1).
+- Inline enforcement that mutates payloads → Guardrail Modification Record (§6.5).
+- Autonomous action → autonomy level and task/intent declaration (§6.1).
+- Supply-chain attestation → model signing (§6.2), the AgBOM cluster (AD §1.10).
+- Self-attesting instrumentation → AD §1.11.
+- Information-flow control → session taint (§6.5).
+- Out-of-band human approval → elicitation events (§6.1).
+- Policy-driven backend selection → route restriction (§6.5).
+- Token exchange → credential minting (§6.3).
 
-  - Delegated authority → all of AD §1.9 plus Tool ACL/Scope (§6.4).
-  - Multi-tenancy → Organization/Tenant ID (§6.5).
-  - A2A → task lifecycle and peer agent cards (§6.1).
-  - Inline enforcement that mutates payloads → Guardrail Modification Record (§6.5).
-  - Autonomous action → autonomy level and task/intent declaration (§6.1).
-  - Supply-chain attestation → model signing (§6.2), the AgBOM cluster (AD §1.10).
-  - Self-attesting instrumentation → AD §1.11.
-  - Information-flow control → session taint (§6.5).
-  - Out-of-band human approval → elicitation events (§6.1).
-  - Policy-driven backend selection → route restriction (§6.5).
-  - Token exchange → credential minting (§6.3).
-
-  The reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7), which are gated by provider availability and privacy policy rather than by modality.
-
-> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. Build sequencing is in [§3.2](#32-for-defenders-of-ai-systems).
+The reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7) are gated by provider availability and privacy policy rather than by modality.
 
 ### 5.2 Conformance
 
-- **Applicability precedes obligation.** A tier does not require a deployment to add a component or manufacture an event solely to emit its telemetry. A MUST field applies when its defining component, operation, or event exists: for example, AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** applies when an agent-to-agent message is sent. A deployment that lacks the relevant capability marks the field **not applicable** in its conformance statement; it does not emit a synthetic value.
-- **Schema support and event emission are distinct.** A conformant implementation supports every applicable MUST field and emits it whenever the corresponding event occurs. An individual event carries only the fields applicable to that event class and activity. Absence because the event did not occur is not a defect; omission from an event to which the field applies is.
+- **Applicability precedes obligation.** A field applies only where its defining component, operation, or event exists: AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** when an agent-to-agent message is sent. A deployment does not add a component or manufacture an event to emit telemetry; it marks the field **not applicable** in its conformance statement and emits no synthetic value.
+- **Schema support and event emission are distinct.** A conformant implementation supports every applicable MUST field and emits it whenever its event occurs; each event carries only the fields that apply to its class. A field absent because its event did not occur is not a defect; a field omitted from an event it applies to is.
 
-**Sampling.** Default OpenTelemetry [[36]](#standards--frameworks) head-based sampling discards traces without regard to security relevance. For any deployment that relies on OTel as its security-telemetry carrier, the following are **normative** (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
+**Sampling.** Default OpenTelemetry [[36]](#standards--frameworks) head-based sampling discards traces regardless of security relevance. Where OpenTelemetry carries security telemetry (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
 
 1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§6.1), per-invocation tool activity events, and any event carrying a fired detection are recorded at **100%**. A sampled-away `content_filter` stop is a missed guardrail bypass.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
-3. **The sampling configuration in force MUST itself be recorded as telemetry.** A detection that never fires because its input was sampled away is indistinguishable from a clean environment.
+3. **The sampling configuration in force MUST itself be recorded as telemetry.** The reason is in [§4.5](#45-a-missing-verdict-is-not-an-allow).
 
-**Every content-bearing field MUST carry a content hash; whether the raw content accompanies it is a deployment policy decision.** The hash is the correlation primitive the corpus turns on: `TA-04` is verbatim reproduction, `AOC-03` is escalating extraction across turns, and `IR-02` is an implant that persists into later sessions. None of those is detectable without the ability to match one content item against another, and none of them requires the raw text to be retained. Mandating the hash and leaving the raw content to policy keeps a MUST field comparable between two deployments with different privacy postures, which a free choice between raw and hash does not. This is why several high-value fields (Observation/Thought, memory and RAG content) are specified *conceptually* here: the obligation is the hash, not the payload.
+**Every content-bearing field MUST carry a content hash; whether raw content accompanies it is deployment policy.** The hash is the correlation primitive the corpus turns on: `TA-04` is verbatim reproduction, `AOC-03` escalating extraction across turns, and `IR-02` an implant that persists into later sessions. Each is detectable by matching one content item against another, and none needs the raw text retained. Requiring the hash, and leaving raw content to policy, keeps a MUST field comparable across deployments with different privacy postures.
 
-**Three fields carry identifiers rather than payloads, and resolve as follows.** **Content Modality & Attachment Identity** (§6.5) already requires a content hash; the **filename** is the sensitive part and is deployment policy. **Citations / Source Attribution** (§6.1) names its own signal as *whether each citation resolves to an item actually returned by a logged Retrieval Event*, so the **resolution outcome is the obligation** and the clear-text URL is policy; a deployment that withholds URLs keeps the detection intact. **Protocol Envelope Capture** (§6.1) is MAY because raw payload capture is the field, and its tier already carries that judgement.
+**Three fields carry identifiers rather than payloads.** For **Content Modality & Attachment Identity** (§6.5) the rule above already mandates the content hash, and the **filename** is policy. For **Citations / Source Attribution** (§6.1) the obligation is the **resolution outcome**, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy. **Protocol Envelope Capture** (§6.1) is MAY because raw payload capture is the field.
 
-**A hash is evidence only if a second party can recompute it.** The canonicalization the digest is taken over MUST be declared, either by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Two emitters that hash the same tool call under different serializations produce different digests, and the field degrades silently from evidence to a correlation key that only works within one producer.
+**A hash is evidence only if a second party can recompute it.** The canonicalization the digest is taken over MUST be declared, by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Two emitters that hash the same tool call under different serializations produce different digests, and the field degrades from evidence to a key that correlates only within one producer.
 
 ## 6. Field catalogue
 
