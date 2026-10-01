@@ -59,7 +59,7 @@ Each table holds the fields of one component cluster, with these columns:
 
 † **MUST when a detection fires** (not on every benign event). The tag is a derived classification, not raw telemetry: detection logic sets it using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) attack→ATLAS mapping so downstream SIEM/XDR correlation and compliance reporting can pivot on `AML.Txxxx`.
 
-‡ **Cross-cutting fields**, listed here for convenience but applying across components, see the [classification summary](CoSAI-AI-Telemetry-RFC.md#54-field-catalogue). **Guardrail Modification Record** is SHOULD in the catalogue; it is **MUST whenever an enforcement point rewrites rather than blocks**.
+‡ **Cross-cutting fields**, listed here for convenience but applying across components, see the [classification summary](CoSAI-AI-Telemetry-RFC.md#6-field-catalogue). **Guardrail Modification Record** is SHOULD in the catalogue; it is **MUST whenever an enforcement point rewrites rather than blocks**.
 
 ### 1.3 Output Handling, Egress & Refusals
 
@@ -239,7 +239,7 @@ Each table holds the fields of one component cluster, with these columns:
 | **Backend / Route Restriction Decision** **[CPEX]** | SHOULD | Where an operation was allowed to execute: the candidate backend/model set, the constraint that narrowed it (region, model, site, cost tier, custom label), the selection made, and the behaviour when **no candidate qualified**. | `AOC-05`,`AOC-06`,`TA-01` |
 | **Mediation Coverage & Bypass Path** **[CPEX]** | SHOULD | Whether this operation traversed a reference monitor at all, at which **placement** (inbound gateway / egress sidecar / in-process framework), and whether **unmediated paths to the same capability exist**. | `AOC-02`,`AOC-14`,`TA-06` |
 
-‡ Cross-cutting, see the [classification summary](CoSAI-AI-Telemetry-RFC.md#54-field-catalogue). Applies to the attributes a hostile agent could plausibly fabricate: identity, authorization outcome, taint state, approval status, autonomy level, task declaration, and instruction configuration.
+‡ Cross-cutting, see the [classification summary](CoSAI-AI-Telemetry-RFC.md#6-field-catalogue). Applies to the attributes a hostile agent could plausibly fabricate: identity, authorization outcome, taint state, approval status, autonomy level, task declaration, and instruction configuration.
 
 ## 2. Correlation Patterns
 
@@ -247,7 +247,7 @@ Raw fields are evidence; detection comes from correlation.
 
 A four-year measurement study of a production security operations centre; 115 million alerts, 2018 to 2022; found volumes of **24 K to 134 K alerts per day of which 0.01% corresponded to true attacks or compromises**, with 27% attack attempts and 49% benign triggers [[50]](#standards--frameworks). The corollary is a staffing one, and it is the reason this document orders fields by detection value rather than completeness: a trail no analyst can read is not an asset.
 
-> **This section is the document's cross-component view.** Fields are organized by component ([RFC §5.3](CoSAI-AI-Telemetry-RFC.md#53-components)) to match the CoSAI Risk Map, and that organization is deliberate. Two mechanisms carry detection across it: **Action Type** (§1.1) normalizes what an operation *is*, distinguishing LLM-call from tool-call from memory-op from message-send regardless of which component performed it, and the patterns below correlate fields across components rather than within one. What neither supplies is a normalized identity for the *same* operation carried by different protocols, so a tool call over MCP and one over A2A are described separately; **Protocol Envelope Capture** (§1.8) preserves that difference rather than erasing it. See [XM §6.5](Telemetry-Cross-Mapping-Addendum.md#65-divergences--gaps-remaining) item 3.
+> **This section is the document's cross-component view.** Fields are organized by component ([RFC §6](CoSAI-AI-Telemetry-RFC.md#6-field-catalogue)) to match the CoSAI Risk Map, and that organization is deliberate. Two mechanisms carry detection across it: **Action Type** (§1.1) normalizes what an operation *is*, distinguishing LLM-call from tool-call from memory-op from message-send regardless of which component performed it, and the patterns below correlate fields across components rather than within one. What neither supplies is a normalized identity for the *same* operation carried by different protocols, so a tool call over MCP and one over A2A are described separately; **Protocol Envelope Capture** (§1.8) preserves that difference rather than erasing it. See [XM §6.5](Telemetry-Cross-Mapping-Addendum.md#65-divergences--gaps-remaining) item 3.
 
 | Pattern | Indicates | Fields correlated | Evidence |
 | :---------------------------------------- | :-------------------- | :------------------------------- | :--------- |
@@ -288,7 +288,7 @@ A four-year measurement study of a production security operations centre; 115 mi
 
 ## 3. Attack & Incident Inventory
 
-> **Reading the tables.** The *detecting fields* named in each row are defined in §§1.1 to 1.12, with what to capture and their tier; [RFC §5.4](CoSAI-AI-Telemetry-RFC.md#54-field-catalogue) is the index. The *primary components* are CoSAI Risk Map component IDs ([RFC §5.3](CoSAI-AI-Telemetry-RFC.md#53-components)), given here without the `component` prefix.
+> **Reading the tables.** The *detecting fields* named in each row are defined in §§1.1 to 1.12, with what to capture and their tier; [RFC §6](CoSAI-AI-Telemetry-RFC.md#6-field-catalogue) is the index. The *primary components* are CoSAI Risk Map component IDs ([RFC §6](CoSAI-AI-Telemetry-RFC.md#6-field-catalogue)), given here without the `component` prefix.
 
 Normalized catalogue of the attacks and incidents referenced above. Each row lists the telemetry the incident makes necessary and the primary risk-map component(s) involved.
 
