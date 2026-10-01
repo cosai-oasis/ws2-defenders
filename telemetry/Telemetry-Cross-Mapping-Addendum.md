@@ -255,7 +255,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Source host / IP + request metadata | MUST | `security.*` / resource attrs | n/a (policy input) |
 | Guardrail (Input) Verdict | MUST | `security.guardrail.type`, `security.blocked`, `security.threat_type` | n/a |
 | Content Modality & Attachment Identity | MUST ‡ | `gen_ai.*` content-part attrs | n/a |
-| Guardrail Modification Record | SHOULD ‡ | `security.guardrail.*` + modified/redacted flags | n/a |
+| Guardrail Modification Record | MUST ‡ | `security.guardrail.*` + modified/redacted flags | n/a |
 | Threat Classification / ATLAS Technique Tag | MUST † | `security.threat_type`, `compliance.framework=mitre_atlas`, `compliance.control_id` | n/a |
 | Encoded / Obfuscated Payload Indicator | MAY | `security.*` obfuscation / decoded-form attrs | n/a |
 | Response / Model Output | MUST | `gen_ai.completion` | n/a |
@@ -325,7 +325,7 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 | Human Approval / Elicitation Event | SHOULD | `identity.*` approver + approval attrs | `originating_principal` (6.3, partial) |
 | Backend / Route Restriction Decision | SHOULD | `gen_ai.provider.name` + routing constraint attrs | `resource_indicators`, `constraints` (6.3) |
 | Mediation Coverage & Bypass Path | SHOULD | n/a | n/a |
-| Enforcement-Point Availability & Failure Mode | SHOULD | `security.guardrail.*` availability/latency | n/a |
+| Enforcement-Point Availability & Failure Mode | MUST | `security.guardrail.*` availability/latency | n/a |
 | Instrumentation Coverage / Hook Attestation | MUST | `asset.*` / instrumentation attrs | n/a |
 | Event Sequence Continuity | SHOULD | n/a | n/a |
 | Policy Reason Code | MAY | `security.*` + `compliance.control_id` | n/a |
