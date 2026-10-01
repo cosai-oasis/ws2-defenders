@@ -40,7 +40,7 @@ Four fields, none exotic. Their absence is the difference between a detection an
 
 ### 2.1 In scope
 
-The security-relevant telemetry an AI system should produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF, ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF and AI RMF, and ISO/IEC 42001.
+The security-relevant telemetry an AI system should produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF [[25]](#standards--frameworks), ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
 
 Telemetry for **agents the deployment does not operate** is in scope, with the limits that implies: what is observable at your own boundary, plus whatever the counterparty presents and can be verified. [§4.6](#46-record-your-boundary-not-their-internals) sets out how the field set applies in that case.
 
@@ -166,7 +166,7 @@ What counts as a documented instance, and how the evidence and priority tests in
 - **Applicability precedes obligation.** A tier does not require a deployment to add a component or manufacture an event solely to emit its telemetry. A MUST field applies when its defining component, operation, or event exists: for example, AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** applies when an agent-to-agent message is sent. A deployment that lacks the relevant capability marks the field **not applicable** in its conformance statement; it does not emit a synthetic value.
 - **Schema support and event emission are distinct.** A conformant implementation supports every applicable MUST field and emits it whenever the corresponding event occurs. An individual event carries only the fields applicable to that event class and activity. Absence because the event did not occur is not a defect; omission from an event to which the field applies is.
 
-**Sampling.** Default OpenTelemetry head-based sampling discards traces without regard to security relevance. For any deployment that relies on OTel as its security-telemetry carrier, the following are **normative** (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
+**Sampling.** Default OpenTelemetry [[36]](#standards--frameworks) head-based sampling discards traces without regard to security relevance. For any deployment that relies on OTel as its security-telemetry carrier, the following are **normative** (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
 
 1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (AD §1.1), per-invocation tool activity events, and any event carrying a fired detection are recorded at **100%**. A sampled-away `content_filter` stop is a missed guardrail bypass.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
@@ -180,7 +180,7 @@ What counts as a documented instance, and how the evidence and priority tests in
 
 ### 5.3 Components
 
-Fields are organized under the CoSAI Risk Map fine-grained components. The table lists all 42 by risk-map category and subcategory, using the canonical IDs from [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/main/risk-map/yaml/components.yaml), with the sections whose fields each component emits:
+Fields are organized under the CoSAI Risk Map [[23]](#standards--frameworks) fine-grained components. The table lists all 42 by risk-map category and subcategory, using the canonical IDs from [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/main/risk-map/yaml/components.yaml), with the sections whose fields each component emits:
 
 | Category / subcategory | Components and sections |
 | :-------------------- | :-------------------------------------------------------------------------------- |
@@ -335,7 +335,7 @@ Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by
 
 **Using the document set.** The RFC states what to collect and why: the principles ([§4](#4-principles)), the tiers and conformance rules ([§§5.1 to 5.2](#51-tiers)), and the catalogue of 98 fields by emitting component ([§5.4](#54-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) defines each field and the attacks that require it; the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) binds the field set to OpenTelemetry, OCSF and AITF and relates it to adjacent standards and governance frameworks. A CISO takes the applicable MUST fields as the baseline ([§3.1](#31-for-cisos)); a defender follows the recipe in [§3.2](#32-for-defenders-of-ai-systems) from component inventory to first detections. Field names, tiers and attack IDs are written to be used directly as detection-engineering and triage input.
 
-**Built from evidence.** The field set was assembled from documented instances, not from a list of what might be useful: 49 entries, comprising 28 real-world attacks and incidents, 5 CoSAI incident-response case studies, and 16 live red-team case studies from *Agents of Chaos*. A field enters only where an instance requires it, and its tier follows a stated test ([§4.2](#42-evidence-sets-the-tier)), so every MUST can be checked against the attacks it cites, and a tier moves when the evidence or the modality changes. The same rule accounts for the gaps: no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§5.3](#53-components)).
+**Built from evidence.** The field set was assembled from documented instances, not from a list of what might be useful: 49 entries, comprising 28 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy). A field enters only where an instance requires it, and its tier follows a stated test ([§4.2](#42-evidence-sets-the-tier)), so every MUST can be checked against the attacks it cites, and a tier moves when the evidence or the modality changes. The same rule accounts for the gaps: no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§5.3](#53-components)).
 
 **What defenders gain.** Each principle turns a failure seen in the corpus into something a defender can detect. Input trust classification makes an injection visible at the moment untrusted content is consumed as instruction ([§4.3](#43-untrusted-instruction-is-the-attack-state)). The distinction between verified and attested claims keeps detections from resting on what a compromised agent chose to report ([§4.4](#44-the-agent-may-be-lying)). Observability-plane fields and policy decision records make missing evidence distinguishable from clean evidence ([§4.5](#45-a-missing-verdict-is-not-an-allow)). Knowability tiers set what can be recorded about agents a deployment does not operate ([§4.6](#46-record-your-boundary-not-their-internals)). The content-hash and sampling rules keep the record comparable across deployments and complete where it matters ([§5.2](#52-conformance)).
 
@@ -360,15 +360,19 @@ Reference 4 is cited in this document. The primary source for every attack in th
 ### Standards & frameworks
 
 23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 55 risks / 68 controls: PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`; risk IDs migrated to the `risk`+camelCase convention.
-24. **CoSAI MCP Security**: Coalition for Secure AI, Workstream 4 (Secure Design Patterns for Agentic Systems): *Model Context Protocol (MCP) Security*, approved 8 January 2026. Twelve threat categories (MCP-T1…T12), ~40 threats. <https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf>
+
+<!-- list break: reference numbers are not contiguous -->
+
 25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
 26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in AD §1.2: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
-27. **OWASP Top 10 for LLM Applications (2025)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/>
-28. **OWASP Top 10 for Agentic Applications (2026)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>
-29. **MITRE ATT&CK**: adversary tactics & techniques knowledge base (ATLAS-aligned). MITRE. <https://attack.mitre.org/>
+
+<!-- list break: reference numbers are not contiguous -->
+
 30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [XM §7](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
 31. **NIST Cybersecurity Framework (CSF) 2.0**: GV / ID / PR / DE / RS / RC; 6 functions, 22 categories, 106 subcategories. <https://www.nist.gov/cyberframework>
-32. **NIST Cyber AI Profile**: *Cybersecurity Framework Profile for Artificial Intelligence: NIST Community Profile*, **NIST IR 8596**, *initial preliminary draft* published 16 December 2025; CSF 2.0 community profile overlaying the **Secure / Defend / Thwart** AI focus areas. Comment period closed 30 January 2026; working sessions held April and May 2026; **no Initial Public Draft as of 11 September 2026**. <https://csrc.nist.gov/pubs/ir/8596/iprd> · project: <https://www.nccoe.nist.gov/projects/cyber-ai-profile>
+
+<!-- list break: reference numbers are not contiguous -->
+
 33. **ISO/IEC 42001:2023**: *Information technology — Artificial intelligence — Management system.* Clauses 4 to 10 plus **Annex A** (38 controls under 9 objectives, A.2 to A.10) selected via a Statement of Applicability. Paid standard. <https://www.iso.org/standard/42001>. Mapped in [XM §8](Telemetry-Cross-Mapping-Addendum.md#8-implications-for-isoiec-42001).
 34. **EU AI Act. Article 12 (Record-keeping / Logging).** <https://artificialintelligenceact.eu/article/12/>
 35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names must therefore be read from the new repository, not the deprecated registry. **Names in XM §§2 to 4 were verified against `semantic-conventions-genai` @ `0c87594` (10 September 2026) and `semantic-conventions` @ `22b6cbb` (9 September 2026); neither repository publishes release tags, so commit SHAs are the only stable anchor.** Cross referenced in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge).
@@ -377,21 +381,12 @@ Reference 4 is cited in this document. The primary source for every attack in th
 38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §5](Telemetry-Cross-Mapping-Addendum.md#5-owasp-aos-cross-reference). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
 39. **Model Context Protocol (MCP).** <https://modelcontextprotocol.io/>. Tools, resources, prompts, sampling, elicitation, roots (AD §1.5).
 40. **A2A, Agent-to-Agent Protocol.** <https://a2a-protocol.org/>. Agent cards, task lifecycle, push-notification configuration (AD §1.8).
-41. **CycloneDX**: OWASP BOM standard, incl. ML-BOM. <https://cyclonedx.org/>
-42. **SPDX**: Linux Foundation software bill-of-materials standard. <https://spdx.dev/>
-43. **SWID**: ISO/IEC 19770-2 software identification tags. <https://csrc.nist.gov/projects/Software-Identification-SWID>
+
+<!-- list break: reference numbers are not contiguous -->
+
 44. **CPEX**: policy-enforcement runtime and reference monitor for AI agents. <https://contextforge-org.github.io/cpex/> · threat model: <https://contextforge-org.github.io/cpex/docs/threat-model/>, cross referenced in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-cpex-cross-reference). Verified against [contextforge-org/cpex](https://github.com/contextforge-org/cpex) at commit `035012f` (18 August 2026). Pinned to a commit rather than to the current release (`v0.2.2`, 15 July 2026), which predates the threat-model document this appendix cites.
-45. **RFC 8693**: OAuth 2.0 Token Exchange (on-behalf-of delegation). <https://www.rfc-editor.org/rfc/rfc8693>
-46. **RFC 7523**: JWT Profile for OAuth 2.0 Client Authentication and Authorization Grants. <https://www.rfc-editor.org/rfc/rfc7523>
-47. **SPIFFE / SVID**: Secure Production Identity Framework for Everyone (workload identity). <https://spiffe.io/>
-48. **NIST SP 800-207**: Zero Trust Architecture. <https://csrc.nist.gov/pubs/sp/800/207/final>
-49. **Cedar**: authorization policy language. <https://www.cedarpolicy.com/> · **Open Policy Agent (Rego)**. <https://www.openpolicyagent.org/>
 
----
-
-50. **SOC alert-volume measurement**: Yang, L., Chen, Z., Wang, C., Zhang, Z., Booma, S., Cao, P., Adam, C., Withers, A., Kalbarczyk, Z. T., Iyer, R. K. & Wang, G. *True Attacks, Attack Attempts, or Benign Triggers? An Empirical Measurement of Network Alerts in a Security Operations Center.* USENIX Security 2024. <https://www.usenix.org/conference/usenixsecurity24/presentation/yang-limin>
+<!-- list break: reference numbers are not contiguous -->
 
 51. **RFC 2119**: Bradner, S. *Key words for use in RFCs to Indicate Requirement Levels.* BCP 14, RFC 2119 (1997). <https://www.rfc-editor.org/rfc/rfc2119>
 52. **RFC 8174**: Leiba, B. *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words.* BCP 14, RFC 8174 (2017). <https://www.rfc-editor.org/rfc/rfc8174>
-53. **RFC 9943**: *An Architecture for Trustworthy and Transparent Digital Supply Chains* (SCITT). Standards Track. <https://www.rfc-editor.org/rfc/rfc9943.html>
-54. **RFC 9942**: *CBOR Object Signing and Encryption (COSE) Receipts.* Standards Track, June 2026. <https://www.rfc-editor.org/rfc/rfc9942.html>
