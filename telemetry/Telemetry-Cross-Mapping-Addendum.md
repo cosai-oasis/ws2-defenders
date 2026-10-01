@@ -6,6 +6,37 @@
 
 ---
 
+### Proposals by community
+
+Each section below states what the field set already maps onto in one adjacent specification, what that specification cannot currently express, and the additions proposed.
+
+| Community | Section | What is proposed |
+| :------------- | :---- | :-------------------------------------------------------------------------------------- |
+| **OpenTelemetry** [[35]](#standards--frameworks) | §2 | 9 attribute proposals: input trust classification, a security guardrail signal, memory provenance and footprint, retrieval provenance, turn and step identifiers |
+| **OCSF** [[37]](#standards--frameworks) | §3 | 4 asks: two AI event classes (tracking ocsf-schema#1640), extensions to the existing `ai_operation` profile (ocsf-schema#1704 and #1729 in flight), new objects and enums; ATLAS technique tagging needs no schema change |
+| **CoSAI Risk Map (WS3)** [[23]](#standards--frameworks) | §1 | 3 refinements: confirm `componentMemory` covers persistent long-term memory, add a component for background and scheduled execution, and require the ATLAS technique tag on `controlThreatDetection` |
+| **OWASP AOS** [[38]](#standards--frameworks) | §5 | 9 contributions: trust classification, egress destination, ATLAS tagging, priority tiering, and migration of its OTel binding from `llm.*` to `gen_ai.*` |
+| **CPEX** [[44]](#standards--frameworks) | §6 | 6 contributions: retention and priority guidance, and a SOC destination for enforcement decisions |
+
+**AITF** [[25]](#standards--frameworks), the AI Telemetry Framework, donated to CoSAI Workstream 2, is the bridge between this document and both of those destinations, OpenTelemetry for emission, OCSF for consumption. It carries these fields as OpenTelemetry attributes today and emits them into OCSF ahead of formal ratification, so adopters are not blocked on either standards body. The field-level mapping is **§4**. **NIST** (AI RMF and CSF, including the Cyber AI Profile) and **ISO/IEC 42001** are consumers of this field set rather than destinations for proposals, so they are not in the table above; their mappings are [§7](#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile) and [§8](#8-implications-for-isoiec-42001).
+
+- **The proposals are evidence-gated and therefore small.** A field becomes a standardization ask only once two or more independent documented attacks require it. Nothing is proposed speculatively.
+- **Emission and consumption move together.** A field OpenTelemetry emits but OCSF cannot represent arrives at the SIEM as unstructured overflow; a field OCSF defines but no instrumentation produces stays theoretical. Paired asks are the intent.
+
+CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on this work, and welcomes input from the wider open source security community in turn. The timing favours it: every OpenTelemetry GenAI convention is at *Development* status and has just moved to a dedicated repository, so contributions land more cheaply now than after stabilization.
+
+### Agents you do not operate
+
+[RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-agents-you-do-not-operate) sets knowability tiers for counterparties the deployment does not run. Each adjacent standard supplies one of the rules behind them.
+
+**From CPEX: the counterparty is on the hostile side of the monitor, by definition.** CPEX's boundary places the agent, the caller, and everything beyond it in the untrusted region, and admits nothing from there into policy. An external agent is simply the clearest case. The consequence for telemetry is that you instrument **your own boundary**, not their internals, and CPEX's inbound-gateway placement is the one that sees every caller. What you record is a mediated interaction, not an observed agent.
+
+**From ODIS: authority becomes legible through presented claims, not through inspection.** You cannot audit an external agent's reasoning, but you can require it to present a verifiable delegation record: originating principal, chain, granted authorizations, constraints. This is why `trust_domain` and delegation depth are detection-grade rather than mere policy-engine inputs the moment a chain leaves your domain (see RFC §13).
+
+**From OWASP AOS: ask the counterparty to be inspectable, and record the answer.** AOS's *Observed Agent* is one that exposes hooks, events, and an AgBOM on request; an external agent is an **unobserved** agent until it agrees otherwise. AOS's A2A extension already distinguishes full from partial counterparty context, which is the same distinction as knowing versus not knowing who you are talking to. Whether an inspection request was answered is itself a signal.
+
+---
+
 ## 1. Mapping to the CoSAI Risk Map (risks & controls)
 
 *Does this telemetry work imply changes to the [CoSAI Risk Map](https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map)?* The risk map has expanded considerably, from 36 risks and 37 controls to **55 risks and 68 controls**, and the expansion, driven largely by review of CoSAI's [MCP Security paper](https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf) (WS4, approved 8 January 2026), lands directly on the agentic surface this document instruments. Every risk and control this field set requires is present in the risk map, so this appendix is a mapping rather than a set of asks. What remains open is a small number of component and control refinements, in [§1.3](#13-component--control-refinements).
@@ -49,6 +80,7 @@ This document is, in effect, the implementation spec for the risk map's **detect
 - **No new pipeline components required.** `componentMemory` and `componentRAGContent` exist. Two clarifications stand: confirm `componentMemory` scope explicitly covers *persistent long-term* memory, which `riskAgentMemoryPoisoning` targets; and note that **background and scheduled execution** (heartbeats, cron, self-scheduled loops; RFC §12) still has no dedicated component, despite being a distinct autonomy surface (`AOC-04`, `AOC-10`).
 - **Identity and delegation is now well covered by controls.** The recommendation to document an identity/delegation control-plane view is largely satisfied by `controlComponentIdentityAuthentication`, `controlComponentIdentityRegistration`, `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, and `controlSenderConstrainedCredentials`. RFC §13 telemetry now has an explicit home.
 - **`controlAuditRecordRepositoryIndependence` intersects this document's stated scope boundary.** [RFC §3.2](CoSAI-AI-Telemetry-RFC.md#32-not-in-scope) excludes securing the telemetry pipeline and defers it to subsequent work. That control now names part of the problem (repository independence from the workload being recorded) which strengthens the case for taking the deferred work up, and gives it a control to map onto when it is.
+- **The audit-trail controls are where defending the telemetry plane lands.** The CoSAI Risk Map reaches the same conclusion from the control side, carrying `controlAuditTrailCompleteness`, `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; RFC RFC §15 is the telemetry those controls presuppose. The realization those controls describe is a signed head or checkpoint published to a witness outside the emitter's trust domain; **RFC 9943** [[53]](#standards--frameworks) and **RFC 9942** [[54]](#standards--frameworks) are the standards form of it. Naming the exit keeps RFC RFC §15 a hand-off rather than a gap, without committing the field set to a format.
 - **Augment `controlThreatDetection`** to require the **ATLAS technique tag** on emitted detections, tying this appendix to [§3](#3-implications-for-ocsf--aitf-the-standardization-bridge).
 
 ## 2. Implications for OpenTelemetry (the instrumentation bridge)
@@ -447,7 +479,7 @@ Two genuine divergences and two coordination items. None is blocking; all should
 
 ## 6. CPEX Cross Reference
 
-[CPEX](https://contextforge-org.github.io/cpex/) is a deterministic reference monitor between an agent and its capabilities. It produces the policy, identity, taint, approval, and routing decisions recorded by RFC §16; this appendix maps those outputs to the field set and identifies remaining gaps.
+[CPEX](https://contextforge-org.github.io/cpex/) is a deterministic reference monitor between an agent and its capabilities. It produces the policy, identity, taint, approval, and routing decisions recorded by RFC §16; this appendix maps those outputs to the field set and identifies remaining gaps. RFC §16 takes only these decision records, not CPEX's policy language, plugin model, or deployment architecture.
 
 > **Sourcing.** Element names below are verified against the CPEX repository at commit `035012f` (18 August 2026). The citation is pinned to a commit rather than to a release because the released tags trail the documentation: the latest release, `v0.2.2` (15 July 2026), does not contain the threat-model document that [§6.1](#61-the-threat-model-the-most-important-contribution) and RFC §16 rest on. The published documentation site also renders a legacy `0.1.x` tree alongside the current pages; nothing in this appendix is taken from it.
 
@@ -630,3 +662,31 @@ Three of the four weak areas are properly out of scope. The fourth is a genuine 
 > **The through-line for both appendices.** These frameworks are **consumers** of this telemetry, not designers of it. The document's value to them is that a field set built to catch documented attacks turns out to evidence a large share of what they ask for, and that the evidence carries attack grounding, which is more defensible under audit than a control asserted to exist. The direction of derivation should not reverse: **do not add fields to improve a coverage table.**
 
 ---
+
+## References
+
+### Standards & frameworks
+
+23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 55 risks / 68 controls: PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`; risk IDs migrated to the `risk`+camelCase convention.
+
+<!-- list break: reference numbers are not contiguous -->
+
+25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
+
+<!-- list break: reference numbers are not contiguous -->
+
+35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names must therefore be read from the new repository, not the deprecated registry. **Names in Cross-Mapping Addendum §§2 to 4 were verified against `semantic-conventions-genai` @ `0c87594` (10 September 2026) and `semantic-conventions` @ `22b6cbb` (9 September 2026); neither repository publishes release tags, so commit SHAs are the only stable anchor.** Cross referenced in [Cross-Mapping Addendum §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge).
+
+<!-- list break: reference numbers are not contiguous -->
+
+37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>
+38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [Cross-Mapping Addendum §5](Telemetry-Cross-Mapping-Addendum.md#5-owasp-aos-cross-reference). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
+
+<!-- list break: reference numbers are not contiguous -->
+
+44. **CPEX**: policy-enforcement runtime and reference monitor for AI agents. <https://contextforge-org.github.io/cpex/> · threat model: <https://contextforge-org.github.io/cpex/docs/threat-model/>, cross referenced in [Cross-Mapping Addendum §6](Telemetry-Cross-Mapping-Addendum.md#6-cpex-cross-reference). Verified against [contextforge-org/cpex](https://github.com/contextforge-org/cpex) at commit `035012f` (18 August 2026). Pinned to a commit rather than to the current release (`v0.2.2`, 15 July 2026), which predates the threat-model document this appendix cites.
+
+<!-- list break: reference numbers are not contiguous -->
+
+53. **RFC 9943**: *An Architecture for Trustworthy and Transparent Digital Supply Chains* (SCITT). Standards Track. <https://www.rfc-editor.org/rfc/rfc9943.html>
+54. **RFC 9942**: *CBOR Object Signing and Encryption (COSE) Receipts.* Standards Track, June 2026. <https://www.rfc-editor.org/rfc/rfc9942.html>

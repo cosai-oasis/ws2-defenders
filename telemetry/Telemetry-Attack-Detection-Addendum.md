@@ -8,6 +8,13 @@
 
 ## 1. Field Tables
 
+Each table holds the fields of one RFC section (RFC §§5 to 16), with these columns:
+
+- **Field**: conceptual field name (implementation-neutral).
+- **Cls**: MUST / SHOULD / MAY.
+- **Capture (concept)**: what to record, stated generally enough to bind to any framework.
+- **Evidence**: attack IDs that establish the need (see [§3](#3-attack--incident-inventory)).
+
 ### 1.1 Application & Agent Reasoning Core (RFC §5)
 
 | Field | Cls | Capture (concept) | Evidence |
@@ -176,6 +183,8 @@
 
 Raw fields are evidence; detection comes from correlation.
 
+A four-year measurement study of a production security operations centre; 115 million alerts, 2018 to 2022; found volumes of **24 K to 134 K alerts per day of which 0.01% corresponded to true attacks or compromises**, with 27% attack attempts and 49% benign triggers [[50]](#standards--frameworks). The corollary is a staffing one, and it is the reason this document orders fields by detection value rather than completeness: a trail no analyst can read is not an asset.
+
 > **This section is the document's cross-component view.** Fields are organized by component ([RFC §4.3](CoSAI-AI-Telemetry-RFC.md#43-component-taxonomy)) to match the CoSAI Risk Map, and that organization is deliberate. Two mechanisms carry detection across it: **Action Type** (§1.1) normalizes what an operation *is*, distinguishing LLM-call from tool-call from memory-op from message-send regardless of which component performed it, and the patterns below correlate fields across components rather than within one. What neither supplies is a normalized identity for the *same* operation carried by different protocols, so a tool call over MCP and one over A2A are described separately; **Protocol Envelope Capture** (§1.8) preserves that difference rather than erasing it. See [Cross-Mapping Addendum §6.5](Telemetry-Cross-Mapping-Addendum.md#65-divergences--gaps-remaining) item 3.
 
 | Pattern | Indicates | Fields correlated | Evidence |
@@ -220,6 +229,11 @@ Raw fields are evidence; detection comes from correlation.
 > **Reading the tables.** The *detecting fields* named in each row are defined in §§1.1 to 1.12, with what to capture and their tier; [RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-classification-summary) is the index. The *primary components* are CoSAI Risk Map component IDs ([RFC §4.3](CoSAI-AI-Telemetry-RFC.md#43-component-taxonomy)), given here without the `component` prefix.
 
 Normalized catalogue of the attacks and incidents referenced above. Each row lists the telemetry the incident makes necessary and the primary risk-map component(s) involved.
+
+**What counts as evidence.**
+
+- **Taxonomies establish recognition, not occurrence.** Evidence means a **documented instance traceable to a primary source**. A MITRE ATLAS *technique*, a CoSAI Risk Map entry, an OWASP threat class, and the threat taxonomy of CoSAI's MCP Security paper are classifications: each records that a scenario is credible, none records that it happened. Where such a document cites a specific incident, that incident may enter the corpus **cited to its own primary source**, which is how `TA-11` to `TA-13` and four of `TA-14` to `TA-19` arrived. ATLAS **case studies** (`AML.CS####`) are instances and qualify; ATLAS **techniques** (`AML.Txxxx`) are classes and do not, which is why they are used to tag an attack and never to ground a field.
+- **An instance need not be an executed attack.** The corpus holds three kinds of entry, and all three are admissible. Most are **executed attacks**. Four are **resisted attempts** (`AOC-12` to `AOC-15`, cited across 25 field slots): an attempt that was refused still evidences the field that recorded the refusal, and in those entries the refusal *is* the detection. Three are **non-adversarial failures of the same mechanism** (`TA-11`, a tenant boundary that failed unaided; `AOC-06`, provider-side silent truncation; `AOC-16`, an emergent cross-agent defence; 10 field slots between them): a field that makes a failure mode visible does so whatever caused it, and requiring an adversary would exclude the clearest instances of several failure modes for reasons of attribution rather than of detection. The document is nonetheless **attack-grounded** as described, because the large majority of the corpus is executed attacks; the rule describes the corpus as it stands.
 
 ### 3.1 Attack ID scheme
 
@@ -398,9 +412,14 @@ What that means in practice:
 
 ## 4. Tiering Rationale
 
-Why each component's **MUST** fields earn that tier, and where the tier boundaries are closest. Ordered to match the [classification summary](CoSAI-AI-Telemetry-RFC.md#44-classification-summary): §1.1 through §1.12.
+Why each component's **MUST** fields earn that tier, and where the tier boundaries are closest. Ordered to match the field tables, §1.1 through §1.12.
 
 The rubric is in [RFC §4.2](CoSAI-AI-Telemetry-RFC.md#42-classification-legend). Two rules recur below. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
+
+**Availability and provider-policy signals are in scope, and this order is what places them.** A signal that makes a *silent failure distinguishable from a clean result* is detection material, not governance reporting: `AOC-06` is a provider API truncating responses and returning "unknown error", which is the model-serving instance of the problem [RFC §15](CoSAI-AI-Telemetry-RFC.md#15-observability-plane-integrity) is built around, where a verdict that never arrived and a verdict of `allow` read identically in the log. Where such a signal instead evidences a policy or an SLA, its value is Q or A and it lands at MAY, as **Provider / Endpoint Identity** (§1.4) does. The boundary is drawn by what the signal lets a defender distinguish, not by whether an adversary was involved.
+
+- **The evidence gate admits resisted attempts and non-adversarial failures ([§3](#3-attack--incident-inventory)); the [priority gate](CoSAI-AI-Telemetry-RFC.md#41-use-case-priorities) is what keeps reliability-only signals out of MUST.** The two are independent, and it has always been the second one doing that work. `AOC-06` is the proof: non-adversarial, grounding six fields of which four are MUST, and yet **Provider / Endpoint Identity** (§1.4) still sits at MAY, because its dominant value is Q and A and the D > R > Q > A order governs. A reliability incident can therefore ground a field without lifting a reliability-dominant field to MUST.
+- **Closing an evidence gap does not promote a modality-gated field.** The two gates are sequential and independent, so supplying a documented instance retires the evidence argument without moving the tier. That is still worth doing, because it removes the weaker of the two reasons a field sits below MUST, but a field held by its modality stays SHOULD however much evidence accumulates. Only a judgement that the modality has become typical moves it.
 
 ### 4.1 Application & Agent Reasoning Core (§1.1)
 
@@ -527,7 +546,7 @@ Two of six are MUST, and both are universal rather than modality-gated.
 
 ### Real-world attack primary sources
 
-One source per real-world attack vector, each mapping to a `TA-` ID in [§3.2](#32-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02…10`.
+One source per real-world attack vector, each mapping to a `TA-` ID in [Attack Detection Addendum §3.2](Telemetry-Attack-Detection-Addendum.md#32-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02…10`.
 
 4. **[TA-01]** EchoLeak, zero-click data exfiltration from Microsoft 365 Copilot (CVE-2025-32711, CVSS 9.3). Discovered and disclosed by **Aim Labs (Aim Security)**; reported to MSRC Jan 2025, fixed server-side and publicly disclosed Jun 2025. Microsoft advisory: <https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711> · CVE record: <https://nvd.nist.gov/vuln/detail/CVE-2025-32711> · **Technical analysis:** Reddy, P. & Gujral, A. *EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System.* arXiv:2509.10540 (2025). <https://arxiv.org/abs/2509.10540>
 5. **[TA-02]** Slack AI private-channel data exfiltration. Dark Reading. <https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels>
@@ -560,3 +579,7 @@ One source per real-world attack vector, each mapping to a `TA-` ID in [§3.2](#
 61. **[TA-26]** Indirect prompt injection of Claude Computer Use: PDF-borne injection invoking the agent's shell tool to destroy user data. HiddenLayer, 24 October 2024. MITRE ATLAS case study **`AML.CS0046`**. <https://hiddenlayer.com/innovation-hub/indirect-prompt-injection-of-claude-computer-use/>
 62. **[TA-27]** Morris II: zero-click adversarial self-replicating prompt propagating between GenAI systems via a RAG-based email assistant. S. Cohen, R. Bitton, B. Nassi, 5 March 2024. MITRE ATLAS case study **`AML.CS0024`**. <https://arxiv.org/abs/2403.02817>
 63. **[TA-28]** SesameOp: backdoor abusing the OpenAI Assistants API as a covert command-and-control and exfiltration channel over several months. Microsoft Incident Response (DART), 3 November 2025. MITRE ATLAS case study **`AML.CS0042`**. <https://www.microsoft.com/en-us/security/blog/2025/11/03/sesameop-novel-backdoor-uses-openai-assistants-api-for-command-and-control/>
+
+### Standards & frameworks
+
+50. **SOC alert-volume measurement**: Yang, L., Chen, Z., Wang, C., Zhang, Z., Booma, S., Cao, P., Adam, C., Withers, A., Kalbarczyk, Z. T., Iyer, R. K. & Wang, G. *True Attacks, Attack Attempts, or Benign Triggers? An Empirical Measurement of Network Alerts in a Security Operations Center.* USENIX Security 2024. <https://www.usenix.org/conference/usenixsecurity24/presentation/yang-limin>
