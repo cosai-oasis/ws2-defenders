@@ -73,7 +73,7 @@ To operationalize telemetry collection for a live AI system:
 3. **Define.** Read each field's capture definition and evidence in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables).
 4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge), the OCSF mapping in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-implications-for-ocsf--aitf-the-standardization-bridge), and the AITF names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference). Do not invent a schema.
 5. **Conform.** Hash every content-bearing field under a declared canonicalization, never head-sample security events, and record the sampling configuration ([§5.2](#52-conformance)). Propagate trace context across every hop, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls.
-6. **Sequence.** Build in the adoption order ([§5.5](#55-adoption-order)): identifiers first, then content and trust classification, then tools.
+6. **Sequence.** Within your baseline, build in dependency order: identifiers and trace context ([AD §1.1](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core)), because every later detection resolves through them; content, trust classification and guardrail verdicts ([AD §1.2](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) to 1.3), which alone give a working injection detection; tool call I/O with execution IDs and sandbox posture ([AD §1.5](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services)); memory and retrieval (AD §§1.6 to 1.7); orchestration (AD §1.8); identity (AD §1.9) and capability-set change (AD §1.10). Add **Enforcement-Point Availability** and **Guardrail Modification Record** early, before their modalities are fully adopted: without them a starved guardrail reads as a clean pass, and a redaction pipeline falsifies its own log.
 7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamp each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)).
 
 ---
@@ -143,7 +143,23 @@ What counts as a documented instance, and how the evidence and priority tests in
 
 - **SHOULD is not "MUST later."** It is "MUST *if you run this modality*." This is the RFC 2119 reading applied narrowly: the "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**, and nothing else. Cost, effort, and inconvenience are not among them. A deployment with cascaded delegation should treat AD §1.9 as mandatory on day one; a single-agent deployment may never need it.
 
-> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. The adoption order is in §5.5.
+  Each modality brings its cluster, adopted as soon as the modality is run:
+
+  - Delegated authority → all of AD §1.9 plus Tool ACL/Scope (AD §1.5).
+  - Multi-tenancy → Organization/Tenant ID (AD §1.1).
+  - A2A → task lifecycle and peer agent cards (AD §1.8).
+  - Inline enforcement that mutates payloads → Guardrail Modification Record (AD §1.2).
+  - Autonomous action → autonomy level (AD §1.1) and task/intent declaration (AD §1.8).
+  - Supply-chain attestation → model signing (AD §1.4), the AgBOM cluster (AD §1.10).
+  - Self-attesting instrumentation → AD §1.11.
+  - Information-flow control → session taint (AD §1.12).
+  - Out-of-band human approval → elicitation events (AD §1.12).
+  - Policy-driven backend selection → route restriction (AD §1.12).
+  - Token exchange → credential minting (AD §1.9).
+
+  The reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7), which are gated by provider availability and privacy policy rather than by modality.
+
+> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. Build sequencing is in [§3.2](#32-for-defenders-of-ai-systems).
 
 ### 5.2 Conformance
 
@@ -186,7 +202,7 @@ Fields are organized under the CoSAI Risk Map fine-grained components. The table
 
 ### 5.4 Field catalogue
 
-Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by the risk-map category of the component that emits it, then by tier. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The [applicability rules](#51-tiers) determine which fields a given deployment must emit; the reasoning behind each tier is in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
+Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by the risk-map category of the component that emits it, then by tier. Together the MUST fields cover prompt injection, data disclosure, memory and retrieval poisoning, exfiltration, resource abuse and denial of service, identity spoofing, runaway multi-agent loops, and unauthorized action. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The [applicability rules](#51-tiers) determine which fields a given deployment must emit; the reasoning behind each tier is in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
 
 **1. Application.** Application Core and Agent subcategories.
 
@@ -312,20 +328,6 @@ Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
 
 **Conditional tiers.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** is SHOULD in the catalogue and MUST whenever an enforcement point rewrites rather than blocks.
-
-### 5.5 Adoption order
-
-The full MUST catalogue contains 50 fields, which is more than most full-stack deployments can instrument at once. Within a deployment's applicable subset, adoption has an order.
-
-**Adoption order for a deployment starting from zero.** (1) the identifier hierarchy and trace context (AD §1.1), because everything else correlates through them and nothing else is interpretable without them; (2) content, trust classification, and guardrail verdicts (AD §§1.2 to 1.3), the highest D-density cluster in the document; (3) tool call I/O with execution IDs and sandbox posture (AD §1.5), the highest R value; (4) memory and retrieval (AD §§1.6 to 1.7); (5) orchestration (AD §1.8); (6) identity (AD §1.9) and capability-set change (AD §1.10).
-
-**Early SHOULD fields that protect Tier 1 value**, even before the matching modality is fully adopted: **Enforcement-Point Availability** (AD §1.11), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (AD §1.2), without which a redaction pipeline silently falsifies the log it feeds.
-
-The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. The tiers phase in as follows.
-
-- **Tier 1, MUST (baseline detection and response): a catalogue of 50 fields across AD §§1.1 to 1.12.** For each deployment, the baseline is the subset applicable to the components and operations it actually implements, as defined in [§5.1](#51-tiers). Together the catalogue covers prompt injection, data disclosure, memory/RAG poisoning, exfiltration, resource/DoS abuse, identity spoofing, runaway multi-agent loops, and unauthorized action. Every MUST field is grounded in ≥2 corpus attacks (or in one attack where it is especially useful for **D** or **R**) and is **D- or R-dominant**.
-- **Tier 2, SHOULD (edge-modality hardening).** Adopt the relevant cluster **as soon as you run the modality**, not on a maturity schedule. Delegated authority → all of AD §1.9 plus Tool ACL/Scope (AD §1.5). Multi-tenancy → Organization/Tenant ID (AD §1.1). A2A → task lifecycle and peer agent cards (AD §1.8). Inline enforcement that mutates payloads → Guardrail Modification Record (AD §1.2). Autonomous action → autonomy level (AD §1.1) and task/intent declaration (AD §1.8). Supply-chain attestation → model signing (AD §1.4), the AgBOM cluster (AD §1.10). Self-attesting instrumentation → AD §1.11. Information-flow control → session taint (AD §1.12). Out-of-band human approval → elicitation events (AD §1.12). Policy-driven backend selection → route restriction (AD §1.12). Token exchange → credential minting (AD §1.9). Plus the reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7), which are gated by provider availability and privacy policy rather than by modality.
-- **Tier 3, MAY (Q, A, and thin-evidence signals).** Fleet aggregates and static asset metadata; declared memory and knowledge configuration (AD §§1.6 to 1.7); provider/endpoint identity (AD §1.4); tool privacy classification (AD §1.5); protocol envelopes (AD §1.8); policy reason codes (AD §1.11); derived detector outputs already covered by a MUST (encoded-payload indicator, AD §1.2); and research-grade signals (pre-forward-pass state, token malformation, AD §1.4).
 
 ---
 
