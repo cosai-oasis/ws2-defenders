@@ -2,6 +2,7 @@
 
 **Status:** Request for Comments, revision 0.5
 **Origin:** Coalition for Secure AI (CoSAI), Workstream 2 (Defenders)
+**Companion documents:** [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) (cited as AD) and [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) (cited as XM).
 **Disclosure:** Prepared for open publication under CoSAI. No commercial sponsorship; the standards positions taken favour open specifications (OpenTelemetry, OCSF, OWASP AOS, CPEX) over any vendor implementation. Drafting, cross-referencing, and consistency checking were performed with AI assistance.
 
 ---
@@ -41,9 +42,9 @@ Four fields, none exotic. Their absence is the difference between a detection an
 
 Go to the **classification summary** ([§4.4](#44-classification-summary), every field by emitting component and tier) and treat the **applicable subset of the MUST column** as the baseline each AI deployment should meet. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.2](#42-classification-legend). The catalogue contains 50 MUST fields; a deployment's baseline consists of those whose defining component, operation, or event exists in that deployment. This is the artifact to take into an engineering plan or a budget discussion.
 
-- **The justification is evidentiary.** Every MUST field cites named real-world attacks and incidents. The ask is "these fields catch these attacks," not "best practice suggests." [Attack Detection Addendum §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale) sets out that reasoning per component if it is challenged.
+- **The justification is evidentiary.** Every MUST field cites named real-world attacks and incidents. The ask is "these fields catch these attacks," not "best practice suggests." [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale) sets out that reasoning per component if it is challenged.
 - **There is a build order.** The MUST tier is sequenced, so a team starts with the identifiers and content that everything else correlates through rather than instrumenting alphabetically.
-- **Compliance follows detection, not the reverse.** Build for detection and the audit evidence is a by-product; building for audit does not produce detection. The NIST and ISO/IEC 42001 mappings are [Cross-Mapping Addendum §§7 and 8](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
+- **Compliance follows detection, not the reverse.** Build for detection and the audit evidence is a by-product; building for audit does not produce detection. The NIST and ISO/IEC 42001 mappings are [XM §§7 and 8](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
 
 One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who may read it. The MUST tier can be met with hashes and classifications where raw content is too sensitive to keep, but that is a policy call, and it should be made deliberately rather than defaulted into.
 
@@ -61,8 +62,8 @@ Work from the **per-component breakdown**. The field set is organized by the com
 
 Practical notes:
 
-- **Do not invent a schema.** Cross-Mapping Addendum §§2 to 4 give the OpenTelemetry attribute names, signal placement, and the OCSF mapping. Emit over OpenTelemetry today; the bindings are already specified.
-- **Do not head-sample security events.** [§17](#17-implementation-guidance) makes this normative.
+- **Do not invent a schema.** XM §§2 to 4 give the OpenTelemetry attribute names, signal placement, and the OCSF mapping. Emit over OpenTelemetry today; the bindings are already specified.
+- **Do not head-sample security events.** [§5](#5-implementation-guidance) makes this normative.
 - **Propagate trace context across every hop**, including MCP [[39]](#standards--frameworks) and agent-to-agent [[40]](#standards--frameworks) calls. Without it, multi-agent activity cannot be reassembled into a single incident.
 
 ---
@@ -83,7 +84,7 @@ Two areas are excluded deliberately, and both are intended for subsequent work.
 
 **Privacy compliance.** The implementation guidance recommends handling practices (access control, tiered retention, redaction, hash-first correlation) because content-bearing fields carry evident risk. Those are handling practices, not a compliance programme. Lawful basis, data-subject rights, cross-border transfer, and impact-assessment obligations are not addressed, and meeting the MUST tier does not discharge them.
 
-**Security of the telemetry itself.** The field set treats the telemetry plane as an asset only insofar as it must report its own failure: the observability-plane section covers detecting suppressed events, unreached enforcement points, and incomplete instrumentation. Defending the pipeline is a different problem and is not solved here: authenticating emitters, securing transport and storage, controlling access to collected content, and establishing the tamper-evidence and chain of custody that evidentiary use requires. This is a genuine tension with the immutable, tamper-evident logging that classic audit practice expects, and it is an exclusion of *this document's* scope rather than a claim that the problem does not matter: the CoSAI Risk Map now carries `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence` for it, and [§15](#15-observability-plane-integrity) records when the plane fails even though it does not defend it. **Conformance to this document's field catalogue alone does not satisfy those integrity controls**; adopters needing audit-grade evidence must implement them separately.
+**Security of the telemetry itself.** The field set treats the telemetry plane as an asset only insofar as it must report its own failure: the observability-plane section covers detecting suppressed events, unreached enforcement points, and incomplete instrumentation. Defending the pipeline is a different problem and is not solved here: authenticating emitters, securing transport and storage, controlling access to collected content, and establishing the tamper-evidence and chain of custody that evidentiary use requires. This is a genuine tension with the immutable, tamper-evident logging that classic audit practice expects, and it is an exclusion of *this document's* scope rather than a claim that the problem does not matter: the CoSAI Risk Map now carries `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence` for it, and [AD §1.11](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) records when the plane fails even though it does not defend it. **Conformance to this document's field catalogue alone does not satisfy those integrity controls**; adopters needing audit-grade evidence must implement them separately.
 
 ---
 
@@ -102,7 +103,7 @@ Every field is justified against four use cases, **in this priority order**:
 
 Where a field serves several, the **highest-priority** use case governs its tier. A field whose value is mainly Q or A does not reach MUST no matter how useful it is.
 
-Availability and provider-policy signals are in scope where they make a silent failure distinguishable from a clean result ([Attack Detection Addendum §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)).
+Availability and provider-policy signals are in scope where they make a silent failure distinguishable from a clean result ([AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)).
 
 ### 4.2 Classification legend
 
@@ -110,18 +111,18 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in **RFC 2119
 
 | Tag | Meaning | Test |
 | :---- | :-------------------- | :------------------------------------------------------------------------------ |
-| **MUST** | Baseline. Required whenever the field is applicable under the rules below. | Grounded in **≥ 2 independent documented instances** in [Attack Detection Addendum §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory); **or 1 where the field is especially useful for D or R**; *and* implementable on essentially any current system that has the relevant component, operation, or event. |
+| **MUST** | Baseline. Required whenever the field is applicable under the rules below. | Grounded in **≥ 2 independent documented instances** in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory); **or 1 where the field is especially useful for D or R**; *and* implementable on essentially any current system that has the relevant component, operation, or event. |
 | **SHOULD** | Required once a deployment adopts a modality or faces a threat scenario at the **edge of current agentic practice**. | The field serves a deployment modality or threat scenario that is emerging rather than typical; **delegation chains and cascaded authority**, cryptographic identity and attestation, agent-to-agent protocol surfaces, inline enforcement that mutates payloads, dynamic third-party capability composition, or self-attesting instrumentation. Attack grounding may be **analogical**: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not required to catch the core attack classes. | The field's dominant value is **Q or A**; or its attack motivation is thin (single weak instance, or none); or it is a research-grade signal, a derived detector output, or redundant with a MUST field. |
 
-What counts as a documented instance, and how the evidence and priority tests interact, is set out in [Attack Detection Addendum §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
+What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory).
 
-- **Some fields are supplied by the agent, and the agent may be lying.** The threat model in [Cross-Mapping Addendum §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat-model-the-most-important-contribution) treats a compromised agent as a potential source of false statements, not only as a victim. These fields are **self-asserted** and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** (§5), **Observation / Thought** (§7), **Tool Selection Rationale** (§9), **Memory Write Rationale** (§10), and **Task / Intent Declaration** (§12). **Peer Agent Card / Descriptor** (§12) is the counterparty's assertion rather than the agent's own, and carries the same weakness. `AOC-01` is the corpus's demonstration that agents do misreport: it declared a secret destroyed while the data remained recoverable. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** (§16) is a cross-cutting MUST. Corroboration is a decidable property, not a judgement: a claim about an outcome is **verified** when it resolves, by an identifier carried in the record, to the result it rests on, as **Execution Status** (§5) resolves to the **Tool Call I/O** outcome sharing its **Tool Execution ID** (§9). Where no identifier resolves, the claim is **attested**: the record says so and no reader can settle it. Attested claims should be recorded as attested rather than counted as outcomes, which lets a checker decide the question instead of leaving it to an adjective.
-- **SHOULD is not "MUST later."** It is "MUST *if you run this modality*." This is the RFC 2119 reading applied narrowly: the "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**, and nothing else. Cost, effort, and inconvenience are not among them. A deployment with cascaded delegation should treat §13 as mandatory on day one; a single-agent deployment may never need it.
-- **Applicability precedes obligation.** A tier does not require a deployment to add a component or manufacture an event solely to emit its telemetry. A MUST field applies when its defining component, operation, or event exists: for example, §10 applies when the deployment uses persistent memory, and **Inter-Agent Message** applies when an agent-to-agent message is sent. A deployment that lacks the relevant capability marks the field **not applicable** in its conformance statement; it does not emit a synthetic value.
+- **Some fields are supplied by the agent, and the agent may be lying.** The threat model in [XM §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat-model-the-most-important-contribution) treats a compromised agent as a potential source of false statements, not only as a victim. These fields are **self-asserted** and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** (AD §1.1), **Observation / Thought** (AD §1.3), **Tool Selection Rationale** (AD §1.5), **Memory Write Rationale** (AD §1.6), and **Task / Intent Declaration** (AD §1.8). **Peer Agent Card / Descriptor** (AD §1.8) is the counterparty's assertion rather than the agent's own, and carries the same weakness. `AOC-01` is the corpus's demonstration that agents do misreport: it declared a secret destroyed while the data remained recoverable. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** (AD §1.12) is a cross-cutting MUST. Corroboration is a decidable property, not a judgement: a claim about an outcome is **verified** when it resolves, by an identifier carried in the record, to the result it rests on, as **Execution Status** (AD §1.1) resolves to the **Tool Call I/O** outcome sharing its **Tool Execution ID** (AD §1.5). Where no identifier resolves, the claim is **attested**: the record says so and no reader can settle it. Attested claims should be recorded as attested rather than counted as outcomes, which lets a checker decide the question instead of leaving it to an adjective.
+- **SHOULD is not "MUST later."** It is "MUST *if you run this modality*." This is the RFC 2119 reading applied narrowly: the "valid reasons in particular circumstances" for omitting a SHOULD field are **not running the modality it describes**, and nothing else. Cost, effort, and inconvenience are not among them. A deployment with cascaded delegation should treat AD §1.9 as mandatory on day one; a single-agent deployment may never need it.
+- **Applicability precedes obligation.** A tier does not require a deployment to add a component or manufacture an event solely to emit its telemetry. A MUST field applies when its defining component, operation, or event exists: for example, AD §1.6 applies when the deployment uses persistent memory, and **Inter-Agent Message** applies when an agent-to-agent message is sent. A deployment that lacks the relevant capability marks the field **not applicable** in its conformance statement; it does not emit a synthetic value.
 - **Schema support and event emission are distinct.** A conformant implementation supports every applicable MUST field and emits it whenever the corresponding event occurs. An individual event carries only the fields applicable to that event class and activity. Absence because the event did not occur is not a defect; omission from an event to which the field applies is.
 
-> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. See the maturity model in [Implementation Guidance](#17-implementation-guidance).
+> Tags are **deployment-agnostic**: a tag reflects *what evidence requires the field* and *how common the modality is*, not any one vendor's maturity. See the maturity model in [Implementation Guidance](#5-implementation-guidance).
 
 ### 4.3 Component taxonomy
 
@@ -129,150 +130,150 @@ Fields are organized under the CoSAI Risk Map fine-grained components. The table
 
 | Category / subcategory | Components and sections |
 | :-------------------- | :-------------------------------------------------------------------------------- |
-| **Application / Core** | `componentApplication` §5, §14; `componentApplicationInputHandling` §6; `componentApplicationOutputHandling` §7; `componentApplicationConsentSurface` §16; `componentApplicationNetworkPolicyEnforcementPoint` §16 |
-| **Application / Agent** | `componentReasoningCore` §5, §12, §13; `componentAgentUserQuery` §5; `componentAgentSystemInstruction` §5; `componentAgentInputHandling` §6; `componentAgentOutputHandling` §7; `componentAgentToolTransport` §9; `componentAgentConsentSurface` §16; `componentAgentNetworkPolicyEnforcementPoint` §16 |
-| **Model / Orchestration** | `componentOrchestrationInputHandling` §6, §12; `componentOrchestrationOutputHandling` §7, §12; `componentMemory` §10; `componentRAGContent` §11 |
-| **Model / Core** | `componentTheModel` §8; `componentModelServing` §8, §13 |
-| **Model / Training** | `componentModelFrameworksAndCode` §14; `componentModelTrainingTuning`, `componentModelEvaluation`: none |
-| **External Tools / Tool Invocation Path** | `componentTools` §9, §13, §14; `componentToolServer` §9; `componentToolInputHandling` §9; `componentToolOutputHandling` §9; `componentAuthorizationPolicyEnforcementPoint` §16 |
-| **External Tools / Tool Network Controls** | `componentToolNetworkPolicyEnforcementPoint` §16 |
-| **Infrastructure / Identity** | `componentIdentityProvider` §13; `componentFederationProxy` §13; `componentAuthorizationPolicyDecisionPoint` §16 |
-| **Infrastructure / Registries** | `componentModelRegistry` §8, §14; `componentToolRegistry` §9, §14 |
-| **Infrastructure / Deployment** | `componentModelStorage` §8; `componentIsolationRuntime` §9; `componentToolHosting` §9; `componentAuditRecordRepository` §15; `componentRuntimeHosting`: none |
+| **Application / Core** | `componentApplication` AD §1.1, AD §1.10; `componentApplicationInputHandling` AD §1.2; `componentApplicationOutputHandling` AD §1.3; `componentApplicationConsentSurface` AD §1.12; `componentApplicationNetworkPolicyEnforcementPoint` AD §1.12 |
+| **Application / Agent** | `componentReasoningCore` AD §1.1, AD §1.8, AD §1.9; `componentAgentUserQuery` AD §1.1; `componentAgentSystemInstruction` AD §1.1; `componentAgentInputHandling` AD §1.2; `componentAgentOutputHandling` AD §1.3; `componentAgentToolTransport` AD §1.5; `componentAgentConsentSurface` AD §1.12; `componentAgentNetworkPolicyEnforcementPoint` AD §1.12 |
+| **Model / Orchestration** | `componentOrchestrationInputHandling` AD §1.2, AD §1.8; `componentOrchestrationOutputHandling` AD §1.3, AD §1.8; `componentMemory` AD §1.6; `componentRAGContent` AD §1.7 |
+| **Model / Core** | `componentTheModel` AD §1.4; `componentModelServing` AD §1.4, AD §1.9 |
+| **Model / Training** | `componentModelFrameworksAndCode` AD §1.10; `componentModelTrainingTuning`, `componentModelEvaluation`: none |
+| **External Tools / Tool Invocation Path** | `componentTools` AD §1.5, AD §1.9, AD §1.10; `componentToolServer` AD §1.5; `componentToolInputHandling` AD §1.5; `componentToolOutputHandling` AD §1.5; `componentAuthorizationPolicyEnforcementPoint` AD §1.12 |
+| **External Tools / Tool Network Controls** | `componentToolNetworkPolicyEnforcementPoint` AD §1.12 |
+| **Infrastructure / Identity** | `componentIdentityProvider` AD §1.9; `componentFederationProxy` AD §1.9; `componentAuthorizationPolicyDecisionPoint` AD §1.12 |
+| **Infrastructure / Registries** | `componentModelRegistry` AD §1.4, AD §1.10; `componentToolRegistry` AD §1.5, AD §1.10 |
+| **Infrastructure / Deployment** | `componentModelStorage` AD §1.4; `componentIsolationRuntime` AD §1.5; `componentToolHosting` AD §1.5; `componentAuditRecordRepository` AD §1.11; `componentRuntimeHosting`: none |
 | **Infrastructure / Data** | `componentDataSources`, `componentDataFilteringAndProcessing`, `componentTrainingData`, `componentDataStorage`: none |
 
 **The field set covers the runtime path.** No corpus entry attacks the training pipeline (`IR-05` and `AOC-10` carry `AML.T0020` but poison memory and retrieval at runtime), so the evidence gate admits no field for the data and training components. `componentRuntimeHosting` has none: no field records the substrate that first-party workloads run on.
 
-> **Component attribution is a mapping, not an emitted attribute.** Events do not carry a risk-map `component_id`. Attribution is established by this section, [Cross-Mapping Addendum §1](Telemetry-Cross-Mapping-Addendum.md#1-mapping-to-the-cosai-risk-map-risks--controls) and [Cross-Mapping Addendum §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference), which is sufficient for a static cross reference and costs nothing at runtime. A runtime identifier would need a resolvable namespace and a deprecation policy before it could be emitted safely, since events are immutable records and a component renamed upstream would invalidate every event already carrying it. That is tracked as part of the CoSAI Risk Map ontology work ([secure-ai-tooling#388](https://github.com/cosai-oasis/secure-ai-tooling/issues/388)); if that effort settles a stable namespace, the field belongs in [§14](#14-asset-inventory--fleet-aggregates-mostly-may) at MAY.
+> **Component attribution is a mapping, not an emitted attribute.** Events do not carry a risk-map `component_id`. Attribution is established by this section, [XM §1](Telemetry-Cross-Mapping-Addendum.md#1-mapping-to-the-cosai-risk-map-risks--controls) and [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference), which is sufficient for a static cross reference and costs nothing at runtime. A runtime identifier would need a resolvable namespace and a deprecation policy before it could be emitted safely, since events are immutable records and a component renamed upstream would invalidate every event already carrying it. That is tracked as part of the CoSAI Risk Map ontology work ([secure-ai-tooling#388](https://github.com/cosai-oasis/secure-ai-tooling/issues/388)); if that effort settles a stable namespace, the field belongs in [AD §1.10](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) at MAY.
 
 ### 4.4 Classification summary
 
-Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by the risk-map category of the component that emits it, then by tier. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The [applicability rules](#42-classification-legend) determine which fields a given deployment must emit; the reasoning behind each tier is in [Attack Detection Addendum §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
+Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by the risk-map category of the component that emits it, then by tier. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). The [applicability rules](#42-classification-legend) determine which fields a given deployment must emit; the reasoning behind each tier is in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
 
 **1. Application.** Application Core and Agent subcategories.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Agent Name](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | Logical name or type of the agent; exposes off-inventory agents. | `componentReasoningCore` |
-| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | The running instance an event belongs to, for per-instance quarantine. | `componentReasoningCore` |
-| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | Groups one multi-step run or sub-agent tree into one execution. | `componentReasoningCore` |
-| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | The session, turn and step beneath a run, locating where behaviour changed. | `componentApplication`, `componentReasoningCore` |
-| [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | User-initiated or autonomous, and for autonomous runs the originating event. | `componentReasoningCore` |
-| [Action Type](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | LLM call, tool call, memory operation or message send. | `componentReasoningCore` |
-| [Execution Status](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | Outcome and duration of an operation or turn. | `componentReasoningCore` |
-| [Surface / App](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | Entry point: CLI, web, IDE, email, chat, scheduler; internal or external. | `componentApplication` |
-| [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | Instruction configuration in force for the call. Self-asserted. | `componentAgentSystemInstruction` |
-| [Model Input](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Trusted or untrusted origin, consumed as instruction or data; untrusted-instruction is the attack state. | `componentAgentInputHandling` |
-| [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` |
-| [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | MUST | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | MUST | Where output goes: recipients, URLs, channels, files, broadcast scope. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Citations / Source Attribution](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | MUST | Sources the agent claims, and whether each resolves to a logged retrieval. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | MUST | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | MUST | Refusal status and reason. | `componentAgentOutputHandling` |
-| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | MUST | Agent-to-agent messages: sender, receiver, content, channel. | `componentReasoningCore` |
-| [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | MUST | Creation or change of cron jobs, heartbeats and self-scheduled loops. | `componentReasoningCore` |
-| [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | MUST | Steps per run against baseline; circular exchanges between agents. | `componentReasoningCore` |
-| [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | MUST | Token, compute, storage and outbound totals per run against a budget. | `componentReasoningCore` |
-| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MUST | A tool, server, model, knowledge source or memory store added, removed or modified at runtime. | `componentReasoningCore` |
-| [Stop Reason](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | SHOULD | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
-| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | SHOULD | Declared independence level the run is authorized for. Self-asserted. | `componentReasoningCore` |
-| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals-rfc-7) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. | `componentReasoningCore` |
-| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | SHOULD | The agent's stated reason for a tool call. Self-asserted. | `componentReasoningCore` |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. | `componentReasoningCore` |
-| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | SHOULD | Delegated-task state changes across A2A, including callback registration. | `componentReasoningCore`, `componentAgentToolTransport` |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. | `componentReasoningCore` |
-| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | SHOULD | Approval lifecycle: status, IdP-verified approver, and whether it covers the executed arguments. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
-| [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MAY | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` |
-| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution-rfc-12) | MAY | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` |
+| [Agent Name](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Logical name or type of the agent; exposes off-inventory agents. | `componentReasoningCore` |
+| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | The running instance an event belongs to, for per-instance quarantine. | `componentReasoningCore` |
+| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Groups one multi-step run or sub-agent tree into one execution. | `componentReasoningCore` |
+| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | The session, turn and step beneath a run, locating where behaviour changed. | `componentApplication`, `componentReasoningCore` |
+| [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | User-initiated or autonomous, and for autonomous runs the originating event. | `componentReasoningCore` |
+| [Action Type](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | LLM call, tool call, memory operation or message send. | `componentReasoningCore` |
+| [Execution Status](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Outcome and duration of an operation or turn. | `componentReasoningCore` |
+| [Surface / App](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Entry point: CLI, web, IDE, email, chat, scheduler; internal or external. | `componentApplication` |
+| [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Instruction configuration in force for the call. Self-asserted. | `componentAgentSystemInstruction` |
+| [Model Input](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Trusted or untrusted origin, consumed as instruction or data; untrusted-instruction is the attack state. | `componentAgentInputHandling` |
+| [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` |
+| [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Where output goes: recipients, URLs, channels, files, broadcast scope. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Citations / Source Attribution](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Sources the agent claims, and whether each resolves to a logged retrieval. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Refusal status and reason. | `componentAgentOutputHandling` |
+| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Agent-to-agent messages: sender, receiver, content, channel. | `componentReasoningCore` |
+| [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Creation or change of cron jobs, heartbeats and self-scheduled loops. | `componentReasoningCore` |
+| [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Steps per run against baseline; circular exchanges between agents. | `componentReasoningCore` |
+| [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Token, compute, storage and outbound totals per run against a budget. | `componentReasoningCore` |
+| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MUST | A tool, server, model, knowledge source or memory store added, removed or modified at runtime. | `componentReasoningCore` |
+| [Stop Reason](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
+| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Declared independence level the run is authorized for. Self-asserted. | `componentReasoningCore` |
+| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. | `componentReasoningCore` |
+| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | The agent's stated reason for a tool call. Self-asserted. | `componentReasoningCore` |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. | `componentReasoningCore` |
+| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Delegated-task state changes across A2A, including callback registration. | `componentReasoningCore`, `componentAgentToolTransport` |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. | `componentReasoningCore` |
+| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Approval lifecycle: status, IdP-verified approver, and whether it covers the executed arguments. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
+| [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MAY | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` |
+| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MAY | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` |
 
 **2. Model.** Model Core, Orchestration and Training subcategories.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MUST | Model and version that processed the request. | `componentModelServing` |
-| [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MUST | Decoding parameters and declared context window in force for the call. | `componentModelServing` |
-| [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MUST | Per-call token usage. | `componentModelServing` |
-| [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
-| [Memory Write Event](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | MUST | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` |
-| [Memory Read / Injection Event](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | MUST | Which memory items were pulled into context for a call. | `componentMemory` |
-| [Memory Provenance / Source](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | MUST | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` |
-| [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | MUST | Size and growth of memory stores per user or session. | `componentMemory` |
-| [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag-rfc-11) | MUST | Query issued, items returned and their scores. | `componentRAGContent` |
-| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag-rfc-11) | MUST | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` |
-| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | SHOULD | Signed digest or provenance of the served model artifact. | `componentModelServing`, `componentModelRegistry` |
-| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. | `componentMemory` |
-| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. | `componentMemory` |
-| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag-rfc-11) | SHOULD | Tamper or poisoning indicators on content or its metadata. | `componentRAGContent` |
-| [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
-| [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
-| [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving-rfc-8) | MAY | Token-entropy anomalies correlated with confabulation. | `componentTheModel` |
-| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#16-memory-rfc-10) | MAY | A memory store's declared identity, limits and retrieval settings. | `componentMemory` |
-| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag-rfc-11) | MAY | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` |
+| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Model and version that processed the request. | `componentModelServing` |
+| [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Decoding parameters and declared context window in force for the call. | `componentModelServing` |
+| [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Per-call token usage. | `componentModelServing` |
+| [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
+| [Memory Write Event](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` |
+| [Memory Read / Injection Event](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Which memory items were pulled into context for a call. | `componentMemory` |
+| [Memory Provenance / Source](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` |
+| [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Size and growth of memory stores per user or session. | `componentMemory` |
+| [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Query issued, items returned and their scores. | `componentRAGContent` |
+| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` |
+| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | SHOULD | Signed digest or provenance of the served model artifact. | `componentModelServing`, `componentModelRegistry` |
+| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. | `componentMemory` |
+| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. | `componentMemory` |
+| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | SHOULD | Tamper or poisoning indicators on content or its metadata. | `componentRAGContent` |
+| [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
+| [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
+| [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Token-entropy anomalies correlated with confabulation. | `componentTheModel` |
+| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#16-memory) | MAY | A memory store's declared identity, limits and retrieval settings. | `componentMemory` |
+| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MAY | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` |
 
 **3. Infrastructure.** Identity, Registries and Deployment subcategories. The Data subcategory has no fields (§4.3).
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | MUST | The identity behind each agent, tool and infrastructure action, per hop. | `componentIdentityProvider` |
-| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | MUST | Verified identifier against spoofable display name, and which one authorized. | `componentIdentityProvider` |
-| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | Isolation posture: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
-| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | The human or service at the root of the delegation chain. | `componentIdentityProvider`, `componentFederationProxy` |
-| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Ordered agent hops, each integrity-bound to its parent. | `componentFederationProxy` |
-| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. | `componentFederationProxy` |
-| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. | `componentFederationProxy` |
-| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. | `componentFederationProxy`, `componentIdentityProvider` |
-| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. | `componentFederationProxy` |
-| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. | `componentIdentityProvider` |
-| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution-rfc-13) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. | `componentIdentityProvider` |
-| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | SHOULD | Version of each tool, agent and framework. | `componentToolRegistry`, `componentModelRegistry` |
-| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | SHOULD | Source provenance of tool and agent code. | `componentToolRegistry` |
-| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. | `componentApplication`, `componentToolRegistry` |
-| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | SHOULD | Dependency edges between inventoried components, including transitive ones. | `componentApplication`, `componentToolRegistry` |
-| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | SHOULD | Signature over the emitted inventory, binding it to a signer. | `componentApplication`, `componentToolRegistry` |
-| [Description](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MAY | Declared purpose of a tool, against which behaviour is compared. | `componentToolRegistry` |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MAY | Whether a tool should be reachable. | `componentToolRegistry` |
-| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
-| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MAY | Exposure map per tool. | `componentToolRegistry` |
+| [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | The identity behind each agent, tool and infrastructure action, per hop. | `componentIdentityProvider` |
+| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | Verified identifier against spoofable display name, and which one authorized. | `componentIdentityProvider` |
+| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Isolation posture: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
+| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | The human or service at the root of the delegation chain. | `componentIdentityProvider`, `componentFederationProxy` |
+| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Ordered agent hops, each integrity-bound to its parent. | `componentFederationProxy` |
+| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. | `componentFederationProxy` |
+| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. | `componentFederationProxy` |
+| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. | `componentFederationProxy`, `componentIdentityProvider` |
+| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. | `componentFederationProxy` |
+| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. | `componentIdentityProvider` |
+| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. | `componentIdentityProvider` |
+| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Version of each tool, agent and framework. | `componentToolRegistry`, `componentModelRegistry` |
+| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Source provenance of tool and agent code. | `componentToolRegistry` |
+| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. | `componentApplication`, `componentToolRegistry` |
+| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Dependency edges between inventoried components, including transitive ones. | `componentApplication`, `componentToolRegistry` |
+| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Signature over the emitted inventory, binding it to a signer. | `componentApplication`, `componentToolRegistry` |
+| [Description](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Declared purpose of a tool, against which behaviour is compared. | `componentToolRegistry` |
+| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Whether a tool should be reachable. | `componentToolRegistry` |
+| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
+| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Exposure map per tool. | `componentToolRegistry` |
 
 **4. External Tools.** Tool Invocation Path and Tool Network Controls subcategories.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | Full arguments and output of every tool or MCP call. | `componentToolServer`, `componentTools` |
-| [Tool Name](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | The capability invoked, as the agent saw it. | `componentToolServer` |
-| [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | MCP, internal, direct-storage or code-execution. | `componentTools` |
-| [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | Correlation ID pairing each tool request with its outcome. | `componentToolServer` |
-| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | Hash of the tool contract as presented at invocation, compared with the approved baseline. | `componentToolServer`, `componentToolRegistry` |
-| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | MCP server name, version, transport and endpoint, and the primitive exercised. | `componentToolServer` |
-| [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MUST | Failed or blocked tool calls, including the probing that precedes exploitation. | `componentToolServer`, `componentToolInputHandling` |
-| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | SHOULD | Authority a tool requires and who may invoke it. | `componentAuthorizationPolicyEnforcementPoint` |
-| [Tool ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MAY | Unique tool-implementation ID across MCP servers. | `componentTools` |
-| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services-rfc-9) | MAY | Sensitivity class of the data a tool touches. | `componentTools` |
+| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Full arguments and output of every tool or MCP call. | `componentToolServer`, `componentTools` |
+| [Tool Name](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | The capability invoked, as the agent saw it. | `componentToolServer` |
+| [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | MCP, internal, direct-storage or code-execution. | `componentTools` |
+| [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Correlation ID pairing each tool request with its outcome. | `componentToolServer` |
+| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Hash of the tool contract as presented at invocation, compared with the approved baseline. | `componentToolServer`, `componentToolRegistry` |
+| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | MCP server name, version, transport and endpoint, and the primitive exercised. | `componentToolServer` |
+| [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Failed or blocked tool calls, including the probing that precedes exploitation. | `componentToolServer`, `componentToolInputHandling` |
+| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | Authority a tool requires and who may invoke it. | `componentAuthorizationPolicyEnforcementPoint` |
+| [Tool ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Unique tool-implementation ID across MCP servers. | `componentTools` |
+| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Sensitivity class of the data a tool touches. | `componentTools` |
 
 **5. Cross-cutting.** Fields that apply across components or belong to the enforcement and observability layers.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | MUST | W3C trace context carried across every agent, tool and agent hop. | every hop |
-| [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
-| [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | MUST | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
-| [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | MUST | Per mediated operation: decision, reason code, deciding authority and rule. | `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint` |
-| [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted. | every security-relevant attribute |
-| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity-rfc-15) | MUST | Which hooks are active, their version, and where each reports. | instrumentation layer |
-| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core-rfc-5) | SHOULD | Owning tenant of the agent, the session and the invoking user. | agent, session and user records |
-| [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance-rfc-6) | SHOULD | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
-| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. | enforcement points |
-| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | SHOULD | Candidate backends, the constraint applied, the choice made. | enforcement points |
-| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation-rfc-16) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. | enforcement points |
-| [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity-rfc-15) | SHOULD | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
-| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity-rfc-15) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. | `componentAuditRecordRepository` |
-| [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity-rfc-15) | MAY | Machine-readable reason code for an enforcement decision. | enforcement points |
-| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates-rfc-14) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
+| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | W3C trace context carried across every agent, tool and agent hop. | every hop |
+| [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
+| [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
+| [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | Per mediated operation: decision, reason code, deciding authority and rule. | `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint` |
+| [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted. | every security-relevant attribute |
+| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Which hooks are active, their version, and where each reports. | instrumentation layer |
+| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Owning tenant of the agent, the session and the invoking user. | agent, session and user records |
+| [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | SHOULD | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
+| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. | enforcement points |
+| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Candidate backends, the constraint applied, the choice made. | enforcement points |
+| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. | enforcement points |
+| [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | SHOULD | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
+| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. | `componentAuditRecordRepository` |
+| [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MAY | Machine-readable reason code for an enforcement decision. | enforcement points |
+| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
 
-**Conditional tiers.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [Attack Detection Addendum §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** is SHOULD in the catalogue and MUST whenever an enforcement point rewrites rather than blocks.
+**Conditional tiers.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** is SHOULD in the catalogue and MUST whenever an enforcement point rewrites rather than blocks.
 
 ---
 
@@ -280,157 +281,61 @@ Every field in the set, **98 in all: 50 MUST, 33 SHOULD and 15 MAY**, grouped by
 
 The full MUST catalogue contains 50 fields, which is more than most full-stack deployments can instrument at once. Within a deployment's applicable subset, adoption has an order.
 
-**Adoption order for a deployment starting from zero.** (1) the identifier hierarchy and trace context (§5), because everything else correlates through them and nothing else is interpretable without them; (2) content, trust classification, and guardrail verdicts (§§6 to 7), the highest D-density cluster in the document; (3) tool call I/O with execution IDs and sandbox posture (§9), the highest R value; (4) memory and retrieval (§§10 to 11); (5) orchestration (§12); (6) identity (§13) and capability-set change (§14).
+**Adoption order for a deployment starting from zero.** (1) the identifier hierarchy and trace context (AD §1.1), because everything else correlates through them and nothing else is interpretable without them; (2) content, trust classification, and guardrail verdicts (AD §§1.2 to 1.3), the highest D-density cluster in the document; (3) tool call I/O with execution IDs and sandbox posture (AD §1.5), the highest R value; (4) memory and retrieval (AD §§1.6 to 1.7); (5) orchestration (AD §1.8); (6) identity (AD §1.9) and capability-set change (AD §1.10).
 
-**Early SHOULD fields that protect Tier 1 value**, even before the matching modality is fully adopted: **Enforcement-Point Availability** (§15), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (§6), without which a redaction pipeline silently falsifies the log it feeds.
+**Early SHOULD fields that protect Tier 1 value**, even before the matching modality is fully adopted: **Enforcement-Point Availability** (AD §1.11), without which a starved guardrail is indistinguishable from a clean pass, and **Guardrail Modification Record** (AD §1.2), without which a redaction pipeline silently falsifies the log it feeds.
 
-The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. See [§17](#17-implementation-guidance) for additional detail: the full maturity model across all three tiers, how to operationalize these fields for detection, and the privacy constraints on logging the content-bearing ones.
+The order is driven by dependency: identifiers come first because later detections resolve through them. Each step is also useful on its own; stopping after step (2) still leaves a working injection-detection capability. See [§5](#5-implementation-guidance) for additional detail: the full maturity model across all three tiers, how to operationalize these fields for detection, and the privacy constraints on logging the content-bearing ones.
 
 ### 4.6 Agents you do not operate
 
 Much of the corpus involves a counterparty someone else runs: another owner's agent (`AOC-04`, `AOC-09`, `AOC-11`, `AOC-16`), an MCP server you did not deploy (`TA-12`, `TA-13`), or a shared multi-tenant service (`TA-11`). You cannot instrument what you do not operate, so the field set applies differently. Each adjacent standard supplies a rule ([Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md#agents-you-do-not-operate)): instrument your own boundary, not the counterparty's internals (CPEX); make authority legible through presented, verifiable claims (ODIS); and ask the counterparty to be inspectable, recording the answer (OWASP AOS).
 
-Read every field in §§5 to 16 against one of these **knowability** tiers:
+Read every field in AD §§1.1 to 1.12 against one of these **knowability** tiers:
 
 | Tier | What you have | How the field set applies |
 | :------- | :------------------------- | :------------------------------------------------ |
-| **Mediated** | You own the boundary the interaction crosses | Full boundary telemetry: §§6, 7, 9, 16 apply as written. The counterparty's internals are absent, and their absence is expected rather than a gap |
-| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed AgBOM, agent card) | Record the claim **and its verification outcome**. **Attribute Source / Trusted-Provenance Marking** (§16) is the mechanism: an unverified claim is `self-asserted`, whatever it asserts |
-| **Opaque** | Only the wire interaction | §§6, 7, 12 at the protocol surface, and nothing more. **Do not synthesize** fields you cannot observe. An opaque counterparty should be visibly opaque in the telemetry, not silently defaulted |
+| **Mediated** | You own the boundary the interaction crosses | Full boundary telemetry: AD §§1.2, 1.3, 1.5, 1.12 apply as written. The counterparty's internals are absent, and their absence is expected rather than a gap |
+| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed AgBOM, agent card) | Record the claim **and its verification outcome**. **Attribute Source / Trusted-Provenance Marking** (AD §1.12) is the mechanism: an unverified claim is `self-asserted`, whatever it asserts |
+| **Opaque** | Only the wire interaction | AD §§1.2, 1.3, 1.8 at the protocol surface, and nothing more. **Do not synthesize** fields you cannot observe. An opaque counterparty should be visibly opaque in the telemetry, not silently defaulted |
 
 The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. `AOC-08` is that failure in miniature, and `AOC-11` is its consequence at scale.
 
 ---
 
-## 5. Application & Agent Reasoning Core
-**Components:** `componentApplication`, `componentReasoningCore`, `componentAgentUserQuery`, `componentAgentSystemInstruction`
-
-*Establishes **what** is running and **where**: the asset inventory of the AI attack surface and the trace anchor for every incident.*
-
----
-
-## 6. Input Handling & Trust Provenance
-**Components:** `componentApplicationInputHandling`, `componentAgentInputHandling`, `componentOrchestrationInputHandling`
-
-*The `componentAgentInputHandling` risk-map definition is literally "processing distinguishing trusted user commands from untrusted environmental data." That distinction is the single most important agentic-security signal.*
-
----
-
-## 7. Output Handling, Egress & Refusals
-**Components:** `componentApplicationOutputHandling`, `componentAgentOutputHandling`, `componentOrchestrationOutputHandling`
-
-*Where damage materializes: PII leakage, exfiltration channels, harmful content, mass broadcast.*
-
----
-
-## 8. The Model & Model Serving
-**Components:** `componentTheModel`, `componentModelServing`, `componentModelStorage`, `componentModelRegistry` (provenance)
-
-*Supply-chain integrity, resource/DoS signals, and pre-inference integrity.*
-
----
-
-## 9. Tools & External Services
-**Components:** `componentTools`, `componentToolServer`, `componentToolInputHandling`, `componentToolOutputHandling`, `componentAgentToolTransport`, `componentToolRegistry` (approved baseline), `componentIsolationRuntime` and `componentToolHosting` (execution environment)
-
-*The security perimeter between AI reasoning and real-world consequences. When an agent calls a tool it crosses from "thinking" to "acting."*
-
-> **Gateways, namespaces, and multiple hops.** A tool call is frequently not a single hop. Tools and prompts commonly sit behind a **gateway or broker** that re-namespaces them, and the call may traverse several intermediaries before reaching the system that acts. Three fields carry this, and they should be read together: **Tool Name** records the name *as the agent saw it*, which is the namespaced or gateway-local name and not necessarily the name at the far end; **MCP Server Identity & Primitive** records the immediate counterparty; and **Trace Context** (§5) is what stitches the hops into one trace, propagated over MCP via `params._meta`, per [Cross-Mapping Addendum §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps).
->
-> Two consequences. First, **the same underlying capability may appear under different names** depending on the path taken to it, so detections keyed on tool name alone will miss re-namespaced invocations; keying on the server identity and primitive as well is what makes them robust. Second, an intermediary is a **mediation boundary**, and whether it was traversed at all is the subject of **Mediation Coverage & Bypass Path** (§16); `AOC-14` is precisely an attempt to reach a capability by a path that bypasses the mediated one.
-
----
-
-## 10. Memory
-**Component:** `componentMemory`
-
-*Persistent memory is a first-class attack surface. Multiple corpus attacks target it directly.*
-
-> **What counts as memory, and at what granularity.** *Memory* here means **any store the agent writes to in one turn and reads back in a later one**, whatever its substrate: a vector store, a scratchpad file, a database row, a project instruction file, or a file the agent edits in a repository it also reads from. The substrate is irrelevant; the read-after-write-across-turns property is what creates the attack surface, because it is what lets `IR-02` and `AOC-10` outlive the session that planted them.
->
-> The fields below are specified at **item granularity, not store granularity**: a Memory Write Event describes one item, and **Memory Provenance** attaches to that item. This requires a stable item identifier, and deployments whose memory is an opaque blob (a single file rewritten wholesale) cannot supply one. Such deployments should emit the write event with a **content digest** in place of an item ID, which preserves change detection and correlation while losing per-item provenance. That is a real reduction in detection capability and the reason item-level identity is worth engineering for.
->
-> **Out of scope:** the durability, consistency, and retention semantics of the store itself, and any judgement about whether a given design *should* persist state. This section records what was written, read, and by what authority, not whether the memory architecture is sound.
-
----
-
-## 11. Retrieval & Content (RAG)
-**Component:** `componentRAGContent`
-
-*RAG is a primary injection and manipulation channel.*
-
----
-
-## 12. Orchestration, Multi-Agent & Background Execution
-**Components:** `componentReasoningCore`, `componentOrchestrationInputHandling`, `componentOrchestrationOutputHandling`
-
-*Multi-agent and autonomous-execution telemetry: the corpus shows these are where agentic risk compounds.*
-
----
-
-## 13. Identity, Delegation & Attribution *(ODIS-aligned; mostly SHOULD)*
-**Components:** `componentIdentityProvider`, `componentFederationProxy`; cross-cutting across `componentReasoningCore`, `componentTools` and `componentModelServing`, which it binds into an accountable chain.
-
-*The "Quadruple Identity" problem: a **principal** authorizes an **agent** which (possibly via **other agents**) calls a **tool** that acts on **infrastructure**. Without identity at each hop, accountability collapses and confused-deputy attacks succeed. This is the ODIS problem space; delegation fields are **SHOULD** by the classification rule. Where two of these identities are emitted in OpenTelemetry and OCSF is in [Cross-Mapping Addendum §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge).*
-
----
-
-## 14. Asset Inventory & Fleet Aggregates *(mostly MAY)*
-**Components:** `componentTools`, `componentApplication`, `componentModelFrameworksAndCode` (inventory), `componentModelRegistry` and `componentToolRegistry` (admission); fleet-level metrics are cross-component.
-
-*These define the inventory and posture rather than per-request activity. Most are governance and CVE-response signals rather than detection signals, hence mostly MAY. The exceptions are the **change** signal, which is detection-grade and MUST, and the AgBOM cluster, which is the structural counterpart to OWASP AOS's **Inspect** pillar.*
-
----
-
-## 15. Observability-Plane Integrity
-**Cross-cutting:** applies to the instrumentation and enforcement layer itself, not to any one pipeline component; its records land in `componentAuditRecordRepository`.
-
-> **Scope.** This section records **when the observability plane fails**; it does not defend it. Authenticating emitters, securing transport and storage, and establishing chain of custody are excluded by [§3.2](#32-not-in-scope); the controls and standards that address them are in [Cross-Mapping Addendum §1.3](Telemetry-Cross-Mapping-Addendum.md#13-component--control-refinements). The line is the one drawn in [§4.1](#41-use-case-priorities): a signal that makes a silent failure distinguishable from a clean result is detection material, and every §15 field is that.
-
-*Every field in §§5 to 14 and §16 assumes the telemetry and enforcement path is functioning and uncompromised. Nothing elsewhere in the field set tests that assumption. This section closes the loop: it is telemetry **about the observability plane**, motivated by the OWASP AOS **Instrument** pillar, where enforcement is a synchronous callout that can fail, be bypassed, or be starved.*
-
----
-
-## 16. Policy Enforcement & Mediation
-**Components:** `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint`, the network enforcement points (`componentAgentNetworkPolicyEnforcementPoint`, `componentApplicationNetworkPolicyEnforcementPoint`, `componentToolNetworkPolicyEnforcementPoint`), and for approvals `componentAgentConsentSurface` and `componentApplicationConsentSurface`. **Cross-cutting:** the reference-monitor layer between the agent and every capability it invokes, tools, prompts, resources, inference providers, and inter-agent methods.
-
-*§§5 to 14 record what the agent **did**; §15 records whether the observability plane **worked**. This section records what policy **decided**, and on what basis, under the CPEX threat model in which the LLM itself is the adversary ([Cross-Mapping Addendum §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat-model-the-most-important-contribution)).*
-
----
-
-## 17. Implementation Guidance
+## 5. Implementation Guidance
 
 ### Maturity model (how the three tiers phase in)
 
 Adoption sequencing within the MUST tier is in [§4.5](#45-where-to-start).
 
-- **Tier 1, MUST (baseline detection and response): a catalogue of 50 fields across §§5 to 16.** For each deployment, the baseline is the subset applicable to the components and operations it actually implements, as defined in [§4.2](#42-classification-legend). Together the catalogue covers prompt injection, data disclosure, memory/RAG poisoning, exfiltration, resource/DoS abuse, identity spoofing, runaway multi-agent loops, and unauthorized action. Every MUST field is grounded in ≥2 corpus attacks (or in one attack where it is especially useful for **D** or **R**) and is **D- or R-dominant**.
-- **Tier 2, SHOULD (edge-modality hardening).** Adopt the relevant cluster **as soon as you run the modality**, not on a maturity schedule. Delegated authority → all of §13 plus Tool ACL/Scope (§9). Multi-tenancy → Organization/Tenant ID (§5). A2A → task lifecycle and peer agent cards (§12). Inline enforcement that mutates payloads → Guardrail Modification Record (§6). Autonomous action → autonomy level (§5) and task/intent declaration (§12). Supply-chain attestation → model signing (§8), the AgBOM cluster (§14). Self-attesting instrumentation → §15. Information-flow control → session taint (§16). Out-of-band human approval → elicitation events (§16). Policy-driven backend selection → route restriction (§16). Token exchange → credential minting (§13). Plus the reasoning-trace and integrity-scoring fields (§§7, 9, 10, 11), which are gated by provider availability and privacy policy rather than by modality.
-- **Tier 3, MAY (Q, A, and thin-evidence signals).** Fleet aggregates and static asset metadata; declared memory and knowledge configuration (§§10 to 11); provider/endpoint identity (§8); tool privacy classification (§9); protocol envelopes (§12); policy reason codes (§15); derived detector outputs already covered by a MUST (encoded-payload indicator, §6); and research-grade signals (pre-forward-pass state, token malformation, §8).
+- **Tier 1, MUST (baseline detection and response): a catalogue of 50 fields across AD §§1.1 to 1.12.** For each deployment, the baseline is the subset applicable to the components and operations it actually implements, as defined in [§4.2](#42-classification-legend). Together the catalogue covers prompt injection, data disclosure, memory/RAG poisoning, exfiltration, resource/DoS abuse, identity spoofing, runaway multi-agent loops, and unauthorized action. Every MUST field is grounded in ≥2 corpus attacks (or in one attack where it is especially useful for **D** or **R**) and is **D- or R-dominant**.
+- **Tier 2, SHOULD (edge-modality hardening).** Adopt the relevant cluster **as soon as you run the modality**, not on a maturity schedule. Delegated authority → all of AD §1.9 plus Tool ACL/Scope (AD §1.5). Multi-tenancy → Organization/Tenant ID (AD §1.1). A2A → task lifecycle and peer agent cards (AD §1.8). Inline enforcement that mutates payloads → Guardrail Modification Record (AD §1.2). Autonomous action → autonomy level (AD §1.1) and task/intent declaration (AD §1.8). Supply-chain attestation → model signing (AD §1.4), the AgBOM cluster (AD §1.10). Self-attesting instrumentation → AD §1.11. Information-flow control → session taint (AD §1.12). Out-of-band human approval → elicitation events (AD §1.12). Policy-driven backend selection → route restriction (AD §1.12). Token exchange → credential minting (AD §1.9). Plus the reasoning-trace and integrity-scoring fields (AD §§1.3, 1.5, 1.6, 1.7), which are gated by provider availability and privacy policy rather than by modality.
+- **Tier 3, MAY (Q, A, and thin-evidence signals).** Fleet aggregates and static asset metadata; declared memory and knowledge configuration (AD §§1.6 to 1.7); provider/endpoint identity (AD §1.4); tool privacy classification (AD §1.5); protocol envelopes (AD §1.8); policy reason codes (AD §1.11); derived detector outputs already covered by a MUST (encoded-payload indicator, AD §1.2); and research-grade signals (pre-forward-pass state, token malformation, AD §1.4).
 
 ### Operationalizing telemetry for detection
-Logged fields are a necessary evidentiary foundation, not detection by themselves; measured alert volumes are in [Attack Detection Addendum §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns). Treat logged values as inputs to layered analytics: signature rules, self-learning anomaly detection, cross-layer correlation, and ML scoring of prompts/outputs/action-sequences. Field names, tier, and the [correlation patterns](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) are meant to be usable directly as detection-engineering and triage input, and the attack IDs on every field are there so an analyst can see what a field was collected *for*. Continuously re-evaluate detectors; benchmarks show injection detectors effective on explicit attacks often fail on subtler variants. **When a detector fires, stamp the event with its MITRE ATLAS `AML.Txxxx` technique** (the *Threat Classification / ATLAS Technique Tag* field) using the [Attack Detection Addendum §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping) mapping; this makes AI-specific alerts correlate with the ATT&CK-aligned rest of the SOC and roll up cleanly into ATLAS-based compliance reporting.
+Logged fields are a necessary evidentiary foundation, not detection by themselves; measured alert volumes are in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns). Treat logged values as inputs to layered analytics: signature rules, self-learning anomaly detection, cross-layer correlation, and ML scoring of prompts/outputs/action-sequences. Field names, tier, and the [correlation patterns](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) are meant to be usable directly as detection-engineering and triage input, and the attack IDs on every field are there so an analyst can see what a field was collected *for*. Continuously re-evaluate detectors; benchmarks show injection detectors effective on explicit attacks often fail on subtler variants. **When a detector fires, stamp the event with its MITRE ATLAS `AML.Txxxx` technique** (the *Threat Classification / ATLAS Technique Tag* field) using the [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping) mapping; this makes AI-specific alerts correlate with the ATT&CK-aligned rest of the SOC and roll up cleanly into ATLAS-based compliance reporting.
 
 ### Sampling when OpenTelemetry is the carrier
 
-Default OpenTelemetry head-based sampling discards traces without regard to security relevance. For any deployment that relies on OTel as its security-telemetry carrier, the following are **normative** (rationale in [Cross-Mapping Addendum §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
+Default OpenTelemetry head-based sampling discards traces without regard to security relevance. For any deployment that relies on OTel as its security-telemetry carrier, the following are **normative** (rationale in [XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)):
 
-1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§5), per-invocation tool activity events, and any event carrying a fired detection are recorded at **100%**. A sampled-away `content_filter` stop is a missed guardrail bypass.
+1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (AD §1.1), per-invocation tool activity events, and any event carrying a fired detection are recorded at **100%**. A sampled-away `content_filter` stop is a missed guardrail bypass.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
 3. **The sampling configuration in force MUST itself be recorded as telemetry.** A detection that never fires because its input was sampled away is indistinguishable from a clean environment.
 
 ### Privacy-preserving logging
 **Model Input, Response, System Prompt, Observation/Thought, Memory, and Retrieved Content** carry significant privacy weight (they can contain PII/secrets, see `AOC-03`). Apply: access controls restricting content-log access to IR with justification; short retention for full content (7 to 30 days) and longer retention for hashed/classified signals; redaction pipelines that strip PII while keeping content hashes for correlation; encryption at rest with audited key access. **Every content-bearing field MUST carry a content hash; whether the raw content accompanies it is a deployment policy decision.** The hash is the correlation primitive the corpus turns on: `TA-04` is verbatim reproduction, `AOC-03` is escalating extraction across turns, and `IR-02` is an implant that persists into later sessions. None of those is detectable without the ability to match one content item against another, and none of them requires the raw text to be retained. Mandating the hash and leaving the raw content to policy keeps a MUST field comparable between two deployments with different privacy postures, which a free choice between raw and hash does not. This is why several high-value fields (Observation/Thought, memory and RAG content) are specified *conceptually* here: the obligation is the hash, not the payload.
 
-**Three fields carry identifiers rather than payloads, and resolve as follows.** **Content Modality & Attachment Identity** (§6) already requires a content hash; the **filename** is the sensitive part and is deployment policy. **Citations / Source Attribution** (§7) names its own signal as *whether each citation resolves to an item actually returned by a logged Retrieval Event*, so the **resolution outcome is the obligation** and the clear-text URL is policy; a deployment that withholds URLs keeps the detection intact. **Protocol Envelope Capture** (§12) is MAY because raw payload capture is the field, and its tier already carries that judgement.
+**Three fields carry identifiers rather than payloads, and resolve as follows.** **Content Modality & Attachment Identity** (AD §1.2) already requires a content hash; the **filename** is the sensitive part and is deployment policy. **Citations / Source Attribution** (AD §1.3) names its own signal as *whether each citation resolves to an item actually returned by a logged Retrieval Event*, so the **resolution outcome is the obligation** and the clear-text URL is policy; a deployment that withholds URLs keeps the detection intact. **Protocol Envelope Capture** (AD §1.8) is MAY because raw payload capture is the field, and its tier already carries that judgement.
 
 One limit worth stating: hashing a **filename or a URL** is a correlation primitive, not a confidentiality control. Those input spaces are small enough to enumerate, so a hash makes two records joinable without making either private. Where the identifier itself is sensitive, omit it rather than hash it.
 
-**A hash is evidence only if a second party can recompute it.** The canonicalization the digest is taken over MUST be declared, either by the deployment or by the carrier ([Cross-Mapping Addendum §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Two emitters that hash the same tool call under different serializations produce different digests, and the field degrades silently from evidence to a correlation key that only works within one producer.
+**A hash is evidence only if a second party can recompute it.** The canonicalization the digest is taken over MUST be declared, either by the deployment or by the carrier ([XM §2.5](Telemetry-Cross-Mapping-Addendum.md#25-context-propagation-sampling--privacy-three-operational-traps)). Two emitters that hash the same tool call under different serializations produce different digests, and the field degrades silently from evidence to a correlation key that only works within one producer.
 
 ---
 
-## 18. References
+## 6. References
 
 ### Primary sources (attack corpus & taxonomy)
 
@@ -440,7 +345,7 @@ One limit worth stating: hashing a **filename or a URL** is a correlation primit
 
 ### Real-world attack primary sources
 
-One source per real-world attack vector, each mapping to a `TA-` ID in [Attack Detection Addendum §3.2](Telemetry-Attack-Detection-Addendum.md#32-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02…10`.
+One source per real-world attack vector, each mapping to a `TA-` ID in [AD §3.2](Telemetry-Attack-Detection-Addendum.md#32-real-world-attack-vectors). Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02…10`.
 
 4. **[TA-01]** EchoLeak, zero-click data exfiltration from Microsoft 365 Copilot (CVE-2025-32711, CVSS 9.3). Discovered and disclosed by **Aim Labs (Aim Security)**; reported to MSRC Jan 2025, fixed server-side and publicly disclosed Jun 2025. Microsoft advisory: <https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711> · CVE record: <https://nvd.nist.gov/vuln/detail/CVE-2025-32711> · **Technical analysis:** Reddy, P. & Gujral, A. *EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System.* arXiv:2509.10540 (2025). <https://arxiv.org/abs/2509.10540>
 5. **[TA-02]** Slack AI private-channel data exfiltration. Dark Reading. <https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels>
@@ -479,25 +384,25 @@ One source per real-world attack vector, each mapping to a `TA-` ID in [Attack D
 23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. 55 risks / 68 controls: PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507) merged, plus `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity`; risk IDs migrated to the `risk`+camelCase convention.
 24. **CoSAI MCP Security**: Coalition for Secure AI, Workstream 4 (Secure Design Patterns for Agentic Systems): *Model Context Protocol (MCP) Security*, approved 8 January 2026. Twelve threat categories (MCP-T1…T12), ~40 threats. <https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf>
 25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
-26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in §6: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [Cross-Mapping Addendum §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
+26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in AD §1.2: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-aitf--odis-cross-reference) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
 27. **OWASP Top 10 for LLM Applications (2025)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/>
 28. **OWASP Top 10 for Agentic Applications (2026)**: OWASP GenAI Security Project. <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>
 29. **MITRE ATT&CK**: adversary tactics & techniques knowledge base (ATLAS-aligned). MITRE. <https://attack.mitre.org/>
-30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [Cross-Mapping Addendum §7](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
+30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [XM §7](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
 31. **NIST Cybersecurity Framework (CSF) 2.0**: GV / ID / PR / DE / RS / RC; 6 functions, 22 categories, 106 subcategories. <https://www.nist.gov/cyberframework>
 32. **NIST Cyber AI Profile**: *Cybersecurity Framework Profile for Artificial Intelligence: NIST Community Profile*, **NIST IR 8596**, *initial preliminary draft* published 16 December 2025; CSF 2.0 community profile overlaying the **Secure / Defend / Thwart** AI focus areas. Comment period closed 30 January 2026; working sessions held April and May 2026; **no Initial Public Draft as of 11 September 2026**. <https://csrc.nist.gov/pubs/ir/8596/iprd> · project: <https://www.nccoe.nist.gov/projects/cyber-ai-profile>
-33. **ISO/IEC 42001:2023**: *Information technology — Artificial intelligence — Management system.* Clauses 4 to 10 plus **Annex A** (38 controls under 9 objectives, A.2 to A.10) selected via a Statement of Applicability. Paid standard. <https://www.iso.org/standard/42001>. Mapped in [Cross-Mapping Addendum §8](Telemetry-Cross-Mapping-Addendum.md#8-implications-for-isoiec-42001).
+33. **ISO/IEC 42001:2023**: *Information technology — Artificial intelligence — Management system.* Clauses 4 to 10 plus **Annex A** (38 controls under 9 objectives, A.2 to A.10) selected via a Statement of Applicability. Paid standard. <https://www.iso.org/standard/42001>. Mapped in [XM §8](Telemetry-Cross-Mapping-Addendum.md#8-implications-for-isoiec-42001).
 34. **EU AI Act. Article 12 (Record-keeping / Logging).** <https://artificialintelligenceact.eu/article/12/>
-35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names must therefore be read from the new repository, not the deprecated registry. **Names in Cross-Mapping Addendum §§2 to 4 were verified against `semantic-conventions-genai` @ `0c87594` (10 September 2026) and `semantic-conventions` @ `22b6cbb` (9 September 2026); neither repository publishes release tags, so commit SHAs are the only stable anchor.** Cross referenced in [Cross-Mapping Addendum §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge).
+35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names must therefore be read from the new repository, not the deprecated registry. **Names in XM §§2 to 4 were verified against `semantic-conventions-genai` @ `0c87594` (10 September 2026) and `semantic-conventions` @ `22b6cbb` (9 September 2026); neither repository publishes release tags, so commit SHAs are the only stable anchor.** Cross referenced in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-implications-for-opentelemetry-the-instrumentation-bridge).
 36. **OpenTelemetry, core specification.** Signals, context propagation, sampling. <https://opentelemetry.io/docs/specs/otel/> · **W3C Trace Context**: <https://www.w3.org/TR/trace-context/> · MCP context propagation via `params._meta` (**SEP-414**): <https://modelcontextprotocol.io/community/seps/414-request-meta>
 37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>
-38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [Cross-Mapping Addendum §5](Telemetry-Cross-Mapping-Addendum.md#5-owasp-aos-cross-reference). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
-39. **Model Context Protocol (MCP).** <https://modelcontextprotocol.io/>. Tools, resources, prompts, sampling, elicitation, roots (§9).
-40. **A2A, Agent-to-Agent Protocol.** <https://a2a-protocol.org/>. Agent cards, task lifecycle, push-notification configuration (§12).
+38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §5](Telemetry-Cross-Mapping-Addendum.md#5-owasp-aos-cross-reference). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
+39. **Model Context Protocol (MCP).** <https://modelcontextprotocol.io/>. Tools, resources, prompts, sampling, elicitation, roots (AD §1.5).
+40. **A2A, Agent-to-Agent Protocol.** <https://a2a-protocol.org/>. Agent cards, task lifecycle, push-notification configuration (AD §1.8).
 41. **CycloneDX**: OWASP BOM standard, incl. ML-BOM. <https://cyclonedx.org/>
 42. **SPDX**: Linux Foundation software bill-of-materials standard. <https://spdx.dev/>
 43. **SWID**: ISO/IEC 19770-2 software identification tags. <https://csrc.nist.gov/projects/Software-Identification-SWID>
-44. **CPEX**: policy-enforcement runtime and reference monitor for AI agents. <https://contextforge-org.github.io/cpex/> · threat model: <https://contextforge-org.github.io/cpex/docs/threat-model/>, cross referenced in [Cross-Mapping Addendum §6](Telemetry-Cross-Mapping-Addendum.md#6-cpex-cross-reference). Verified against [contextforge-org/cpex](https://github.com/contextforge-org/cpex) at commit `035012f` (18 August 2026). Pinned to a commit rather than to the current release (`v0.2.2`, 15 July 2026), which predates the threat-model document this appendix cites.
+44. **CPEX**: policy-enforcement runtime and reference monitor for AI agents. <https://contextforge-org.github.io/cpex/> · threat model: <https://contextforge-org.github.io/cpex/docs/threat-model/>, cross referenced in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-cpex-cross-reference). Verified against [contextforge-org/cpex](https://github.com/contextforge-org/cpex) at commit `035012f` (18 August 2026). Pinned to a commit rather than to the current release (`v0.2.2`, 15 July 2026), which predates the threat-model document this appendix cites.
 45. **RFC 8693**: OAuth 2.0 Token Exchange (on-behalf-of delegation). <https://www.rfc-editor.org/rfc/rfc8693>
 46. **RFC 7523**: JWT Profile for OAuth 2.0 Client Authentication and Authorization Grants. <https://www.rfc-editor.org/rfc/rfc7523>
 47. **SPIFFE / SVID**: Secure Production Identity Framework for Everyone (workload identity). <https://spiffe.io/>
