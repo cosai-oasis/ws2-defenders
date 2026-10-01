@@ -1,6 +1,6 @@
-# Telemetry for AI Security {**Working Draft v0.5**}
+# Telemetry for AI Security {**Working Draft v0.6**}
 
-**Status:** Request for Comments, revision 0.5
+**Status:** Request for Comments, revision 0.6
 **Origin:** Coalition for Secure AI (CoSAI), Workstream 2 (Defenders)
 **Companion documents:** [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) (cited as AD) and [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) (cited as XM).
 **Disclosure:** Prepared for open publication under CoSAI. No commercial sponsorship; the standards positions taken favour open specifications (OpenTelemetry, OCSF, OWASP AOS, CPEX) over any vendor implementation. Drafting, cross-referencing, and consistency checking were performed with AI assistance.
@@ -40,13 +40,17 @@ Four fields, none exotic. Their absence is the difference between a detection an
 
 ### 2.1 In scope
 
-The security-relevant telemetry an AI system needs to produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF [[25]](#standards--frameworks), ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
+The security-relevant telemetry an AI system needs to produce: which fields, justified by which documented attacks, at which priority. Fields are organized by the component that emits them (reasoning core, input and output handling, model and serving, tools, memory, retrieval, orchestration, identity and delegation, asset inventory, observability plane, and policy enforcement) and each is tiered **MUST**, **SHOULD**, or **MAY** against a stated test. The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns showing how attacks motivate field inclusion and how those fields combine into detections, and the [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field set onto OpenTelemetry, OCSF, AITF [[25]](#standards--frameworks), ODIS, OWASP AOS, CPEX, the CoSAI Risk Map, NIST CSF [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
 
 Telemetry for **agents the deployment does not operate** is in scope, with the limits that implies: what is observable at your own boundary, plus whatever the counterparty presents and can be verified. [§4.6](#46-record-your-boundary-not-their-internals) sets out how the field set applies in that case.
 
-The framing implies three limits. This is **not a wire format**: the bindings are in the Cross-Mapping Addendum. It does **not specify detection logic**, only the fields detections consume; how they feed detection is discussed in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md). And it covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
+The telemetry covers the **security** slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
 
 ### 2.2 Not in scope
+
+This is **not a wire format**: the bindings are in the Cross-Mapping Addendum.
+
+It does **not specify detection logic**, only the fields detections consume; how they feed detection is discussed in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md).
 
 **Security and privacy of the telemetry itself** are left to a later CoSAI publication: authenticating emitters, securing transport and storage, controlling access to collected content, retention, redaction, encryption, tamper-evidence and chain of custody, and privacy compliance (lawful basis, data-subject rights, cross-border transfer, impact assessment). The field set treats the telemetry plane as an asset only insofar as it reports its own failure (§4.5). Meeting the MUST tier discharges none of those obligations, and it does not satisfy the CoSAI Risk Map's `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; adopters needing audit-grade evidence need to implement them separately.
 
@@ -115,7 +119,7 @@ Every detection assumes the telemetry and enforcement path worked. When a guardr
 
 Much of the corpus involves a counterparty someone else runs: another owner's agent (`AOC-04`, `AOC-09`, `AOC-11`, `AOC-16`), an MCP server you did not deploy (`TA-12`, `TA-13`), or a shared multi-tenant service (`TA-11`). You cannot instrument what you do not operate, so the field set applies differently. Each adjacent standard supplies a rule ([Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md#agents-you-do-not-operate)): instrument your own boundary, not the counterparty's internals (CPEX); make authority legible through presented, verifiable claims (ODIS); and ask the counterparty to be inspectable, recording the answer (OWASP AOS).
 
-Read every field in AD §§1.1 to 1.12 against one of these **knowability** tiers:
+Read every field in §5.4 against one of these **knowability** tiers:
 
 | Tier | What you have | How the field set applies |
 | :------- | :------------------------- | :------------------------------------------------ |
