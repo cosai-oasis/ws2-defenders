@@ -6,6 +6,9 @@
 
 ---
 
+Logged fields are a necessary evidentiary foundation, not detection by themselves; measured alert volumes are in [§2](#2-correlation-patterns). Treat logged values as inputs to layered analytics: signature rules, self-learning anomaly detection, cross-layer correlation, and ML scoring of prompts/outputs/action-sequences. Field names, tier, and the [correlation patterns](#2-correlation-patterns) are meant to be usable directly as detection-engineering and triage input, and the attack IDs on every field are there so an analyst can see what a field was collected *for*. Continuously re-evaluate detectors; benchmarks show injection detectors effective on explicit attacks often fail on subtler variants. **When a detector fires, stamp the event with its MITRE ATLAS `AML.Txxxx` technique** (the *Threat Classification / ATLAS Technique Tag* field) using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) mapping; this makes AI-specific alerts correlate with the ATT&CK-aligned rest of the SOC and roll up cleanly into ATLAS-based compliance reporting.
+
+
 ## 1. Field Tables
 
 Each table holds the fields of one component cluster, with these columns:
