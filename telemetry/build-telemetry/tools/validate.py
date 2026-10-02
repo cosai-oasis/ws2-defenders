@@ -8,7 +8,10 @@ Replaces ~/cosai-telemetry/validate_set.py. Five groups of checks:
   2. registry     every decided candidate is signed and dated, every accepted
                   one applied
   3. vocabularies every MITRE ATLAS and CoSAI Risk Map ID in the data and the
-                  documents resolves at the version pinned in data/sources.yaml
+                  documents resolves at the version pinned in data/sources.yaml,
+                  and every construct data/mapping.yaml cites resolves at the
+                  pinned OCSF, OpenTelemetry, AITF or ODIS version, unless an ask
+                  the entry references proposes it
   4. sync         the generated regions of the RFC and AD match the data
                   (tools/build.py --check)
   5. documents    the structural checks validate_set.py made: anchors, section
@@ -35,6 +38,7 @@ from collections import Counter
 import yaml
 
 import rules
+import vocab
 from yamlio import load
 
 DIR, DATA = rules.DIR, rules.DATA
@@ -304,6 +308,10 @@ def main():
     check('attack edges and reference numbers', rules.attack_problems(fields, attacks))
     check('patterns, their catches against the edges, and coverage of every attack',
           rules.pattern_problems(fields, attacks, patterns))
+    mapping = rules.load_mapping()
+    publications = load(os.path.join(DATA, 'sources.yaml'))['publications']
+    check('mapping: every field mapped; gaps stated and answered by an ask or a reason',
+          rules.mapping_problems(fields, mapping, publications))
 
     print('2. registry')
     batches = [(p, load(p) or []) for p in sorted(glob.glob(os.path.join(DATA, 'candidates', '*.yaml')))]
@@ -313,12 +321,25 @@ def main():
     print('3. vocabularies')
     release, atlas, retired, riskmap = vocabularies(offline)
     data_text = '\n'.join(open(p, encoding='utf-8').read()
-                          for p in [os.path.join(DATA, 'fields.yaml'), os.path.join(DATA, 'patterns.yaml')]
+                          for p in [os.path.join(DATA, 'fields.yaml'), os.path.join(DATA, 'patterns.yaml'),
+                                    os.path.join(DATA, 'mapping.yaml')]
                           + glob.glob(os.path.join(DATA, 'attacks', '*.yaml')))
     for name, text in [('data', data_text)] + list(T.items()):
         known = atlas if name == 'data' else atlas | retired      # documents may name a retirement
         check(f'{name}: every MITRE ATLAS ID resolves at {release}', sorted(set(ATLAS_ID.findall(text)) - known))
         check(f'{name}: every Risk Map ID resolves at the pinned commits', sorted(set(RISKMAP_ID.findall(text)) - riskmap))
+
+    if mapping is not None:
+        try:
+            names = {k: vocab.RESOLVERS[k](publications[k], offline) for k in ('ocsf', 'otel_genai', 'otel_semconv', 'aitf', 'odis')}
+        except SystemExit as e:
+            check(f'mapping constructs resolve at their pins ({e})', False)
+        else:
+            names['otel'] = names.pop('otel_genai') | names.pop('otel_semconv')
+            names['aitf'] |= names['otel']   # AITF extends the OpenTelemetry conventions
+            pins = ', '.join(f"{k} {publications[k].get('release') or publications[k]['commit'][:7]}"
+                             for k in ('ocsf', 'otel_genai', 'aitf', 'odis'))
+            check(f'mapping constructs resolve at their pins ({pins})', rules.unresolved_constructs(mapping, names))
 
     print('4. sync')
     import build

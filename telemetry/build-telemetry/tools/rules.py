@@ -180,3 +180,80 @@ def candidate_problems(batches, known_types):
                 why = 'no apply rule for its type' if c['type'] not in known_types else 'run tools/apply.py'
                 out.append(f'{c["id"]}: accepted but not applied ({why})')
     return out
+
+
+COVERAGE = {'covered', 'partial', 'none', 'out_of_scope', 'unassessed'}
+ASK_STATUS = {'proposed', 'open', 'approved', 'released', 'declined'}
+MAPPED = ('ocsf', 'otel', 'aitf')          # every field is mapped to these; odis is optional
+PUBLICATION = {'ocsf': ['ocsf'], 'otel': ['otel_genai', 'otel_semconv'], 'aitf': ['aitf'], 'odis': ['odis']}
+
+
+def load_mapping():
+    path = os.path.join(DATA, 'mapping.yaml')
+    return load(path) if os.path.exists(path) else None
+
+
+def mapping_problems(fields, mapping, publications):
+    """data/mapping.yaml: every field mapped; gaps stated and answered by an ask or a reason."""
+    if mapping is None:
+        return ['data/mapping.yaml is missing']
+    out = []
+    asks = {a['id']: a for a in mapping.get('asks', [])}
+    for a in asks.values():
+        if a['publication'] not in publications:
+            out.append(f'ask {a["id"]}: publication {a["publication"]} is not pinned in sources.yaml')
+        if a.get('status') not in ASK_STATUS:
+            out.append(f'ask {a["id"]}: status {a.get("status")!r}')
+    used = set()
+    for fid in fields:
+        entry = mapping['fields'].get(fid)
+        if entry is None:
+            out.append(f'{fid}: not in mapping.yaml')
+            continue
+        for pub in MAPPED:
+            if pub not in entry:
+                out.append(f'{fid}: no {pub} entry')
+        for pub, e in entry.items():
+            if pub == 'controls':
+                continue
+            if pub not in PUBLICATION:
+                out.append(f'{fid}: unknown publication {pub}')
+                continue
+            cov = e.get('coverage')
+            if cov not in COVERAGE:
+                out.append(f'{fid}/{pub}: coverage {cov!r}')
+            if cov == 'unassessed':
+                out.append(f'{fid}/{pub}: unassessed')
+            if cov in ('partial', 'none') and pub in ('ocsf', 'otel'):
+                if not e.get('gap'):
+                    out.append(f'{fid}/{pub}: {cov} with no gap stated')
+                if not e.get('asks') and not e.get('note'):
+                    out.append(f'{fid}/{pub}: a gap with no ask and no recorded reason')
+                if fields[fid]['tier'] == 'MUST' and not e.get('asks'):
+                    out.append(f'{fid}/{pub}: a MUST field with a gap and no ask')
+            for a in e.get('asks', []):
+                used.add(a)
+                if a not in asks:
+                    out.append(f'{fid}/{pub}: unknown ask {a}')
+                elif asks[a]['publication'] not in PUBLICATION[pub]:
+                    out.append(f'{fid}/{pub}: ask {a} is addressed to {asks[a]["publication"]}')
+    out += [f'ask {a}: referenced by no field' for a in asks if a not in used]
+    out += [f'{f}: in mapping.yaml but not a field' for f in mapping['fields'] if f not in fields]
+    return out
+
+
+def unresolved_constructs(mapping, names):
+    """Constructs not defined at the pin and proposed by none of the entry's asks.
+    `names` maps a mapping key (ocsf, otel, aitf, odis) to the set of names at its pin."""
+    out = []
+    proposed = {a['id']: set(a.get('proposes', [])) for a in mapping.get('asks', [])}
+    for fid, entry in mapping['fields'].items():
+        for pub, e in entry.items():
+            if pub == 'controls' or pub not in names:
+                continue
+            pending = set().union(*[proposed.get(a, set()) for a in e.get('asks', [])]) if e.get('asks') else set()
+            for c in e.get('constructs', []):
+                known = (any(n.startswith(c[:-1]) for n in names[pub]) if c.endswith('.*') else c in names[pub])
+                if not known and c not in pending:
+                    out.append(f'{fid}/{pub}: {c}')
+    return out

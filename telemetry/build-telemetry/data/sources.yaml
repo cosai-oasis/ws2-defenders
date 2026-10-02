@@ -50,7 +50,9 @@ publications:
     commit: 856d462bd20dc46cc1ffed2dfffe3b91ef0fbeba
     released: '2026-08-03'
     schema: [dictionary.json, objects/, events/, profiles/]
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
     note: XM's mapping also cites open proposals (ocsf-schema#1640, #1704, #1724, #1729, #1739); constructs from them are asks, not 1.9.0.
   otel_genai:
     name: OpenTelemetry GenAI semantic conventions
@@ -59,7 +61,9 @@ publications:
     commit: e07f4ebacb08f56db8c4c882d117720333fbca04
     committed: '2026-10-02'
     schema: [model/]
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
     note: No release yet; every convention is at Development status, so pin by commit.
   otel_semconv:
     name: OpenTelemetry semantic conventions (core)
@@ -69,7 +73,9 @@ publications:
     commit: e10a930844c6951757a43b849d364f7d056ac32b
     released: '2026-08-04'
     schema: [model/]
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
   aitf:
     name: AI Telemetry Framework
     reference: 25
@@ -77,7 +83,9 @@ publications:
     path: telemetry/aitf
     commit: e17c514cd6a87a23699cd8c60d5c375214bf25f3
     committed: '2026-09-07'
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
   odis:
     name: Open Delegation & Identity Standard
     reference: 26
@@ -86,7 +94,9 @@ publications:
     commit: 148dc4187139a41325e3c6d6e7533d956bd33144
     committed: '2026-09-08'
     verified: true
-    note: XM §4 states it was verified against this commit; re-check in the XM pass.
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+    note: XM §4 states it was verified against this commit; field names re-checked 2026-10-02.
   owasp_aos:
     name: OWASP Agent Observability Standard
     reference: 38

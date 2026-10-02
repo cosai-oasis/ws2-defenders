@@ -1,7 +1,5 @@
 # Curation registry batch. Edit status only through tools/curate.py, or by hand
 # keeping decided_by and decided_on filled in. See curate.py for the schema.
-# XM pass: per-field mapping to OCSF, OpenTelemetry, AITF and ODIS, the asks, and
-# Risk Map controls (tools/xm_propose.py documents the record).
 - id: Q:ocsf_ai_agent_activity
   type: ask
   subject:
@@ -15,7 +13,10 @@
     tracking: [ocsf-schema#1640]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: Inter-Agent Message (MUST, 7 instances); Background / Scheduled Task Event (MUST, 3 instances); Loop / Step-Count Signal (MUST, 5 instances); Resource-Consumption Aggregate (MUST, 4 instances); Capability-Set Change Event (MUST, 4 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_delegation_activity
   type: ask
   subject:
@@ -29,7 +30,10 @@
     tracking: [ocsf-schema#1640]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: A2A Task Lifecycle Event (SHOULD, 0 instances); Delegation Chain (SHOULD, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_operation_identifiers
   type: ask
   subject:
@@ -43,7 +47,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Workflow / Run ID (MUST, 1 instances); Session / Turn / Step IDs (MUST, 5 instances); Trigger Type & Source Event (MUST, 5 instances); Action Type (MUST, 6 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_stop_reason
   type: ask
   subject:
@@ -57,7 +64,10 @@
     tracking: [ocsf-schema#1704]
     status: approved
   reason: 'from XM §3.1 and §3.2. Closes: Stop Reason (MUST, 3 instances); LLM Refusal (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_message_context_content
   type: ask
   subject:
@@ -71,7 +81,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: System Prompt / Instruction Config (MUST, 3 instances); Model Input (MUST, 15 instances); Content Modality & Attachment Identity (MUST, 3 instances); Guardrail Modification Record (MUST, 1 instances); Response / Model Output (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_trust_level
   type: ask
   subject:
@@ -85,7 +98,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Input Trust Classification (MUST, 10 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_autonomy_level
   type: ask
   subject:
@@ -99,7 +115,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Autonomy Level (SHOULD, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_guardrail
   type: ask
   subject:
@@ -113,7 +132,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Guardrail (Input) Verdict (MUST, 6 instances); Guardrail Modification Record (MUST, 1 instances); Guardrail (Output) Verdict (MUST, 4 instances); Enforcement-Point Availability & Failure Mode (MUST, 1 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_egress_correlation
   type: ask
   subject:
@@ -127,7 +149,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Output Egress Destination (MUST, 10 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_model_provenance
   type: ask
   subject:
@@ -141,7 +166,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Model Provenance / Signing / Hash (SHOULD, 0 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_tool
   type: ask
   subject:
@@ -155,7 +183,10 @@
     tracking: [ocsf-schema#1729]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: Tool Call I/O (MUST, 19 instances); Tool Name (MUST, 6 instances); Tool Type / Trust Boundary (MUST, 2 instances); Tool ID (MAY, 0 instances); Tool Execution ID (MUST, 2 instances); Tool Definition Digest (MUST, 2 instances); MCP Server Identity & Primitive (MUST, 5 instances); Tool Error / Exception (MUST, 2 instances); Tool ACL / Required Scope (SHOULD, 6 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_memory
   type: ask
   subject:
@@ -169,7 +200,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Memory Write Event (MUST, 7 instances); Memory Read / Injection Event (MUST, 6 instances); Memory Provenance / Source (MUST, 4 instances); Memory Integrity / Poisoning Signal (SHOULD, 3 instances); Memory Footprint / Growth (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_retrieval
   type: ask
   subject:
@@ -183,7 +217,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Retrieval Event (MUST, 8 instances); Retrieved-Content Source / Provenance (MUST, 6 instances); Retrieved-Content / Metadata Integrity Signal (SHOULD, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_delegation_lineage
   type: ask
   subject:
@@ -197,7 +234,10 @@
     tracking: [ocsf-schema#1739]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: Identities Used (per hop) (MUST, 18 instances); Originating Principal (on-behalf-of) (SHOULD, 3 instances); Delegation Chain (SHOULD, 2 instances); Granted Authorizations / Scope (SHOULD, 3 instances); Resource Indicators + Constraints (SHOULD, 0 instances); Credential Minting & Scope-Narrowing Check (SHOULD, 1 instances); Trust-Domain Crossing & Delegation Depth (SHOULD, 1 instances); Lifecycle State (SHOULD, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_runtime_attestation
   type: ask
   subject:
@@ -211,7 +251,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Runtime Credential / Attestation (SHOULD, 0 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_asset
   type: ask
   subject:
@@ -225,7 +268,10 @@
     tracking: [ocsf-schema#1724]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: Tool/Agent Version (SHOULD, 2 instances); Repository / Code Path / Software Ref (SHOULD, 2 instances); Description (MAY, 0 instances); Status (active/disabled) (MAY, 0 instances); Creator ID / Oncall / Creation & Update dates (MAY, 0 instances); Instrumentation Coverage / Hook Attestation (MUST, 1 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_bom
   type: ask
   subject:
@@ -239,7 +285,10 @@
     tracking: [ocsf-schema#1724]
     status: open
   reason: 'from XM §3.1 and §3.2. Closes: Capability-Set Change Event (MUST, 4 instances); AgBOM / Inventory Snapshot (SHOULD, 2 instances); Component Dependency Graph (SHOULD, 1 instances); Inventory Attestation Signature (SHOULD, 0 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_authorization
   type: ask
   subject:
@@ -253,7 +302,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Resource-Consumption Aggregate (MUST, 4 instances); Policy Reason Code (MAY, 0 instances); Authorization Decision Record (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_taint
   type: ask
   subject:
@@ -267,7 +319,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Session Taint Labels & Information-Flow Decisions (SHOULD, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_approval
   type: ask
   subject:
@@ -281,7 +336,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Human Approval / Elicitation Event (SHOULD, 7 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_attribute_source
   type: ask
   subject:
@@ -295,7 +353,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §3.1 and §3.2. Closes: Attribute Source / Trusted-Provenance Marking (MUST, 6 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_trust_level
   type: ask
   subject:
@@ -309,7 +370,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Input Trust Classification (MUST, 10 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_security_guardrail
   type: ask
   subject:
@@ -323,7 +387,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Guardrail (Input) Verdict (MUST, 6 instances); Guardrail Modification Record (MUST, 1 instances); Threat Classification / ATLAS Technique Tag (MAY, 0 instances); Guardrail (Output) Verdict (MUST, 4 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_memory_provenance_footprint
   type: ask
   subject:
@@ -337,7 +404,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Memory Provenance / Source (MUST, 4 instances); Memory Footprint / Growth (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_retrieval_provenance
   type: ask
   subject:
@@ -351,7 +421,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Retrieved-Content Source / Provenance (MUST, 6 instances); Retrieved-Content / Metadata Integrity Signal (SHOULD, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_turn_step_ids
   type: ask
   subject:
@@ -365,7 +438,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Session / Turn / Step IDs (MUST, 5 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_trigger
   type: ask
   subject:
@@ -379,7 +455,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Trigger Type & Source Event (MUST, 5 instances); Background / Scheduled Task Event (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_tool_digest_mcp_primitive
   type: ask
   subject:
@@ -393,7 +472,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Tool Definition Digest (MUST, 2 instances); MCP Server Identity & Primitive (MUST, 5 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_attachment_identity
   type: ask
   subject:
@@ -407,7 +489,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Content Modality & Attachment Identity (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_model_provenance
   type: ask
   subject:
@@ -421,7 +506,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Model Provenance / Signing / Hash (SHOULD, 0 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_hash_only_capture
   type: ask
   subject:
@@ -435,7 +523,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: System Prompt / Instruction Config (MUST, 3 instances); Model Input (MUST, 15 instances); Response / Model Output (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_citations
   type: ask
   subject:
@@ -449,7 +540,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Citations / Source Attribution (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_execution_environment
   type: ask
   subject:
@@ -463,7 +557,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Execution Environment / Sandbox (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_inter_agent_messaging
   type: ask
   subject:
@@ -477,7 +574,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Action Type (MUST, 6 instances); Inter-Agent Message (MUST, 7 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_run_budget
   type: ask
   subject:
@@ -491,7 +591,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Loop / Step-Count Signal (MUST, 5 instances); Resource-Consumption Aggregate (MUST, 4 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_capability_change
   type: ask
   subject:
@@ -505,7 +608,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Capability-Set Change Event (MUST, 4 instances); AgBOM / Inventory Snapshot (SHOULD, 2 instances); Component Dependency Graph (SHOULD, 1 instances); Inventory Attestation Signature (SHOULD, 0 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_hook_coverage
   type: ask
   subject:
@@ -519,7 +625,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Instrumentation Coverage / Hook Attestation (MUST, 1 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_egress_pattern
   type: ask
   subject:
@@ -533,7 +642,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Output Egress Destination (MUST, 10 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_authorization_reference
   type: ask
   subject:
@@ -547,7 +659,10 @@
     tracking: []
     status: proposed
   reason: 'from XM §2.3. Closes: Authorization Decision Record (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_entry_point
   type: ask
   subject:
@@ -561,7 +676,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Surface / App (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_input_segment_source
   type: ask
   subject:
@@ -575,7 +693,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Input Source / Channel (MUST, 6 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_obfuscation
   type: ask
   subject:
@@ -589,7 +710,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Encoded / Obfuscated Payload Indicator (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_citations
   type: ask
   subject:
@@ -603,7 +727,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Citations / Source Attribution (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_inference_parameters
   type: ask
   subject:
@@ -617,7 +744,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Inference Parameters (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_ai_error
   type: ask
   subject:
@@ -631,7 +761,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: LLM Error / Exception (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_tool_execution_environment
   type: ask
   subject:
@@ -645,7 +778,10 @@
     tracking: [ocsf-schema#1729]
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Execution Environment / Sandbox (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:ocsf_identity_verification
   type: ask
   subject:
@@ -659,7 +795,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Verified vs Displayed Identity (MUST, 4 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_run_id
   type: ask
   subject:
@@ -673,7 +812,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Workflow / Run ID (MUST, 1 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_entry_point
   type: ask
   subject:
@@ -687,7 +829,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Surface / App (MUST, 3 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_input_part_source
   type: ask
   subject:
@@ -701,7 +846,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Input Source / Channel (MUST, 6 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_obfuscation
   type: ask
   subject:
@@ -715,7 +863,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Encoded / Obfuscated Payload Indicator (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_refusal
   type: ask
   subject:
@@ -729,7 +880,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: LLM Refusal (MUST, 9 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: Q:otel_tool_trust_boundary
   type: ask
   subject:
@@ -743,7 +897,10 @@
     tracking: []
     status: proposed
   reason: 'drafted for a MUST gap XM left without an ask. Closes: Tool Type / Trust Boundary (MUST, 2 instances)'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_name:ocsf
   type: mapping
   subject:
@@ -754,7 +911,10 @@
     coverage: covered
     constructs: ['profile:ai_operation', 'object:ai_agent']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_name:otel
   type: mapping
   subject:
@@ -765,7 +925,10 @@
     coverage: covered
     constructs: [gen_ai.agent.name]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_name:aitf
   type: mapping
   subject:
@@ -776,7 +939,10 @@
     coverage: covered
     constructs: [gen_ai.agent.name, asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_name:odis
   type: mapping
   subject:
@@ -789,7 +955,10 @@
     note: '`agent_id` /`owner_ref` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:agent_name
   type: controls
   subject:
@@ -798,7 +967,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_runtime_instance_id:ocsf
   type: mapping
   subject:
@@ -809,7 +981,10 @@
     coverage: covered
     constructs: ['object:ai_agent', 'attribute:instance_uid']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_runtime_instance_id:otel
   type: mapping
   subject:
@@ -820,7 +995,10 @@
     coverage: covered
     constructs: [gen_ai.agent.id]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_runtime_instance_id:aitf
   type: mapping
   subject:
@@ -831,7 +1009,10 @@
     coverage: covered
     constructs: [gen_ai.agent.id]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agent_runtime_instance_id:odis
   type: mapping
   subject:
@@ -844,7 +1025,10 @@
     note: '`runtime_instance_id` (6.2)'
     sections: ['6.2']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:agent_runtime_instance_id
   type: controls
   subject:
@@ -853,7 +1037,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:workflow_run_id:ocsf
   type: mapping
   subject:
@@ -865,7 +1052,10 @@
     gap: No workflow or run identifier
     asks: [ocsf_ai_operation_identifiers]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:workflow_run_id:otel
   type: mapping
   subject:
@@ -878,7 +1068,10 @@
     gap: A workflow name, not a run identifier; the run maps to the trace ID
     asks: [otel_run_id]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:workflow_run_id:aitf
   type: mapping
   subject:
@@ -889,7 +1082,10 @@
     coverage: covered
     note: trace id / run attr, *see note below*
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:workflow_run_id:odis
   type: mapping
   subject:
@@ -902,7 +1098,10 @@
     note: '`request_trace_id` (6.4)'
     sections: ['6.4']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:workflow_run_id
   type: controls
   subject:
@@ -911,7 +1110,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_turn_step_ids:ocsf
   type: mapping
   subject:
@@ -924,7 +1126,10 @@
     gap: A session identifier only; no turn or step
     asks: [ocsf_ai_operation_identifiers]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_turn_step_ids:otel
   type: mapping
   subject:
@@ -937,7 +1142,10 @@
     gap: No turn or step identifier
     asks: [otel_turn_step_ids]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_turn_step_ids:aitf
   type: mapping
   subject:
@@ -949,7 +1157,10 @@
     constructs: [gen_ai.turn.*, gen_ai.conversation.id, gen_ai.agent.step.index]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_turn_step_ids:odis
   type: mapping
   subject:
@@ -959,7 +1170,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:session_turn_step_ids
   type: controls
   subject:
@@ -968,7 +1182,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trace_context_propagated:ocsf
   type: mapping
   subject:
@@ -980,7 +1197,10 @@
     constructs: ['profile:trace', 'object:trace']
     note: The trace profile carries the trace and span identifiers.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trace_context_propagated:otel
   type: mapping
   subject:
@@ -991,7 +1211,10 @@
     coverage: covered
     note: OpenTelemetry trace context (W3C traceparent) is core to the specification.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trace_context_propagated:aitf
   type: mapping
   subject:
@@ -1003,7 +1226,10 @@
     constructs: []
     note: OTel `trace_id`/`span_id`, W3C `traceparent` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trace_context_propagated:odis
   type: mapping
   subject:
@@ -1016,7 +1242,10 @@
     note: '`request_trace_id` (6.4)'
     sections: ['6.4']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:trace_context_propagated
   type: controls
   subject:
@@ -1025,7 +1254,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:organization_tenant_id:ocsf
   type: mapping
   subject:
@@ -1038,7 +1270,10 @@
     gap: One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:organization_tenant_id:otel
   type: mapping
   subject:
@@ -1050,7 +1285,10 @@
     gap: No tenant attribute in the GenAI conventions
     note: XM recommends adopting existing tenant and resource attributes rather than an ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:organization_tenant_id:aitf
   type: mapping
   subject:
@@ -1062,7 +1300,10 @@
     constructs: [asset.tenant.*, security.tenant.*, asset.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` / resource attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:organization_tenant_id:odis
   type: mapping
   subject:
@@ -1075,7 +1316,10 @@
     note: '`trust_domain` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:organization_tenant_id
   type: controls
   subject:
@@ -1084,7 +1328,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trigger_type_source_event:ocsf
   type: mapping
   subject:
@@ -1096,7 +1343,10 @@
     gap: No trigger type
     asks: [ocsf_ai_operation_identifiers]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trigger_type_source_event:otel
   type: mapping
   subject:
@@ -1108,7 +1358,10 @@
     gap: No trigger type or source event
     asks: [otel_trigger]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trigger_type_source_event:aitf
   type: mapping
   subject:
@@ -1120,7 +1373,10 @@
     constructs: [gen_ai.trigger.*, gen_ai.agent.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.agent.*` trigger attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trigger_type_source_event:odis
   type: mapping
   subject:
@@ -1130,7 +1386,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:trigger_type_source_event
   type: controls
   subject:
@@ -1139,7 +1398,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:action_type:ocsf
   type: mapping
   subject:
@@ -1151,7 +1413,10 @@
     gap: No action type
     asks: [ocsf_ai_operation_identifiers]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:action_type:otel
   type: mapping
   subject:
@@ -1164,7 +1429,10 @@
     gap: Operations include chat, execute_tool, invoke_agent and the memory operations; no inter-agent message send
     asks: [otel_inter_agent_messaging]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:action_type:aitf
   type: mapping
   subject:
@@ -1175,7 +1443,10 @@
     coverage: covered
     constructs: [gen_ai.agent.step.type]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:action_type:odis
   type: mapping
   subject:
@@ -1188,7 +1459,10 @@
     note: '`action.{tool,method}` (6.4)'
     sections: ['6.4']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:action_type
   type: controls
   subject:
@@ -1197,7 +1471,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_status:ocsf
   type: mapping
   subject:
@@ -1209,7 +1486,10 @@
     constructs: ['attribute:status_id', 'attribute:duration']
     note: Outcome and duration on the base event.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_status:otel
   type: mapping
   subject:
@@ -1221,7 +1501,10 @@
     constructs: [error.type]
     note: With the span status.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_status:aitf
   type: mapping
   subject:
@@ -1233,7 +1516,10 @@
     constructs: [error.type]
     note: span status + `error.type`
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_status:odis
   type: mapping
   subject:
@@ -1243,7 +1529,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:execution_status
   type: controls
   subject:
@@ -1252,7 +1541,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:stop_reason:ocsf
   type: mapping
   subject:
@@ -1264,7 +1556,10 @@
     gap: ai_stop_reason_id is approved (#1704) but not in 1.9.0
     asks: [ocsf_stop_reason]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:stop_reason:otel
   type: mapping
   subject:
@@ -1275,7 +1570,10 @@
     coverage: covered
     constructs: [gen_ai.response.finish_reasons]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:stop_reason:aitf
   type: mapping
   subject:
@@ -1286,7 +1584,10 @@
     coverage: covered
     constructs: [gen_ai.response.finish_reasons]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:stop_reason:odis
   type: mapping
   subject:
@@ -1296,7 +1597,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:stop_reason
   type: controls
   subject:
@@ -1305,7 +1609,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surface_app:ocsf
   type: mapping
   subject:
@@ -1318,7 +1625,10 @@
     gap: An application name; no entry-point type and no internal or external flag
     asks: [ocsf_entry_point]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surface_app:otel
   type: mapping
   subject:
@@ -1331,7 +1641,10 @@
     note: XM names the gap and proposes no change; decide an ask or record why none.
     asks: [otel_entry_point]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surface_app:aitf
   type: mapping
   subject:
@@ -1344,7 +1657,10 @@
     note: '`gen_ai.*` (surface attr)'
     gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surface_app:odis
   type: mapping
   subject:
@@ -1355,7 +1671,10 @@
     coverage: none
     note: n/a (policy input)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:surface_app
   type: controls
   subject:
@@ -1364,7 +1683,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:system_prompt_instruction_config:ocsf
   type: mapping
   subject:
@@ -1376,7 +1698,10 @@
     gap: No system prompt in message_context
     asks: [ocsf_message_context_content]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:system_prompt_instruction_config:otel
   type: mapping
   subject:
@@ -1389,7 +1714,10 @@
     asks: [otel_hash_only_capture]
     note: Gated behind content-capture opt-in.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:system_prompt_instruction_config:aitf
   type: mapping
   subject:
@@ -1401,7 +1729,10 @@
     constructs: [gen_ai.*]
     note: '`gen_ai.*` (system message / request)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:system_prompt_instruction_config:odis
   type: mapping
   subject:
@@ -1412,7 +1743,10 @@
     coverage: none
     note: n/a (see note)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:system_prompt_instruction_config
   type: controls
   subject:
@@ -1421,7 +1755,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:autonomy_level:ocsf
   type: mapping
   subject:
@@ -1433,7 +1770,10 @@
     gap: No autonomy level
     asks: [ocsf_autonomy_level]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:autonomy_level:otel
   type: mapping
   subject:
@@ -1445,7 +1785,10 @@
     gap: No autonomy level
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:autonomy_level:aitf
   type: mapping
   subject:
@@ -1456,7 +1799,10 @@
     coverage: covered
     constructs: [gen_ai.agent.state]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:autonomy_level:odis
   type: mapping
   subject:
@@ -1466,7 +1812,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:autonomy_level
   type: controls
   subject:
@@ -1475,7 +1824,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_input:ocsf
   type: mapping
   subject:
@@ -1488,7 +1840,10 @@
     gap: No content hash or redaction flag
     asks: [ocsf_message_context_content]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_input:otel
   type: mapping
   subject:
@@ -1501,7 +1856,10 @@
     asks: [otel_hash_only_capture]
     note: Gated behind content-capture opt-in.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_input:aitf
   type: mapping
   subject:
@@ -1513,7 +1871,10 @@
     constructs: [gen_ai.prompt]
     note: '`gen_ai.prompt` / input events'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_input:odis
   type: mapping
   subject:
@@ -1526,7 +1887,10 @@
     note: '`action.parameters` (6.4)'
     sections: ['6.4']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:model_input
   type: controls
   subject:
@@ -1535,7 +1899,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_source_channel:ocsf
   type: mapping
   subject:
@@ -1547,7 +1914,10 @@
     gap: No per-segment input source on message_context
     asks: [ocsf_input_segment_source]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_source_channel:otel
   type: mapping
   subject:
@@ -1559,7 +1929,10 @@
     gap: No per-part input source
     asks: [otel_input_part_source]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_source_channel:aitf
   type: mapping
   subject:
@@ -1572,7 +1945,10 @@
     note: '`gen_ai.*` / `rag.*` / `mcp.*` source'
     gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_source_channel:odis
   type: mapping
   subject:
@@ -1585,7 +1961,10 @@
     note: '`delegation_chain` origin (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:input_source_channel
   type: controls
   subject:
@@ -1594,7 +1973,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_trust_classification:ocsf
   type: mapping
   subject:
@@ -1607,7 +1989,10 @@
     gap: No trust-provenance enum
     asks: [ocsf_trust_level]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_trust_classification:otel
   type: mapping
   subject:
@@ -1619,7 +2004,10 @@
     gap: No trust-provenance concept
     asks: [otel_trust_level]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_trust_classification:aitf
   type: mapping
   subject:
@@ -1631,7 +2019,10 @@
     constructs: [security.*]
     note: '`security.*` (trust/threat)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_trust_classification:odis
   type: mapping
   subject:
@@ -1644,7 +2035,10 @@
     note: '`constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:input_trust_classification
   type: controls
   subject:
@@ -1653,7 +2047,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:source_host_ip_request_metadata:ocsf
   type: mapping
   subject:
@@ -1664,7 +2061,10 @@
     coverage: covered
     constructs: ['attribute:src_endpoint']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:source_host_ip_request_metadata:otel
   type: mapping
   subject:
@@ -1675,7 +2075,10 @@
     coverage: covered
     constructs: [client.address, network.peer.address, user_agent.original]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:source_host_ip_request_metadata:aitf
   type: mapping
   subject:
@@ -1687,7 +2090,10 @@
     constructs: [security.*]
     note: '`security.*` / resource attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:source_host_ip_request_metadata:odis
   type: mapping
   subject:
@@ -1698,7 +2104,10 @@
     coverage: none
     note: n/a (policy input)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:source_host_ip_request_metadata
   type: controls
   subject:
@@ -1707,7 +2116,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_input_verdict:ocsf
   type: mapping
   subject:
@@ -1720,7 +2132,10 @@
     gap: No guardrail-verdict object
     asks: [ocsf_ai_guardrail]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_input_verdict:otel
   type: mapping
   subject:
@@ -1733,7 +2148,10 @@
     gap: 'The evaluation event is quality-oriented: no blocked flag, guardrail type or threat technique'
     asks: [otel_security_guardrail]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_input_verdict:aitf
   type: mapping
   subject:
@@ -1744,7 +2162,10 @@
     coverage: covered
     constructs: [security.guardrail.type, security.blocked, security.threat_type]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_input_verdict:odis
   type: mapping
   subject:
@@ -1754,7 +2175,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:guardrail_input_verdict
   type: controls
   subject:
@@ -1763,7 +2187,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:content_modality_attachment_identity:ocsf
   type: mapping
   subject:
@@ -1775,7 +2202,10 @@
     gap: No attachment identity
     asks: [ocsf_message_context_content]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:content_modality_attachment_identity:otel
   type: mapping
   subject:
@@ -1787,7 +2217,10 @@
     gap: Message parts carry types; no attachment name, size or hash
     asks: [otel_attachment_identity]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:content_modality_attachment_identity:aitf
   type: mapping
   subject:
@@ -1799,7 +2232,10 @@
     constructs: [gen_ai.content.*, gen_ai.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.*` content-part attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:content_modality_attachment_identity:odis
   type: mapping
   subject:
@@ -1809,7 +2245,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:content_modality_attachment_identity
   type: controls
   subject:
@@ -1818,7 +2257,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_modification_record:ocsf
   type: mapping
   subject:
@@ -1830,7 +2272,10 @@
     gap: No record that an enforcement point rewrote a payload
     asks: [ocsf_ai_guardrail, ocsf_message_context_content]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_modification_record:otel
   type: mapping
   subject:
@@ -1842,7 +2287,10 @@
     gap: No record that an enforcement point rewrote a payload
     asks: [otel_security_guardrail]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_modification_record:aitf
   type: mapping
   subject:
@@ -1854,7 +2302,10 @@
     constructs: [security.guardrail.modification.*, security.guardrail.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.guardrail.*` + modified/redacted flags'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_modification_record:odis
   type: mapping
   subject:
@@ -1864,7 +2315,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:guardrail_modification_record
   type: controls
   subject:
@@ -1873,7 +2327,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:threat_classification_atlas_technique_tag:ocsf
   type: mapping
   subject:
@@ -1885,7 +2342,10 @@
     constructs: ['class:2004', 'attribute:attacks']
     note: 'No schema change: populate attacks[].technique.uid with AML.Txxxx, the tactic, and attacks[].version with the ATLAS matrix version.'
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:threat_classification_atlas_technique_tag:otel
   type: mapping
   subject:
@@ -1897,7 +2357,10 @@
     gap: No threat-technique reference
     asks: [otel_security_guardrail]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:threat_classification_atlas_technique_tag:aitf
   type: mapping
   subject:
@@ -1908,7 +2371,10 @@
     coverage: covered
     constructs: [security.threat_type, compliance.framework, compliance.control_id]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:threat_classification_atlas_technique_tag:odis
   type: mapping
   subject:
@@ -1918,7 +2384,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:threat_classification_atlas_technique_tag
   type: controls
   subject:
@@ -1927,7 +2396,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:encoded_obfuscated_payload_indicator:ocsf
   type: mapping
   subject:
@@ -1939,7 +2411,10 @@
     gap: No obfuscation flag or decoded form
     asks: [ocsf_obfuscation]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:encoded_obfuscated_payload_indicator:otel
   type: mapping
   subject:
@@ -1951,7 +2426,10 @@
     gap: No obfuscation flag or decoded form
     asks: [otel_obfuscation]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:encoded_obfuscated_payload_indicator:aitf
   type: mapping
   subject:
@@ -1963,7 +2441,10 @@
     constructs: [security.obfuscation.*, security.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` obfuscation / decoded-form attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:encoded_obfuscated_payload_indicator:odis
   type: mapping
   subject:
@@ -1973,7 +2454,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:encoded_obfuscated_payload_indicator
   type: controls
   subject:
@@ -1982,7 +2466,10 @@
   proposal:
     controls: [controlInputValidationAndSanitization]
   reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:response_model_output:ocsf
   type: mapping
   subject:
@@ -1995,7 +2482,10 @@
     gap: No content hash or redaction flag
     asks: [ocsf_message_context_content]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:response_model_output:otel
   type: mapping
   subject:
@@ -2008,7 +2498,10 @@
     asks: [otel_hash_only_capture]
     note: Gated behind content-capture opt-in.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:response_model_output:aitf
   type: mapping
   subject:
@@ -2019,7 +2512,10 @@
     coverage: covered
     constructs: [gen_ai.completion]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:response_model_output:odis
   type: mapping
   subject:
@@ -2029,7 +2525,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:response_model_output
   type: controls
   subject:
@@ -2038,7 +2537,10 @@
   proposal:
     controls: [controlOutputValidationAndSanitization]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:output_egress_destination:ocsf
   type: mapping
   subject:
@@ -2051,7 +2553,10 @@
     gap: No link from model output to the egress channel or recipient
     asks: [ocsf_egress_correlation]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:output_egress_destination:otel
   type: mapping
   subject:
@@ -2063,7 +2568,10 @@
     gap: No link from model output to its destination
     asks: [otel_egress_pattern]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:output_egress_destination:aitf
   type: mapping
   subject:
@@ -2074,7 +2582,10 @@
     coverage: covered
     constructs: [gen_ai.tool.call.arguments, security.pii.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:output_egress_destination:odis
   type: mapping
   subject:
@@ -2087,7 +2598,10 @@
     note: '`resource_indicators` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:output_egress_destination
   type: controls
   subject:
@@ -2096,7 +2610,10 @@
   proposal:
     controls: [controlOutputValidationAndSanitization]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:citations_source_attribution:ocsf
   type: mapping
   subject:
@@ -2108,7 +2625,10 @@
     gap: No citation, and no resolution of a citation against retrieval
     asks: [ocsf_citations]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:citations_source_attribution:otel
   type: mapping
   subject:
@@ -2121,7 +2641,10 @@
     gap: Output-side citations are not linked to retrieved items
     asks: [otel_citations]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:citations_source_attribution:aitf
   type: mapping
   subject:
@@ -2133,7 +2656,10 @@
     constructs: [rag.citation.*, rag.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `rag.*` (source) + output citation attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:citations_source_attribution:odis
   type: mapping
   subject:
@@ -2143,7 +2669,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:citations_source_attribution
   type: controls
   subject:
@@ -2152,7 +2681,10 @@
   proposal:
     controls: [controlOutputValidationAndSanitization]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:observation_thought_reasoning_trace:ocsf
   type: mapping
   subject:
@@ -2164,7 +2696,10 @@
     gap: No reasoning trace
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:observation_thought_reasoning_trace:otel
   type: mapping
   subject:
@@ -2177,7 +2712,10 @@
     gap: A count of reasoning tokens, not the trace
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:observation_thought_reasoning_trace:aitf
   type: mapping
   subject:
@@ -2188,7 +2726,10 @@
     coverage: covered
     constructs: [gen_ai.agent.step.thought]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:observation_thought_reasoning_trace:odis
   type: mapping
   subject:
@@ -2198,7 +2739,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:observation_thought_reasoning_trace
   type: controls
   subject:
@@ -2207,7 +2751,10 @@
   proposal:
     controls: [controlNetworkEgressControl]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_output_verdict:ocsf
   type: mapping
   subject:
@@ -2220,7 +2767,10 @@
     gap: No guardrail-verdict object
     asks: [ocsf_ai_guardrail]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_output_verdict:otel
   type: mapping
   subject:
@@ -2233,7 +2783,10 @@
     gap: The evaluation event is quality-oriented
     asks: [otel_security_guardrail]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_output_verdict:aitf
   type: mapping
   subject:
@@ -2244,7 +2797,10 @@
     coverage: covered
     constructs: [security.guardrail.*, security.pii.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:guardrail_output_verdict:odis
   type: mapping
   subject:
@@ -2257,7 +2813,10 @@
     note: '`constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:guardrail_output_verdict
   type: controls
   subject:
@@ -2266,7 +2825,10 @@
   proposal:
     controls: [controlOutputValidationAndSanitization]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_refusal:ocsf
   type: mapping
   subject:
@@ -2278,7 +2840,10 @@
     gap: No refusal status or reason; a content-filter stop reason (#1704) records one cause only
     asks: [ocsf_stop_reason]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_refusal:otel
   type: mapping
   subject:
@@ -2291,7 +2856,10 @@
     gap: A content-filter finish reason where the provider returns one; no refusal status or reason
     asks: [otel_refusal]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_refusal:aitf
   type: mapping
   subject:
@@ -2303,7 +2871,10 @@
     constructs: [gen_ai.response.finish_reasons, security.*]
     gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_refusal:odis
   type: mapping
   subject:
@@ -2313,7 +2884,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:llm_refusal
   type: controls
   subject:
@@ -2322,7 +2896,10 @@
   proposal:
     controls: [controlOutputValidationAndSanitization]
   reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_name_version:ocsf
   type: mapping
   subject:
@@ -2333,7 +2910,10 @@
     coverage: covered
     constructs: ['profile:ai_operation', 'object:ai_model']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_name_version:otel
   type: mapping
   subject:
@@ -2344,7 +2924,10 @@
     coverage: covered
     constructs: [gen_ai.request.model, gen_ai.response.model]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_name_version:aitf
   type: mapping
   subject:
@@ -2355,7 +2938,10 @@
     coverage: covered
     constructs: [gen_ai.request.model, gen_ai.provider.name]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_name_version:odis
   type: mapping
   subject:
@@ -2368,7 +2954,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:model_name_version
   type: controls
   subject:
@@ -2377,7 +2966,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:provider_endpoint_identity:ocsf
   type: mapping
   subject:
@@ -2388,7 +2980,10 @@
     coverage: covered
     constructs: ['object:ai_model', 'attribute:ai_provider']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:provider_endpoint_identity:otel
   type: mapping
   subject:
@@ -2399,7 +2994,10 @@
     coverage: covered
     constructs: [gen_ai.provider.name]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:provider_endpoint_identity:aitf
   type: mapping
   subject:
@@ -2410,7 +3008,10 @@
     coverage: covered
     constructs: [gen_ai.provider.name]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:provider_endpoint_identity:odis
   type: mapping
   subject:
@@ -2420,7 +3021,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:provider_endpoint_identity
   type: controls
   subject:
@@ -2429,7 +3033,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inference_parameters:ocsf
   type: mapping
   subject:
@@ -2441,7 +3048,10 @@
     gap: No decoding parameters or context window on ai_model or message_context
     asks: [ocsf_inference_parameters]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inference_parameters:otel
   type: mapping
   subject:
@@ -2452,7 +3062,10 @@
     coverage: covered
     constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inference_parameters:aitf
   type: mapping
   subject:
@@ -2463,7 +3076,10 @@
     coverage: covered
     constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inference_parameters:odis
   type: mapping
   subject:
@@ -2473,7 +3089,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:inference_parameters
   type: controls
   subject:
@@ -2482,7 +3101,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_output_token_counts:ocsf
   type: mapping
   subject:
@@ -2493,7 +3115,10 @@
     coverage: covered
     constructs: ['object:message_context']
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_output_token_counts:otel
   type: mapping
   subject:
@@ -2504,7 +3129,10 @@
     coverage: covered
     constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.client.token.usage]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_output_token_counts:aitf
   type: mapping
   subject:
@@ -2515,7 +3143,10 @@
     coverage: covered
     constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, cost.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:input_output_token_counts:odis
   type: mapping
   subject:
@@ -2525,7 +3156,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:input_output_token_counts
   type: controls
   subject:
@@ -2534,7 +3168,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_error_exception:ocsf
   type: mapping
   subject:
@@ -2547,7 +3184,10 @@
     gap: A generic outcome; no AI-specific error type
     asks: [ocsf_ai_error]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_error_exception:otel
   type: mapping
   subject:
@@ -2558,7 +3198,10 @@
     coverage: covered
     constructs: [error.type]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_error_exception:aitf
   type: mapping
   subject:
@@ -2571,7 +3214,10 @@
     note: '`gen_ai.*` error + `security.*`'
     gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:llm_error_exception:odis
   type: mapping
   subject:
@@ -2581,7 +3227,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:llm_error_exception
   type: controls
   subject:
@@ -2590,7 +3239,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_provenance_signing_hash:ocsf
   type: mapping
   subject:
@@ -2602,7 +3254,10 @@
     gap: Provenance and signing not standardized in the profile
     asks: [ocsf_model_provenance]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_provenance_signing_hash:otel
   type: mapping
   subject:
@@ -2614,7 +3269,10 @@
     gap: No model provenance or signing
     asks: [otel_model_provenance]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_provenance_signing_hash:aitf
   type: mapping
   subject:
@@ -2625,7 +3283,10 @@
     coverage: covered
     constructs: [supply_chain.model.hash, supply_chain.model.signed, supply_chain.model.source, supply_chain.ai_bom.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:model_provenance_signing_hash:odis
   type: mapping
   subject:
@@ -2638,7 +3299,10 @@
     note: '`software_hash` (6.2), `approved_software_refs` (6.1)'
     sections: ['6.2', '6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:model_provenance_signing_hash
   type: controls
   subject:
@@ -2647,7 +3311,10 @@
   proposal:
     controls: [controlModelAndDataIntegrityManagement, controlModelRegistryIntegrity, controlMessageAndPayloadResourceLimits]
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:pre_forward_pass_state_digest_vector:ocsf
   type: mapping
   subject:
@@ -2659,7 +3326,10 @@
     gap: No forward-pass digest
     note: A MAY research-grade signal; no ask.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:pre_forward_pass_state_digest_vector:otel
   type: mapping
   subject:
@@ -2671,7 +3341,10 @@
     gap: No forward-pass digest
     note: A MAY research-grade signal; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:pre_forward_pass_state_digest_vector:aitf
   type: mapping
   subject:
@@ -2682,7 +3355,10 @@
     coverage: covered
     constructs: [drift.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:pre_forward_pass_state_digest_vector:odis
   type: mapping
   subject:
@@ -2692,7 +3368,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:pre_forward_pass_state_digest_vector
   type: controls
   subject:
@@ -2701,7 +3380,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:token_malformation_context_corruption_indicator:ocsf
   type: mapping
   subject:
@@ -2713,7 +3395,10 @@
     gap: No token-entropy signal
     note: A MAY research-grade signal; no ask.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:token_malformation_context_corruption_indicator:otel
   type: mapping
   subject:
@@ -2725,7 +3410,10 @@
     gap: No token-entropy signal
     note: A MAY research-grade signal; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:token_malformation_context_corruption_indicator:aitf
   type: mapping
   subject:
@@ -2736,7 +3424,10 @@
     coverage: covered
     constructs: [drift.*, quality.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:token_malformation_context_corruption_indicator:odis
   type: mapping
   subject:
@@ -2746,7 +3437,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:token_malformation_context_corruption_indicator
   type: controls
   subject:
@@ -2755,7 +3449,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_call_io:ocsf
   type: mapping
   subject:
@@ -2768,7 +3465,10 @@
     gap: No tool object
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_call_io:otel
   type: mapping
   subject:
@@ -2779,7 +3479,10 @@
     coverage: covered
     constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_call_io:aitf
   type: mapping
   subject:
@@ -2790,7 +3493,10 @@
     coverage: covered
     constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result, mcp.tool.name]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_call_io:odis
   type: mapping
   subject:
@@ -2803,7 +3509,10 @@
     note: '`action` (6.4)'
     sections: ['6.4']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_call_io
   type: controls
   subject:
@@ -2818,7 +3527,10 @@
     - controlAgentPluginPermissions
     - controlInterComponentTransportSecurity
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_name:ocsf
   type: mapping
   subject:
@@ -2830,7 +3542,10 @@
     gap: No tool object
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_name:otel
   type: mapping
   subject:
@@ -2841,7 +3556,10 @@
     coverage: covered
     constructs: [gen_ai.tool.name]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_name:aitf
   type: mapping
   subject:
@@ -2852,7 +3570,10 @@
     coverage: covered
     constructs: [mcp.tool.name]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_name:odis
   type: mapping
   subject:
@@ -2862,7 +3583,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_name
   type: controls
   subject:
@@ -2871,7 +3595,10 @@
   proposal:
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_type_trust_boundary:ocsf
   type: mapping
   subject:
@@ -2883,7 +3610,10 @@
     gap: No tool trust-boundary enum
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_type_trust_boundary:otel
   type: mapping
   subject:
@@ -2896,7 +3626,10 @@
     gap: function, extension or datastore; no MCP, direct-storage or code-execution boundary
     asks: [otel_tool_trust_boundary]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_type_trust_boundary:aitf
   type: mapping
   subject:
@@ -2909,7 +3642,10 @@
     note: '`mcp.*` vs internal'
     gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_type_trust_boundary:odis
   type: mapping
   subject:
@@ -2919,7 +3655,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_type_trust_boundary
   type: controls
   subject:
@@ -2933,7 +3672,10 @@
     - controlAgentPluginPermissions
     - controlInterComponentTransportSecurity
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_id:ocsf
   type: mapping
   subject:
@@ -2945,7 +3687,10 @@
     gap: No tool object
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_id:otel
   type: mapping
   subject:
@@ -2957,7 +3702,10 @@
     gap: Tool name and call ID only; no implementation ID across servers
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_id:aitf
   type: mapping
   subject:
@@ -2969,7 +3717,10 @@
     constructs: [mcp.server.name]
     note: '`mcp.server.name` + tool id'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_id:odis
   type: mapping
   subject:
@@ -2979,7 +3730,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_id
   type: controls
   subject:
@@ -2993,7 +3747,10 @@
     - controlAgentPluginPermissions
     - controlInterComponentTransportSecurity
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_execution_id:ocsf
   type: mapping
   subject:
@@ -3005,7 +3762,10 @@
     gap: No tool-call join key
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_execution_id:otel
   type: mapping
   subject:
@@ -3016,7 +3776,10 @@
     coverage: covered
     constructs: [gen_ai.tool.call.id]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_execution_id:aitf
   type: mapping
   subject:
@@ -3027,7 +3790,10 @@
     coverage: covered
     constructs: [gen_ai.tool.call.id]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_execution_id:odis
   type: mapping
   subject:
@@ -3037,7 +3803,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_execution_id
   type: controls
   subject:
@@ -3046,7 +3815,10 @@
   proposal:
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_definition_digest:ocsf
   type: mapping
   subject:
@@ -3058,7 +3830,10 @@
     gap: No tool-definition digest
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_definition_digest:otel
   type: mapping
   subject:
@@ -3071,7 +3846,10 @@
     gap: The definitions, not a stable digest of them
     asks: [otel_tool_digest_mcp_primitive]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_definition_digest:aitf
   type: mapping
   subject:
@@ -3083,7 +3861,10 @@
     constructs: [mcp.tool.definition.*, mcp.tool.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.tool.*` schema/description hash'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_definition_digest:odis
   type: mapping
   subject:
@@ -3096,7 +3877,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_definition_digest
   type: controls
   subject:
@@ -3105,7 +3889,10 @@
   proposal:
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_environment_sandbox:ocsf
   type: mapping
   subject:
@@ -3118,7 +3905,10 @@
     gap: A sandbox name on a process, and container identity; no isolation mode, timeout or egress policy for a tool execution
     asks: [ocsf_tool_execution_environment]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_environment_sandbox:otel
   type: mapping
   subject:
@@ -3130,7 +3920,10 @@
     gap: No sandbox or isolation attributes
     asks: [otel_execution_environment]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_environment_sandbox:aitf
   type: mapping
   subject:
@@ -3142,7 +3935,10 @@
     constructs: [supply_chain.runtime.*, supply_chain.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `supply_chain.*` + runtime/sandbox attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:execution_environment_sandbox:odis
   type: mapping
   subject:
@@ -3155,7 +3951,10 @@
     note: '`binding_profile` (6.2, partial)'
     sections: ['6.2']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:execution_environment_sandbox
   type: controls
   subject:
@@ -3164,7 +3963,10 @@
   proposal:
     controls: [controlRuntimeHostIsolation]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mcp_server_identity_primitive:ocsf
   type: mapping
   subject:
@@ -3176,7 +3978,10 @@
     gap: No MCP object or primitive axis
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mcp_server_identity_primitive:otel
   type: mapping
   subject:
@@ -3189,7 +3994,10 @@
     gap: No primitive discriminator; mcp.method.name partly serves
     asks: [otel_tool_digest_mcp_primitive]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mcp_server_identity_primitive:aitf
   type: mapping
   subject:
@@ -3201,7 +4009,10 @@
     constructs: [mcp.primitive, mcp.server.name, mcp.server.version]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.server.name/version`, primitive attr'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mcp_server_identity_primitive:odis
   type: mapping
   subject:
@@ -3211,7 +4022,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:mcp_server_identity_primitive
   type: controls
   subject:
@@ -3220,7 +4034,10 @@
   proposal:
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_error_exception:ocsf
   type: mapping
   subject:
@@ -3233,7 +4050,10 @@
     gap: An outcome on API Activity, not tied to a tool call
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_error_exception:otel
   type: mapping
   subject:
@@ -3244,7 +4064,10 @@
     coverage: covered
     constructs: [error.type]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_error_exception:aitf
   type: mapping
   subject:
@@ -3256,7 +4079,10 @@
     constructs: [mcp.*, security.*]
     note: '`mcp.*` error, `security.*`'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_error_exception:odis
   type: mapping
   subject:
@@ -3266,7 +4092,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_error_exception
   type: controls
   subject:
@@ -3279,7 +4108,10 @@
     - controlToolArgumentValidationAndSanitization
     - controlAgentPluginPermissions
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_acl_required_scope:ocsf
   type: mapping
   subject:
@@ -3291,7 +4123,10 @@
     gap: No tool scope attribute
     asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_acl_required_scope:otel
   type: mapping
   subject:
@@ -3302,7 +4137,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_acl_required_scope:aitf
   type: mapping
   subject:
@@ -3313,7 +4151,10 @@
     coverage: covered
     constructs: [identity.auth.scope_granted]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_acl_required_scope:odis
   type: mapping
   subject:
@@ -3326,7 +4167,10 @@
     note: '`granted_authorizations` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_acl_required_scope
   type: controls
   subject:
@@ -3335,7 +4179,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_privacy_classification:ocsf
   type: mapping
   subject:
@@ -3348,7 +4195,10 @@
     gap: Classification attaches to data, not to the tool that touches it
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_privacy_classification:otel
   type: mapping
   subject:
@@ -3360,7 +4210,10 @@
     gap: No data classification for a tool
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_privacy_classification:aitf
   type: mapping
   subject:
@@ -3371,7 +4224,10 @@
     coverage: covered
     constructs: [security.pii.*, compliance.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_privacy_classification:odis
   type: mapping
   subject:
@@ -3384,7 +4240,10 @@
     note: '`constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_privacy_classification
   type: controls
   subject:
@@ -3398,7 +4257,10 @@
     - controlAgentPluginPermissions
     - controlInterComponentTransportSecurity
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_selection_rationale:ocsf
   type: mapping
   subject:
@@ -3410,7 +4272,10 @@
     gap: No self-asserted rationale
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_selection_rationale:otel
   type: mapping
   subject:
@@ -3422,7 +4287,10 @@
     gap: No self-asserted rationale
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_selection_rationale:aitf
   type: mapping
   subject:
@@ -3434,7 +4302,10 @@
     constructs: [gen_ai.agent.step.thought]
     note: '`gen_ai.agent.step.thought` (per-step)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_selection_rationale:odis
   type: mapping
   subject:
@@ -3444,7 +4315,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_selection_rationale
   type: controls
   subject:
@@ -3453,7 +4327,10 @@
   proposal:
     controls: [controlAgentPluginPermissions]
   reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_event:ocsf
   type: mapping
   subject:
@@ -3466,7 +4343,10 @@
     gap: Datastore Activity fits loosely; no memory-operation object
     asks: [ocsf_ai_memory]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_event:otel
   type: mapping
   subject:
@@ -3477,7 +4357,10 @@
     coverage: covered
     constructs: [gen_ai.memory.store.id, gen_ai.memory.record.id, gen_ai.operation.name]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_event:aitf
   type: mapping
   subject:
@@ -3488,7 +4371,10 @@
     coverage: covered
     constructs: [memory.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_event:odis
   type: mapping
   subject:
@@ -3498,7 +4384,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_write_event
   type: controls
   subject:
@@ -3510,7 +4399,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_read_injection_event:ocsf
   type: mapping
   subject:
@@ -3523,7 +4415,10 @@
     gap: Datastore Activity fits loosely; no memory-operation object
     asks: [ocsf_ai_memory]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_read_injection_event:otel
   type: mapping
   subject:
@@ -3534,7 +4429,10 @@
     coverage: covered
     constructs: [gen_ai.memory.query.text, gen_ai.memory.records]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_read_injection_event:aitf
   type: mapping
   subject:
@@ -3545,7 +4443,10 @@
     coverage: covered
     constructs: [memory.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_read_injection_event:odis
   type: mapping
   subject:
@@ -3555,7 +4456,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_read_injection_event
   type: controls
   subject:
@@ -3567,7 +4471,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_provenance_source:ocsf
   type: mapping
   subject:
@@ -3579,7 +4486,10 @@
     gap: No memory provenance
     asks: [ocsf_ai_memory]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_provenance_source:otel
   type: mapping
   subject:
@@ -3591,7 +4501,10 @@
     gap: No provenance attribute in the gen_ai registry
     asks: [otel_memory_provenance_footprint]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_provenance_source:aitf
   type: mapping
   subject:
@@ -3602,7 +4515,10 @@
     coverage: covered
     constructs: [memory.provenance]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_provenance_source:odis
   type: mapping
   subject:
@@ -3612,7 +4528,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_provenance_source
   type: controls
   subject:
@@ -3624,7 +4543,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_integrity_poisoning_signal:ocsf
   type: mapping
   subject:
@@ -3636,7 +4558,10 @@
     gap: No poisoning or isolation signal
     asks: [ocsf_ai_memory]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_integrity_poisoning_signal:otel
   type: mapping
   subject:
@@ -3648,7 +4573,10 @@
     gap: No integrity or poisoning signal
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_integrity_poisoning_signal:aitf
   type: mapping
   subject:
@@ -3659,7 +4587,10 @@
     coverage: covered
     constructs: [memory.security.poisoning_score, memory.security.isolation_verified, memory.security.cross_session]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_integrity_poisoning_signal:odis
   type: mapping
   subject:
@@ -3669,7 +4600,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_integrity_poisoning_signal
   type: controls
   subject:
@@ -3681,7 +4615,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_footprint_growth:ocsf
   type: mapping
   subject:
@@ -3693,7 +4630,10 @@
     gap: No memory footprint
     asks: [ocsf_ai_memory]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_footprint_growth:otel
   type: mapping
   subject:
@@ -3705,7 +4645,10 @@
     gap: No footprint attribute in the gen_ai registry
     asks: [otel_memory_provenance_footprint]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_footprint_growth:aitf
   type: mapping
   subject:
@@ -3716,7 +4659,10 @@
     coverage: covered
     constructs: [memory.*, cost.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_footprint_growth:odis
   type: mapping
   subject:
@@ -3726,7 +4672,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_footprint_growth
   type: controls
   subject:
@@ -3738,7 +4687,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_memory_configuration:ocsf
   type: mapping
   subject:
@@ -3750,7 +4702,10 @@
     gap: No memory-store declaration
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_memory_configuration:otel
   type: mapping
   subject:
@@ -3763,7 +4718,10 @@
     gap: Store identity only; no limits or retrieval settings
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_memory_configuration:aitf
   type: mapping
   subject:
@@ -3775,7 +4733,10 @@
     constructs: [memory.config.*, memory.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `memory.*` config attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_memory_configuration:odis
   type: mapping
   subject:
@@ -3785,7 +4746,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:declared_memory_configuration
   type: controls
   subject:
@@ -3797,7 +4761,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_rationale:ocsf
   type: mapping
   subject:
@@ -3809,7 +4776,10 @@
     gap: No self-asserted rationale
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_rationale:otel
   type: mapping
   subject:
@@ -3821,7 +4791,10 @@
     gap: No self-asserted rationale
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_rationale:aitf
   type: mapping
   subject:
@@ -3833,7 +4806,10 @@
     constructs: [gen_ai.agent.step.thought]
     note: '`gen_ai.agent.step.thought` (per-step)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:memory_write_rationale:odis
   type: mapping
   subject:
@@ -3843,7 +4819,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:memory_write_rationale
   type: controls
   subject:
@@ -3855,7 +4834,10 @@
     - controlUntrustedContextContainment
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieval_event:ocsf
   type: mapping
   subject:
@@ -3868,7 +4850,10 @@
     gap: No retrieval object
     asks: [ocsf_ai_retrieval]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieval_event:otel
   type: mapping
   subject:
@@ -3879,7 +4864,10 @@
     coverage: covered
     constructs: [gen_ai.retrieval.query.text, gen_ai.retrieval.documents, gen_ai.data_source.id]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieval_event:aitf
   type: mapping
   subject:
@@ -3890,7 +4878,10 @@
     coverage: covered
     constructs: [rag.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieval_event:odis
   type: mapping
   subject:
@@ -3900,7 +4891,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:retrieval_event
   type: controls
   subject:
@@ -3910,7 +4904,10 @@
     controls:
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_source_provenance:ocsf
   type: mapping
   subject:
@@ -3922,7 +4919,10 @@
     gap: No retrieved-content source or provenance
     asks: [ocsf_ai_retrieval]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_source_provenance:otel
   type: mapping
   subject:
@@ -3934,7 +4934,10 @@
     gap: No per-item source or provenance
     asks: [otel_retrieval_provenance]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_source_provenance:aitf
   type: mapping
   subject:
@@ -3946,7 +4949,10 @@
     constructs: [rag.*]
     note: '`rag.*` (source)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_source_provenance:odis
   type: mapping
   subject:
@@ -3959,7 +4965,10 @@
     note: '`delegation_chain`/`constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:retrieved_content_source_provenance
   type: controls
   subject:
@@ -3969,7 +4978,10 @@
     controls:
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_metadata_integrity_signal:ocsf
   type: mapping
   subject:
@@ -3981,7 +4993,10 @@
     gap: No retrieved-content integrity signal
     asks: [ocsf_ai_retrieval]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_metadata_integrity_signal:otel
   type: mapping
   subject:
@@ -3993,7 +5008,10 @@
     gap: No per-item integrity signal or freshness
     asks: [otel_retrieval_provenance]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_metadata_integrity_signal:aitf
   type: mapping
   subject:
@@ -4004,7 +5022,10 @@
     coverage: covered
     constructs: [rag.*, security.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:retrieved_content_metadata_integrity_signal:odis
   type: mapping
   subject:
@@ -4014,7 +5035,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:retrieved_content_metadata_integrity_signal
   type: controls
   subject:
@@ -4024,7 +5048,10 @@
     controls:
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_knowledge_source_configuration:ocsf
   type: mapping
   subject:
@@ -4036,7 +5063,10 @@
     gap: No knowledge-source declaration
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_knowledge_source_configuration:otel
   type: mapping
   subject:
@@ -4049,7 +5079,10 @@
     gap: Data-source identity only; no schema or search parameters
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_knowledge_source_configuration:aitf
   type: mapping
   subject:
@@ -4061,7 +5094,10 @@
     constructs: [rag.source.*, rag.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `rag.*` config/index attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:declared_knowledge_source_configuration:odis
   type: mapping
   subject:
@@ -4071,7 +5107,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:declared_knowledge_source_configuration
   type: controls
   subject:
@@ -4081,7 +5120,10 @@
     controls:
     - controlRetrievalAndVectorSystemIntegrity
   reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inter_agent_message:ocsf
   type: mapping
   subject:
@@ -4093,7 +5135,10 @@
     gap: No inter-agent message
     asks: [ocsf_ai_agent_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inter_agent_message:otel
   type: mapping
   subject:
@@ -4105,7 +5150,10 @@
     gap: No inter-agent message attributes
     asks: [otel_inter_agent_messaging]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inter_agent_message:aitf
   type: mapping
   subject:
@@ -4117,7 +5165,10 @@
     constructs: [gen_ai.agent.*]
     note: '`gen_ai.agent.*`, delegation activity (OCSF 9002)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inter_agent_message:odis
   type: mapping
   subject:
@@ -4130,7 +5181,10 @@
     note: '`delegation_chain` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:inter_agent_message
   type: controls
   subject:
@@ -4139,7 +5193,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:a2a_task_lifecycle_event:ocsf
   type: mapping
   subject:
@@ -4151,7 +5208,10 @@
     gap: No delegated-task lifecycle
     asks: [ocsf_ai_delegation_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:a2a_task_lifecycle_event:otel
   type: mapping
   subject:
@@ -4163,7 +5223,10 @@
     gap: No A2A conventions
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:a2a_task_lifecycle_event:aitf
   type: mapping
   subject:
@@ -4175,7 +5238,10 @@
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: delegation activity (OCSF 9002); a2a attrs'
     constructs: [a2a.task.lifecycle.*, a2a.push.config.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:a2a_task_lifecycle_event:odis
   type: mapping
   subject:
@@ -4188,7 +5254,10 @@
     note: '`delegation_id`, `parent_delegation_ref` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:a2a_task_lifecycle_event
   type: controls
   subject:
@@ -4197,7 +5266,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:peer_agent_card_descriptor:ocsf
   type: mapping
   subject:
@@ -4210,7 +5282,10 @@
     gap: ai_agent can describe a counterparty; no descriptor change or verification outcome
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:peer_agent_card_descriptor:otel
   type: mapping
   subject:
@@ -4223,7 +5298,10 @@
     gap: Describes the agent a span is about; no counterparty descriptor, change or verification
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:peer_agent_card_descriptor:aitf
   type: mapping
   subject:
@@ -4235,7 +5313,10 @@
     constructs: [gen_ai.agent.peer.*, gen_ai.agent.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.agent.*` peer attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:peer_agent_card_descriptor:odis
   type: mapping
   subject:
@@ -4248,7 +5329,10 @@
     note: '`agent_id`, `approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:peer_agent_card_descriptor
   type: controls
   subject:
@@ -4257,7 +5341,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:background_scheduled_task_event:ocsf
   type: mapping
   subject:
@@ -4269,7 +5356,10 @@
     gap: No background-task event
     asks: [ocsf_ai_agent_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:background_scheduled_task_event:otel
   type: mapping
   subject:
@@ -4281,7 +5371,10 @@
     gap: No background-task or termination-condition signal
     asks: [otel_trigger]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:background_scheduled_task_event:aitf
   type: mapping
   subject:
@@ -4293,7 +5386,10 @@
     constructs: [gen_ai.agent.next_action]
     note: '`gen_ai.agent.next_action` / step events'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:background_scheduled_task_event:odis
   type: mapping
   subject:
@@ -4303,7 +5399,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:background_scheduled_task_event
   type: controls
   subject:
@@ -4312,7 +5411,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:loop_step_count_signal:ocsf
   type: mapping
   subject:
@@ -4324,7 +5426,10 @@
     gap: No loop or step signal
     asks: [ocsf_ai_agent_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:loop_step_count_signal:otel
   type: mapping
   subject:
@@ -4336,7 +5441,10 @@
     gap: Agent metrics count calls; no limit or termination semantics
     asks: [otel_run_budget]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:loop_step_count_signal:aitf
   type: mapping
   subject:
@@ -4348,7 +5456,10 @@
     constructs: [gen_ai.agent.session.turn_count, gen_ai.agent.step.index, agent.steps_per_session]
     note: XM §4 names gen_ai.agent.turn_count; AITF defines gen_ai.agent.session.turn_count.
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:loop_step_count_signal:odis
   type: mapping
   subject:
@@ -4358,7 +5469,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:loop_step_count_signal
   type: controls
   subject:
@@ -4367,7 +5481,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_consumption_aggregate:ocsf
   type: mapping
   subject:
@@ -4379,7 +5496,10 @@
     gap: No resource aggregate, and no budget accounting on the consuming action
     asks: [ocsf_ai_agent_activity, ocsf_ai_authorization]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_consumption_aggregate:otel
   type: mapping
   subject:
@@ -4392,7 +5512,10 @@
     gap: No per-run budget or threshold
     asks: [otel_run_budget]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_consumption_aggregate:aitf
   type: mapping
   subject:
@@ -4403,7 +5526,10 @@
     coverage: covered
     constructs: [cost.*, gen_ai.usage.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_consumption_aggregate:odis
   type: mapping
   subject:
@@ -4416,7 +5542,10 @@
     note: '`constraints` (rate) (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:resource_consumption_aggregate
   type: controls
   subject:
@@ -4425,7 +5554,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:task_intent_declaration:ocsf
   type: mapping
   subject:
@@ -4438,7 +5570,10 @@
     gap: A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:task_intent_declaration:otel
   type: mapping
   subject:
@@ -4450,7 +5585,10 @@
     gap: No declared purpose for the run
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:task_intent_declaration:aitf
   type: mapping
   subject:
@@ -4461,7 +5599,10 @@
     coverage: covered
     constructs: [gen_ai.agent.next_action]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:task_intent_declaration:odis
   type: mapping
   subject:
@@ -4474,7 +5615,10 @@
     note: '`task_id`, `task_description` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:task_intent_declaration
   type: controls
   subject:
@@ -4483,7 +5627,10 @@
   proposal:
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:protocol_envelope_capture:ocsf
   type: mapping
   subject:
@@ -4496,7 +5643,10 @@
     gap: raw_data holds the source record before normalization, not the envelope of each MCP or A2A message
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:protocol_envelope_capture:otel
   type: mapping
   subject:
@@ -4508,7 +5658,10 @@
     gap: No raw protocol envelope
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:protocol_envelope_capture:aitf
   type: mapping
   subject:
@@ -4520,7 +5673,10 @@
     constructs: [mcp.envelope.*, mcp.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.*` / a2a raw payload'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:protocol_envelope_capture:odis
   type: mapping
   subject:
@@ -4530,7 +5686,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:protocol_envelope_capture
   type: controls
   subject:
@@ -4539,7 +5698,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:identities_used_per_hop:ocsf
   type: mapping
   subject:
@@ -4552,7 +5714,10 @@
     gap: Credential events and the delegation context exist; per-hop identity is not tied to the AI operation
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:identities_used_per_hop:otel
   type: mapping
   subject:
@@ -4563,7 +5728,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:identities_used_per_hop:aitf
   type: mapping
   subject:
@@ -4575,7 +5743,10 @@
     constructs: [identity.*]
     note: '`identity.*` (OCSF Authentication 3002)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:identities_used_per_hop:odis
   type: mapping
   subject:
@@ -4588,7 +5759,10 @@
     note: '`actor`, chain (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:identities_used_per_hop
   type: controls
   subject:
@@ -4603,7 +5777,10 @@
     - controlSenderConstrainedCredentials
     - controlSessionCredentialBindingAndLifecycle
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:verified_vs_displayed_identity:ocsf
   type: mapping
   subject:
@@ -4616,7 +5793,10 @@
     gap: A user identifier and name both exist; no record of which one authorized
     asks: [ocsf_identity_verification]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:verified_vs_displayed_identity:otel
   type: mapping
   subject:
@@ -4627,7 +5807,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:verified_vs_displayed_identity:aitf
   type: mapping
   subject:
@@ -4638,7 +5821,10 @@
     coverage: covered
     constructs: [identity.auth.method, identity.auth.result]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:verified_vs_displayed_identity:odis
   type: mapping
   subject:
@@ -4651,7 +5837,10 @@
     note: '`originating_principal`/`actor` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:verified_vs_displayed_identity
   type: controls
   subject:
@@ -4666,7 +5855,10 @@
     - controlSenderConstrainedCredentials
     - controlSessionCredentialBindingAndLifecycle
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:originating_principal_on_behalf_of:ocsf
   type: mapping
   subject:
@@ -4678,7 +5870,10 @@
     gap: delegation records its issuer and lineage, not the originating principal
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:originating_principal_on_behalf_of:otel
   type: mapping
   subject:
@@ -4689,7 +5884,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:originating_principal_on_behalf_of:aitf
   type: mapping
   subject:
@@ -4700,7 +5898,10 @@
     coverage: covered
     constructs: [identity.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:originating_principal_on_behalf_of:odis
   type: mapping
   subject:
@@ -4713,7 +5914,10 @@
     note: '`originating_principal` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:originating_principal_on_behalf_of
   type: controls
   subject:
@@ -4729,7 +5933,10 @@
     - controlSessionCredentialBindingAndLifecycle
     - controlAgentCredentialIsolation
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:delegation_chain:ocsf
   type: mapping
   subject:
@@ -4742,7 +5949,10 @@
     gap: parent_uid is optional, so one record without it breaks the walk; no root or subtree identifier
     asks: [ocsf_delegation_lineage, ocsf_ai_delegation_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:delegation_chain:otel
   type: mapping
   subject:
@@ -4753,7 +5963,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:delegation_chain:aitf
   type: mapping
   subject:
@@ -4764,7 +5977,10 @@
     coverage: covered
     note: delegation activity (OCSF 9002)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:delegation_chain:odis
   type: mapping
   subject:
@@ -4777,7 +5993,10 @@
     note: '`delegation_chain`, `delegation_id`, `parent_delegation_ref` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:delegation_chain
   type: controls
   subject:
@@ -4786,7 +6005,10 @@
   proposal:
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:granted_authorizations_scope:ocsf
   type: mapping
   subject:
@@ -4798,7 +6020,10 @@
     gap: No granted scope on delegation
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:granted_authorizations_scope:otel
   type: mapping
   subject:
@@ -4809,7 +6034,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:granted_authorizations_scope:aitf
   type: mapping
   subject:
@@ -4820,7 +6048,10 @@
     coverage: covered
     constructs: [identity.auth.scope_granted]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:granted_authorizations_scope:odis
   type: mapping
   subject:
@@ -4833,7 +6064,10 @@
     note: '`granted_authorizations`, `attenuation_profile_ref` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:granted_authorizations_scope
   type: controls
   subject:
@@ -4842,7 +6076,10 @@
   proposal:
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_indicators_constraints:ocsf
   type: mapping
   subject:
@@ -4854,7 +6091,10 @@
     gap: No constraints on delegation
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_indicators_constraints:otel
   type: mapping
   subject:
@@ -4865,7 +6105,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_indicators_constraints:aitf
   type: mapping
   subject:
@@ -4876,7 +6119,10 @@
     coverage: covered
     constructs: [identity.*, compliance.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:resource_indicators_constraints:odis
   type: mapping
   subject:
@@ -4889,7 +6135,10 @@
     note: '`resource_indicators`, `constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:resource_indicators_constraints
   type: controls
   subject:
@@ -4898,7 +6147,10 @@
   proposal:
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:credential_minting_scope_narrowing_check:ocsf
   type: mapping
   subject:
@@ -4911,7 +6163,10 @@
     gap: No requested-versus-granted scope
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:credential_minting_scope_narrowing_check:otel
   type: mapping
   subject:
@@ -4922,7 +6177,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:credential_minting_scope_narrowing_check:aitf
   type: mapping
   subject:
@@ -4934,7 +6192,10 @@
     constructs: [identity.credential.mint.*, identity.auth.scope_granted]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.auth.scope_granted` + token-exchange attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:credential_minting_scope_narrowing_check:odis
   type: mapping
   subject:
@@ -4947,7 +6208,10 @@
     note: '`granted_authorizations`, `binding_profile` (6.2/6.3)'
     sections: [6.2/6.3]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:credential_minting_scope_narrowing_check
   type: controls
   subject:
@@ -4963,7 +6227,10 @@
     - controlSessionCredentialBindingAndLifecycle
     - controlAgentCredentialIsolation
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trust_domain_crossing_delegation_depth:ocsf
   type: mapping
   subject:
@@ -4975,7 +6242,10 @@
     gap: No trust-domain crossing; depth derivable only if every hop carries parent_uid
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trust_domain_crossing_delegation_depth:otel
   type: mapping
   subject:
@@ -4986,7 +6256,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trust_domain_crossing_delegation_depth:aitf
   type: mapping
   subject:
@@ -4998,7 +6271,10 @@
     constructs: [identity.boundary.*, identity.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.*` domain/depth attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:trust_domain_crossing_delegation_depth:odis
   type: mapping
   subject:
@@ -5011,7 +6287,10 @@
     note: '`trust_domain` (6.1, 6.2), `max_depth` (6.3)'
     sections: ['6.1, 6.2', '6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:trust_domain_crossing_delegation_depth
   type: controls
   subject:
@@ -5020,7 +6299,10 @@
   proposal:
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:runtime_credential_attestation:ocsf
   type: mapping
   subject:
@@ -5032,7 +6314,10 @@
     gap: No runtime attestation (OCSF attestation means record integrity)
     asks: [ocsf_runtime_attestation]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:runtime_credential_attestation:otel
   type: mapping
   subject:
@@ -5043,7 +6328,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:runtime_credential_attestation:aitf
   type: mapping
   subject:
@@ -5055,7 +6343,10 @@
     constructs: [identity.auth.method, identity.trust.method]
     note: '`identity.auth.method` (mTLS/SPIFFE/OAuth/DID-VC), `identity.trust.method`'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:runtime_credential_attestation:odis
   type: mapping
   subject:
@@ -5068,7 +6359,10 @@
     note: '`attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2)'
     sections: ['6.2']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:runtime_credential_attestation
   type: controls
   subject:
@@ -5083,7 +6377,10 @@
     - controlSenderConstrainedCredentials
     - controlSessionCredentialBindingAndLifecycle
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:lifecycle_state:ocsf
   type: mapping
   subject:
@@ -5095,7 +6392,10 @@
     gap: No lifecycle state on delegation
     asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:lifecycle_state:otel
   type: mapping
   subject:
@@ -5106,7 +6406,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:lifecycle_state:aitf
   type: mapping
   subject:
@@ -5117,7 +6420,10 @@
     coverage: covered
     constructs: [identity.lifecycle.operation]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:lifecycle_state:odis
   type: mapping
   subject:
@@ -5130,7 +6436,10 @@
     note: '`lifecycle_state` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:lifecycle_state
   type: controls
   subject:
@@ -5145,7 +6454,10 @@
     - controlSenderConstrainedCredentials
     - controlSessionCredentialBindingAndLifecycle
   reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:capability_set_change_event:ocsf
   type: mapping
   subject:
@@ -5157,7 +6469,10 @@
     gap: No capability-change event
     asks: [ocsf_ai_bom, ocsf_ai_agent_activity]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:capability_set_change_event:otel
   type: mapping
   subject:
@@ -5169,7 +6484,10 @@
     gap: No capability-change event
     asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:capability_set_change_event:aitf
   type: mapping
   subject:
@@ -5181,7 +6499,10 @@
     constructs: [asset.capability.*, asset.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` change events'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:capability_set_change_event:odis
   type: mapping
   subject:
@@ -5194,7 +6515,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:capability_set_change_event
   type: controls
   subject:
@@ -5203,7 +6527,10 @@
   proposal:
     controls: [controlAgentInventoryManagement, controlThirdPartyCapabilityAdmission]
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_agent_version:ocsf
   type: mapping
   subject:
@@ -5216,7 +6543,10 @@
     gap: No AI-asset object
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_agent_version:otel
   type: mapping
   subject:
@@ -5229,7 +6559,10 @@
     gap: Agent version only; no tool or framework version
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_agent_version:aitf
   type: mapping
   subject:
@@ -5240,7 +6573,10 @@
     coverage: covered
     constructs: [supply_chain.*, asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_agent_version:odis
   type: mapping
   subject:
@@ -5253,7 +6589,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_agent_version
   type: controls
   subject:
@@ -5263,7 +6602,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:repository_code_path_software_ref:ocsf
   type: mapping
   subject:
@@ -5276,7 +6618,10 @@
     gap: No AI-asset object
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:repository_code_path_software_ref:otel
   type: mapping
   subject:
@@ -5289,7 +6634,10 @@
     gap: Version-control attributes exist for CI/CD telemetry, not for tool and agent code
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:repository_code_path_software_ref:aitf
   type: mapping
   subject:
@@ -5300,7 +6648,10 @@
     coverage: covered
     constructs: [supply_chain.*, asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:repository_code_path_software_ref:odis
   type: mapping
   subject:
@@ -5313,7 +6664,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:repository_code_path_software_ref
   type: controls
   subject:
@@ -5323,7 +6677,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agbom_inventory_snapshot:ocsf
   type: mapping
   subject:
@@ -5335,7 +6692,10 @@
     gap: No agent-composition BOM
     asks: [ocsf_ai_bom]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agbom_inventory_snapshot:otel
   type: mapping
   subject:
@@ -5347,7 +6707,10 @@
     gap: No BOM reference
     asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agbom_inventory_snapshot:aitf
   type: mapping
   subject:
@@ -5358,7 +6721,10 @@
     coverage: covered
     constructs: [supply_chain.ai_bom.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:agbom_inventory_snapshot:odis
   type: mapping
   subject:
@@ -5371,7 +6737,10 @@
     note: '`approved_software_refs` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:agbom_inventory_snapshot
   type: controls
   subject:
@@ -5381,7 +6750,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:component_dependency_graph:ocsf
   type: mapping
   subject:
@@ -5393,7 +6765,10 @@
     gap: No dependency graph
     asks: [ocsf_ai_bom]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:component_dependency_graph:otel
   type: mapping
   subject:
@@ -5405,7 +6780,10 @@
     gap: No dependency graph
     asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:component_dependency_graph:aitf
   type: mapping
   subject:
@@ -5417,7 +6795,10 @@
     constructs: [supply_chain.ai_bom.*]
     note: '`supply_chain.ai_bom.*` (dependency edges)'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:component_dependency_graph:odis
   type: mapping
   subject:
@@ -5427,7 +6808,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:component_dependency_graph
   type: controls
   subject:
@@ -5437,7 +6821,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inventory_attestation_signature:ocsf
   type: mapping
   subject:
@@ -5449,7 +6836,10 @@
     gap: No BOM signature
     asks: [ocsf_ai_bom]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inventory_attestation_signature:otel
   type: mapping
   subject:
@@ -5461,7 +6851,10 @@
     gap: No inventory signature
     asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inventory_attestation_signature:aitf
   type: mapping
   subject:
@@ -5473,7 +6866,10 @@
     constructs: [supply_chain.*]
     note: '`supply_chain.*` signature attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:inventory_attestation_signature:odis
   type: mapping
   subject:
@@ -5486,7 +6882,10 @@
     note: '`software_hash`, `attestation_evidence` (6.2)'
     sections: ['6.2']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:inventory_attestation_signature
   type: controls
   subject:
@@ -5496,7 +6895,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_description:ocsf
   type: mapping
   subject:
@@ -5509,7 +6911,10 @@
     gap: No AI-asset object
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_description:otel
   type: mapping
   subject:
@@ -5520,7 +6925,10 @@
     coverage: covered
     constructs: [gen_ai.tool.description]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_description:aitf
   type: mapping
   subject:
@@ -5531,7 +6939,10 @@
     coverage: covered
     constructs: [asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_description:odis
   type: mapping
   subject:
@@ -5544,7 +6955,10 @@
     note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_description
   type: controls
   subject:
@@ -5554,7 +6968,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_status:ocsf
   type: mapping
   subject:
@@ -5567,7 +6984,10 @@
     gap: No AI-asset object
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_status:otel
   type: mapping
   subject:
@@ -5579,7 +6999,10 @@
     gap: No reachability status for a tool
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_status:aitf
   type: mapping
   subject:
@@ -5590,7 +7013,10 @@
     coverage: covered
     constructs: [asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:tool_status:odis
   type: mapping
   subject:
@@ -5603,7 +7029,10 @@
     note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:tool_status
   type: controls
   subject:
@@ -5613,7 +7042,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:creator_id_oncall_creation_update_dates:ocsf
   type: mapping
   subject:
@@ -5626,7 +7058,10 @@
     gap: No AI-asset object
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:creator_id_oncall_creation_update_dates:otel
   type: mapping
   subject:
@@ -5638,7 +7073,10 @@
     gap: No ownership or change dates
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:creator_id_oncall_creation_update_dates:aitf
   type: mapping
   subject:
@@ -5649,7 +7087,10 @@
     coverage: covered
     constructs: [asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:creator_id_oncall_creation_update_dates:odis
   type: mapping
   subject:
@@ -5662,7 +7103,10 @@
     note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:creator_id_oncall_creation_update_dates
   type: controls
   subject:
@@ -5672,7 +7116,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surfaces_supported:ocsf
   type: mapping
   subject:
@@ -5684,7 +7131,10 @@
     gap: No per-tool exposure map
     note: A MAY field; no ask.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surfaces_supported:otel
   type: mapping
   subject:
@@ -5696,7 +7146,10 @@
     gap: No per-tool exposure map
     note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surfaces_supported:aitf
   type: mapping
   subject:
@@ -5707,7 +7160,10 @@
     coverage: covered
     constructs: [asset.*]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:surfaces_supported:odis
   type: mapping
   subject:
@@ -5720,7 +7176,10 @@
     note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
     sections: ['6.1']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:surfaces_supported
   type: controls
   subject:
@@ -5730,7 +7189,10 @@
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:fleet_counts:ocsf
   type: mapping
   subject:
@@ -5742,7 +7204,10 @@
     gap: Fleet aggregates are derived
     note: Derived from per-event records; no ask.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:fleet_counts:otel
   type: mapping
   subject:
@@ -5754,7 +7219,10 @@
     gap: Fleet aggregates are derived
     note: Derived from per-event records; no ask.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:fleet_counts:aitf
   type: mapping
   subject:
@@ -5765,7 +7233,10 @@
     coverage: none
     note: (derived)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:fleet_counts:odis
   type: mapping
   subject:
@@ -5775,7 +7246,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:fleet_counts
   type: controls
   subject:
@@ -5784,7 +7258,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:enforcement_point_availability_failure_mode:ocsf
   type: mapping
   subject:
@@ -5796,7 +7273,10 @@
     gap: No enforcement availability or fail-open representation
     asks: [ocsf_ai_guardrail]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:enforcement_point_availability_failure_mode:otel
   type: mapping
   subject:
@@ -5807,7 +7287,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:enforcement_point_availability_failure_mode:aitf
   type: mapping
   subject:
@@ -5819,7 +7302,10 @@
     constructs: [security.enforcement.*, security.guardrail.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.guardrail.*` availability/latency'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:enforcement_point_availability_failure_mode:odis
   type: mapping
   subject:
@@ -5829,7 +7315,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:enforcement_point_availability_failure_mode
   type: controls
   subject:
@@ -5838,7 +7327,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:instrumentation_coverage_hook_attestation:ocsf
   type: mapping
   subject:
@@ -5850,7 +7342,10 @@
     gap: No hook-coverage representation
     asks: [ocsf_ai_asset]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:instrumentation_coverage_hook_attestation:otel
   type: mapping
   subject:
@@ -5862,7 +7357,10 @@
     gap: No instrumentation-coverage representation
     asks: [otel_hook_coverage]
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:instrumentation_coverage_hook_attestation:aitf
   type: mapping
   subject:
@@ -5874,7 +7372,10 @@
     constructs: [asset.instrumentation.*, asset.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` / instrumentation attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:instrumentation_coverage_hook_attestation:odis
   type: mapping
   subject:
@@ -5884,7 +7385,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:instrumentation_coverage_hook_attestation
   type: controls
   subject:
@@ -5893,7 +7397,10 @@
   proposal:
     controls: [controlAuditTrailCompleteness]
   reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:event_sequence_continuity:ocsf
   type: mapping
   subject:
@@ -5905,7 +7412,10 @@
     constructs: ['profile:record_integrity', 'object:attestation', 'attribute:prev_event', 'attribute:chain_uid']
     note: 'No new schema: continuity maps to attestation.prev_event and attestation.chain_uid.'
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:event_sequence_continuity:otel
   type: mapping
   subject:
@@ -5917,7 +7427,10 @@
     gap: No per-session sequence number or hash chain
     note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:event_sequence_continuity:aitf
   type: mapping
   subject:
@@ -5929,7 +7442,10 @@
     constructs: [observability.sequence.*]
     note: Closed in AITF v0.4 (AITF_gaps.md).
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:event_sequence_continuity:odis
   type: mapping
   subject:
@@ -5939,7 +7455,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:event_sequence_continuity
   type: controls
   subject:
@@ -5951,7 +7470,10 @@
     - controlAuditTrailIntegrityVerification
     - controlAuditRecordRepositoryIndependence
   reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:policy_reason_code:ocsf
   type: mapping
   subject:
@@ -5963,7 +7485,10 @@
     gap: No machine-readable enforcement reason code
     asks: [ocsf_ai_authorization]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:policy_reason_code:otel
   type: mapping
   subject:
@@ -5974,7 +7499,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:policy_reason_code:aitf
   type: mapping
   subject:
@@ -5985,7 +7513,10 @@
     coverage: covered
     constructs: [security.*, compliance.control_id]
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:policy_reason_code:odis
   type: mapping
   subject:
@@ -5995,7 +7526,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:policy_reason_code
   type: controls
   subject:
@@ -6004,7 +7538,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:authorization_decision_record:ocsf
   type: mapping
   subject:
@@ -6017,7 +7554,10 @@
     gap: No authorization-decision object for AI operations
     asks: [ocsf_ai_authorization]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:authorization_decision_record:otel
   type: mapping
   subject:
@@ -6029,7 +7569,10 @@
     asks: [otel_authorization_reference]
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:authorization_decision_record:aitf
   type: mapping
   subject:
@@ -6041,7 +7584,10 @@
     constructs: [security.authorization.*, security.*, compliance.control_id]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` decision + `compliance.control_id`'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:authorization_decision_record:odis
   type: mapping
   subject:
@@ -6052,7 +7598,10 @@
     coverage: none
     note: n/a (see note)
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:authorization_decision_record
   type: controls
   subject:
@@ -6064,7 +7613,10 @@
     - controlExternalizedAuthorizationDecisioning
     - controlResourceAuthorizationEnforcement
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:attribute_source_trusted_provenance_marking:ocsf
   type: mapping
   subject:
@@ -6076,7 +7628,10 @@
     gap: No attribute-provenance marking
     asks: [ocsf_attribute_source]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:attribute_source_trusted_provenance_marking:otel
   type: mapping
   subject:
@@ -6087,7 +7642,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:attribute_source_trusted_provenance_marking:aitf
   type: mapping
   subject:
@@ -6099,7 +7657,10 @@
     constructs: [security.attribute_source.*]
     note: Closed in AITF v0.4 (AITF_gaps.md).
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:attribute_source_trusted_provenance_marking:odis
   type: mapping
   subject:
@@ -6112,7 +7673,10 @@
     note: '`attestation_evidence` (6.2, partial)'
     sections: ['6.2']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:attribute_source_trusted_provenance_marking
   type: controls
   subject:
@@ -6121,7 +7685,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_taint_labels_information_flow_decisions:ocsf
   type: mapping
   subject:
@@ -6133,7 +7700,10 @@
     gap: No information-flow or taint labels
     asks: [ocsf_ai_taint]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_taint_labels_information_flow_decisions:otel
   type: mapping
   subject:
@@ -6144,7 +7714,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_taint_labels_information_flow_decisions:aitf
   type: mapping
   subject:
@@ -6156,7 +7729,10 @@
     constructs: [security.taint.*, security.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` labels'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:session_taint_labels_information_flow_decisions:odis
   type: mapping
   subject:
@@ -6169,7 +7745,10 @@
     note: '`constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:session_taint_labels_information_flow_decisions
   type: controls
   subject:
@@ -6178,7 +7757,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:human_approval_elicitation_event:ocsf
   type: mapping
   subject:
@@ -6190,7 +7772,10 @@
     gap: No human-approval lifecycle
     asks: [ocsf_ai_approval]
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:human_approval_elicitation_event:otel
   type: mapping
   subject:
@@ -6201,7 +7786,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:human_approval_elicitation_event:aitf
   type: mapping
   subject:
@@ -6213,7 +7801,10 @@
     constructs: [identity.approval.*, identity.*]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.*` approver + approval attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:human_approval_elicitation_event:odis
   type: mapping
   subject:
@@ -6226,7 +7817,10 @@
     note: '`originating_principal` (6.3, partial)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:human_approval_elicitation_event
   type: controls
   subject:
@@ -6235,7 +7829,10 @@
   proposal:
     controls: [controlInformedAgentConsentSurface]
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:backend_route_restriction_decision:ocsf
   type: mapping
   subject:
@@ -6247,7 +7844,10 @@
     gap: No routing constraint or candidate backends
     note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:backend_route_restriction_decision:otel
   type: mapping
   subject:
@@ -6258,7 +7858,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:backend_route_restriction_decision:aitf
   type: mapping
   subject:
@@ -6270,7 +7873,10 @@
     constructs: [gen_ai.route.*, gen_ai.provider.name]
     note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.provider.name` + routing constraint attrs'
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:backend_route_restriction_decision:odis
   type: mapping
   subject:
@@ -6283,7 +7889,10 @@
     note: '`resource_indicators`, `constraints` (6.3)'
     sections: ['6.3']
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:backend_route_restriction_decision
   type: controls
   subject:
@@ -6292,7 +7901,10 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mediation_coverage_bypass_path:ocsf
   type: mapping
   subject:
@@ -6304,7 +7916,10 @@
     gap: No mediation-coverage representation
     note: XM names the gap and proposes no change; decide an ask or record why none.
   reason: XM §3.1 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mediation_coverage_bypass_path:otel
   type: mapping
   subject:
@@ -6315,7 +7930,10 @@
     coverage: out_of_scope
     note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
   reason: XM §2.2 cluster row, per field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mediation_coverage_bypass_path:aitf
   type: mapping
   subject:
@@ -6327,7 +7945,10 @@
     constructs: [security.mediation.*]
     note: Closed in AITF v0.4 (AITF_gaps.md).
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:mediation_coverage_bypass_path:odis
   type: mapping
   subject:
@@ -6337,7 +7958,10 @@
   proposal:
     coverage: none
   reason: XM §4
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:mediation_coverage_bypass_path
   type: controls
   subject:
@@ -6346,4 +7970,7 @@
   proposal:
     controls: []
   reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

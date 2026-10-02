@@ -19,6 +19,9 @@ listed.
            or its former_id; a candidate it `supersedes` is stamped applied
   coverage sets `no_pattern:` on the attack: why no correlation pattern catches it
   catch    adds the attack to a pattern's `catches` (instance) or `catches_analogical`
+  ask      writes the ask to data/mapping.yaml `asks:`, replacing one with its id
+  mapping  sets how one publication carries one field, in data/mapping.yaml `fields:`
+  controls sets the Risk Map controls a field helps implement, in data/mapping.yaml
 
 After the edges are applied, a field's evidence is derived from the attacks
 that name it (build.py), so `evidence:` is removed from fields.yaml.
@@ -37,6 +40,11 @@ DATA = os.environ.get('TELEMETRY_DATA') or os.path.normpath(os.path.join(os.path
 TODAY = datetime.date.today().isoformat()
 HEADER = ('# Curation registry batch. Edit status only through tools/curate.py, or by hand\n'
           '# keeping decided_by and decided_on filled in. See curate.py for the schema.\n')
+MAPPING_HEADER = (
+    '# How the publications XM cross-references carry each field, the asks CoSAI makes of\n'
+    '# them, and the Risk Map controls each field helps implement. Written by tools/apply.py\n'
+    '# from decided candidates; record documented in tools/xm_propose.py. Constructs resolve\n'
+    '# at the versions pinned in sources.yaml `publications:` (tools/validate.py checks).\n')
 ATTACK_HEADER = '# {id}. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).\n'
 
 # Values an intake record does not carry but the AD tables need. Kept here so the
@@ -94,6 +102,8 @@ def main():
     attacks = {os.path.basename(p)[:-5]: load(p) for p in glob.glob(os.path.join(DATA, 'attacks', '*.yaml'))}
     patterns_path = os.path.join(DATA, 'patterns.yaml')
     patterns = load(patterns_path)
+    mapping_path = os.path.join(DATA, 'mapping.yaml')
+    mapping = load(mapping_path) if os.path.exists(mapping_path) else {'asks': [], 'fields': {}}
 
     batches = [(p, load(p) or []) for p in sorted(glob.glob(os.path.join(DATA, 'candidates', '*.yaml')))]
     all_c = {c['id']: c for _, cs in batches for c in cs}
@@ -115,7 +125,7 @@ def main():
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
     superseded = {c['supersedes'] for c in all_c.values() if c.get('supersedes') and c['status'] == 'accepted'}
-    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch')
+    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch', 'ask', 'mapping', 'controls')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -162,6 +172,12 @@ def main():
                     patterns.append(rec)
                     if c.get('supersedes'):
                         all_c[c['supersedes']]['applied'] = TODAY
+                elif kind == 'ask':
+                    mapping['asks'] = [a for a in mapping['asks'] if a['id'] != c['proposal']['id']] + [c['proposal']]
+                elif kind == 'mapping':
+                    mapping['fields'].setdefault(s['field'], {})[s['publication']] = c['proposal']
+                elif kind == 'controls':
+                    mapping['fields'].setdefault(s['field'], {})['controls'] = c['proposal']['controls']
                 elif kind == 'catch':
                     p = next(p for p in patterns if p['id'] == s['pattern'])
                     key = 'catches' if c['proposal']['grounding'] == 'instance' else 'catches_analogical'
@@ -196,10 +212,17 @@ def main():
     for p, cs in batches:
         dump(cs, p, HEADER)
     dump(fields, fields_path, '# Telemetry fields. Evidence is derived from attacks/ (tools/build.py).\n')
+    # mapping.yaml: fields in RFC §6 order, and within a field the publications in audience order
+    step_order = [f for st in layout['field_steps'] for f in st['fields']]
+    pub_order = ['ocsf', 'otel', 'aitf', 'odis', 'controls']
+    mapping['fields'] = {f: {k: mapping['fields'][f][k] for k in pub_order if k in mapping['fields'][f]}
+                         for f in step_order if f in mapping['fields']}
     old = [p['id'] for p in patterns if 'stage' not in p]
     if old and len(old) < len(patterns):
         sys.exit(f'patterns.yaml would mix structured and unstructured records: {old}')
     dump(patterns, patterns_path, '# Correlation patterns (AD §2). Record schema: tools/phase5_propose.py.\n')
+    if mapping['asks'] or mapping['fields']:
+        dump(mapping, mapping_path, MAPPING_HEADER)
     dump(layout, layout_path, '# Field steps (RFC §6 and AD §1 share them) and the layout of the other generated regions.\n')
     for aid, a in attacks.items():
         dump(a, attack_path(aid), ATTACK_HEADER.format(id=aid))
