@@ -14,6 +14,9 @@ Types: edge (an attack-field pair and its grounding class), alias (a name in
 an attack or pattern cell resolved by judgement), and, from intake, tier,
 field and pattern.
 
+`amend` replaces the proposal of an undecided candidate and keeps the old one
+under `amended:`, so the registry records what was proposed before.
+
 Grounding classes for edges, following RFC §4.7:
   instance    the documented attack contains the event or state the field
               records, and the field's value distinguishes the attack; counts
@@ -28,6 +31,7 @@ Usage:
   curate.py accept ID... [--as CLASS] --by NAME [--note TEXT]
   curate.py reject ID... --by NAME [--note TEXT]
   curate.py defer  ID... --by NAME --note TEXT
+  curate.py amend  ID --proposal YAML [--reason TEXT] --by NAME
   curate.py summary
 
 ID may be a glob (E:IR-04:*). Filters on list also select for accept/reject
@@ -40,6 +44,8 @@ import glob
 import os
 import sys
 from collections import Counter
+
+import yaml
 
 from yamlio import dump, load
 
@@ -108,6 +114,29 @@ def cmd_decide(a, status):
     print(f'{status}: {changed}')
 
 
+def cmd_amend(a):
+    if len(a.ids) != 1 or not a.proposal:
+        sys.exit('amend takes one ID and --proposal')
+    new = yaml.safe_load(a.proposal)
+    if not isinstance(new, dict):
+        sys.exit('--proposal must be a YAML mapping, e.g. "{basis: {required_to_read: [x, y]}}"')
+    for path, cs in batches():
+        for c in cs:
+            if c['id'] != a.ids[0]:
+                continue
+            if c['status'] != 'proposed':
+                sys.exit(f"{c['id']} is {c['status']}; only proposed candidates can be amended")
+            c.setdefault('amended', []).append({'proposal': c['proposal'], 'reason': c.get('reason'),
+                                                'by': a.by, 'on': datetime.date.today().isoformat()})
+            c['proposal'] = new
+            if a.reason:
+                c['reason'] = a.reason
+            dump(cs, path, HEADER)
+            print('amended:', c['id'])
+            return
+    sys.exit(f'no candidate {a.ids[0]}')
+
+
 def cmd_summary(_):
     for path, cs in batches():
         print(os.path.basename(path))
@@ -120,18 +149,18 @@ def cmd_summary(_):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('command', choices=['list', 'accept', 'reject', 'defer', 'summary'])
+    p.add_argument('command', choices=['list', 'accept', 'reject', 'defer', 'amend', 'summary'])
     p.add_argument('ids', nargs='*')
-    for f in ('status', 'type', 'attack', 'field', 'source', 'by', 'note'):
+    for f in ('status', 'type', 'attack', 'field', 'source', 'by', 'note', 'proposal', 'reason'):
         p.add_argument('--' + f)
     p.add_argument('--as', dest='as_', choices=['instance', 'analogical', 'reject'])
     p.add_argument('--critical', action='store_true')
     a = p.parse_args()
-    if a.command in ('accept', 'reject', 'defer') and not a.by:
+    if a.command in ('accept', 'reject', 'defer', 'amend') and not a.by:
         sys.exit('--by is required for a decision')
     if a.command == 'defer' and not a.note:
         sys.exit('--note is required to defer')
-    {'list': cmd_list, 'summary': cmd_summary,
+    {'list': cmd_list, 'summary': cmd_summary, 'amend': cmd_amend,
      'accept': lambda x: cmd_decide(x, 'accepted'),
      'reject': lambda x: cmd_decide(x, 'rejected'),
      'defer': lambda x: cmd_decide(x, 'deferred')}[a.command](a)

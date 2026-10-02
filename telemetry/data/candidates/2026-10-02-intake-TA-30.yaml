@@ -1,0 +1,63 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-30
+  type: attack
+  subject:
+    attack: TA-30
+  source: intake
+  proposal:
+    record:
+      id: TA-30
+      name: OpenClaw memory index unbounded growth
+      label: '**OpenClaw memory index, unbounded growth** (openclaw/openclaw#114612, Jul 2026)'
+      ref: 66
+      instance: failure
+      what_happened: The memory index of the OpenClaw agent runtime (`memory_index_chunks`, `memory_embedding_cache`) had no retention or eviction policy and grew on every memory-extraction cycle. The disk budget enforced on session tables did not measure the memory tables. Production installs reported 1.5 to 3.3 GB agent databases (38,985 rows in one), growing heap and GC pauses, and four-minute gateway start-ups; credential rotation re-embedded the whole corpus. No adversary was involved. A cache cap shipped in 2026.9.7; retention for still-present sources remained open.
+      atlas: [AML.T0029]
+      atlas_notes: Store growth and degraded service with no adversary; **no adversary technique applies**, and AML.T0029 names the impact only
+      reference: 'OpenClaw memory-core: SQLite unbounded growth, `memory_index_chunks` and `memory_embedding_cache` have no retention policy. GitHub issue openclaw/openclaw#114612, opened 27 July 2026, with independent field confirmations from further production installs. <https://github.com/openclaw/openclaw/issues/114612>'
+  reason: a non-adversarial failure of the same mechanism, admissible as TA-11 and AOC-06 are (AD §3); a separate incident from AOC-05, which is adversary-driven growth in a red-team study. Several installs report the one bug, so it counts once. Primary source is the issue tracker with field measurements.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+- id: E:TA-30:memory_footprint_growth
+  type: edge
+  subject:
+    attack: TA-30
+    field: memory_footprint_growth
+  source: intake
+  proposal:
+    grounding: instance
+  reason: store size and growth per agent is the signal; the deployment measured session tables and not these, so the growth went unseen until disk, heap and start-up time degraded
+  requires: A:TA-30
+  status: accepted
+  critical: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+- id: E:TA-30:declared_memory_configuration
+  type: edge
+  subject:
+    attack: TA-30
+    field: declared_memory_configuration
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the store had no declared size cap or retention; the declared budget covered other tables, which is what the field would have shown
+  requires: A:TA-30
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+- id: E:TA-30:resource_consumption_aggregate
+  type: edge
+  subject:
+    attack: TA-30
+    field: resource_consumption_aggregate
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: storage grew across runs, not against a per-run budget
+  requires: A:TA-30
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
