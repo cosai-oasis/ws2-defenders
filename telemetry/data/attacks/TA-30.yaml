@@ -15,3 +15,4 @@ fields:
 - declared_memory_configuration
 - field: resource_consumption_aggregate
   grounding: analogical
+risks: [riskLongLivedSessionStateWeakness]

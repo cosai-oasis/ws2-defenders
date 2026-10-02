@@ -10,3 +10,4 @@ fields:
 components_text: Tools, AgentOutputHandling
 atlas_text: '`AML.T0052` Phishing; `AML.T0053` Tool Invocation'
 atlas_notes: SMTP sender forgery *(resisted)*
+risks: [riskRogueActions]

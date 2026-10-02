@@ -35,3 +35,4 @@ components_text: Tools, ModelFrameworksAndCode
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation; `AML.T0102` Generate Malicious Commands'
 atlas_notes: Injection → unsandboxed code exec
 reference: LangChain prompt-injection → RCE (CVE-2023-36095, CVE-2023-29374, CVE-2023-34540). Liu et al., arXiv:2309.02926. <https://arxiv.org/abs/2309.02926>
+risks: [riskPromptInjection, riskUnsandboxedCodeExecution, riskInsecureIntegratedComponent]

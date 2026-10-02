@@ -9,3 +9,4 @@ components_text: Application, Memory, RAGContent, Identity
 atlas_text: '`AML.T0057` LLM Data Leakage'
 atlas_notes: 'Tenant-isolation and response-cache failure; **no adversary technique applies**: the boundary failed unaided'
 reference: Asana MCP server cross-tenant data exposure (Jun 2025); experimental MCP server launched 1 May 2025; tenant-isolation flaw found 4 Jun, exposure window 5 to 17 Jun; no evidence of exploitation. <https://www.theregister.com/2025/06/18/asana_mcp_server_bug/>
+risks: [riskPromptResponseCachePoisoning, riskCrossTenantCredentialPropagation, riskSensitiveDataDisclosure]

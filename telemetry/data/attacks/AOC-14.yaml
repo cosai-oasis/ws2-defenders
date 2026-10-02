@@ -19,3 +19,4 @@ fields:
 components_text: Tools
 atlas_text: '`AML.T0053` Tool Invocation; `AML.T0059` Erode Dataset Integrity'
 atlas_notes: Bypass API to edit storage *(resisted)*
+risks: [riskOverScopedToolAuthority]

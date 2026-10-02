@@ -15,3 +15,4 @@ components_text: ModelServing, Identity
 atlas_text: '`AML.T0034.000` Cost Harvesting: Excessive Queries; `AML.T0012` Valid Accounts; `AML.T0040` AI Model Inference API Access'
 atlas_notes: Stolen credentials resold as model access
 reference: 'LLMjacking: stolen cloud credentials used to access cloud-hosted models and resell that access via a reverse proxy. Sysdig Threat Research Team, 6 May 2024. MITRE ATLAS case study **`AML.CS0030`**. <https://sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack/>'
+risks: [riskCredentialAndTokenTheft, riskEconomicDenialOfWallet]

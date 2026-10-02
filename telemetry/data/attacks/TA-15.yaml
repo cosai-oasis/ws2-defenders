@@ -14,3 +14,4 @@ components_text: Tools, ToolServer
 atlas_text: '`AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0098` AI Agent Tool Credential Harvesting; `AML.T0086` Exfiltration via AI Agent Tool Invocation'
 atlas_notes: ATLAS case study `AML.CS0054`
 reference: MCP tool poisoning via tool-description injection. Invariant Labs, April 2025. MITRE ATLAS case study **`AML.CS0054`**. <https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks>
+risks: [riskToolSourceProvenance, riskPromptInjection, riskCredentialAndTokenTheft]

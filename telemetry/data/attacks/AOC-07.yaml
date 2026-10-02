@@ -17,3 +17,4 @@ fields:
 components_text: Memory, ReasoningCore
 atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0051.000` LLM Prompt Injection: Direct'
 atlas_notes: Guilt/gaslighting → escalating self-destruction
+risks: [riskPromptInjection, riskRogueActions, riskDeceptiveAgentReporting]

@@ -9,3 +9,4 @@ components_text: ApplicationInputHandling, ModelServing, Identity
 atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0012` Valid Accounts; `AML.T0048.003` External Harms: User Harm'
 atlas_notes: Guardrail bypass operated as a service
 reference: 'Storm-2139: credential scraping and custom tooling to bypass Azure OpenAI guardrails and modify service capabilities, resold as a service. Microsoft, January and February 2025. MITRE ATLAS case study **`AML.CS0057`**. <https://blogs.microsoft.com/on-the-issues/2025/02/27/disrupting-cybercrime-abusing-gen-ai/>'
+risks: [riskCredentialAndTokenTheft, riskPromptInjection, riskInsecureModelOutput]

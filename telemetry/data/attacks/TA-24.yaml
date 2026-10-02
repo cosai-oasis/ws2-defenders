@@ -9,3 +9,4 @@ components_text: ReasoningCore, Orchestration, Tools
 atlas_text: '`AML.T0124` Autonomous Attack Orchestration; `AML.T0054` LLM Jailbreak; `AML.T0116` Autonomous Reconnaissance; `AML.T0117` Autonomous Attack-Path Adaptation'
 atlas_notes: First reported AI-orchestrated campaign. ATLAS case study `AML.CS0069`
 reference: 'GTG-1002: state-sponsored group configuring an agent as an autonomous attack framework against ~30 organizations. Anthropic, September 2025; MITRE ATT&CK campaign **C0062**. MITRE ATLAS case study **`AML.CS0069`**. <https://www.anthropic.com/news/disrupting-AI-espionage>'
+risks: [riskPromptInjection, riskRogueActions]

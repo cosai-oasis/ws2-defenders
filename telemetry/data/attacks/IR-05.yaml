@@ -13,3 +13,4 @@ fields:
 components_text: Memory, RAGContent
 atlas_text: '`AML.T0070`, `AML.T0020`, `AML.T0043.004` Craft Adversarial Data: Insert Backdoor Trigger'
 atlas_notes: Trigger-based memory/RAG poisoning
+risks: [riskAgentMemoryPoisoning, riskRetrievalVectorStorePoisoning]

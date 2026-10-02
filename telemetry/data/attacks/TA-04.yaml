@@ -21,3 +21,4 @@ components_text: TheModel, ApplicationOutputHandling
 atlas_text: '`AML.T0024.000` Infer Training Data Membership; `AML.T0057` Data Leakage'
 atlas_notes: Divergence/repetition attack
 reference: Scalable extraction of training data from (production) LLMs. Nasr et al., arXiv:2311.17035. <https://arxiv.org/abs/2311.17035>
+risks: [riskSensitiveDataDisclosure]

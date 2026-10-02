@@ -22,3 +22,4 @@ fields:
 components_text: Memory
 atlas_text: '`AML.T0051.000` Direct and `AML.T0051.002` Triggered; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`'
 atlas_notes: 'Memory injection/feedback: injected as a user, activated by a victim''s query'
+risks: [riskAgentMemoryPoisoning]

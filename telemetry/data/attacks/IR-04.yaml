@@ -32,3 +32,4 @@ fields:
 components_text: ModelServing, Identity
 atlas_text: MITRE **ATT&CK** (non-AI)
 atlas_notes: SSRF/cloud exfil
+risks: [riskCredentialAndTokenTheft, riskExcessiveNetworkExposure]

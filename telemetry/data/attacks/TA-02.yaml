@@ -27,3 +27,4 @@ components_text: RAGContent, Tools, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0057` Data Leakage; `AML.T0070` RAG Poisoning'
 atlas_notes: Retrieval-mediated exfil
 reference: Slack AI private-channel data exfiltration. Dark Reading. <https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels>
+risks: [riskPromptInjection, riskSensitiveDataDisclosure, riskInsecureModelOutput]

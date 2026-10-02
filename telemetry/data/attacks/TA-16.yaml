@@ -16,3 +16,4 @@ components_text: Tools, ToolServer, AgentOutputHandling
 atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.001` AI Agent Tool Poisoning: Implementation; `AML.T0073` Impersonation; `AML.T0086`'
 atlas_notes: ATLAS case study `AML.CS0053`
 reference: '`postmark-mcp` malicious npm package (first malicious MCP server found in the wild); malicious from v1.0.16, removed from npm 25 September 2025. Koi Security. MITRE ATLAS case study **`AML.CS0053`**. <https://www.koi.ai/blog/postmark-mcp-npm-malicious-backdoor-email-theft>'
+risks: [riskAgenticToolSupplyChain, riskToolSourceProvenance, riskSensitiveDataDisclosure]

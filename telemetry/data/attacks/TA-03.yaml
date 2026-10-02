@@ -20,3 +20,4 @@ components_text: ApplicationOutputHandling
 atlas_text: '`AML.T0067.000` LLM Trusted Output Components Manipulation: Citations; `AML.T0057` Data Leakage'
 atlas_notes: 'Data in outbound image URL. `AML.T0024` does not apply: its sub-techniques are training-data and model extraction, not exfiltration of user data'
 reference: Data exfiltration via markdown images. J. Rehberger, *Embrace The Red.* <https://embracethered.com/blog/posts/2023/google-bard-data-exfiltration/>
+risks: [riskPromptInjection, riskInsecureModelOutput, riskSensitiveDataDisclosure]

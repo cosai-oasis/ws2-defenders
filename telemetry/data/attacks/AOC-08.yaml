@@ -30,3 +30,4 @@ fields:
 components_text: Identity, AgentSystemInstruction
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation'
 atlas_notes: Cross-channel display-name spoof → privileged action
+risks: [riskAgentIdentitySpoofing, riskBrokenAuthorizationEnforcement]

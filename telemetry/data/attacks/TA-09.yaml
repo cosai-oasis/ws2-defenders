@@ -26,3 +26,4 @@ components_text: RAGContent
 atlas_text: '`AML.T0070` RAG Poisoning; `AML.T0051.001` Indirect Injection; `AML.T0064` Gather RAG-Indexed Targets'
 atlas_notes: Hidden instructions in retrievable docs
 reference: RAG knowledge-base poisoning, arXiv:2507.08862. <https://arxiv.org/abs/2507.08862>
+risks: [riskRetrievalVectorStorePoisoning, riskPromptInjection]

@@ -29,3 +29,4 @@ fields:
 components_text: Orchestration, Tools
 atlas_text: '`AML.T0118.001` Autonomous AI Agent Communication: Direct Agent Communication; `AML.T0053` Tool Invocation; `AML.T0061` Self-Replication'
 atlas_notes: Cross-agent capability transfer
+risks: [riskImplicitCrossBoundaryTrust]

@@ -9,3 +9,4 @@ components_text: Application, Tools, Identity
 atlas_text: '`AML.T0011.003` User Execution: Malicious Link; `AML.T0105` Escape to Host; `AML.T0053` AI Agent Tool Invocation'
 atlas_notes: Approval gate disabled as configuration. ATLAS case study `AML.CS0050`
 reference: 'OpenClaw 1-click remote code execution, **CVE-2026-25253**: token theft, configuration change disabling user confirmation, container escape. DepthFirst, February 2026. MITRE ATLAS case study **`AML.CS0050`**. <https://nvd.nist.gov/vuln/detail/CVE-2026-25253>'
+risks: [riskUnconsentedAgentAction, riskCredentialAndTokenTheft, riskUnsandboxedCodeExecution]

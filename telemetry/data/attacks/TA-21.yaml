@@ -13,3 +13,4 @@ components_text: AgentSystemInstruction, ModelFrameworksAndCode
 atlas_text: '`AML.T0018.003` Modify Prompt Construction Logic; `AML.T0068` LLM Prompt Obfuscation; `AML.T0010.001` AI Supply Chain Compromise: AI Software'
 atlas_notes: Instruction configuration as supply-chain payload
 reference: 'Rules File Backdoor: invisible-Unicode instructions in AI coding-assistant rules files, distributed through repositories. Pillar Security, 18 March 2025. MITRE ATLAS case study **`AML.CS0041`**. <https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents>'
+risks: [riskPromptInjection, riskInsecureModelOutput]

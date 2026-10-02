@@ -11,3 +11,4 @@ fields:
 components_text: Identity, AgentInputHandling
 atlas_text: '`AML.T0052.000` Spearphishing via Social Engineering LLM'
 atlas_notes: Fake owner-compromise *(resisted)*
+risks: [riskAgentIdentitySpoofing]

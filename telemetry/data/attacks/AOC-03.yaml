@@ -19,3 +19,4 @@ fields:
 components_text: Tools, AgentOutputHandling
 atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0051.001` Indirect Injection'
 atlas_notes: Escalating indirect extraction
+risks: [riskSensitiveDataDisclosure, riskPromptInjection]

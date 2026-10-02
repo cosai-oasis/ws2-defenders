@@ -11,3 +11,4 @@ components_text: Tools, ToolServer, AgentOutputHandling
 atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0086` Exfiltration via AI Agent Tool Invocation'
 atlas_notes: Definition changed after approval under an unchanged name
 fields: [tool_definition_digest, capability_set_change_event, mcp_server_identity_primitive, tool_call_io, output_egress_destination, human_approval_elicitation_event]
+risks: [riskToolRegistryTampering, riskToolSourceProvenance, riskSensitiveDataDisclosure]

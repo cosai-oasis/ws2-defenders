@@ -26,3 +26,4 @@ components_text: ModelServing, ApplicationInputHandling
 atlas_text: '`AML.T0029` Denial of AI Service; `AML.T0034.001` Cost Harvesting: Resource-Intensive Queries'
 atlas_notes: Sponge/recursive inputs
 reference: 'LLM04: Model Denial of Service. OWASP Top 10 for LLM Applications. <https://genai.owasp.org/llmrisk2023-24/llm04-model-denial-of-service/>'
+risks: [riskDenialOfMLService, riskEconomicDenialOfWallet]

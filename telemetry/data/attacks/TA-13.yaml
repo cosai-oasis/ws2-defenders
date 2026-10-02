@@ -9,3 +9,4 @@ components_text: Tools, Identity
 atlas_text: '`AML.T0053` AI Agent Tool Invocation; MITRE **ATT&CK** privilege escalation'
 atlas_notes: Authorization not enforced at the MCP tool boundary
 reference: 'AI Engine (WordPress) MCP privilege escalation, **CVE-2025-5071** (CVSS 8.8, v2.8.0 to 2.8.3, disclosed 18 Jun 2025). <https://www.cve.org/CVERecord?id=CVE-2025-5071> · a second, unauthenticated flaw on the same MCP surface followed: **CVE-2025-11749** (CVSS 9.8, fixed in 3.1.4), <https://wpscan.com/vulnerability/b0d583a2-14e1-40bc-b875-3b48e992b803/> · <https://github.com/advisories/GHSA-q6x7-qqgq-h832>'
+risks: [riskBrokenAuthorizationEnforcement, riskCredentialAndTokenTheft]

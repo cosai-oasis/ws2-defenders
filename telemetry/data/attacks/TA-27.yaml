@@ -9,3 +9,4 @@ components_text: RAGContent, Orchestration
 atlas_text: '`AML.T0061` LLM Prompt Self-Replication; `AML.T0070` RAG Poisoning; `AML.T0051.001` Indirect'
 atlas_notes: Zero-click propagation between GenAI systems. ATLAS case study `AML.CS0024`
 reference: 'Morris II: zero-click adversarial self-replicating prompt propagating between GenAI systems via a RAG-based email assistant. S. Cohen, R. Bitton, B. Nassi, 5 March 2024. MITRE ATLAS case study **`AML.CS0024`**. <https://arxiv.org/abs/2403.02817>'
+risks: [riskPromptInjection, riskRetrievalVectorStorePoisoning, riskImplicitCrossBoundaryTrust]

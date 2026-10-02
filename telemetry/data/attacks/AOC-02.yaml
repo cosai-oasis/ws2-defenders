@@ -27,3 +27,4 @@ fields:
 components_text: AgentInputHandling, Tools, Identity
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation'
 atlas_notes: Non-owner authority → shell/file/data actions
+risks: [riskBrokenAuthorizationEnforcement, riskPromptInjection, riskSensitiveDataDisclosure]

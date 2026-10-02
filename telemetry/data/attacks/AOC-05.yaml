@@ -23,3 +23,4 @@ fields:
 components_text: Memory, ModelServing
 atlas_text: '`AML.T0029` Denial of AI Service; `AML.T0034.000` Cost Harvesting: Excessive Queries; `AML.T0034.001` Resource-Intensive Queries'
 atlas_notes: Memory growth + attachment flooding
+risks: [riskDenialOfMLService, riskEconomicDenialOfWallet]

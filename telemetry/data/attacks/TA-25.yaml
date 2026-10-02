@@ -9,3 +9,4 @@ components_text: Orchestration, Identity
 atlas_text: '`AML.T0124` Autonomous Attack Orchestration; `AML.T0118` Autonomous AI Agent Communication'
 atlas_notes: Multi-agent orchestration in the wild. ATLAS case study `AML.CS0071`
 reference: 'Multi-agent framework used against Taiwanese government systems: 12 attack waves, 1 to 4 July 2026, recovered 160 MB / 1,395-file operational workspace. Taiwan Ministry of Digital Affairs; Dream Research Labs; *Financial Times*. MITRE ATLAS case study **`AML.CS0071`**. <https://moda.gov.tw/ACS/press/news/press/20394>'
+risks: []

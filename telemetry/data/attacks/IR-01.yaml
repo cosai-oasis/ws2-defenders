@@ -32,3 +32,4 @@ fields:
 components_text: ApplicationInputHandling, AgentInputHandling
 atlas_text: '`AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`'
 atlas_notes: See §3.3
+risks: [riskPromptInjection, riskModelEvasion]

@@ -9,3 +9,4 @@ components_text: AgentInputHandling, Tools, Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0053` AI Agent Tool Invocation; `AML.T0057` Data Leakage'
 atlas_notes: Stored injection in ticket data → `service_role` MCP tool bypassing RLS → private tables
 reference: 'Supabase MCP private-table exposure via stored prompt injection. General Analysis. <https://generalanalysis.com/blog/supabase-mcp-blog> · analysis applying the **"lethal trifecta"** framing (private data + untrusted content + external communication): S. Willison, 6 Jul 2025, <https://simonwillison.net/2025/Jul/6/supabase-mcp-lethal-trifecta/> · vendor response: <https://supabase.com/blog/defense-in-depth-mcp>'
+risks: [riskPromptInjection, riskOverScopedToolAuthority, riskSensitiveDataDisclosure]

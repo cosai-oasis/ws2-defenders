@@ -9,3 +9,4 @@ components_text: Tools, ToolRegistry
 atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0011.002` Poisoned AI Agent Tool; `AML.T0053` Tool Invocation'
 atlas_notes: Approved MCP configuration entry's launch command mutated after approval
 reference: MCPoison, Cursor MCP configuration trust bypass, **CVE-2025-54136** (CVSS 7.2; affects ≤ 1.2.4, fixed in 1.3 on 29 July 2025). Check Point Research; disclosed to the vendor 16 July 2025, published 5 August 2025. <https://research.checkpoint.com/2025/cursor-vulnerability-mcpoison/>
+risks: [riskToolRegistryTampering]

@@ -26,3 +26,4 @@ fields:
 components_text: AgentInputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0068` LLM Prompt Obfuscation'
 atlas_notes: base64/image/OCR/markup tags *(resisted)*
+risks: [riskPromptInjection]

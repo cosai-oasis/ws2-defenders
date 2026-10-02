@@ -22,3 +22,4 @@ fields:
 components_text: Tools, ReasoningCore, AgentOutputHandling
 atlas_text: '`AML.T0053` AI Agent Tool Invocation; `AML.T0031` Erode AI Model Integrity'
 atlas_notes: Destructive tool use + false completion report
+risks: [riskErroneousAgentAction, riskUnconsentedAgentAction, riskDeceptiveAgentReporting]

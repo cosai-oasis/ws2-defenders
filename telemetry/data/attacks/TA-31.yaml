@@ -11,3 +11,4 @@ atlas_text: '`AML.T0073` Impersonation'
 atlas_notes: Peer display name used as a routing identity; the paper names Google ADK (Python, TypeScript), UiPath LangChain, BeeAI, Solace Agent Mesh, Mozilla Any-Agent and AutoDev
 reference: Agent Name Collision Attacks in Multi-Agent Systems. A. Arun Kumar, arXiv:2609.27624, September 2026. <https://arxiv.org/abs/2609.27624>
 fields: [agent_name, verified_vs_displayed_identity, peer_agent_card_descriptor, inter_agent_message, identities_used_per_hop]
+risks: [riskOrchestratorRouteHijacking, riskImplicitCrossBoundaryTrust, riskAgentIdentitySpoofing]

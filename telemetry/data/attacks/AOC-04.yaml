@@ -35,3 +35,4 @@ fields:
 components_text: Orchestration, ReasoningCore
 atlas_text: '`AML.T0034.002` Agentic Resource Consumption; `AML.T0118` Autonomous AI Agent Communication; `AML.T0029` Denial of AI Service; `AML.T0061` Self-Replication'
 atlas_notes: Multi-agent loop; runaway cron/shell
+risks: [riskRunawayAgentToolLoops, riskEconomicDenialOfWallet]

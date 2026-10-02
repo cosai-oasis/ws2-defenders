@@ -20,3 +20,4 @@ components_text: AgentSystemInstruction, ApplicationOutputHandling
 atlas_text: '`AML.T0056` Extract LLM System Prompt; `AML.T0069.002` Discover System Prompt'
 atlas_notes: n/a
 reference: System-prompt extraction / jailbreak via system prompts. Wu, Y., Li, X., Liu, Y., Zhou, P. & Sun, L. *Jailbreaking GPT-4V via Self-Adversarial Attacks with System Prompts.* arXiv:2311.09127 (2023). <https://arxiv.org/abs/2311.09127>
+risks: [riskSensitiveDataDisclosure, riskPromptInjection]

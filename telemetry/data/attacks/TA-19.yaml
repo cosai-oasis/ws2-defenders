@@ -9,3 +9,4 @@ components_text: ReasoningCore, AgentInputHandling, Tools
 atlas_text: '`AML.T0094` Delay Execution of LLM Instructions; `AML.T0080.001` AI Agent Context Poisoning: Thread; `AML.T0051.001`; `AML.T0053`; `AML.T0085.001`'
 atlas_notes: ATLAS case study `AML.CS0038`
 reference: 'Google Gemini: planting instructions for delayed automatic tool invocation. J. Rehberger, *Embrace The Red*. MITRE ATLAS case study **`AML.CS0038`**. <https://embracethered.com/blog/posts/2024/llm-context-pollution-and-delayed-automated-tool-invocation/>'
+risks: [riskPromptInjection, riskRogueActions]

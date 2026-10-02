@@ -55,3 +55,4 @@ fields:
 components_text: Memory, Tools
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0070` RAG Poisoning; `AML.T0020` Training Data Poisoning'
 atlas_notes: Externally-editable memory-linked "constitution"
+risks: [riskAgentMemoryPoisoning, riskPromptInjection, riskRogueActions]

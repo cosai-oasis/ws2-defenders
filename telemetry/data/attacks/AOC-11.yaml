@@ -20,3 +20,4 @@ fields:
 components_text: Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0061` Self-Replication; `AML.T0052.000` Spearphishing via LLM'
 atlas_notes: Impersonation → mass defamatory broadcast
+risks: [riskAgentIdentitySpoofing, riskRogueActions]

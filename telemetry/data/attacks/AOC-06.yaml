@@ -16,3 +16,4 @@ fields:
 components_text: ModelServing, TheModel
 atlas_text: '`AML.T0048`* External Harms / provider policy'
 atlas_notes: Provider-side silent truncation (governance signal)
+risks: []

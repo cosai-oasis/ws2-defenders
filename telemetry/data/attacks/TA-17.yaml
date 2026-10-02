@@ -16,3 +16,4 @@ components_text: Application, Identity
 atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0048` External Harms'
 atlas_notes: Observability plane repurposed as the exfiltration channel
 reference: DifyTap, four vulnerabilities in Dify enabling cross-tenant data exposure; **CVE-2026-41947** (CVSS 9.1) trace-configuration authorization bypass, with CVE-2026-41948/-41949/-41950. Zafran Security (Ido Shani, Gal Zaban), 22 June 2026; fixed in 1.14.2. <https://thehackernews.com/2026/06/researchers-detail-difytap-flaws-in.html>
+risks: [riskAuditTrailTampering, riskBrokenAuthorizationEnforcement, riskSensitiveDataDisclosure]

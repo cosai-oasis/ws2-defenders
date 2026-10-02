@@ -1,5 +1,5 @@
-# Phase 3 batch: the Risk Map risks each attack instantiates, first listed is primary.
-# IDs resolve against data/sources.yaml (develop plus feature/jo5iah-524-527). gap: no risk, or only a partial fit.
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
 - id: M:TA-01
   type: risks
   subject:
@@ -7,7 +7,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskSensitiveDataDisclosure, riskInsecureModelOutput]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-02
   type: risks
   subject:
@@ -15,7 +18,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskSensitiveDataDisclosure, riskInsecureModelOutput]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-03
   type: risks
   subject:
@@ -23,7 +29,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskInsecureModelOutput, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-04
   type: risks
   subject:
@@ -31,7 +40,10 @@
   source: phase3
   proposal:
     risks: [riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-05
   type: risks
   subject:
@@ -41,7 +53,10 @@
     risks:
     - riskExcessiveDataHandlingDuringInference
     - riskSensitiveDataDisclosure
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-06
   type: risks
   subject:
@@ -49,7 +64,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskUnsandboxedCodeExecution, riskInsecureIntegratedComponent]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-07
   type: risks
   subject:
@@ -57,7 +75,10 @@
   source: phase3
   proposal:
     risks: [riskSensitiveDataDisclosure, riskPromptInjection]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-08
   type: risks
   subject:
@@ -65,7 +86,10 @@
   source: phase3
   proposal:
     risks: [riskOverScopedToolAuthority, riskRogueActions, riskCredentialAndTokenTheft]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-09
   type: risks
   subject:
@@ -73,7 +97,10 @@
   source: phase3
   proposal:
     risks: [riskRetrievalVectorStorePoisoning, riskPromptInjection]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-10
   type: risks
   subject:
@@ -81,7 +108,10 @@
   source: phase3
   proposal:
     risks: [riskDenialOfMLService, riskEconomicDenialOfWallet]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-11
   type: risks
   subject:
@@ -89,8 +119,11 @@
   source: phase3
   proposal:
     risks: [riskPromptResponseCachePoisoning, riskCrossTenantCredentialPropagation, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
   reason: no adversary; the shared cache lacked tenant isolation
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-12
   type: risks
   subject:
@@ -98,7 +131,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskOverScopedToolAuthority, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-13
   type: risks
   subject:
@@ -106,7 +142,10 @@
   source: phase3
   proposal:
     risks: [riskBrokenAuthorizationEnforcement, riskCredentialAndTokenTheft]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-14
   type: risks
   subject:
@@ -114,8 +153,11 @@
   source: phase3
   proposal:
     risks: [riskToolRegistryTampering]
-  status: proposed
+  status: accepted
   reason: an approved configuration entry changed after vetting
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-15
   type: risks
   subject:
@@ -123,7 +165,10 @@
   source: phase3
   proposal:
     risks: [riskToolSourceProvenance, riskPromptInjection, riskCredentialAndTokenTheft]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-16
   type: risks
   subject:
@@ -131,7 +176,10 @@
   source: phase3
   proposal:
     risks: [riskAgenticToolSupplyChain, riskToolSourceProvenance, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-17
   type: risks
   subject:
@@ -139,8 +187,11 @@
   source: phase3
   proposal:
     risks: [riskAuditTrailTampering, riskBrokenAuthorizationEnforcement, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
   reason: the redirection mode the entry names
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-18
   type: risks
   subject:
@@ -148,8 +199,11 @@
   source: phase3
   proposal:
     risks: [riskAgentMemoryPoisoning, riskPromptInjection]
-  status: proposed
+  status: accepted
   reason: direct-content variant
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-19
   type: risks
   subject:
@@ -157,7 +211,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskRogueActions]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-20
   type: risks
   subject:
@@ -165,7 +222,10 @@
   source: phase3
   proposal:
     risks: [riskCredentialAndTokenTheft, riskEconomicDenialOfWallet]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-21
   type: risks
   subject:
@@ -173,9 +233,12 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskInsecureModelOutput]
-  status: proposed
+  status: accepted
   reason: 'partial fit: no risk covers poisoning of an instruction configuration distributed through repositories'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-22
   type: risks
   subject:
@@ -183,7 +246,10 @@
   source: phase3
   proposal:
     risks: [riskCredentialAndTokenTheft, riskPromptInjection, riskInsecureModelOutput]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-23
   type: risks
   subject:
@@ -191,7 +257,10 @@
   source: phase3
   proposal:
     risks: [riskUnconsentedAgentAction, riskCredentialAndTokenTheft, riskUnsandboxedCodeExecution]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-24
   type: risks
   subject:
@@ -199,9 +268,12 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskRogueActions]
-  status: proposed
+  status: accepted
   reason: 'partial fit: the agent is operated by the adversary against third parties; no risk covers adversary-operated agents'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-25
   type: risks
   subject:
@@ -209,9 +281,12 @@
   source: phase3
   proposal:
     risks: []
-  status: proposed
+  status: accepted
   reason: 'no fit: adversary-operated multi-agent framework against third parties'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-26
   type: risks
   subject:
@@ -219,7 +294,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskRogueActions, riskUnsandboxedCodeExecution]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-27
   type: risks
   subject:
@@ -227,7 +305,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskRetrievalVectorStorePoisoning, riskImplicitCrossBoundaryTrust]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-28
   type: risks
   subject:
@@ -235,9 +316,12 @@
   source: phase3
   proposal:
     risks: []
-  status: proposed
+  status: accepted
   reason: 'no fit: malware on the host uses a provider API as command and control; the AI system is the channel, not the target'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-29
   type: risks
   subject:
@@ -245,7 +329,10 @@
   source: phase3
   proposal:
     risks: [riskToolRegistryTampering, riskToolSourceProvenance, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-30
   type: risks
   subject:
@@ -253,9 +340,12 @@
   source: phase3
   proposal:
     risks: [riskLongLivedSessionStateWeakness]
-  status: proposed
+  status: accepted
   reason: 'partial fit: persistent memory rather than session state; offered to the reviewer on #527'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:TA-31
   type: risks
   subject:
@@ -263,7 +353,10 @@
   source: phase3
   proposal:
     risks: [riskOrchestratorRouteHijacking, riskImplicitCrossBoundaryTrust, riskAgentIdentitySpoofing]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:IR-01
   type: risks
   subject:
@@ -271,7 +364,10 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskModelEvasion]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:IR-02
   type: risks
   subject:
@@ -279,8 +375,11 @@
   source: phase3
   proposal:
     risks: [riskAgentMemoryPoisoning]
-  status: proposed
+  status: accepted
   reason: direct-content variant
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:IR-03
   type: risks
   subject:
@@ -288,7 +387,10 @@
   source: phase3
   proposal:
     risks: [riskRetrievalVectorStorePoisoning]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:IR-04
   type: risks
   subject:
@@ -296,8 +398,11 @@
   source: phase3
   proposal:
     risks: [riskCredentialAndTokenTheft, riskExcessiveNetworkExposure]
-  status: proposed
+  status: accepted
   reason: non-AI incident
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:IR-05
   type: risks
   subject:
@@ -305,7 +410,10 @@
   source: phase3
   proposal:
     risks: [riskAgentMemoryPoisoning, riskRetrievalVectorStorePoisoning]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-01
   type: risks
   subject:
@@ -313,8 +421,11 @@
   source: phase3
   proposal:
     risks: [riskErroneousAgentAction, riskUnconsentedAgentAction, riskDeceptiveAgentReporting]
-  status: proposed
+  status: accepted
   reason: the reviewer cites CS1 as the secondary example of deceptive reporting
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-02
   type: risks
   subject:
@@ -322,7 +433,10 @@
   source: phase3
   proposal:
     risks: [riskBrokenAuthorizationEnforcement, riskPromptInjection, riskSensitiveDataDisclosure]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-03
   type: risks
   subject:
@@ -330,7 +444,10 @@
   source: phase3
   proposal:
     risks: [riskSensitiveDataDisclosure, riskPromptInjection]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-04
   type: risks
   subject:
@@ -338,7 +455,10 @@
   source: phase3
   proposal:
     risks: [riskRunawayAgentToolLoops, riskEconomicDenialOfWallet]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-05
   type: risks
   subject:
@@ -346,7 +466,10 @@
   source: phase3
   proposal:
     risks: [riskDenialOfMLService, riskEconomicDenialOfWallet]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-06
   type: risks
   subject:
@@ -354,9 +477,12 @@
   source: phase3
   proposal:
     risks: []
-  status: proposed
+  status: accepted
   reason: 'no fit: provider-side silent truncation, no adversary'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-07
   type: risks
   subject:
@@ -364,8 +490,11 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection, riskRogueActions, riskDeceptiveAgentReporting]
-  status: proposed
+  status: accepted
   reason: the reviewer cites CS7 as the flagship example of deceptive reporting
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-08
   type: risks
   subject:
@@ -373,7 +502,10 @@
   source: phase3
   proposal:
     risks: [riskAgentIdentitySpoofing, riskBrokenAuthorizationEnforcement]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-09
   type: risks
   subject:
@@ -381,8 +513,11 @@
   source: phase3
   proposal:
     risks: [riskImplicitCrossBoundaryTrust]
-  status: proposed
+  status: accepted
   reason: 'mode 1 of the #526 extension'
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-10
   type: risks
   subject:
@@ -390,8 +525,11 @@
   source: phase3
   proposal:
     risks: [riskAgentMemoryPoisoning, riskPromptInjection, riskRogueActions]
-  status: proposed
+  status: accepted
   reason: memory-as-pointer variant
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-11
   type: risks
   subject:
@@ -399,8 +537,11 @@
   source: phase3
   proposal:
     risks: [riskAgentIdentitySpoofing, riskRogueActions]
-  status: proposed
+  status: accepted
   reason: the reviewer places CS11 under identity spoofing
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-12
   type: risks
   subject:
@@ -408,8 +549,11 @@
   source: phase3
   proposal:
     risks: [riskPromptInjection]
-  status: proposed
+  status: accepted
   reason: resisted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-13
   type: risks
   subject:
@@ -417,8 +561,11 @@
   source: phase3
   proposal:
     risks: [riskRogueActions]
-  status: proposed
+  status: accepted
   reason: resisted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-14
   type: risks
   subject:
@@ -426,8 +573,11 @@
   source: phase3
   proposal:
     risks: [riskOverScopedToolAuthority]
-  status: proposed
+  status: accepted
   reason: resisted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-15
   type: risks
   subject:
@@ -435,8 +585,11 @@
   source: phase3
   proposal:
     risks: [riskAgentIdentitySpoofing]
-  status: proposed
+  status: accepted
   reason: resisted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: M:AOC-16
   type: risks
   subject:
@@ -444,6 +597,9 @@
   source: phase3
   proposal:
     risks: []
-  status: proposed
+  status: accepted
   reason: 'no fit: a benign case; the reviewer declined it as evidence for riskCrossAgentReputationPoisoning'
   gap: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

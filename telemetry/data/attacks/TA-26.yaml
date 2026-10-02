@@ -9,3 +9,4 @@ components_text: AgentInputHandling, Tools
 atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0054` LLM Jailbreak; `AML.T0068` LLM Prompt Obfuscation; `AML.T0053` AI Agent Tool Invocation'
 atlas_notes: Attachment-borne injection → shell. ATLAS case study `AML.CS0046`
 reference: 'Indirect prompt injection of Claude Computer Use: PDF-borne injection invoking the agent''s shell tool to destroy user data. HiddenLayer, 24 October 2024. MITRE ATLAS case study **`AML.CS0046`**. <https://hiddenlayer.com/innovation-hub/indirect-prompt-injection-of-claude-computer-use/>'
+risks: [riskPromptInjection, riskRogueActions, riskUnsandboxedCodeExecution]

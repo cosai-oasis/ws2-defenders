@@ -28,3 +28,4 @@ components_text: Tools, Identity, ReasoningCore
 atlas_text: '`AML.T0053` AI Agent Tool Invocation'
 atlas_notes: Chained authorized calls → escalation
 reference: 'Agentic AI threats: tool-chaining privilege escalation. Lakera. <https://www.lakera.ai/blog/agentic-ai-threats-p2>'
+risks: [riskOverScopedToolAuthority, riskRogueActions, riskCredentialAndTokenTheft]
