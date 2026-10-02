@@ -26,8 +26,8 @@ import yaml
 import rules
 from mdtables import find_tables, gh_anchor, row
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-DATA = os.path.join(DIR, 'data')
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
+DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))   # build-telemetry/data/
 RFC, AD = 'CoSAI-AI-Telemetry-RFC.md', 'Telemetry-Attack-Detection-Addendum.md'
 
 

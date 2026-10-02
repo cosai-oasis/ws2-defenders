@@ -19,11 +19,11 @@ import yaml
 
 from mdtables import gh_anchor
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
 AD, RFC, XM = ('Telemetry-Attack-Detection-Addendum.md', 'CoSAI-AI-Telemetry-RFC.md',
                'Telemetry-Cross-Mapping-Addendum.md')
-layout = yaml.safe_load(open(os.path.join(DIR, 'data', 'sections.yaml'), encoding='utf-8'))
-fields = {f['id']: f for f in yaml.safe_load(open(os.path.join(DIR, 'data', 'fields.yaml'), encoding='utf-8'))}
+layout = yaml.safe_load(open(os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')), 'sections.yaml'), encoding='utf-8'))
+fields = {f['id']: f for f in yaml.safe_load(open(os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')), 'fields.yaml'), encoding='utf-8'))}
 
 STEP = {s['number']: '1.' + s['number'].split('.')[1] for s in layout['rfc_field_tables']}   # 6.k -> 1.k
 field_step = {f: STEP[s['number']] for s in layout['rfc_field_tables'] for f in s['fields']}
@@ -161,7 +161,7 @@ def main():
         else:
             t = remap_text(t, req)
         out[name] = t
-    fp = os.path.join(DIR, 'data', 'fields.yaml')
+    fp = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')), 'fields.yaml')
     ftext = remap_text(open(fp, encoding='utf-8').read(), False)
     print(f"references remapped: {log['mapped']}; split clusters resolved by field: {log['by_field']}; "
           f"lists that collapsed: {log['collapsed']}")

@@ -38,8 +38,8 @@ import sys
 
 from yamlio import dump, load
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-DATA = os.path.join(DIR, 'data')
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
+DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))   # build-telemetry/data/
 OUT = os.path.join(DATA, 'candidates', '2026-10-02-phase5-patterns.yaml')
 STAGES = ('entry', 'decision', 'action', 'persistence', 'egress', 'plane')
 

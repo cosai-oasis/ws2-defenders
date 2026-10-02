@@ -17,8 +17,8 @@ from collections import Counter, defaultdict
 
 from yamlio import dump, load
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-DATA = os.path.join(DIR, 'data')
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
+DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))   # build-telemetry/data/
 
 # Short and variant names found in attack rows and patterns. A list means the
 # text names more than one field. `None` marks text that names no field.

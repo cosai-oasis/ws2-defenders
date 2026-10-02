@@ -14,8 +14,8 @@ import re
 
 from yamlio import dump, load
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-PATH = os.path.join(DIR, 'data', 'fields.yaml')
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
+PATH = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')), 'fields.yaml')
 T47 = '[RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)'
 PLANE = '[§4.2](#42-the-telemetry-plane)'
 

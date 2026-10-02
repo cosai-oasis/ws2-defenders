@@ -9,8 +9,8 @@ import re
 
 from yamlio import load
 
-DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-DATA = os.path.join(DIR, 'data')
+DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
+DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))   # build-telemetry/data/
 TIERS = ('MUST', 'SHOULD', 'MAY')
 RANK = {t: i for i, t in enumerate(TIERS)}
 ROLES = {'identifier', 'content', 'outcome', 'label', 'descriptor', 'measure', 'provenance'}

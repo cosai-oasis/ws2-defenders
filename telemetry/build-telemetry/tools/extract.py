@@ -15,9 +15,9 @@ import sys
 import yamlio
 from mdtables import cells, find_tables, gh_anchor
 
-DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), '..')
+DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), '..', '..')
 RFC, AD = 'CoSAI-AI-Telemetry-RFC.md', 'Telemetry-Attack-Detection-Addendum.md'
-DATA = os.path.join(DIR, 'data')
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
 
 ATTACK = r'(?:TA|IR|AOC)-\d+'
 
