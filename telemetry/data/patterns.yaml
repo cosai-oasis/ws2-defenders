@@ -1,213 +1,620 @@
-# AD §2 correlation patterns. Extracted verbatim (phase 1); fields_text is unreconciled.
-- id: CP-01
-  pattern: Same input hash across many identities
-  indicates: Automated injection campaign
-  fields_text: Model Input, Identities Used, Source IP
-  fields: [model_input, identities_used_per_hop, source_host_ip_request_metadata]
-  evidence: [IR-01]
-- id: CP-02
-  pattern: Rising LLM Refusal → then Status=complete (same session)
-  indicates: Jailbreak succeeded after probing
-  fields_text: LLM Refusal, Execution Status, Model Input
-  fields: [llm_refusal, execution_status, model_input]
-  evidence: [IR-01, AOC-12]
-- id: CP-03
-  pattern: Tool-call spike + new Tool Name appears
-  indicates: Agent reaching unauthorized capability
-  fields_text: Tool Call I/O, Tool Name, Resource Aggregate
-  fields: [tool_call_io, tool_name, resource_consumption_aggregate]
-  evidence: [AOC-02, AOC-10]
-- id: CP-04
-  pattern: Untrusted input segment → tool call → outbound egress to new domain
-  indicates: Injection-to-exfiltration chain
-  fields_text: Input Trust Class, Tool Call I/O, Output Egress Destination
-  fields: [input_trust_classification, tool_call_io, output_egress_destination]
-  evidence: [TA-01, TA-03]
-- id: CP-05
-  pattern: Memory write with non-owner/external provenance → later behavior change
-  indicates: Memory poisoning / indirect corruption
-  fields_text: Memory Write, Memory Provenance, Observation/Thought
-  fields: [memory_write_event, memory_provenance_source, observation_thought_reasoning_trace]
-  evidence: [IR-02, AOC-10]
-- id: CP-06
-  pattern: Retrieved item (external source, recently modified) quoted as instruction in output
-  indicates: RAG injection / KB poisoning
-  fields_text: Retrieval Event, Retrieved-Content Source, Response
-  fields: [retrieval_event, retrieved_content_source_provenance, response_model_output]
-  evidence: [TA-01, TA-02, TA-09]
-- id: CP-07
-  pattern: Response text ≈ logged System Prompt
-  indicates: System-prompt extraction
-  fields_text: System Prompt, Response, LLM Refusal
-  fields: [system_prompt_instruction_config, response_model_output, llm_refusal]
-  evidence: [TA-07]
-- id: CP-08
-  pattern: Chain of individually-authorized tool calls; identity shifts mid-chain
-  indicates: Tool-chaining privilege escalation
-  fields_text: Tool Call I/O, Identities Used, Tool ACL/Scope, tool-call count
-  fields: [tool_call_io, identities_used_per_hop, tool_acl_required_scope, loop_step_count_signal]
-  evidence: [TA-08]
-- id: CP-09
-  pattern: Oversized/recursive input + max-length output + timeout/overflow error
-  indicates: Context-window DoS / cost blow-up
-  fields_text: Model Input, Token Counts, LLM Error, Resource Aggregate, Source IP
-  fields: [model_input, input_output_token_counts, llm_error_exception, resource_consumption_aggregate, source_host_ip_request_metadata]
-  evidence: [TA-10]
-- id: CP-10
-  pattern: Inter-agent messages loop + token/compute climbing, no terminating step
-  indicates: Multi-agent resource-exhaustion loop
-  fields_text: Inter-Agent Message, Loop Signal, Resource Aggregate
-  fields: [inter_agent_message, loop_step_count_signal, resource_consumption_aggregate]
-  evidence: [AOC-04]
-- id: CP-11
-  pattern: Background task created with no termination condition
-  indicates: Runaway automation / persistence
-  fields_text: Background Task Event, Action Type
-  fields: [background_scheduled_task_event, action_type]
-  evidence: [AOC-04, AOC-10]
-- id: CP-12
-  pattern: Privileged action authorized on **displayed** (not verified) identity, esp. new channel
-  indicates: Identity spoofing / confused deputy
-  fields_text: Verified-vs-Displayed Identity, Granted Authorizations, Surface
-  fields: [verified_vs_displayed_identity, granted_authorizations_scope, surface_app]
-  evidence: [AOC-08]
-- id: CP-13
-  pattern: Model Name/Provider change + Error/finish-reason spike
-  indicates: Supply-chain compromise or provider-side interference
-  fields_text: Model Name, Provider Identity, LLM Error
-  fields: [model_name_version, provider_endpoint_identity, llm_error_exception]
-  evidence: [TA-06, AOC-06]
-- id: CP-14
-  pattern: Source IP shift + same identity
-  indicates: Credential theft / session hijack
-  fields_text: Source IP, Identities Used, Surface
-  fields: [source_host_ip_request_metadata, identities_used_per_hop, surface_app]
-  evidence: [AOC-15, IR-04]
-- id: CP-15
-  pattern: Cited source resolves to no logged retrieval, or to an external/recently-modified item
-  indicates: Fabricated or attacker-planted citation; trust laundering
-  fields_text: Citations, Retrieval Event, Retrieved-Content Source, Output Egress
-  fields: [citations_source_attribution, retrieval_event, retrieved_content_source_provenance, output_egress_destination]
-  evidence: [TA-02, IR-03, TA-01]
-- id: CP-16
-  pattern: Enforcement point unreachable or timing out → action proceeds (fail-open)
-  indicates: Control-plane starvation; guardrail bypass
-  fields_text: Enforcement-Point Availability, Guardrail Verdict, Resource Aggregate, Source IP
-  fields:
-  - enforcement_point_availability_failure_mode
-  - guardrail_input_verdict
-  - guardrail_output_verdict
-  - resource_consumption_aggregate
-  - source_host_ip_request_metadata
-  evidence: [TA-01, TA-10]
-- id: CP-17
-  pattern: Tool Definition Digest changes between sessions for an approved tool
-  indicates: MCP tool rug-pull / description poisoning
-  fields_text: Tool Definition Digest, MCP Server Identity, Tool Call I/O
-  fields: [tool_definition_digest, mcp_server_identity_primitive, tool_call_io]
-  evidence: [AOC-10, AOC-14, AOC-09]
-- id: CP-18
-  pattern: Capability-Set Change (tool/MCP server added) shortly after an inter-agent message
-  indicates: Cross-agent capability transfer
-  fields_text: Capability-Set Change Event, Inter-Agent Message, Peer Agent Card
-  fields: [capability_set_change_event, inter_agent_message, peer_agent_card_descriptor]
-  evidence: [AOC-09, AOC-04]
-- id: CP-19
-  pattern: Code-execution tool invoked with sandbox = none
-  indicates: Unsandboxed execution reachable from model output
-  fields_text: Execution Environment/Sandbox, Tool Type, Tool Call I/O
-  fields: [execution_environment_sandbox, tool_type_trust_boundary, tool_call_io]
-  evidence: [TA-06, AOC-02]
-- id: CP-20
-  pattern: Push-notification callback registered to a new external domain
-  indicates: Covert egress channel via delegated-task callbacks
-  fields_text: A2A Task Lifecycle Event, Output Egress Destination, Peer Agent Card
-  fields: [a2a_task_lifecycle_event, output_egress_destination, peer_agent_card_descriptor]
-  evidence: [TA-01, AOC-11]
-- id: CP-21
-  pattern: Inference parameters diverge from approved baseline (temperature ↑, stop removed, max_tokens ↑)
-  indicates: Config tampering widening extraction/jailbreak surface
-  fields_text: Inference Parameters, System Prompt, LLM Refusal, Response
-  fields: [inference_parameters, system_prompt_instruction_config, llm_refusal, response_model_output]
-  evidence: [TA-04, TA-07]
-- id: CP-22
-  pattern: Autonomous trigger + untrusted input segment + egress to new domain
-  indicates: Zero-click injection-to-exfiltration
-  fields_text: Trigger Type, Input Trust Class, Output Egress Destination
-  fields: [trigger_type_source_event, input_trust_classification, output_egress_destination]
-  evidence: [TA-01, AOC-10]
-- id: CP-23
-  pattern: Event-sequence gap, or hook coverage drops mid-run
-  indicates: Telemetry suppression by a compromised agent
-  fields_text: Event Sequence Continuity, Instrumentation Coverage, Action Type
-  fields:
-  - event_sequence_continuity
-  - instrumentation_coverage_hook_attestation
-  - action_type
-  evidence: [AOC-10, AOC-01]
-- id: CP-24
-  pattern: Memory footprint exceeds declared cap, or the declared cap itself changes
-  indicates: Memory-store exhaustion or silent limit removal
-  fields_text: Memory Footprint, Declared Memory Configuration, Memory Write
-  fields: [memory_footprint_growth, declared_memory_configuration, memory_write_event]
-  evidence: [AOC-05, AOC-07]
-- id: CP-25
-  pattern: Same tenant ID across identities that should be isolated
-  indicates: Cross-tenant credential propagation / data bleed
-  fields_text: Organization/Tenant ID, Identities Used, Memory Read, Retrieval Event
-  fields: [organization_tenant_id, identities_used_per_hop, memory_read_injection_event, retrieval_event]
-  evidence: [AOC-02, AOC-05]
-- id: CP-26
-  pattern: Egress operation denied on accumulated session taint, with a clean payload
-  indicates: Write-down attempt / injection-driven exfiltration
-  fields_text: Session Taint Labels, Authorization Decision Record, Output Egress Destination
-  fields:
-  - session_taint_labels_information_flow_decisions
-  - authorization_decision_record
-  - output_egress_destination
-  evidence: [TA-01, TA-02, AOC-03]
-- id: CP-27
-  pattern: Security attribute self-asserted by the agent contradicts the authority-supplied value
-  indicates: Compromised agent falsifying its own state
-  fields_text: Attribute Source Marking, Verified-vs-Displayed Identity, Authorization Decision Record
-  fields:
+# Correlation patterns (AD §2). Record schema: tools/phase5_propose.py.
+- id: mcp_server_version_unapproved
+  former_id: CP-38
+  name: MCP server version not the approved one
+  indicates: Implementation rug pull under an adopted name
+  stage: entry
+  join: [mcp_server_identity_primitive]
+  conditions:
+  - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name.'
+  requires: [mcp_server_identity_primitive]
+  enriches: [tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, output_egress_destination]
+  baseline: Approved name and version per server.
+  catches: [TA-16]
+- id: obfuscated_instruction_config
+  former_id: CP-45
+  name: Obfuscated content in the instruction configuration
+  indicates: Instruction-file poisoning
+  stage: entry
+  join: [agent_runtime_instance_id]
+  conditions:
+  - The **System Prompt / Instruction Config** loaded for a run contains content flagged by **Encoded / Obfuscated Payload Indicator**.
+  requires: [system_prompt_instruction_config, encoded_obfuscated_payload_indicator]
+  enriches:
+  - repository_code_path_software_ref
   - attribute_source_trusted_provenance_marking
-  - verified_vs_displayed_identity
-  - authorization_decision_record
-  evidence: [AOC-01, AOC-08, AOC-10]
-- id: CP-28
-  pattern: High-impact action executes with no approval record, or on an approval whose scope no longer covers the arguments
-  indicates: Missing or replayed human authorization
-  fields_text: Human Approval / Elicitation Event, Tool Call I/O, Authorization Decision Record
-  fields: [human_approval_elicitation_event, tool_call_io, authorization_decision_record]
-  evidence: [AOC-01, AOC-07, AOC-11]
-- id: CP-29
-  pattern: Deny-code distribution shifts, or the same rule denies repeatedly then allows
-  indicates: Policy probing; authorization bypass found
-  fields_text: Authorization Decision Record, Identities Used, Source IP
-  fields: [authorization_decision_record, identities_used_per_hop, source_host_ip_request_metadata]
-  evidence: [AOC-02, AOC-08, IR-01]
-- id: CP-30
-  pattern: Minted credential's granted scope exceeds requested, or inbound token forwarded unnarrowed
-  indicates: Over-broad delegation / confused deputy
-  fields_text: Credential Minting & Scope-Narrowing, Granted Authorizations, Identities Used
-  fields:
+  catches: [TA-21]
+- id: identity_from_new_source
+  former_id: CP-14
+  name: Same identity from a new source
+  indicates: Credential theft or session hijack
+  stage: entry
+  join: [identities_used_per_hop]
+  conditions:
+  - An identity appears from a **Source host / IP** outside its history.
+  - Optionally on a new **Surface / App**.
+  requires: [source_host_ip_request_metadata, identities_used_per_hop]
+  enriches: [surface_app]
+  baseline: Source history per identity.
+  catches: [AOC-15]
+  catches_analogical: [IR-04]
+- id: same_input_many_identities
+  former_id: CP-01
+  name: Same input across many identities
+  indicates: Automated injection campaign
+  stage: entry
+  join: [model_input]
+  conditions:
+  - The same **Model Input** content hash arrives under many distinct **Identities Used** within a window.
+  - Optionally from several **Source host / IP** values.
+  requires: [model_input, identities_used_per_hop]
+  enriches: [source_host_ip_request_metadata]
+  baseline: Distinct identities per input hash in ordinary traffic.
+  catches: []
+  motivation: Template reuse in `IR-01`; no corpus entry records one payload under many identities.
+- id: tool_definition_changed
+  former_id: CP-17
+  name: Tool definition changed after approval
+  indicates: Tool definition rug pull
+  stage: entry
+  join: [mcp_server_identity_primitive]
+  conditions:
+  - The **Tool Definition Digest** at invocation differs from the digest approved for the same tool name and server.
+  requires: [tool_definition_digest]
+  enriches: [mcp_server_identity_primitive, tool_call_io, human_approval_elicitation_event]
+  baseline: The approved digest per tool.
+  catches: [TA-29]
+- id: denials_then_allow
+  former_id: CP-29
+  name: Denials, then an allow, for the same operation
+  indicates: Policy probing; an authorization bypass found
+  stage: decision
+  join: [identities_used_per_hop]
+  conditions:
+  - The **Authorization Decision Record** denies an operation repeatedly for one identity or source.
+  - The same operation is later allowed, or the deny codes shift.
+  requires: [authorization_decision_record, identities_used_per_hop]
+  enriches: [source_host_ip_request_metadata, policy_reason_code]
+  catches: [AOC-02, AOC-08]
+- id: guardrail_blocks_stop
+  former_id: CP-41
+  name: Guardrail blocks stop while volume continues
+  indicates: Guardrail bypass operated at scale
+  stage: decision
+  join: [identities_used_per_hop]
+  conditions:
+  - '**Guardrail (Input) Verdict** blocks repeatedly for an identity, then stops while request volume continues.'
+  - '**Guardrail (Output) Verdict** flags output for the same identity.'
+  requires: [guardrail_input_verdict, guardrail_output_verdict, identities_used_per_hop]
+  enriches: [llm_refusal, organization_tenant_id]
+  catches: [TA-22]
+- id: inference_parameters_off_baseline
+  former_id: CP-21
+  name: Inference parameters off the approved baseline
+  indicates: Configuration tampering that widens extraction or jailbreak
+  stage: decision
+  join: []
+  conditions:
+  - '**Inference Parameters** on a call differ from the approved baseline: temperature raised, stop sequences removed, `max_tokens` raised.'
+  requires: [inference_parameters]
+  enriches: [system_prompt_instruction_config, llm_refusal, response_model_output]
+  baseline: Approved parameters per deployment.
+  catches: []
+  motivation: Per-request overrides of decoding configuration; no corpus entry changes it.
+- id: context_limit_abuse
+  former_id: CP-09
+  name: Input near the context limit ending on a limit or error
+  indicates: 'Context-window abuse: denial of service, cost blow-up or divergence'
+  stage: decision
+  join: [identities_used_per_hop]
+  conditions:
+  - '**Input / Output Token Counts** approach the context window or `max_tokens` in **Inference Parameters**.'
+  - The completion ends on a limit (**Stop Reason**) or an **LLM Error / Exception**.
+  - It repeats from the same source.
+  requires: [input_output_token_counts, inference_parameters, stop_reason]
+  enriches: [llm_error_exception, resource_consumption_aggregate, source_host_ip_request_metadata, model_input]
+  catches: [TA-04, TA-10]
+- id: retrieved_instructions_followed
+  former_id: CP-06
+  name: Instructions followed from an external retrieved item
+  indicates: RAG injection or knowledge-base poisoning
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - A **Retrieval Event** returns an item whose **Retrieved-Content Source / Provenance** is external or recently modified.
+  - The **Response / Model Output** in the same turn follows instructions from that item.
+  requires: [retrieval_event, retrieved_content_source_provenance, response_model_output]
+  enriches: []
+  catches: [TA-01, TA-02, TA-09]
+- id: model_or_provider_anomaly
+  former_id: CP-13
+  name: Model change, or error and stop-reason spike, for one provider
+  indicates: Model substitution or provider-side interference
+  stage: decision
+  match: any
+  join: []
+  conditions:
+  - '**Model Name + Version** changes for a deployment with no recorded change.'
+  - '**LLM Error / Exception** and abnormal **Stop Reason** rates rise for one provider.'
+  requires: [model_name_version, llm_error_exception, stop_reason]
+  enriches: [provider_endpoint_identity]
+  baseline: Model and error-rate history per deployment.
+  catches: [AOC-06]
+- id: privileged_action_on_displayed_identity
+  former_id: CP-12
+  name: Privileged action authorized on a displayed identity
+  indicates: Identity spoofing or confused deputy
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Verified vs Displayed Identity** shows the authorizing principal matched on display name only.'
+  - The **Authorization Decision Record** allows a privileged operation on that basis.
+  requires: [verified_vs_displayed_identity, authorization_decision_record]
+  enriches: [surface_app, granted_authorizations_scope]
+  catches: [AOC-08]
+- id: privileged_mcp_tool_low_privilege_identity
+  former_id: CP-49
+  name: Privileged MCP tool invoked by a low-privilege identity
+  indicates: Privilege escalation at the MCP tool boundary
+  stage: decision
+  join: [mcp_server_identity_primitive]
+  conditions:
+  - An identity without the privilege invokes a privileged MCP tool (**Identities Used**, **MCP Server Identity & Primitive**).
+  - The **Authorization Decision Record** allows it, or records no decision at the tool boundary.
+  requires: [identities_used_per_hop, mcp_server_identity_primitive, authorization_decision_record]
+  enriches: [granted_authorizations_scope, tool_error_exception]
+  catches: [TA-13]
+- id: refusals_then_completion
+  former_id: CP-02
+  name: Refusals, then a completion, in one session
+  indicates: Jailbreak or extraction succeeded after probing
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - '**LLM Refusal** fires on several turns of a session.'
+  - A later turn of the same session, on similar **Model Input**, gets no refusal.
+  requires: [llm_refusal, model_input]
+  enriches: [execution_status, response_model_output]
+  catches: [TA-07, IR-01]
+- id: repeated_refusals
+  former_id: CP-34
+  name: Repeated refusals
+  indicates: An attack attempt in progress, resisted or probing
+  stage: decision
+  join: [session_turn_step_ids, identities_used_per_hop]
+  conditions:
+  - '**LLM Refusal** fires repeatedly within a session, or for one identity across sessions.'
+  requires: [llm_refusal]
+  enriches: [model_input, guardrail_input_verdict]
+  catches: [IR-01, AOC-12, AOC-13, AOC-14]
+- id: credential_wider_than_requested
+  former_id: CP-30
+  name: Credential minted wider than requested
+  indicates: Over-broad delegation or confused deputy
+  stage: decision
+  join: [identities_used_per_hop]
+  conditions:
+  - A **Credential Minting & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
+  requires:
   - credential_minting_scope_narrowing_check
-  - granted_authorizations_scope
-  - identities_used_per_hop
-  evidence: [TA-08, AOC-08]
-- id: CP-31
-  pattern: Capability reached over a path with no mediation record
+  enriches: [granted_authorizations_scope, identities_used_per_hop]
+  catches: [TA-08]
+  catches_analogical: [AOC-02, AOC-08]
+- id: cross_tenant_access
+  former_id: CP-25
+  name: Data or access across a tenant boundary
+  indicates: Cross-tenant bleed
+  stage: decision
+  match: any
+  join: [organization_tenant_id]
+  conditions:
+  - A response, retrieval or memory read served to one **Organization / Tenant ID** carries another tenant's data.
+  - An **Authorization Decision Record** allows an operation on another tenant's resource.
+  requires: [organization_tenant_id, authorization_decision_record]
+  enriches: [identities_used_per_hop, retrieval_event, memory_read_injection_event]
+  catches: [TA-11, TA-17]
+- id: unsandboxed_code_execution
+  former_id: CP-19
+  name: Code execution with no sandbox
+  indicates: Unsandboxed execution reachable from model output
+  stage: action
+  join: [tool_execution_id]
+  conditions:
+  - A code-execution **Tool Call I/O** runs with **Execution Environment / Sandbox** recording none.
+  requires: [execution_environment_sandbox, tool_call_io]
+  enriches: [tool_type_trust_boundary]
+  catches: [TA-06]
+  catches_analogical: [AOC-02]
+- id: consumption_spike_with_model_enumeration
+  former_id: CP-40
+  name: Consumption spike and model enumeration under one identity
+  indicates: Stolen-credential model access (LLMjacking)
+  stage: action
+  join: [identities_used_per_hop]
+  conditions:
+  - For one identity, **Resource-Consumption Aggregate** rises far above its baseline.
+  - Its calls enumerate or switch to models (**Model Name + Version**) it did not use before.
+  requires: [identities_used_per_hop, resource_consumption_aggregate, model_name_version]
+  enriches: [input_output_token_counts, provider_endpoint_identity, source_host_ip_request_metadata]
+  baseline: Consumption and model set per identity.
+  catches: [TA-20]
+- id: authorized_calls_chained_across_identities
+  former_id: CP-08
+  name: Individually authorized calls chained across identities
+  indicates: Tool-chaining privilege escalation
+  stage: action
+  join: [workflow_run_id, trace_context_propagated]
+  conditions:
+  - A run's **Tool Call I/O** sequence passes a credential or identifier from one call's output into a later call's input.
+  - '**Identities Used** changes within the chain.'
+  - Each call is individually allowed (**Authorization Decision Record**).
+  requires: [tool_call_io, identities_used_per_hop, authorization_decision_record]
+  enriches: [tool_acl_required_scope, loop_step_count_signal]
+  catches: [TA-08]
+- id: inter_agent_relay_loop
+  former_id: CP-10
+  name: Inter-agent relay with no terminating step
+  indicates: Multi-agent resource-exhaustion loop
+  stage: action
+  join: [workflow_run_id, trace_context_propagated]
+  conditions:
+  - '**Inter-Agent Message** volume between the same agents rises without a terminating step.'
+  - '**Loop / Step-Count Signal** exceeds its limit.'
+  - '**Resource-Consumption Aggregate** climbs against the run budget.'
+  requires: [inter_agent_message, loop_step_count_signal, resource_consumption_aggregate]
+  enriches: []
+  catches: [AOC-04]
+- id: autonomous_run_against_external_targets
+  former_id: CP-47
+  name: Long autonomous run against many external targets
+  indicates: Agent operated as an attack framework
+  stage: action
+  join: [workflow_run_id]
+  conditions:
+  - A run's **Loop / Step-Count Signal** is long and its **Tool Call I/O** reaches many external targets.
+  - The activity does not match the declared task, or none is declared.
+  requires: [loop_step_count_signal, tool_call_io]
+  enriches: [task_intent_declaration, llm_refusal, trigger_type_source_event]
+  catches: [TA-24]
+- id: new_tool_with_call_spike
+  former_id: CP-03
+  name: New tool name with a rise in tool calls
+  indicates: Agent reaching an unauthorized capability
+  stage: action
+  join: [agent_runtime_instance_id]
+  conditions:
+  - A **Tool Name** not seen for this agent appears.
+  - '**Tool Call I/O** volume for the run rises above its baseline.'
+  requires: [tool_name, tool_call_io]
+  enriches: [resource_consumption_aggregate, capability_set_change_event]
+  baseline: Tool set and call rate per agent.
+  catches: [TA-06, TA-08, AOC-02, AOC-10]
+- id: untrusted_attachment_to_destructive_tool
+  former_id: CP-43
+  name: Untrusted attachment, then a destructive tool call
+  indicates: Attachment-borne injection reaching a shell
+  stage: action
+  join: [workflow_run_id]
+  conditions:
+  - '**Content Modality & Attachment Identity** records a file or image that **Input Trust Classification** marks untrusted.'
+  - A destructive or shell **Tool Call I/O** follows in the same run.
+  requires: [content_modality_attachment_identity, input_trust_classification, tool_call_io]
+  enriches: [guardrail_input_verdict, action_type]
+  catches: [TA-26]
+- id: untrusted_content_acted_on_later
+  former_id: CP-42
+  name: Untrusted content acted on in a later turn
+  indicates: Delayed tool invocation
+  stage: action
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Input Trust Classification** marks content untrusted in one turn.'
+  - A sensitive **Tool Call I/O** in a later turn of the same session follows it, with no new user request.
+  requires: [input_trust_classification, tool_call_io]
+  enriches: [model_input]
+  catches: [TA-19]
+- id: unmediated_capability
+  former_id: CP-31
+  name: Capability reached with no mediation record
   indicates: Reference-monitor bypass
-  fields_text: Mediation Coverage & Bypass Path, Tool Type/Trust Boundary, Tool Call I/O
-  fields: [mediation_coverage_bypass_path, tool_type_trust_boundary, tool_call_io]
-  evidence: [AOC-14, AOC-02]
-- id: CP-32
-  pattern: Inference or tool routed to a backend outside the restriction in force
-  indicates: Data-residency or routing-policy violation
-  fields_text: Backend / Route Restriction Decision, Session Taint Labels, Provider/Endpoint Identity
-  fields:
-  - backend_route_restriction_decision
+  stage: action
+  join: [tool_execution_id]
+  conditions:
+  - A **Tool Call I/O** reaches a capability whose **Tool Type / Trust Boundary** requires mediation.
+  - No **Mediation Coverage & Bypass Path** record shows it passed the reference monitor.
+  requires: [tool_call_io, tool_type_trust_boundary, mediation_coverage_bypass_path]
+  enriches: []
+  catches: [AOC-14]
+  catches_analogical: [TA-06]
+- id: action_without_covering_approval
+  former_id: CP-28
+  name: High-impact action without a covering approval
+  indicates: Missing, disabled or replayed human authorization
+  stage: action
+  join: [tool_execution_id]
+  conditions:
+  - A high-impact operation executes.
+  - No **Human Approval / Elicitation Event** covers it, or the approval does not cover the executed arguments, or approval was switched off.
+  requires: [human_approval_elicitation_event]
+  enriches: [tool_call_io, authorization_decision_record, capability_set_change_event]
+  catches: [TA-15, TA-23, TA-29, AOC-01, AOC-02, AOC-07, AOC-11]
+- id: agent_name_collision
+  former_id: CP-33
+  name: One agent name bound to two peers
+  indicates: Agent name collision; wrong-peer dispatch
+  stage: action
+  join: [agent_name]
+  conditions:
+  - Within one host, an **Agent Name** resolves to more than one **Peer Agent Card / Descriptor**, endpoint or enrolled identity.
+  - '**Verified vs Displayed Identity** shows the requests addressed to the name reach a different peer.'
+  requires: [peer_agent_card_descriptor, verified_vs_displayed_identity]
+  enriches: [identities_used_per_hop, inter_agent_message]
+  catches: [TA-31]
+- id: background_task_without_end
+  former_id: CP-11
+  name: Background task with no end condition
+  indicates: Runaway automation or persistence
+  stage: persistence
+  join: [agent_runtime_instance_id]
+  conditions:
+  - A **Background / Scheduled Task Event** creates a task with no end condition or expiry.
+  - The task outlives the run that created it.
+  requires: [background_scheduled_task_event]
+  enriches: [action_type, trigger_type_source_event]
+  catches: [TA-25, AOC-04, AOC-10]
+- id: capability_after_inter_agent_message
+  former_id: CP-18
+  name: Capability added soon after an inter-agent message
+  indicates: Cross-agent capability transfer
+  stage: persistence
+  join: [agent_runtime_instance_id]
+  conditions:
+  - A **Capability-Set Change Event** adds a tool or MCP server,
+  - within a window after an **Inter-Agent Message** to that agent.
+  requires: [capability_set_change_event, inter_agent_message]
+  enriches: [peer_agent_card_descriptor, tool_name]
+  catches: [AOC-09]
+- id: unapproved_capability_change
+  former_id: CP-39
+  name: Capability or configuration change with no approval
+  indicates: Configuration rug pull, or a safeguard switched off
+  stage: persistence
+  join: [agent_runtime_instance_id]
+  conditions:
+  - A **Capability-Set Change Event** records a changed launch command, arguments or approval setting for an approved tool or agent.
+  - No approval accompanies the change.
+  requires: [capability_set_change_event]
+  enriches: [execution_environment_sandbox, human_approval_elicitation_event]
+  catches: [TA-14, TA-23, TA-29]
+- id: external_memory_read_back
+  former_id: CP-05
+  name: Externally sourced memory read back later
+  indicates: Memory poisoning or indirect corruption
+  stage: persistence
+  join: []
+  conditions:
+  - A **Memory Write Event** has a **Memory Provenance / Source** that is a non-owner or external source.
+  - The item is read back (**Memory Read / Injection Event**) in a later session.
+  - Behaviour in that session departs from the request.
+  requires: [memory_write_event, memory_provenance_source, memory_read_injection_event]
+  enriches: [observation_thought_reasoning_trace, memory_integrity_poisoning_signal]
+  catches: [TA-18, IR-02, AOC-10]
+- id: memory_beyond_limit
+  former_id: CP-24
+  name: Memory store beyond its limit
+  indicates: Memory-store exhaustion or silent limit removal
+  stage: persistence
+  join: []
+  conditions:
+  - '**Memory Footprint / Growth** exceeds the store''s declared or hard-coded limit, or grows with no matching retention event.'
+  requires: [memory_footprint_growth]
+  enriches: [declared_memory_configuration, memory_write_event]
+  baseline: The declared limit, or a hard-coded one.
+  catches: [TA-30, AOC-05]
+- id: poisoned_item_read
+  former_id: CP-35
+  name: Item flagged as poisoned, then read into context
+  indicates: Memory or retrieval poisoning taking effect
+  stage: persistence
+  join: []
+  conditions:
+  - A **Memory Integrity / Poisoning Signal** flags an item.
+  - The item is later read into context (**Memory Read / Injection Event**).
+  requires: [memory_integrity_poisoning_signal, memory_read_injection_event]
+  enriches:
+  - memory_provenance_source
+  - retrieved_content_metadata_integrity_signal
+  catches: [TA-18, IR-02, IR-05]
+- id: zero_click_to_new_egress
+  former_id: CP-22
+  name: Autonomous trigger, untrusted content, new egress
+  indicates: Zero-click injection-to-exfiltration
+  stage: egress
+  join: [workflow_run_id]
+  conditions:
+  - '**Trigger Type & Source Event** marks the run autonomous.'
+  - '**Input Trust Classification** marks the triggering content untrusted.'
+  - The run reaches an **Output Egress Destination** not seen for this agent.
+  requires: [trigger_type_source_event, input_trust_classification, output_egress_destination]
+  enriches: []
+  catches: [TA-01]
+- id: citation_without_retrieval
+  former_id: CP-15
+  name: Citation with no matching retrieval
+  indicates: Fabricated or attacker-planted citation
+  stage: egress
+  match: any
+  join: [session_turn_step_ids]
+  conditions:
+  - A **Citations / Source Attribution** entry resolves to no item a **Retrieval Event** returned in the session.
+  - A citation resolves to an item whose provenance is external or recently modified.
+  requires: [citations_source_attribution, retrieval_event]
+  enriches: [retrieved_content_source_provenance, output_egress_destination]
+  catches: [TA-01, TA-02, IR-03]
+- id: input_reemitted
+  former_id: CP-44
+  name: Input content re-emitted to another agent or store
+  indicates: Self-replicating prompt propagation
+  stage: egress
+  join: [trace_context_propagated]
+  conditions:
+  - A **Model Input** content hash reappears in an outbound **Inter-Agent Message**, or in content stored where it is retrieved again.
+  requires: [model_input, inter_agent_message]
+  enriches: [retrieved_content_source_provenance, memory_write_event, trigger_type_source_event]
+  catches: [TA-27]
+- id: output_link_carrying_data
+  former_id: CP-46
+  name: Output link carrying session data
+  indicates: Exfiltration through a rendered link or image
+  stage: egress
+  join: [session_turn_step_ids]
+  conditions:
+  - A **Response / Model Output** contains a URL whose path or query carries data from the session.
+  - The client fetches it (**Output Egress Destination**).
+  requires: [response_model_output, output_egress_destination]
+  enriches: [source_host_ip_request_metadata]
+  catches: [TA-01, TA-03]
+- id: system_prompt_reproduced
+  former_id: CP-07
+  name: Response reproduces the system prompt
+  indicates: System-prompt extraction
+  stage: egress
+  join: [session_turn_step_ids]
+  conditions:
+  - The **Response / Model Output** is similar to the **System Prompt / Instruction Config** in force.
+  requires: [response_model_output, system_prompt_instruction_config]
+  enriches: [llm_refusal]
+  baseline: A similarity threshold.
+  catches: [TA-07]
+- id: sensitive_input_to_off_inventory_ai
+  former_id: CP-48
+  name: Sensitive input to an off-inventory AI service
+  indicates: Shadow AI use leaking data
+  stage: egress
+  join: [identities_used_per_hop]
+  conditions:
+  - An **Agent Name** or **Surface / App** not in the inventory receives **Model Input**.
+  - The input is sensitive by content or by the tool's classification.
+  requires: [agent_name, surface_app, model_input]
+  enriches: [tool_privacy_classification, guardrail_input_verdict]
+  baseline: The agent inventory.
+  catches: [TA-05]
+- id: unrequested_data_in_tool_arguments
+  former_id: CP-36
+  name: Tool arguments carry data the request did not supply
+  indicates: 'Exfiltration through tool arguments: tool poisoning or shadowing'
+  stage: egress
+  join: [tool_execution_id]
+  conditions:
+  - 'A **Tool Call I/O** to an MCP tool carries in its arguments content the request did not supply: credential files, chat history, other tools'' output.'
+  - The tool was discovered from that server in the same session (**MCP Server Identity & Primitive**).
+  requires: [tool_call_io, mcp_server_identity_primitive]
+  enriches: [tool_definition_digest, output_egress_destination, human_approval_elicitation_event]
+  catches: [TA-15, TA-29]
+- id: untrusted_input_to_new_egress
+  former_id: CP-04
+  name: Untrusted input, then a tool call, then egress to a new destination
+  indicates: Injection-to-exfiltration chain
+  stage: egress
+  join: [session_turn_step_ids, trace_context_propagated]
+  conditions:
+  - '**Input Trust Classification** marks a segment untrusted.'
+  - A later **Tool Call I/O** in the same trace carries content derived from it.
+  - '**Output Egress Destination** is one not seen for this agent.'
+  requires: [input_trust_classification, tool_call_io, output_egress_destination]
+  enriches: []
+  baseline: Egress destinations per agent.
+  catches: [TA-01, TA-12]
+- id: egress_under_session_taint
+  former_id: CP-26
+  name: Egress under accumulated session taint
+  indicates: Write-down attempt or injection-driven exfiltration
+  stage: egress
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Session Taint Labels & Information-Flow Decisions** show the session tainted by untrusted or sensitive content.'
+  - An egress with a clean payload is attempted under that taint (**Output Egress Destination**); a denial records the attempt, an allow the leak.
+  requires:
   - session_taint_labels_information_flow_decisions
-  - provider_endpoint_identity
-  evidence: [AOC-06, TA-01]
+  - output_egress_destination
+  enriches: [authorization_decision_record]
+  catches: [TA-01, AOC-03]
+- id: callback_to_undeclared_destination
+  former_id: CP-20
+  name: Task callback registered to an undeclared destination
+  indicates: Covert egress through delegated-task callbacks
+  stage: egress
+  join: [workflow_run_id]
+  conditions:
+  - An **A2A Task Lifecycle Event** registers a push-notification callback.
+  - Its destination (**Output Egress Destination**) is not among the peer's declared endpoints or the agent's egress history.
+  requires: [a2a_task_lifecycle_event, output_egress_destination]
+  enriches: [peer_agent_card_descriptor]
+  catches: []
+  catches_analogical: [AOC-11]
+- id: route_outside_restriction
+  former_id: CP-32
+  name: Call routed outside the restriction in force
+  indicates: Data-residency or routing-policy violation
+  stage: egress
+  join: []
+  conditions:
+  - A **Backend / Route Restriction Decision** is in force for the session.
+  - The call is served by a **Provider / Endpoint Identity** outside it.
+  requires: [backend_route_restriction_decision, provider_endpoint_identity]
+  enriches:
+  - session_taint_labels_information_flow_decisions
+  catches: []
+  catches_analogical: [AOC-06]
+- id: enforcement_point_fail_open
+  former_id: CP-16
+  name: Enforcement point unreached, operation proceeds
+  indicates: Control-plane starvation or guardrail bypass by failing open
+  stage: plane
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Enforcement-Point Availability & Failure Mode** records a callout unreached or timed out.'
+  - The operation it guards proceeds.
+  requires:
+  - enforcement_point_availability_failure_mode
+  enriches: [guardrail_input_verdict, guardrail_output_verdict, resource_consumption_aggregate, source_host_ip_request_metadata]
+  catches: [TA-01]
+  catches_analogical: [TA-10]
+- id: hook_coverage_changed
+  former_id: CP-23
+  name: Hook coverage or destination changes mid-run
+  indicates: Telemetry plane disabled or redirected
+  stage: plane
+  join: [agent_runtime_instance_id]
+  conditions:
+  - '**Instrumentation Coverage / Hook Attestation** records a hook disabled, or reporting to a new destination, during a run.'
+  requires:
+  - instrumentation_coverage_hook_attestation
+  enriches: [event_sequence_continuity, action_type]
+  catches: [TA-17]
+- id: self_asserted_attribute_contradicted
+  former_id: CP-27
+  name: Self-asserted attribute contradicts the authority
+  indicates: Agent falsifying its own state or claims
+  stage: plane
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Attribute Source / Trusted-Provenance Marking** marks an attribute self-asserted.'
+  - The authority-supplied value for the same attribute differs.
+  requires:
+  - attribute_source_trusted_provenance_marking
+  enriches: [verified_vs_displayed_identity, authorization_decision_record]
+  catches: [AOC-01, AOC-08, AOC-10, AOC-15]
+- id: event_sequence_gap
+  former_id: CP-37
+  name: Gap in the event sequence
+  indicates: Selective suppression of telemetry
+  stage: plane
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Event Sequence Continuity** shows a gap or reordering in a session.'
+  requires: [event_sequence_continuity]
+  enriches:
+  - instrumentation_coverage_hook_attestation
+  catches: []
+  catches_analogical: [TA-17, AOC-01, AOC-10]

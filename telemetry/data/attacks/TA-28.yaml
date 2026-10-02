@@ -10,3 +10,4 @@ atlas_text: '`AML.T0086` Exfiltration via AI Agent Tool Invocation; `AML.T0040` 
 atlas_notes: Provider API as C2. ATLAS case study `AML.CS0042`
 reference: 'SesameOp: backdoor abusing the OpenAI Assistants API as a covert command-and-control and exfiltration channel over several months. Microsoft Incident Response (DART), 3 November 2025. MITRE ATLAS case study **`AML.CS0042`**. <https://www.microsoft.com/en-us/security/blog/2025/11/03/sesameop-novel-backdoor-uses-openai-assistants-api-for-command-and-control/>'
 risks: []
+no_pattern: 'Outside the deployment: the backdoor ran on a compromised host and used the provider API from there, so no instrumented AI system carries the activity. Detection belongs to endpoint and network monitoring of provider API use; within a deployment, Output Egress Destination records what its own calls send.'

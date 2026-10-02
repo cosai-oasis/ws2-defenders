@@ -3,7 +3,9 @@
 Addendum (AD) from data/.
 
 Regions: AD §1 field tables and their field entries (capture definition, tier
-basis, rationale; between GENERATED markers, one per step), §2 pattern table, §3.2 to §3.4 inventory
+basis, rationale, the patterns that read the field; between GENERATED markers,
+one per step), §2 patterns (summary, an entry per pattern by stage, coverage;
+between GENERATED markers), §3.2 to §3.4 inventory
 tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
 tables, which link to each field's AD entry.
 Everything else in both documents is hand-written and left untouched.
@@ -16,6 +18,7 @@ import argparse
 import difflib
 import glob
 import os
+import re
 import sys
 
 import yaml
@@ -37,6 +40,8 @@ patterns = load('patterns.yaml')
 attacks = {a['id']: a for a in map(load, (os.path.relpath(p, DATA)
                                            for p in glob.glob(os.path.join(DATA, 'attacks', '*.yaml'))))}
 layout = load('sections.yaml')
+RANK = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
+STAGES = [s['stage'] for s in layout['pattern_stages']]
 
 steps = layout['field_steps']
 
@@ -64,6 +69,15 @@ for aid in corpus_order:
         grounds[fid].append((aid, g))
 
 
+def min_tier(p):
+    return max((fields[f]['tier'] for f in p['requires'] + p['join']), key=RANK.get)
+
+
+patterns.sort(key=lambda p: (STAGES.index(p['stage']), RANK[min_tier(p)], p['name'].casefold()))
+pmap = {p['id']: p for p in patterns}
+read_by = {fid: [p['id'] for p in patterns if fid in p['requires'] + p['join']] for fid in fields}
+
+
 def ticks(ids):
     return ','.join(f'`{i}`' for i in ids)
 
@@ -82,6 +96,19 @@ def records(f):
 
 def link(fid):
     return f"[{fields[fid]['name']}](#{anchor(fid)})"
+
+
+def panchor(pid):
+    return 'p-' + pid.replace('_', '-')
+
+
+def plink(pid):
+    return f"[{pmap[pid]['name']}](#{panchor(pid)})"
+
+
+def prose(s):
+    """Hand-written text that names a pattern by slug, with the slug shown as its linked name."""
+    return re.sub(r'`([a-z0-9_]+)`', lambda m: plink(m[1]) if m[1] in pmap else m[0], s)
 
 
 def series(items):
@@ -129,6 +156,8 @@ def capture_entry(f):
         tier += ' ' + f['rationale']
     elif 'rationale_see' in f:
         tier += f" See {link(f['rationale_see'])}."
+    if read_by[f['id']]:
+        tier += ' *Read by:* ' + series([plink(p) for p in read_by[f['id']]]) + '.'
     return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}\n\n{tier}'
 
 
@@ -145,8 +174,54 @@ def rfc_field_row(f):
     return row([link, f['tier'], records(f), emitted(f)])
 
 
-def pattern_row(p):
-    return row([p['pattern'], p['indicates'], p['fields_text'], ticks(p['evidence'])])
+def catches(p):
+    out = ticks(p['catches'])
+    if p.get('catches_analogical'):
+        out += ('; ' if out else '') + 'analogically ' + ticks(p['catches_analogical'])
+    return out or 'none in the corpus'
+
+
+def pattern_entry(p):
+    lead = 'Fires on any of:' if p.get('match') == 'any' else 'Fires when:'
+    out = [f'<a id="{panchor(p["id"])}"></a>**{p["name"]}.** {p["indicates"]}. '
+           f'Minimum tier {min_tier(p)}. {lead}', '']
+    out += [f'{i}. {c}' for i, c in enumerate(p['conditions'], 1)]
+    meta = []
+    if p['join']:
+        meta.append('*Joins on* ' + series([link(f) for f in p['join']]) + '.')
+    reads = [f for f in p['requires'] if f not in p['join']]
+    if reads:
+        meta.append('*Reads* ' + series([link(f) for f in reads]) + '.')
+    if p['enriches']:
+        meta.append('*Enriched by* ' + series([link(f) for f in p['enriches']]) + '.')
+    if p.get('baseline'):
+        meta.append('*Baseline:* ' + p['baseline'])
+    meta.append('*Catches* ' + catches(p) + '.')
+    if p.get('motivation'):
+        meta.append('*Motivation:* ' + prose(p['motivation']))
+    return out + ['', ' '.join(meta)]
+
+
+def ad_patterns():
+    out = ['| Pattern | Stage | Minimum tier | Catches |', '| :------------------------------- | :---------- | :---- | :-------------------- |']
+    out += [row([plink(p['id']), p['stage'], min_tier(p), catches(p)]) for p in patterns]
+    for n, st in enumerate(layout['pattern_stages'], 1):
+        out += ['', f"### 2.{n} {st['title']}"]
+        for p in patterns:
+            if p['stage'] == st['stage']:
+                out += [''] + pattern_entry(p)
+    out += ['', f'### 2.{len(STAGES) + 1} Coverage', '',
+            'Every attack in §3, with the patterns that catch it; an attack no pattern catches records why.', '',
+            '| Attack | Caught by | Analogically |', '| :---------- | :------------------------------- | :-------------------- |']
+    for aid in corpus_order:
+        inst = [plink(p['id']) for p in patterns if aid in p['catches']]
+        anal = [plink(p['id']) for p in patterns if aid in p.get('catches_analogical', [])]
+        a = attacks[aid]
+        if not inst:
+            assert a.get('no_pattern'), f'{aid}: no pattern catches it and no reason is recorded'
+        first = ', '.join(inst) if inst else '*None.* ' + prose(a['no_pattern'])
+        out.append(row([f"`{aid}` {a['name']}", first, ', '.join(anal)]))
+    return out
 
 
 def detecting(a):
@@ -198,11 +273,9 @@ def markers(text, key, body):
 def build_ad(text):
     for st in steps:
         text = markers(text, f"fields {st['number']}", ad_step(st))
+    text = markers(text, 'patterns', ad_patterns())
     lines = text.split('\n')
     inv = {t['number']: t for t in layout['ad_inventory_tables']}
-    n = splice(lines, r'^## 2\. Correlation Patterns$', r'^## 3\.',
-               lambda m: table(layout['ad_pattern_table']['header'], [pattern_row(p) for p in patterns]))
-    assert n == 1, n
     n = splice(lines, r'^### (3\.[234]) ', r'^### 3\.5',
                lambda m: table(inv[m[1]]['header'],
                                [inventory_row(m[1], attacks[i]) for i in inv[m[1]]['attacks']]))

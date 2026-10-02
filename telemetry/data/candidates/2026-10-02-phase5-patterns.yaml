@@ -1,6 +1,5 @@
 # Curation registry batch. Edit status only through tools/curate.py, or by hand
 # keeping decided_by and decided_on filled in. See curate.py for the schema.
-# Phase 5: structured correlation patterns (tools/phase5_propose.py documents the record).
 - id: P:mcp_server_version_unapproved
   type: pattern
   subject:
@@ -20,7 +19,10 @@
     baseline: Approved name and version per server.
     catches: [TA-16]
   reason: covers TA-16; the declared contract did not change, the shipped version did
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:obfuscated_instruction_config
   type: pattern
   subject:
@@ -41,7 +43,10 @@
     - attribute_source_trusted_provenance_marking
     catches: [TA-21]
   reason: covers TA-21
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:identity_from_new_source
   type: pattern
   subject:
@@ -63,7 +68,10 @@
     catches: [AOC-15]
     catches_analogical: [IR-04]
   reason: IR-04 is non-AI and its edges are analogical, so it moves to catches_analogical. TA-20 and TA-22 used stolen credentials but have no Source host / IP edge; the session note already holds that lead pending the primary sources
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:same_input_many_identities
   type: pattern
   subject:
@@ -85,7 +93,10 @@
     catches: []
     motivation: Template reuse in `IR-01`; no corpus entry records one payload under many identities.
   reason: 'stated evidence IR-01 has no Identities Used edge: IR-01 reuses templates across surfaces, not identities'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:tool_definition_changed
   type: pattern
   subject:
@@ -105,7 +116,10 @@
     baseline: The approved digest per tool.
     catches: [TA-29]
   reason: stated evidence (AOC-09, AOC-10, AOC-14) has no digest edge; TA-29 is the instance. TA-15 is malicious as published, so the digest never changes; it is caught by `unrequested_data_in_tool_arguments`
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:denials_then_allow
   type: pattern
   subject:
@@ -125,7 +139,10 @@
     enriches: [source_host_ip_request_metadata, policy_reason_code]
     catches: [AOC-02, AOC-08]
   reason: drops IR-01 (no authorization edge); AOC-08 was refused on one channel and succeeded on another
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:guardrail_blocks_stop
   type: pattern
   subject:
@@ -145,7 +162,10 @@
     enriches: [llm_refusal, organization_tenant_id]
     catches: [TA-22]
   reason: covers TA-22
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:inference_parameters_off_baseline
   type: pattern
   subject:
@@ -166,7 +186,10 @@
     catches: []
     motivation: Per-request overrides of decoding configuration; no corpus entry changes it.
   reason: stated evidence TA-04 and TA-07 used ordinary prompts, not changed parameters
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:context_limit_abuse
   type: pattern
   subject:
@@ -187,7 +210,10 @@
     enriches: [llm_error_exception, resource_consumption_aggregate, source_host_ip_request_metadata, model_input]
     catches: [TA-04, TA-10]
   reason: adds TA-04 (max-length output); reads the denominator fields the AD rationale for Inference Parameters names
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:retrieved_instructions_followed
   type: pattern
   subject:
@@ -207,7 +233,10 @@
     enriches: []
     catches: [TA-01, TA-02, TA-09]
   reason: unchanged evidence; structured
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:model_or_provider_anomaly
   type: pattern
   subject:
@@ -229,7 +258,10 @@
     baseline: Model and error-rate history per deployment.
     catches: [AOC-06]
   reason: drops TA-06 (analogical Model Name edge only); Provider / Endpoint Identity (MAY) moves to enriching, so the minimum tier is MUST. The conditions are alternatives
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:privileged_action_on_displayed_identity
   type: pattern
   subject:
@@ -249,7 +281,10 @@
     enriches: [surface_app, granted_authorizations_scope]
     catches: [AOC-08]
   reason: reads the Authorization Decision Record instead of Granted Authorizations (SHOULD), so the minimum tier is MUST; a new channel (Surface / App) moves to enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:privileged_mcp_tool_low_privilege_identity
   type: pattern
   subject:
@@ -269,7 +304,10 @@
     enriches: [granted_authorizations_scope, tool_error_exception]
     catches: [TA-13]
   reason: covers TA-13
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:refusals_then_completion
   type: pattern
   subject:
@@ -289,7 +327,10 @@
     enriches: [execution_status, response_model_output]
     catches: [TA-07, IR-01]
   reason: adds TA-07 (refuse then succeed); drops AOC-12, which was resisted and fires only the first condition (now `repeated_refusals`). Success is read from the refusal stopping, so Execution Status moves to enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:repeated_refusals
   type: pattern
   subject:
@@ -308,7 +349,10 @@
     enriches: [model_input, guardrail_input_verdict]
     catches: [IR-01, AOC-12, AOC-13, AOC-14]
   reason: 'the resisted entries: in them the refusal is the detection'
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:credential_wider_than_requested
   type: pattern
   subject:
@@ -329,7 +373,10 @@
     catches: [TA-08]
     catches_analogical: [AOC-02, AOC-08]
   reason: AOC-08 has only an analogical minting edge
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:cross_tenant_access
   type: pattern
   subject:
@@ -350,7 +397,10 @@
     enriches: [identities_used_per_hop, retrieval_event, memory_read_injection_event]
     catches: [TA-11, TA-17]
   reason: stated evidence AOC-02 and AOC-05 has no tenant edge; TA-11 and TA-17 are the cross-tenant instances. The conditions are alternatives
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:unsandboxed_code_execution
   type: pattern
   subject:
@@ -370,7 +420,10 @@
     catches: [TA-06]
     catches_analogical: [AOC-02]
   reason: AOC-02 has only an analogical sandbox edge
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:consumption_spike_with_model_enumeration
   type: pattern
   subject:
@@ -391,7 +444,10 @@
     baseline: Consumption and model set per identity.
     catches: [TA-20]
   reason: covers TA-20
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:authorized_calls_chained_across_identities
   type: pattern
   subject:
@@ -412,7 +468,10 @@
     enriches: [tool_acl_required_scope, loop_step_count_signal]
     catches: [TA-08]
   reason: reads the Authorization Decision Record instead of Tool ACL (SHOULD), so the minimum tier is MUST
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:inter_agent_relay_loop
   type: pattern
   subject:
@@ -433,7 +492,10 @@
     enriches: []
     catches: [AOC-04]
   reason: unchanged evidence; structured
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:autonomous_run_against_external_targets
   type: pattern
   subject:
@@ -453,7 +515,10 @@
     enriches: [task_intent_declaration, llm_refusal, trigger_type_source_event]
     catches: [TA-24]
   reason: covers TA-24 from the operator of the agent runtime, where it was detected; the victims see ordinary intrusion traffic
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:new_tool_with_call_spike
   type: pattern
   subject:
@@ -474,7 +539,10 @@
     baseline: Tool set and call rate per agent.
     catches: [TA-06, TA-08, AOC-02, AOC-10]
   reason: Resource-Consumption Aggregate moves to enriching (no stated attack has an edge to it); adds TA-06 and TA-08
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:untrusted_attachment_to_destructive_tool
   type: pattern
   subject:
@@ -494,7 +562,10 @@
     enriches: [guardrail_input_verdict, action_type]
     catches: [TA-26]
   reason: covers TA-26
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:untrusted_content_acted_on_later
   type: pattern
   subject:
@@ -514,7 +585,10 @@
     enriches: [model_input]
     catches: [TA-19]
   reason: covers TA-19; a detection scoped to one turn misses it
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:unmediated_capability
   type: pattern
   subject:
@@ -535,7 +609,10 @@
     catches: [AOC-14]
     catches_analogical: [TA-06]
   reason: AOC-02 has only an analogical mediation edge and no trust-boundary edge, so it is dropped; TA-06 is analogical
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:action_without_covering_approval
   type: pattern
   subject:
@@ -555,7 +632,10 @@
     enriches: [tool_call_io, authorization_decision_record, capability_set_change_event]
     catches: [TA-15, TA-23, TA-29, AOC-01, AOC-02, AOC-07, AOC-11]
   reason: adds TA-15, TA-23 (approval disabled as configuration), TA-29 (dialog padded to hide the arguments) and AOC-02
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:agent_name_collision
   type: pattern
   subject:
@@ -575,8 +655,11 @@
     enriches: [identities_used_per_hop, inter_agent_message]
     catches: [TA-31]
   reason: structures the accepted P:agent-name-collision (supersedes it)
-  status: proposed
+  status: accepted
   supersedes: P:agent-name-collision
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:background_task_without_end
   type: pattern
   subject:
@@ -596,7 +679,10 @@
     enriches: [action_type, trigger_type_source_event]
     catches: [TA-25, AOC-04, AOC-10]
   reason: adds TA-25; Action Type moves to enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:capability_after_inter_agent_message
   type: pattern
   subject:
@@ -616,7 +702,10 @@
     enriches: [peer_agent_card_descriptor, tool_name]
     catches: [AOC-09]
   reason: drops AOC-04 (no Capability-Set Change edge); Peer Agent Card (SHOULD) moves to enriching, so the minimum tier is MUST
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:unapproved_capability_change
   type: pattern
   subject:
@@ -636,7 +725,10 @@
     enriches: [execution_environment_sandbox, human_approval_elicitation_event]
     catches: [TA-14, TA-23, TA-29]
   reason: covers TA-14 and TA-23
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:external_memory_read_back
   type: pattern
   subject:
@@ -657,7 +749,10 @@
     enriches: [observation_thought_reasoning_trace, memory_integrity_poisoning_signal]
     catches: [TA-18, IR-02, AOC-10]
   reason: joins on the memory item; Observation / Thought (SHOULD) moves to enriching, so the minimum tier is MUST; adds TA-18
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:memory_beyond_limit
   type: pattern
   subject:
@@ -677,7 +772,10 @@
     baseline: The declared limit, or a hard-coded one.
     catches: [TA-30, AOC-05]
   reason: adds TA-30; drops AOC-07 (no footprint edge); Declared Memory Configuration (MAY) moves to enriching, so the minimum tier is MUST
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:poisoned_item_read
   type: pattern
   subject:
@@ -699,7 +797,10 @@
     - retrieved_content_metadata_integrity_signal
     catches: [TA-18, IR-02, IR-05]
   reason: covers IR-05 (optimized triggers), whose provenance is not recorded
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:zero_click_to_new_egress
   type: pattern
   subject:
@@ -720,7 +821,10 @@
     enriches: []
     catches: [TA-01]
   reason: drops AOC-10 (no trust-classification or egress edge)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:citation_without_retrieval
   type: pattern
   subject:
@@ -741,7 +845,10 @@
     enriches: [retrieved_content_source_provenance, output_egress_destination]
     catches: [TA-01, TA-02, IR-03]
   reason: unchanged evidence; provenance and egress move to enriching. The conditions are alternatives
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:input_reemitted
   type: pattern
   subject:
@@ -760,7 +867,10 @@
     enriches: [retrieved_content_source_provenance, memory_write_event, trigger_type_source_event]
     catches: [TA-27]
   reason: covers TA-27
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:output_link_carrying_data
   type: pattern
   subject:
@@ -780,7 +890,10 @@
     enriches: [source_host_ip_request_metadata]
     catches: [TA-01, TA-03]
   reason: takes TA-03 from `untrusted_input_to_new_egress`, whose tool-call and trust conditions it does not meet
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:system_prompt_reproduced
   type: pattern
   subject:
@@ -800,7 +913,10 @@
     baseline: A similarity threshold.
     catches: [TA-07]
   reason: LLM Refusal moves to enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:sensitive_input_to_off_inventory_ai
   type: pattern
   subject:
@@ -821,7 +937,10 @@
     baseline: The agent inventory.
     catches: [TA-05]
   reason: covers TA-05. The plan expected no pattern because TA-05 has no adversary, but RFC §4.7 admits non-adversarial failures and this one is detectable
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:unrequested_data_in_tool_arguments
   type: pattern
   subject:
@@ -841,7 +960,10 @@
     enriches: [tool_definition_digest, output_egress_destination, human_approval_elicitation_event]
     catches: [TA-15, TA-29]
   reason: TA-15 is malicious as published, which no digest comparison catches; the arguments are where it shows
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:untrusted_input_to_new_egress
   type: pattern
   subject:
@@ -863,7 +985,10 @@
     baseline: Egress destinations per agent.
     catches: [TA-01, TA-12]
   reason: adds TA-12; drops TA-03, which has no tool call or trust classification (now `output_link_carrying_data`)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:egress_under_session_taint
   type: pattern
   subject:
@@ -885,7 +1010,10 @@
     enriches: [authorization_decision_record]
     catches: [TA-01, AOC-03]
   reason: drops TA-02 (no egress edge); reads egress, with the denial as enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:callback_to_undeclared_destination
   type: pattern
   subject:
@@ -906,7 +1034,10 @@
     catches: []
     catches_analogical: [AOC-11]
   reason: drops TA-01 (no A2A edge); AOC-11 has an analogical A2A edge. No corpus entry registers a callback
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:route_outside_restriction
   type: pattern
   subject:
@@ -928,7 +1059,10 @@
     catches: []
     catches_analogical: [AOC-06]
   reason: drops TA-01 (no route edge); AOC-06 is analogical
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:enforcement_point_fail_open
   type: pattern
   subject:
@@ -950,7 +1084,10 @@
     catches: [TA-01]
     catches_analogical: [TA-10]
   reason: TA-10 has only an analogical edge to the enforcement-point field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:hook_coverage_changed
   type: pattern
   subject:
@@ -970,7 +1107,10 @@
     enriches: [event_sequence_continuity, action_type]
     catches: [TA-17]
   reason: TA-17 (redirection) is the instance. The sequence-gap half becomes `event_sequence_gap`, so this pattern no longer needs a SHOULD field
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:self_asserted_attribute_contradicted
   type: pattern
   subject:
@@ -991,7 +1131,10 @@
     enriches: [verified_vs_displayed_identity, authorization_decision_record]
     catches: [AOC-01, AOC-08, AOC-10, AOC-15]
   reason: adds AOC-15 (an owner-compromise claim made by a non-owner); the comparison fields move to enriching
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:event_sequence_gap
   type: pattern
   subject:
@@ -1012,7 +1155,10 @@
     catches: []
     catches_analogical: [TA-17, AOC-01, AOC-10]
   reason: the sequence-gap half of the old `hook_coverage_changed`; every edge to the field is analogical
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: V:TA-28
   type: coverage
   subject:
@@ -1021,7 +1167,10 @@
   proposal:
     no_pattern: 'Outside the deployment: the backdoor ran on a compromised host and used the provider API from there, so no instrumented AI system carries the activity. Detection belongs to endpoint and network monitoring of provider API use; within a deployment, Output Egress Destination records what its own calls send.'
   reason: no pattern proposed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: V:AOC-16
   type: coverage
   subject:
@@ -1030,7 +1179,10 @@
   proposal:
     no_pattern: 'An emergent defence, not an attack: agents shared risk signals about a probing researcher. A pattern would detect the defence. Its Inter-Agent Message edge supports reading such signals.'
   reason: no pattern proposed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: V:IR-04
   type: coverage
   subject:
@@ -1039,4 +1191,7 @@
   proposal:
     no_pattern: A non-AI incident, carried for field overlap; its edges are analogical. `identity_from_new_source` catches it analogically.
   reason: no pattern proposed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

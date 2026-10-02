@@ -33,3 +33,4 @@ components_text: ModelServing, Identity
 atlas_text: MITRE **ATT&CK** (non-AI)
 atlas_notes: SSRF/cloud exfil
 risks: [riskCredentialAndTokenTheft, riskExcessiveNetworkExposure]
+no_pattern: A non-AI incident, carried for field overlap; its edges are analogical. `identity_from_new_source` catches it analogically.

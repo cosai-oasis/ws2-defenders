@@ -15,6 +15,9 @@ listed.
   capture  appends the accepted clause to the field's capture definition
   facets   sets role, record and origin (and a compound note) on the field
   risks    sets `risks:` on the attack (Risk Map IDs, primary first)
+  pattern  writes the record to data/patterns.yaml, replacing the record with its id
+           or its former_id; a candidate it `supersedes` is stamped applied
+  coverage sets `no_pattern:` on the attack: why no correlation pattern catches it
 
 After the edges are applied, a field's evidence is derived from the attacks
 that name it (build.py), so `evidence:` is removed from fields.yaml.
@@ -88,6 +91,8 @@ def main():
     layout_path = os.path.join(DATA, 'sections.yaml')
     layout = load(layout_path)
     attacks = {os.path.basename(p)[:-5]: load(p) for p in glob.glob(os.path.join(DATA, 'attacks', '*.yaml'))}
+    patterns_path = os.path.join(DATA, 'patterns.yaml')
+    patterns = load(patterns_path)
 
     batches = [(p, load(p) or []) for p in sorted(glob.glob(os.path.join(DATA, 'candidates', '*.yaml')))]
     all_c = {c['id']: c for _, cs in batches for c in cs}
@@ -108,7 +113,8 @@ def main():
     if uncurated:
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
-    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks')
+    superseded = {c['supersedes'] for c in all_c.values() if c.get('supersedes') and c['status'] == 'accepted'}
+    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -145,6 +151,18 @@ def main():
                     attacks[s['attack']]['risks'] = list(c['proposal']['risks'])
                 elif kind == 'facets':
                     fmap[s['field']].update({k: v for k, v in c['proposal'].items()})
+                elif kind == 'pattern':
+                    if c['id'] in superseded:      # its successor carries the record
+                        c['applied'] = TODAY
+                        applied += 1
+                        continue
+                    rec = c['proposal']
+                    patterns[:] = [p for p in patterns if p['id'] not in (rec['id'], rec.get('former_id'))]
+                    patterns.append(rec)
+                    if c.get('supersedes'):
+                        all_c[c['supersedes']]['applied'] = TODAY
+                elif kind == 'coverage':
+                    attacks[s['attack']]['no_pattern'] = c['proposal']['no_pattern']
                 elif kind == 'capture':
                     f = fmap[s['field']]
                     f['capture'] = f['capture'].rstrip() + ' ' + c['proposal']['capture_addition']
@@ -172,6 +190,10 @@ def main():
     for p, cs in batches:
         dump(cs, p, HEADER)
     dump(fields, fields_path, '# Telemetry fields. Evidence is derived from attacks/ (tools/build.py).\n')
+    old = [p['id'] for p in patterns if 'stage' not in p]
+    if old and len(old) < len(patterns):
+        sys.exit(f'patterns.yaml would mix structured and unstructured records: {old}')
+    dump(patterns, patterns_path, '# Correlation patterns (AD §2). Record schema: tools/phase5_propose.py.\n')
     dump(layout, layout_path, '# Field steps (RFC §6 and AD §1 share them) and the layout of the other generated regions.\n')
     for aid, a in attacks.items():
         dump(a, attack_path(aid), ATTACK_HEADER.format(id=aid))

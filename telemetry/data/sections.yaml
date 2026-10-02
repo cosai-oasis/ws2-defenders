@@ -135,10 +135,19 @@ field_steps:
 ad_field_header:
 - '| Field | Tier | Role | What it records | Emitted by | Grounding attacks |'
 - '| :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |'
-ad_pattern_table:
-  header:
-  - '| Pattern | Indicates | Fields correlated | Evidence |'
-  - '| :---------------------------------------- | :-------------------- | :------------------------------- | :--------- |'
+pattern_stages:
+- stage: entry
+  title: 'Entry: input arrives'
+- stage: decision
+  title: 'Decision: model, authorization and identity'
+- stage: action
+  title: 'Action: tool calls and execution'
+- stage: persistence
+  title: 'Persistence: memory, background tasks and configuration'
+- stage: egress
+  title: 'Egress: data leaves'
+- stage: plane
+  title: Telemetry plane
 ad_inventory_tables:
 - number: '3.2'
   title: Real-world attack vectors
