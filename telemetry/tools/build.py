@@ -7,7 +7,7 @@ basis, rationale, the patterns that read the field; between GENERATED markers,
 one per step), §2 patterns (summary, an entry per pattern by stage, coverage;
 between GENERATED markers), §3.2 to §3.4 inventory
 tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
-tables, which link to each field's AD entry.
+tables, which link to each field's AD entry, and the tier totals the RFC states.
 Everything else in both documents is hand-written and left untouched.
 
 Usage:
@@ -23,6 +23,7 @@ import sys
 
 import yaml
 
+import rules
 from mdtables import find_tables, gh_anchor, row
 
 DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -40,7 +41,7 @@ patterns = load('patterns.yaml')
 attacks = {a['id']: a for a in map(load, (os.path.relpath(p, DATA)
                                            for p in glob.glob(os.path.join(DATA, 'attacks', '*.yaml'))))}
 layout = load('sections.yaml')
-RANK = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
+RANK = rules.RANK
 STAGES = [s['stage'] for s in layout['pattern_stages']]
 
 steps = layout['field_steps']
@@ -116,30 +117,19 @@ def series(items):
 
 
 def tier_basis(f):
-    """The basis of a field's tier under RFC §4.7, checked against the data."""
+    """The basis of a field's tier under RFC §4.7 (rules.tier_problems has checked it)."""
     b = f.get('basis', {})
-    inst = [a for a, g in grounds[f['id']] if g == 'instance']
     if f['tier'] == 'MUST':
-        assert set(b.get('evidence', [])) <= set(inst), f['id']
         if 'required_to_read' in b:
             return 'MUST, needed to read ' + series([link(x) for x in b['required_to_read']])
-        assert len(inst) >= 2, f"{f['id']}: MUST with {len(inst)} instance(s) and no dependency"
-        return f'MUST, on {len(inst)} documented instances'
+        return f"MUST, on {len(rules.instances(f['id'], attacks))} documented instances"
     if f['tier'] == 'SHOULD':
-        assert 'modality' in f or f.get('provider_gated'), f"{f['id']}: SHOULD with no modality"
         return f"SHOULD, modality: {f['modality']}" if 'modality' in f else 'SHOULD, provider-gated'
-    may = b.get('may', [])
-    if 'thin' in may:
-        assert len(inst) < 2 and f['id'] not in read_by_must, f"{f['id']}: MAY on thin evidence"
-    if len(inst) >= 2 and may:
-        assert set(may) - {'thin'}, f"{f['id']}: MAY with {len(inst)} instances needs a reason other than thin"
-    return 'MAY' + (', ' + series([MAY_REASON[r] for r in may]) if may else '')
+    return 'MAY, ' + series([MAY_REASON[r] for r in b['may']])
 
 
 MAY_REASON = {'qa': 'dominant value Q or A', 'thin': 'fewer than two documented instances',
               'research': 'research-grade signal', 'redundant': 'redundant with MUST fields'}
-read_by_must = {x for f in fields.values() if f['tier'] == 'MUST'
-                for x in f.get('basis', {}).get('required_to_read', [])}
 
 
 def ad_field_row(f):
@@ -217,8 +207,6 @@ def ad_patterns():
         inst = [plink(p['id']) for p in patterns if aid in p['catches']]
         anal = [plink(p['id']) for p in patterns if aid in p.get('catches_analogical', [])]
         a = attacks[aid]
-        if not inst:
-            assert a.get('no_pattern'), f'{aid}: no pattern catches it and no reason is recorded'
         first = ', '.join(inst) if inst else '*None.* ' + prose(a['no_pattern'])
         out.append(row([f"`{aid}` {a['name']}", first, ', '.join(anal)]))
     return out
@@ -302,7 +290,18 @@ def attack_references(text):
     return before + head + '\n' + '\n'.join(out) + '\n\n### ' + after
 
 
+TOTALS = [  # (pattern, rendering): the RFC's hand-written sentences that state the tier totals
+    (r'\d+ in all: \d+ MUST, \d+ SHOULD and \d+ MAY',
+     lambda n: f"{sum(n.values())} in all: {n['MUST']} MUST, {n['SHOULD']} SHOULD and {n['MAY']} MAY"),
+    (r'The catalogue contains \d+ MUST fields', lambda n: f"The catalogue contains {n['MUST']} MUST fields"),
+]
+
+
 def build_rfc(text):
+    n = {t: sum(f['tier'] == t for f in fields.values()) for t in rules.TIERS}
+    for pat, render in TOTALS:
+        assert len(re.findall(pat, text)) == 1, pat
+        text = re.sub(pat, render(n), text)
     lines = text.split('\n')
     st = {t['number']: t for t in steps}
     n = splice(lines, r'^### (6\.\d+) ', r'^## 7\.',
@@ -317,6 +316,11 @@ def main():
     ap = argparse.ArgumentParser(allow_abbrev=False, description='Regenerate the data-driven regions of the RFC and AD.')
     ap.add_argument('--check', action='store_true', help='exit 1 if a document differs from data/; write nothing')
     check = ap.parse_args().check
+    # Refuse to render data that breaks the rules; tools/validate.py reports the same problems.
+    problems = (rules.tier_problems(fields, attacks) + rules.layout_problems(fields, layout)
+                + rules.attack_problems(fields, attacks) + rules.pattern_problems(fields, attacks, patterns))
+    if problems:
+        sys.exit('data/ breaks the rules (tools/rules.py):\n  ' + '\n  '.join(problems))
     drift = False
     for name, build in ((AD, build_ad), (RFC, build_rfc)):
         path = os.path.join(DIR, name)

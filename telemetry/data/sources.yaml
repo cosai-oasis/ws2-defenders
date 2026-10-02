@@ -7,6 +7,10 @@ atlas:
   commit: 41d4f5ca4112f0e492ffaa3ebff07dc80a75afa5
   released: '2026-09-01'
   note: v2026.09 (2026-09-15) is available; AD §3.6 is verified against v2026.08. Re-verify before moving the pin.
+  # IDs ATLAS has retired. The documents may name them to record the retirement;
+  # the data may not use them.
+  retired:
+    AML.T0104: absorbed into AML.T0110 and its sub-techniques
 
 # Risk Map IDs resolve against the base, then each layer in order.
 riskmap:
