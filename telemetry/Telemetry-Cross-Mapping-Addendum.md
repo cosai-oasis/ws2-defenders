@@ -32,8 +32,6 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 | AI Telemetry Framework | commit `e17c514` (2026-09-07) | [[25]](#standards--frameworks) | yes, 2026-10-02 |
 | Open Delegation & Identity Standard | commit `148dc41` (2026-09-08) | [[26]](#standards--frameworks) | yes, 2026-10-02 |
 | OWASP Agent Observability Standard | 0.1.0 (2025-12-30) | [[38]](#standards--frameworks) | yes, 2026-10-02 |
-| Model Context Protocol | 2026-07-28 | [[39]](#standards--frameworks) | not yet |
-| Agent2Agent Protocol | v1.0.1 (2026-05-28) | [[40]](#standards--frameworks) | not yet |
 | NIST Cybersecurity Framework | 2.0 (2024-02-26) | [[31]](#standards--frameworks) | yes, 2026-10-02 |
 | NIST AI Risk Management Framework | 1.0 (2023-01-26) | [[30]](#standards--frameworks) | yes, 2026-10-02 |
 | ISO/IEC 42001 | 2023 | [[33]](#standards--frameworks) | not yet |

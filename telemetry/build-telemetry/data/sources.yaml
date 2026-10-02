@@ -125,14 +125,18 @@ publications:
     reference: 39
     version: '2026-07-28'
     repository: https://github.com/modelcontextprotocol/modelcontextprotocol
+    xm: false
     verified: false
+    note: Cited by the RFC (§3.2, trace propagation); XM maps no fields to it, so it is left out of XM's pins table.
   a2a:
     name: Agent2Agent Protocol
     reference: 40
     release: v1.0.1
     repository: https://github.com/a2aproject/A2A
     released: '2026-05-28'
+    xm: false
     verified: false
+    note: Cited by the RFC (§3.2, trace propagation); XM maps no fields to it, so it is left out of XM's pins table.
   nist_csf:
     name: NIST Cybersecurity Framework
     reference: 31
