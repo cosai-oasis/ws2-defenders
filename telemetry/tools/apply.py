@@ -10,7 +10,8 @@ listed.
   edge     sets the attack's `fields:` entry with its grounding class
            (instance or analogical); reject removes it
   alias    already reflected in `fields:` by reconcile.py; stamped only
-  basis    sets `basis:` on the field
+  basis    sets `basis:` on the field, and `rationale:` when the proposal carries one
+  tier     sets `tier:`, `basis:` and `rationale:`, and re-sorts the field's step by tier
   capture  appends the accepted clause to the field's capture definition
   facets   sets role, record and origin (and a compound note) on the field
   risks    sets `risks:` on the attack (Risk Map IDs, primary first)
@@ -103,7 +104,7 @@ def main():
     if uncurated:
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
-    order = ('attack', 'edge', 'alias', 'basis', 'capture', 'facets', 'risks')
+    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -127,6 +128,15 @@ def main():
                     set_edge(attacks[s['attack']], s['field'], g)
                 elif kind == 'basis':
                     fmap[s['field']]['basis'] = c['proposal']['basis']
+                    if 'rationale' in c['proposal']:
+                        fmap[s['field']]['rationale'] = c['proposal']['rationale']
+                elif kind == 'tier':
+                    f = fmap[s['field']]
+                    f.update({k: c['proposal'][k] for k in ('tier', 'basis', 'rationale') if k in c['proposal']})
+                    rank = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
+                    for st in layout['field_steps']:
+                        if s['field'] in st['fields']:
+                            st['fields'].sort(key=lambda i: rank[fmap[i]['tier']])
                 elif kind == 'risks':
                     attacks[s['attack']]['risks'] = list(c['proposal']['risks'])
                 elif kind == 'facets':
@@ -138,7 +148,8 @@ def main():
                 applied += 1
 
     FIELD_ORDER = ['id', 'name', 'name_note', 'tags', 'tier', 'tier_mark', 'role', 'record', 'origin',
-                   'compound', 'basis', 'records', 'emitted_by', 'emitted_by_text', 'capture']
+                   'compound', 'basis', 'records', 'modality', 'provider_gated', 'emitted_by',
+                   'emitted_by_text', 'capture', 'rationale', 'rationale_see']
     for i, f in enumerate(fields):
         f.pop('evidence', None)
         f.pop('evidence_pad', None)
@@ -157,7 +168,7 @@ def main():
     for p, cs in batches:
         dump(cs, p, HEADER)
     dump(fields, fields_path, '# Telemetry fields. Evidence is derived from attacks/ (tools/build.py).\n')
-    dump(layout, layout_path, '# Table layout and row order for the generated regions.\n')
+    dump(layout, layout_path, '# Field steps (RFC §6 and AD §1 share them) and the layout of the other generated regions.\n')
     for aid, a in attacks.items():
         dump(a, attack_path(aid), ATTACK_HEADER.format(id=aid))
 

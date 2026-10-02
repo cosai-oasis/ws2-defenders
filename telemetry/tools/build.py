@@ -100,7 +100,18 @@ def tier_basis(f):
     if f['tier'] == 'SHOULD':
         assert 'modality' in f or f.get('provider_gated'), f"{f['id']}: SHOULD with no modality"
         return f"SHOULD, modality: {f['modality']}" if 'modality' in f else 'SHOULD, provider-gated'
-    return 'MAY'
+    may = b.get('may', [])
+    if 'thin' in may:
+        assert len(inst) < 2 and f['id'] not in read_by_must, f"{f['id']}: MAY on thin evidence"
+    if len(inst) >= 2 and may:
+        assert set(may) - {'thin'}, f"{f['id']}: MAY with {len(inst)} instances needs a reason other than thin"
+    return 'MAY' + (', ' + series([MAY_REASON[r] for r in may]) if may else '')
+
+
+MAY_REASON = {'qa': 'dominant value Q or A', 'thin': 'fewer than two documented instances',
+              'research': 'research-grade signal', 'redundant': 'redundant with MUST fields'}
+read_by_must = {x for f in fields.values() if f['tier'] == 'MUST'
+                for x in f.get('basis', {}).get('required_to_read', [])}
 
 
 def ad_field_row(f):
