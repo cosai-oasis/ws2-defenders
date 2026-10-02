@@ -35,3 +35,102 @@ riskmap:
         riskImplicitCrossBoundaryTrust and the new riskCrossAgentReputationPoisoning) and
         controlAgentMemoryIntegrity (narrowed to controlMemoryReferentRevalidation, with
         controlRetrievalAndVectorSystemIntegrity extended to componentMemory).
+
+# Publications XM cross-references. Each pins a commit or a published version.
+# `verified` records whether XM's mapping has been checked against that pin, and
+# when; a pin set before the check is a target, not a claim. `reference` is the
+# entry in the set's reference list. `schema` names a machine-readable
+# definition the validator can resolve mapped constructs against.
+publications:
+  ocsf:
+    name: Open Cybersecurity Schema Framework
+    reference: 37
+    repository: https://github.com/ocsf/ocsf-schema
+    release: 1.9.0
+    commit: 856d462bd20dc46cc1ffed2dfffe3b91ef0fbeba
+    released: '2026-08-03'
+    schema: [dictionary.json, objects/, events/, profiles/]
+    verified: false
+    note: XM's mapping also cites open proposals (ocsf-schema#1640, #1704, #1724, #1729, #1739); constructs from them are asks, not 1.9.0.
+  otel_genai:
+    name: OpenTelemetry GenAI semantic conventions
+    reference: 35
+    repository: https://github.com/open-telemetry/semantic-conventions-genai
+    commit: e07f4ebacb08f56db8c4c882d117720333fbca04
+    committed: '2026-10-02'
+    schema: [model/]
+    verified: false
+    note: No release yet; every convention is at Development status, so pin by commit.
+  otel_semconv:
+    name: OpenTelemetry semantic conventions (core)
+    reference: 36
+    repository: https://github.com/open-telemetry/semantic-conventions
+    release: v1.44.0
+    commit: e10a930844c6951757a43b849d364f7d056ac32b
+    released: '2026-08-04'
+    schema: [model/]
+    verified: false
+  aitf:
+    name: AI Telemetry Framework
+    reference: 25
+    repository: https://github.com/cosai-oasis/ws2-defenders
+    path: telemetry/aitf
+    commit: e17c514cd6a87a23699cd8c60d5c375214bf25f3
+    committed: '2026-09-07'
+    verified: false
+  odis:
+    name: Open Delegation & Identity Standard
+    reference: 26
+    repository: https://github.com/cosai-oasis/ws4-odis
+    path: RFCs/ODIS.md
+    commit: 148dc4187139a41325e3c6d6e7533d956bd33144
+    committed: '2026-09-08'
+    verified: true
+    note: XM §4 states it was verified against this commit; re-check in the XM pass.
+  owasp_aos:
+    name: OWASP Agent Observability Standard
+    reference: 38
+    repository: https://github.com/OWASP/www-project-agent-observability-standard
+    commit: e4a50f63cdf912a34262632f1379f674522fe237
+    committed: '2025-12-30'
+    verified: false
+    note: Confirm this is the repository the standard is published from (aos.owasp.org), and pin its version if it has one.
+  cpex:
+    name: CPEX
+    reference: 44
+    repository: https://github.com/contextforge-org/cpex
+    commit: 035012f8674215d407c90269b4f80e790c815d6f
+    committed: '2026-08-18'
+    verified: true
+    note: XM §6 states it was checked at this commit; re-check in the XM pass.
+  mcp:
+    name: Model Context Protocol
+    reference: 39
+    version: '2026-07-28'
+    repository: https://github.com/modelcontextprotocol/modelcontextprotocol
+    verified: false
+  a2a:
+    name: Agent2Agent Protocol
+    reference: 40
+    release: v1.0.1
+    repository: https://github.com/a2aproject/A2A
+    released: '2026-05-28'
+    verified: false
+  nist_csf:
+    name: NIST Cybersecurity Framework
+    reference: 31
+    version: '2.0'
+    published: '2024-02-26'
+    verified: false
+  nist_ai_rmf:
+    name: NIST AI Risk Management Framework
+    reference: 30
+    version: '1.0'
+    published: '2023-01-26'
+    verified: false
+    note: Under revision; XM also cites the Cyber AI Profile, NIST IR 8596 initial preliminary draft (2025-12-16).
+  iso_42001:
+    name: ISO/IEC 42001
+    reference: 33
+    version: '2023'
+    verified: false
