@@ -21,6 +21,7 @@ that name it (build.py), so `evidence:` is removed from fields.yaml.
 
 Usage: python3 tools/apply.py [--dry-run]
 """
+import argparse
 import datetime
 import glob
 import os
@@ -77,7 +78,10 @@ def set_edge(attack, fid, grounding, note=None):
 
 
 def main():
-    dry = '--dry-run' in sys.argv
+    # argparse rejects unknown options and handles -h, so a mistyped flag exits before anything is written.
+    ap = argparse.ArgumentParser(allow_abbrev=False, description='Apply accepted curation candidates to data/.')
+    ap.add_argument('--dry-run', action='store_true', help='report what would be applied; write nothing')
+    dry = ap.parse_args().dry_run
     fields_path = os.path.join(DATA, 'fields.yaml')
     fields = load(fields_path)
     fmap = {f['id']: f for f in fields}

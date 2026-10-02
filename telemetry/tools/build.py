@@ -12,6 +12,7 @@ Usage:
   python3 tools/build.py           rewrite the documents in place
   python3 tools/build.py --check   exit 1 if a document differs from the data
 """
+import argparse
 import difflib
 import glob
 import os
@@ -239,7 +240,10 @@ def build_rfc(text):
 
 # ---------------------------------------------------------------- main
 def main():
-    check = '--check' in sys.argv
+    # argparse rejects unknown options and handles -h, so a mistyped flag exits before anything is written.
+    ap = argparse.ArgumentParser(allow_abbrev=False, description='Regenerate the data-driven regions of the RFC and AD.')
+    ap.add_argument('--check', action='store_true', help='exit 1 if a document differs from data/; write nothing')
+    check = ap.parse_args().check
     drift = False
     for name, build in ((AD, build_ad), (RFC, build_rfc)):
         path = os.path.join(DIR, name)

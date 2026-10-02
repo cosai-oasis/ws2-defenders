@@ -239,7 +239,7 @@
   origin: derived
   basis:
     evidence: [AOC-12, TA-21]
-  records: Flag and decoded form of base64, image-embedded or markup-authority input.
+  records: Flag and decoded form of base64, image-embedded, invisible-Unicode or markup-authority input.
   emitted_by: [componentAgentInputHandling]
   capture: Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags. Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
   rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'

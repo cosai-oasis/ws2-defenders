@@ -161,7 +161,7 @@ This step also records whether the telemetry plane worked. Every other field ass
 | **Instrumentation Coverage / Hook Attestation** | MUST | descriptor | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer | `TA-17`,*`AOC-01`*,*`AOC-09`*,*`AOC-10`* |
 | **Enforcement-Point Availability & Failure Mode** | MUST | outcome | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points | `TA-01`,*`TA-10`*,*`IR-01`*,*`AOC-12`* |
 | **Guardrail Modification Record** **[AOS]** | MUST ‡ | outcome | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point | `TA-01`,*`IR-01`*,*`AOC-03`*,*`AOC-12`* |
-| **Encoded / Obfuscated Payload Indicator** | MUST | label | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
+| **Encoded / Obfuscated Payload Indicator** | MUST | label | Flag and decoded form of base64, image-embedded, invisible-Unicode or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
 | **Observation / Thought (reasoning trace)** | SHOULD | content | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` | `TA-06`,`TA-08`,`TA-09`,`IR-02`,`AOC-01`,`AOC-07`,*`AOC-10`* |
 | **Threat Classification / ATLAS Technique Tag** | MAY † | label | MITRE ATLAS technique IDs on any event where a detection fires. | any detector | *`TA-01`*,*`TA-07`*,*`IR-01`*,*`AOC-12`* |
 

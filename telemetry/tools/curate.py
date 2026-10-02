@@ -151,7 +151,7 @@ def cmd_summary(_):
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(allow_abbrev=False, description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('command', choices=['list', 'accept', 'reject', 'defer', 'amend', 'summary'])
     p.add_argument('ids', nargs='*')
     for f in ('status', 'type', 'attack', 'field', 'source', 'by', 'note', 'proposal', 'reason'):
