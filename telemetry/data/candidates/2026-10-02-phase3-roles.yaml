@@ -1,0 +1,1005 @@
+# Phase 3 batch: role (shown in the AD Role column), record and origin for each field.
+# role: identifier | content | outcome | label | descriptor | measure | provenance
+# record: event | state | aggregate      origin: observed | declared | asserted | derived
+- id: R:agent_name
+  type: facets
+  subject:
+    field: agent_name
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: declared
+  status: proposed
+- id: R:agent_runtime_instance_id
+  type: facets
+  subject:
+    field: agent_runtime_instance_id
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:workflow_run_id
+  type: facets
+  subject:
+    field: workflow_run_id
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:session_turn_step_ids
+  type: facets
+  subject:
+    field: session_turn_step_ids
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:trace_context_propagated
+  type: facets
+  subject:
+    field: trace_context_propagated
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:organization_tenant_id
+  type: facets
+  subject:
+    field: organization_tenant_id
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: declared
+  status: proposed
+- id: R:trigger_type_source_event
+  type: facets
+  subject:
+    field: trigger_type_source_event
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+    compound: label plus identifier of the originating event
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:action_type
+  type: facets
+  subject:
+    field: action_type
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+  status: proposed
+- id: R:execution_status
+  type: facets
+  subject:
+    field: execution_status
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+    compound: outcome plus duration (measure)
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:stop_reason
+  type: facets
+  subject:
+    field: stop_reason
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:surface_app
+  type: facets
+  subject:
+    field: surface_app
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+  status: proposed
+- id: R:system_prompt_instruction_config
+  type: facets
+  subject:
+    field: system_prompt_instruction_config
+  source: phase3
+  proposal:
+    role: content
+    record: state
+    origin: asserted
+  status: proposed
+- id: R:autonomy_level
+  type: facets
+  subject:
+    field: autonomy_level
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: asserted
+  status: proposed
+- id: R:model_input
+  type: facets
+  subject:
+    field: model_input
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:input_source_channel
+  type: facets
+  subject:
+    field: input_source_channel
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: observed
+  status: proposed
+- id: R:input_trust_classification
+  type: facets
+  subject:
+    field: input_trust_classification
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+  status: proposed
+- id: R:source_host_ip_request_metadata
+  type: facets
+  subject:
+    field: source_host_ip_request_metadata
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: observed
+  status: proposed
+- id: R:guardrail_input_verdict
+  type: facets
+  subject:
+    field: guardrail_input_verdict
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:content_modality_attachment_identity
+  type: facets
+  subject:
+    field: content_modality_attachment_identity
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+    compound: label plus content hash
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:guardrail_modification_record
+  type: facets
+  subject:
+    field: guardrail_modification_record
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:threat_classification_atlas_technique_tag
+  type: facets
+  subject:
+    field: threat_classification_atlas_technique_tag
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: derived
+  status: proposed
+- id: R:encoded_obfuscated_payload_indicator
+  type: facets
+  subject:
+    field: encoded_obfuscated_payload_indicator
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: derived
+  status: proposed
+- id: R:response_model_output
+  type: facets
+  subject:
+    field: response_model_output
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:output_egress_destination
+  type: facets
+  subject:
+    field: output_egress_destination
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:citations_source_attribution
+  type: facets
+  subject:
+    field: citations_source_attribution
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: derived
+    compound: asserted claim plus derived resolution outcome
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:observation_thought_reasoning_trace
+  type: facets
+  subject:
+    field: observation_thought_reasoning_trace
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: asserted
+  status: proposed
+- id: R:guardrail_output_verdict
+  type: facets
+  subject:
+    field: guardrail_output_verdict
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:llm_refusal
+  type: facets
+  subject:
+    field: llm_refusal
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:model_name_version
+  type: facets
+  subject:
+    field: model_name_version
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:provider_endpoint_identity
+  type: facets
+  subject:
+    field: provider_endpoint_identity
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:inference_parameters
+  type: facets
+  subject:
+    field: inference_parameters
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:input_output_token_counts
+  type: facets
+  subject:
+    field: input_output_token_counts
+  source: phase3
+  proposal:
+    role: measure
+    record: event
+    origin: observed
+  status: proposed
+- id: R:llm_error_exception
+  type: facets
+  subject:
+    field: llm_error_exception
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:model_provenance_signing_hash
+  type: facets
+  subject:
+    field: model_provenance_signing_hash
+  source: phase3
+  proposal:
+    role: provenance
+    record: state
+    origin: declared
+  status: proposed
+- id: R:pre_forward_pass_state_digest_vector
+  type: facets
+  subject:
+    field: pre_forward_pass_state_digest_vector
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: derived
+  status: proposed
+- id: R:token_malformation_context_corruption_indicator
+  type: facets
+  subject:
+    field: token_malformation_context_corruption_indicator
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: derived
+  status: proposed
+- id: R:tool_call_io
+  type: facets
+  subject:
+    field: tool_call_io
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:tool_name
+  type: facets
+  subject:
+    field: tool_name
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:tool_type_trust_boundary
+  type: facets
+  subject:
+    field: tool_type_trust_boundary
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: declared
+  status: proposed
+- id: R:tool_id
+  type: facets
+  subject:
+    field: tool_id
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: declared
+  status: proposed
+- id: R:tool_execution_id
+  type: facets
+  subject:
+    field: tool_execution_id
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:tool_definition_digest
+  type: facets
+  subject:
+    field: tool_definition_digest
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: derived
+    compound: derived digest plus comparison outcome against the baseline
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:execution_environment_sandbox
+  type: facets
+  subject:
+    field: execution_environment_sandbox
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: observed
+  status: proposed
+- id: R:mcp_server_identity_primitive
+  type: facets
+  subject:
+    field: mcp_server_identity_primitive
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: asserted
+    compound: asserted server identity plus observed primitive (label)
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:tool_error_exception
+  type: facets
+  subject:
+    field: tool_error_exception
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:tool_acl_required_scope
+  type: facets
+  subject:
+    field: tool_acl_required_scope
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:tool_privacy_classification
+  type: facets
+  subject:
+    field: tool_privacy_classification
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: declared
+  status: proposed
+- id: R:tool_selection_rationale
+  type: facets
+  subject:
+    field: tool_selection_rationale
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: asserted
+  status: proposed
+- id: R:memory_write_event
+  type: facets
+  subject:
+    field: memory_write_event
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:memory_read_injection_event
+  type: facets
+  subject:
+    field: memory_read_injection_event
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:memory_provenance_source
+  type: facets
+  subject:
+    field: memory_provenance_source
+  source: phase3
+  proposal:
+    role: provenance
+    record: state
+    origin: observed
+  status: proposed
+- id: R:memory_integrity_poisoning_signal
+  type: facets
+  subject:
+    field: memory_integrity_poisoning_signal
+  source: phase3
+  proposal:
+    role: measure
+    record: event
+    origin: derived
+  status: proposed
+- id: R:memory_footprint_growth
+  type: facets
+  subject:
+    field: memory_footprint_growth
+  source: phase3
+  proposal:
+    role: measure
+    record: aggregate
+    origin: observed
+  status: proposed
+- id: R:declared_memory_configuration
+  type: facets
+  subject:
+    field: declared_memory_configuration
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:memory_write_rationale
+  type: facets
+  subject:
+    field: memory_write_rationale
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: asserted
+  status: proposed
+- id: R:retrieval_event
+  type: facets
+  subject:
+    field: retrieval_event
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:retrieved_content_source_provenance
+  type: facets
+  subject:
+    field: retrieved_content_source_provenance
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: observed
+  status: proposed
+- id: R:retrieved_content_metadata_integrity_signal
+  type: facets
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+  source: phase3
+  proposal:
+    role: measure
+    record: event
+    origin: derived
+  status: proposed
+- id: R:declared_knowledge_source_configuration
+  type: facets
+  subject:
+    field: declared_knowledge_source_configuration
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:inter_agent_message
+  type: facets
+  subject:
+    field: inter_agent_message
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:a2a_task_lifecycle_event
+  type: facets
+  subject:
+    field: a2a_task_lifecycle_event
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:peer_agent_card_descriptor
+  type: facets
+  subject:
+    field: peer_agent_card_descriptor
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: asserted
+    compound: asserted descriptor plus verification outcome
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:background_scheduled_task_event
+  type: facets
+  subject:
+    field: background_scheduled_task_event
+  source: phase3
+  proposal:
+    role: descriptor
+    record: event
+    origin: observed
+  status: proposed
+- id: R:loop_step_count_signal
+  type: facets
+  subject:
+    field: loop_step_count_signal
+  source: phase3
+  proposal:
+    role: measure
+    record: aggregate
+    origin: derived
+  status: proposed
+- id: R:resource_consumption_aggregate
+  type: facets
+  subject:
+    field: resource_consumption_aggregate
+  source: phase3
+  proposal:
+    role: measure
+    record: aggregate
+    origin: derived
+  status: proposed
+- id: R:task_intent_declaration
+  type: facets
+  subject:
+    field: task_intent_declaration
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: asserted
+  status: proposed
+- id: R:protocol_envelope_capture
+  type: facets
+  subject:
+    field: protocol_envelope_capture
+  source: phase3
+  proposal:
+    role: content
+    record: event
+    origin: observed
+  status: proposed
+- id: R:identities_used_per_hop
+  type: facets
+  subject:
+    field: identities_used_per_hop
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: declared
+  status: proposed
+- id: R:verified_vs_displayed_identity
+  type: facets
+  subject:
+    field: verified_vs_displayed_identity
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+    compound: two identifiers plus which one authorized (outcome)
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:originating_principal_on_behalf_of
+  type: facets
+  subject:
+    field: originating_principal_on_behalf_of
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: declared
+  status: proposed
+- id: R:delegation_chain
+  type: facets
+  subject:
+    field: delegation_chain
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: declared
+  status: proposed
+- id: R:granted_authorizations_scope
+  type: facets
+  subject:
+    field: granted_authorizations_scope
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+    compound: declared scope plus narrowing-check outcome
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:resource_indicators_constraints
+  type: facets
+  subject:
+    field: resource_indicators_constraints
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:credential_minting_scope_narrowing_check
+  type: facets
+  subject:
+    field: credential_minting_scope_narrowing_check
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:trust_domain_crossing_delegation_depth
+  type: facets
+  subject:
+    field: trust_domain_crossing_delegation_depth
+  source: phase3
+  proposal:
+    role: measure
+    record: event
+    origin: derived
+    compound: derived depth (measure) plus limit-crossed flag (outcome)
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:runtime_credential_attestation
+  type: facets
+  subject:
+    field: runtime_credential_attestation
+  source: phase3
+  proposal:
+    role: provenance
+    record: state
+    origin: declared
+  status: proposed
+- id: R:lifecycle_state
+  type: facets
+  subject:
+    field: lifecycle_state
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: declared
+  status: proposed
+- id: R:capability_set_change_event
+  type: facets
+  subject:
+    field: capability_set_change_event
+  source: phase3
+  proposal:
+    role: descriptor
+    record: event
+    origin: observed
+  status: proposed
+- id: R:tool_agent_version
+  type: facets
+  subject:
+    field: tool_agent_version
+  source: phase3
+  proposal:
+    role: identifier
+    record: state
+    origin: declared
+  status: proposed
+- id: R:repository_code_path_software_ref
+  type: facets
+  subject:
+    field: repository_code_path_software_ref
+  source: phase3
+  proposal:
+    role: provenance
+    record: state
+    origin: declared
+  status: proposed
+- id: R:agbom_inventory_snapshot
+  type: facets
+  subject:
+    field: agbom_inventory_snapshot
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:component_dependency_graph
+  type: facets
+  subject:
+    field: component_dependency_graph
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:inventory_attestation_signature
+  type: facets
+  subject:
+    field: inventory_attestation_signature
+  source: phase3
+  proposal:
+    role: provenance
+    record: state
+    origin: declared
+  status: proposed
+- id: R:tool_description
+  type: facets
+  subject:
+    field: tool_description
+  source: phase3
+  proposal:
+    role: content
+    record: state
+    origin: declared
+  status: proposed
+- id: R:tool_status
+  type: facets
+  subject:
+    field: tool_status
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: declared
+  status: proposed
+- id: R:creator_id_oncall_creation_update_dates
+  type: facets
+  subject:
+    field: creator_id_oncall_creation_update_dates
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:surfaces_supported
+  type: facets
+  subject:
+    field: surfaces_supported
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: declared
+  status: proposed
+- id: R:fleet_counts
+  type: facets
+  subject:
+    field: fleet_counts
+  source: phase3
+  proposal:
+    role: measure
+    record: aggregate
+    origin: derived
+  status: proposed
+- id: R:enforcement_point_availability_failure_mode
+  type: facets
+  subject:
+    field: enforcement_point_availability_failure_mode
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:instrumentation_coverage_hook_attestation
+  type: facets
+  subject:
+    field: instrumentation_coverage_hook_attestation
+  source: phase3
+  proposal:
+    role: descriptor
+    record: state
+    origin: observed
+  status: proposed
+- id: R:event_sequence_continuity
+  type: facets
+  subject:
+    field: event_sequence_continuity
+  source: phase3
+  proposal:
+    role: identifier
+    record: event
+    origin: observed
+  status: proposed
+- id: R:policy_reason_code
+  type: facets
+  subject:
+    field: policy_reason_code
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+  status: proposed
+- id: R:authorization_decision_record
+  type: facets
+  subject:
+    field: authorization_decision_record
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:attribute_source_trusted_provenance_marking
+  type: facets
+  subject:
+    field: attribute_source_trusted_provenance_marking
+  source: phase3
+  proposal:
+    role: provenance
+    record: event
+    origin: observed
+  status: proposed
+- id: R:session_taint_labels_information_flow_decisions
+  type: facets
+  subject:
+    field: session_taint_labels_information_flow_decisions
+  source: phase3
+  proposal:
+    role: label
+    record: state
+    origin: observed
+    compound: label state plus taint-caused denials (events, outcome)
+  status: proposed
+  reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+- id: R:human_approval_elicitation_event
+  type: facets
+  subject:
+    field: human_approval_elicitation_event
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:backend_route_restriction_decision
+  type: facets
+  subject:
+    field: backend_route_restriction_decision
+  source: phase3
+  proposal:
+    role: outcome
+    record: event
+    origin: observed
+  status: proposed
+- id: R:mediation_coverage_bypass_path
+  type: facets
+  subject:
+    field: mediation_coverage_bypass_path
+  source: phase3
+  proposal:
+    role: label
+    record: event
+    origin: observed
+  status: proposed

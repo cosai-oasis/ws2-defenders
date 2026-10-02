@@ -12,6 +12,7 @@ listed.
   alias    already reflected in `fields:` by reconcile.py; stamped only
   basis    sets `basis:` on the field
   capture  appends the accepted clause to the field's capture definition
+  facets   sets role, record and origin (and a compound note) on the field
 
 After the edges are applied, a field's evidence is derived from the attacks
 that name it (build.py), so `evidence:` is removed from fields.yaml.
@@ -25,7 +26,7 @@ import sys
 
 from yamlio import dump, load
 
-DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))
+DATA = os.environ.get('TELEMETRY_DATA') or os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))
 TODAY = datetime.date.today().isoformat()
 HEADER = ('# Curation registry batch. Edit status only through tools/curate.py, or by hand\n'
           '# keeping decided_by and decided_on filled in. See curate.py for the schema.\n')
@@ -101,7 +102,7 @@ def main():
     if uncurated:
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
-    order = ('attack', 'edge', 'alias', 'basis', 'capture')
+    order = ('attack', 'edge', 'alias', 'basis', 'capture', 'facets')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -125,15 +126,20 @@ def main():
                     set_edge(attacks[s['attack']], s['field'], g)
                 elif kind == 'basis':
                     fmap[s['field']]['basis'] = c['proposal']['basis']
+                elif kind == 'facets':
+                    fmap[s['field']].update({k: v for k, v in c['proposal'].items()})
                 elif kind == 'capture':
                     f = fmap[s['field']]
                     f['capture'] = f['capture'].rstrip() + ' ' + c['proposal']['capture_addition']
                 c['applied'] = TODAY
                 applied += 1
 
-    for f in fields:
+    FIELD_ORDER = ['id', 'name', 'name_note', 'tags', 'tier', 'tier_mark', 'role', 'record', 'origin',
+                   'compound', 'basis', 'records', 'emitted_by', 'emitted_by_text', 'capture']
+    for i, f in enumerate(fields):
         f.pop('evidence', None)
         f.pop('evidence_pad', None)
+        fields[i] = {k: f[k] for k in FIELD_ORDER if k in f} | {k: v for k, v in f.items() if k not in FIELD_ORDER}
     for a in attacks.values():
         a.pop('detecting_fields_text', None)     # rendered from `fields:` from now on
 
@@ -141,8 +147,8 @@ def main():
                and c['type'] not in order]
     if waiting:
         print('accepted, no apply rule yet (phase 5):', ', '.join(waiting))
-    print(f'applied {applied}; skipped {len(skipped)} undecided or deferred:',
-          ', '.join(c['id'] for c in skipped) or 'none')
+    shown = ', '.join(c['id'] for c in skipped[:5]) + (f', … {len(skipped) - 5} more' if len(skipped) > 5 else '')
+    print(f'applied {applied}; skipped {len(skipped)} undecided or deferred:', shown or 'none')
     if dry:
         return
     for p, cs in batches:

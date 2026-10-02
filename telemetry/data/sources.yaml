@@ -1,0 +1,33 @@
+# External vocabularies the data refers to. Pinned, not copied: tools resolve
+# IDs against these versions, fetched into a cache outside data/.
+atlas:
+  repository: https://github.com/mitre-atlas/atlas-data
+  release: v2026.08
+  file: dist/v6/ATLAS-2026.08.yaml
+  commit: 41d4f5ca4112f0e492ffaa3ebff07dc80a75afa5
+  released: '2026-09-01'
+  note: v2026.09 (2026-09-15) is available; AD §3.6 is verified against v2026.08. Re-verify before moving the pin.
+
+# Risk Map IDs resolve against the base, then each layer in order.
+riskmap:
+  repository: https://github.com/cosai-oasis/secure-ai-tooling
+  files: [risk-map/yaml/risks.yaml, risk-map/yaml/controls.yaml, risk-map/yaml/components.yaml]
+  base:
+    branch: develop
+    commit: 37e7beddd6611bdeb61ad707492aed069bcc51af
+    committed: '2026-09-30'
+    note: The near-future target, used in place of main.
+  layers:
+    - branch: feature/jo5iah-524-527
+      repository: https://github.com/davidlabianca/secure-ai-tooling
+      commit: 0e9601d7d7780df7726b94d46270edc8f0c86493
+      committed: '2026-09-23'
+      stacked_on: {pull_request: 507, branch: feature/controls-risks-layer45, commit: 1a0b5d4e11eac1ce733918c8779c83d1646fcad7}
+      state: no pull request yet; opens against feature/controls-risks-layer45 after review
+      issues: [524, 525, 526, 527]
+      note: >-
+        Carries PR #507 plus the reworked telemetry proposals. Retires two IDs the
+        documents still use: riskUnsafeInterAgentPropagation (split into an extension of
+        riskImplicitCrossBoundaryTrust and the new riskCrossAgentReputationPoisoning) and
+        controlAgentMemoryIntegrity (narrowed to controlMemoryReferentRevalidation, with
+        controlRetrievalAndVectorSystemIntegrity extended to componentMemory).
