@@ -2,8 +2,10 @@
 """Regenerate the data-driven regions of the RFC and the Attack Detection
 Addendum (AD) from data/.
 
-Regions: AD §1 field tables, §2 pattern table, §3.2 to §3.4 inventory tables,
-§3.6 ATLAS table and the attack-source reference list; RFC §6 field tables.
+Regions: AD §1 field tables and their "What it captures" entries (between
+GENERATED markers, one per step), §2 pattern table, §3.2 to §3.4 inventory
+tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
+tables, which link to each field's AD entry.
 Everything else in both documents is hand-written and left untouched.
 
 Usage:
@@ -35,8 +37,12 @@ attacks = {a['id']: a for a in map(load, (os.path.relpath(p, DATA)
                                            for p in glob.glob(os.path.join(DATA, 'attacks', '*.yaml'))))}
 layout = load('sections.yaml')
 
-# The AD subsection that defines each field: the target of every RFC link.
-home = {fid: c for c in layout['ad_field_tables'] for fid in c['fields']}
+steps = layout['field_steps']
+
+
+def anchor(fid):
+    """The explicit anchor of a field's entry in AD §1."""
+    return 'f-' + fid.replace('_', '-')
 
 PREFIX = {'TA': 0, 'IR': 1, 'AOC': 2}
 corpus_order = sorted(attacks, key=lambda a: (PREFIX[a.split('-')[0]], int(a.split('-')[1])))
@@ -62,21 +68,33 @@ def ticks(ids):
 
 
 # ---------------------------------------------------------------- renderers
+def emitted(f):
+    return (', '.join(f'`{e}`' for e in f['emitted_by']) if 'emitted_by' in f else f['emitted_by_text'])
+
+
 def ad_field_row(f):
     name = f"**{f['name']}**" + ''.join(f' **[{t}]**' for t in f.get('tags', []))
-    if 'name_note' in f:
-        name += ' ' + f['name_note']
     tier = f['tier'] + (' ' + f['tier_mark'] if 'tier_mark' in f else '')
     ev = ','.join(f'`{a}`' if g == 'instance' else f'*`{a}`*' for a, g in grounds[f['id']])
-    return row([name, tier, f['capture'], ev])
+    return row([name, tier, f['role'], f['records'], emitted(f), ev])
+
+
+def capture_entry(f):
+    name = (f"**{f['name']}** {f['name_note']}." if 'name_note' in f else f"**{f['name']}.**")
+    return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}'
+
+
+def ad_step(st):
+    out = list(layout['ad_field_header']) + [ad_field_row(fields[i]) for i in st['fields']]
+    out += ['', '**What it captures.**']
+    for i in st['fields']:
+        out += ['', capture_entry(fields[i])]
+    return out
 
 
 def rfc_field_row(f):
-    c = home[f['id']]
-    link = f"[{f['name']}]({AD}#{gh_anchor(c['number'] + ' ' + c['title'])})"
-    emitted = (', '.join(f'`{e}`' for e in f['emitted_by']) if 'emitted_by' in f
-               else f['emitted_by_text'])
-    return row([link, f['tier'], f['records'], emitted])
+    link = f"[{f['name']}]({AD}#{anchor(f['id'])})"
+    return row([link, f['tier'], f['records'], emitted(f)])
 
 
 def pattern_row(p):
@@ -120,14 +138,20 @@ def splice(lines, heading_re, stop_re, render):
     return len(found)
 
 
-def build_ad(text):
-    lines = text.split('\n')
-    by_num = lambda key: {t['number']: t for t in layout[key]}
-    ft, inv = by_num('ad_field_tables'), by_num('ad_inventory_tables')
+def markers(text, key, body):
+    """Replace the region between the GENERATED markers for `key` with `body` lines."""
+    begin, end = f'<!-- BEGIN GENERATED: {key} -->', f'<!-- END GENERATED: {key} -->'
+    assert text.count(begin) == 1 and text.count(end) == 1, key
+    pre, rest = text.split(begin, 1)
+    _, post = rest.split(end, 1)
+    return pre + begin + '\n' + '\n'.join(body) + '\n' + end + post
 
-    n = splice(lines, r'^### (1\.\d+) ', r'^## 2\.',
-               lambda m: table(ft[m[1]]['header'], [ad_field_row(fields[i]) for i in ft[m[1]]['fields']]))
-    assert n == len(ft), n
+
+def build_ad(text):
+    for st in steps:
+        text = markers(text, f"fields {st['number']}", ad_step(st))
+    lines = text.split('\n')
+    inv = {t['number']: t for t in layout['ad_inventory_tables']}
     n = splice(lines, r'^## 2\. Correlation Patterns$', r'^## 3\.',
                lambda m: table(layout['ad_pattern_table']['header'], [pattern_row(p) for p in patterns]))
     assert n == 1, n
@@ -159,9 +183,9 @@ def attack_references(text):
 
 def build_rfc(text):
     lines = text.split('\n')
-    st = {t['number']: t for t in layout['rfc_field_tables']}
+    st = {t['number']: t for t in steps}
     n = splice(lines, r'^### (6\.\d+) ', r'^## 7\.',
-               lambda m: table(st[m[1]]['header'], [rfc_field_row(fields[i]) for i in st[m[1]]['fields']]))
+               lambda m: table(st[m[1]]['rfc_header'], [rfc_field_row(fields[i]) for i in st[m[1]]['fields']]))
     assert n == len(st), n
     return '\n'.join(lines)
 

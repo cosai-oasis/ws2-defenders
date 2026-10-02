@@ -104,7 +104,7 @@
   origin: observed
   records: 'Why a completion ended: end of turn, token limit, tool use, cancellation, content filter.'
   emitted_by: [componentReasoningCore]
-  capture: 'Normalized reason a model completion ended: end of turn, token limit, tool use pending, session stop (caller cancelled or disconnected), content filter. Separates a truncation from a clean stop and a guardrail kill from a crash; a `content_filter` stop is the completion-side view of a guardrail block (§1.3).'
+  capture: 'Normalized reason a model completion ended: end of turn, token limit, tool use pending, session stop (caller cancelled or disconnected), content filter. Separates a truncation from a clean stop and a guardrail kill from a crash; a `content_filter` stop is the completion-side view of a guardrail block (§1.2).'
 - id: surface_app
   name: Surface / App
   tier: MUST
@@ -251,7 +251,7 @@
   compound: asserted claim plus derived resolution outcome
   records: Sources the agent claims, and whether each resolves to a logged retrieval.
   emitted_by: [componentApplicationOutputHandling, componentAgentOutputHandling]
-  capture: 'The sources the agent *claims* it drew on, per output: file ID/name/URL or site URL for each citation, **plus whether each resolves to an item actually returned by a logged Retrieval Event (§1.7)**. Unresolvable, fabricated, or attacker-supplied citations are the signal.'
+  capture: 'The sources the agent *claims* it drew on, per output: file ID/name/URL or site URL for each citation, **plus whether each resolves to an item actually returned by a logged Retrieval Event (§1.4)**. Unresolvable, fabricated, or attacker-supplied citations are the signal.'
 - id: observation_thought_reasoning_trace
   name: Observation / Thought (reasoning trace)
   tier: SHOULD
@@ -469,7 +469,7 @@
   origin: asserted
   records: The agent's stated reason for a tool call. Self-asserted. Provider-gated.
   emitted_by: [componentReasoningCore]
-  capture: 'The agent''s stated reason for choosing *this* tool with *these* arguments, captured at the request step. Distinct from the §1.3 output-side reasoning trace: it is attached to the action, not the answer.'
+  capture: 'The agent''s stated reason for choosing *this* tool with *these* arguments, captured at the request step. Distinct from the §1.2 output-side reasoning trace: it is attached to the action, not the answer.'
 - id: memory_write_event
   name: Memory Write Event
   tier: MUST
@@ -734,7 +734,7 @@
   origin: declared
   records: 'Runtime-instance credential and attestation evidence, each source verified separately. Modality: cryptographic agent identity.'
   emitted_by: [componentIdentityProvider]
-  capture: 'Runtime-instance credential: `software_hash`, `attestation_evidence`, issuer, expiry, holder-key binding. Evidence is recorded **per source, each with its own issuer, validity and verification outcome**: software-provenance and runtime/workload evidence come from independent issuers, and a single collapsed value loses the independence that makes the attestation worth verifying (see **Attribute Source / Trusted-Provenance Marking**, [§1.12](#112-policy-enforcement--mediation)).'
+  capture: 'Runtime-instance credential: `software_hash`, `attestation_evidence`, issuer, expiry, holder-key binding. Evidence is recorded **per source, each with its own issuer, validity and verification outcome**: software-provenance and runtime/workload evidence come from independent issuers, and a single collapsed value loses the independence that makes the attestation worth verifying (see **Attribute Source / Trusted-Provenance Marking**, [§1.2](#12-content-trust-verdicts-and-their-availability)).'
 - id: lifecycle_state
   name: Lifecycle State
   tier: SHOULD

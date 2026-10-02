@@ -197,27 +197,27 @@ Every later detection resolves through these identifiers; the model and serving 
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Agent Name](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Logical name or type of the agent; exposes off-inventory agents. | `componentReasoningCore` |
-| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | The running instance an event belongs to, for per-instance quarantine. | `componentReasoningCore` |
-| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Groups one multi-step run or sub-agent tree into one execution. | `componentReasoningCore` |
-| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | The session, turn and step beneath a run, locating where behaviour changed. | `componentApplication`, `componentReasoningCore` |
-| [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | User-initiated or autonomous, and for autonomous runs the originating event. | `componentReasoningCore` |
-| [Action Type](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | LLM call, tool call, memory operation or message send. | `componentReasoningCore` |
-| [Execution Status](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Outcome and duration of an operation or turn. | `componentReasoningCore` |
-| [Surface / App](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Entry point: CLI, web, IDE, email, chat, scheduler; internal or external. | `componentApplication` |
-| [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Instruction configuration in force for the call. Self-asserted. | `componentAgentSystemInstruction` |
-| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Model and version that processed the request. | `componentModelServing` |
-| [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Decoding parameters and declared context window in force for the call; the denominator for max-length-output and oversized-input detections. | `componentModelServing` |
-| [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Per-call token usage, which feeds the Resource-Consumption Aggregate budget check. | `componentModelServing` |
-| [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
-| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | W3C trace context carried across every agent and tool hop. | every hop |
-| [Stop Reason](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | MUST | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
-| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Declared independence level the run is authorized for. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
-| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | SHOULD | Signed digest or provenance of the served model artifact. Modality: supply-chain attestation. | `componentModelServing`, `componentModelRegistry` |
-| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#11-application--agent-reasoning-core) | SHOULD | Owning tenant of the agent, the session and the invoking user. Modality: multi-tenancy. | agent, session and user records |
-| [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
-| [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
-| [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#14-the-model--model-serving) | MAY | Token-entropy anomalies correlated with confabulation. | `componentTheModel` |
+| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | Logical name or type of the agent; exposes off-inventory agents. | `componentReasoningCore` |
+| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | The running instance an event belongs to, for per-instance quarantine. | `componentReasoningCore` |
+| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | Groups one multi-step run or sub-agent tree into one execution. | `componentReasoningCore` |
+| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | The session, turn and step beneath a run, locating where behaviour changed. | `componentApplication`, `componentReasoningCore` |
+| [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | User-initiated or autonomous, and for autonomous runs the originating event. | `componentReasoningCore` |
+| [Action Type](Telemetry-Attack-Detection-Addendum.md#f-action-type) | MUST | LLM call, tool call, memory operation or message send. | `componentReasoningCore` |
+| [Execution Status](Telemetry-Attack-Detection-Addendum.md#f-execution-status) | MUST | Outcome and duration of an operation or turn. | `componentReasoningCore` |
+| [Surface / App](Telemetry-Attack-Detection-Addendum.md#f-surface-app) | MUST | Entry point: CLI, web, IDE, email, chat, scheduler; internal or external. | `componentApplication` |
+| [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#f-system-prompt-instruction-config) | MUST | Instruction configuration in force for the call. Self-asserted. | `componentAgentSystemInstruction` |
+| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#f-model-name-version) | MUST | Model and version that processed the request. | `componentModelServing` |
+| [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#f-inference-parameters) | MUST | Decoding parameters and declared context window in force for the call; the denominator for max-length-output and oversized-input detections. | `componentModelServing` |
+| [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#f-input-output-token-counts) | MUST | Per-call token usage, which feeds the Resource-Consumption Aggregate budget check. | `componentModelServing` |
+| [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-llm-error-exception) | MUST | Errors under adversarial conditions and provider-side silent failures. | `componentModelServing` |
+| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#f-trace-context-propagated) | MUST | W3C trace context carried across every agent and tool hop. | every hop |
+| [Stop Reason](Telemetry-Attack-Detection-Addendum.md#f-stop-reason) | MUST | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
+| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | Declared independence level the run is authorized for. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
+| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | Signed digest or provenance of the served model artifact. Modality: supply-chain attestation. | `componentModelServing`, `componentModelRegistry` |
+| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | Owning tenant of the agent, the session and the invoking user. Modality: multi-tenancy. | agent, session and user records |
+| [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#f-provider-endpoint-identity) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
+| [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#f-pre-forward-pass-state-digest-vector) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
+| [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#f-token-malformation-context-corruption-indicator) | MAY | Token-entropy anomalies correlated with confabulation. | `componentTheModel` |
 
 ### 6.2 Content, trust, verdicts and their availability
 
@@ -225,24 +225,24 @@ This is the densest detection cluster. With §6.1, it supplies the records an in
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Model Input](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Trusted or untrusted origin, crossed with the role assigned on entry: instruction or data. | `componentAgentInputHandling` |
-| [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` |
-| [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
-| [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Where output goes: recipients, URLs, channels, files, broadcast scope. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Citations / Source Attribution](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Sources the agent claims, and whether each resolves to a logged retrieval. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
-| [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | MUST | Refusal status and reason. | `componentAgentOutputHandling` |
-| [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
-| [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
-| [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier. | every security-relevant attribute |
-| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
-| [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MUST | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
-| [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MUST | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
-| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#13-output-handling-egress--refusals) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` |
-| [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#12-input-handling--trust-provenance) | MAY | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` |
+| [Model Input](Telemetry-Attack-Detection-Addendum.md#f-model-input) | MUST | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#f-input-source-channel) | MUST | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#f-input-trust-classification) | MUST | Trusted or untrusted origin, crossed with the role assigned on entry: instruction or data. | `componentAgentInputHandling` |
+| [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#f-source-host-ip-request-metadata) | MUST | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` |
+| [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-input-verdict) | MUST | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` |
+| [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#f-response-model-output) | MUST | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#f-output-egress-destination) | MUST | Where output goes: recipients, URLs, channels, files, broadcast scope. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Citations / Source Attribution](Telemetry-Attack-Detection-Addendum.md#f-citations-source-attribution) | MUST | Sources the agent claims, and whether each resolves to a logged retrieval. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-output-verdict) | MUST | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` |
+| [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#f-llm-refusal) | MUST | Refusal status and reason. | `componentAgentOutputHandling` |
+| [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#f-content-modality-attachment-identity) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
+| [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) | MUST | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
+| [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#f-attribute-source-trusted-provenance-marking) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier. | every security-relevant attribute |
+| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
+| [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#f-enforcement-point-availability-failure-mode) | MUST | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
+| [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) | MUST | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
+| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` |
+| [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#f-encoded-obfuscated-payload-indicator) | MAY | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` |
 
 **Conditional fields.** **Threat Classification / ATLAS Technique Tag** is MUST when a detection fires, not on every event; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). **Guardrail Modification Record** applies whenever an enforcement point rewrites rather than blocks ([§5](#5-conformance)).
 
@@ -252,24 +252,24 @@ These fields carry the highest response value: what the agent did, where it ran,
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Isolation posture: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
-| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Full arguments and output of every tool or MCP call. | `componentToolServer`, `componentTools` |
-| [Tool Name](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | The capability invoked, as the agent saw it. | `componentToolServer` |
-| [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | MCP, internal, direct-storage or code-execution. | `componentTools` |
-| [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Correlation ID pairing each tool request with its outcome. | `componentToolServer` |
-| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Hash of the tool contract as presented at invocation, compared with the approved baseline. | `componentToolServer`, `componentToolRegistry` |
-| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | MCP server name, version, transport and endpoint, and the primitive exercised. | `componentToolServer` |
-| [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MUST | Failed or blocked tool calls, including the probing that precedes exploitation. | `componentToolServer`, `componentToolInputHandling` |
-| [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | MUST | Per mediated operation: decision, reason code, deciding authority and rule. | `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint` |
-| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | The agent's stated reason for a tool call. Self-asserted. Provider-gated. | `componentReasoningCore` |
-| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Approval lifecycle: status, identity-provider-verified approver, and whether it covers the executed arguments. Modality: out-of-band human approval. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
-| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | SHOULD | Authority a tool requires and who can invoke it. Modality: delegated authority. | `componentAuthorizationPolicyEnforcementPoint` |
-| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. Modality: information-flow control. | enforcement points |
-| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Candidate backends, the constraint applied, the choice made. Modality: policy-driven backend selection. | enforcement points |
-| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#112-policy-enforcement--mediation) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. Modality: reference monitor in the request path. | enforcement points |
-| [Tool ID](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Unique tool-implementation ID across MCP servers. | `componentTools` |
-| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#15-tools--external-services) | MAY | Sensitivity class of the data a tool touches. | `componentTools` |
-| [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | MAY | Machine-readable reason code for an enforcement decision. | enforcement points |
+| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | Isolation posture: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
+| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#f-tool-call-io) | MUST | Full arguments and output of every tool or MCP call. | `componentToolServer`, `componentTools` |
+| [Tool Name](Telemetry-Attack-Detection-Addendum.md#f-tool-name) | MUST | The capability invoked, as the agent saw it. | `componentToolServer` |
+| [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) | MUST | MCP, internal, direct-storage or code-execution. | `componentTools` |
+| [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#f-tool-execution-id) | MUST | Correlation ID pairing each tool request with its outcome. | `componentToolServer` |
+| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | Hash of the tool contract as presented at invocation, compared with the approved baseline. | `componentToolServer`, `componentToolRegistry` |
+| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | MCP server name, version, transport and endpoint, and the primitive exercised. | `componentToolServer` |
+| [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-tool-error-exception) | MUST | Failed or blocked tool calls, including the probing that precedes exploitation. | `componentToolServer`, `componentToolInputHandling` |
+| [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) | MUST | Per mediated operation: decision, reason code, deciding authority and rule. | `componentAuthorizationPolicyDecisionPoint`, `componentAuthorizationPolicyEnforcementPoint` |
+| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | The agent's stated reason for a tool call. Self-asserted. Provider-gated. | `componentReasoningCore` |
+| [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#f-human-approval-elicitation-event) | SHOULD | Approval lifecycle: status, identity-provider-verified approver, and whether it covers the executed arguments. Modality: out-of-band human approval. | `componentAgentConsentSurface`, `componentApplicationConsentSurface` |
+| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#f-tool-acl-required-scope) | SHOULD | Authority a tool requires and who can invoke it. Modality: delegated authority. | `componentAuthorizationPolicyEnforcementPoint` |
+| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#f-session-taint-labels-information-flow-decisions) | SHOULD | Information-flow labels in force, and denials caused by accumulated taint. Modality: information-flow control. | enforcement points |
+| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#f-backend-route-restriction-decision) | SHOULD | Candidate backends, the constraint applied, the choice made. Modality: policy-driven backend selection. | enforcement points |
+| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#f-mediation-coverage-bypass-path) | SHOULD | Whether an operation passed a reference monitor, where, and whether a bypass exists. Modality: reference monitor in the request path. | enforcement points |
+| [Tool ID](Telemetry-Attack-Detection-Addendum.md#f-tool-id) | MAY | Unique tool-implementation ID across MCP servers. | `componentTools` |
+| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#f-tool-privacy-classification) | MAY | Sensitivity class of the data a tool touches. | `componentTools` |
+| [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#f-policy-reason-code) | MAY | Machine-readable reason code for an enforcement decision. | enforcement points |
 
 ### 6.4 Memory and retrieval
 
@@ -277,17 +277,17 @@ These apply where the deployment persists state across turns or retrieves conten
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Memory Write Event](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` |
-| [Memory Read / Injection Event](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Which memory items were pulled into context for a call. | `componentMemory` |
-| [Memory Provenance / Source](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` |
-| [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#16-memory) | MUST | Size and growth of memory stores per user or session. | `componentMemory` |
-| [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Query issued, items returned and their scores. | `componentRAGContent` |
-| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MUST | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` |
-| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. Provider-gated. | `componentMemory` |
-| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#16-memory) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. Provider-gated. | `componentMemory` |
-| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | SHOULD | Tamper or poisoning indicators on content or its metadata. Provider-gated. | `componentRAGContent` |
-| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#16-memory) | MAY | A memory store's declared identity, limits and retrieval settings. | `componentMemory` |
-| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#17-retrieval--content-rag) | MAY | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` |
+| [Memory Write Event](Telemetry-Attack-Detection-Addendum.md#f-memory-write-event) | MUST | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` |
+| [Memory Read / Injection Event](Telemetry-Attack-Detection-Addendum.md#f-memory-read-injection-event) | MUST | Which memory items were pulled into context for a call. | `componentMemory` |
+| [Memory Provenance / Source](Telemetry-Attack-Detection-Addendum.md#f-memory-provenance-source) | MUST | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` |
+| [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#f-memory-footprint-growth) | MUST | Size and growth of memory stores per user or session. | `componentMemory` |
+| [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#f-retrieval-event) | MUST | Query issued, items returned and their scores. | `componentRAGContent` |
+| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) | MUST | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` |
+| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#f-memory-integrity-poisoning-signal) | SHOULD | Integrity check or poisoning score; cross-session isolation flag. Provider-gated. | `componentMemory` |
+| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | The agent's stated reason for persisting an item. Self-asserted. Provider-gated. | `componentMemory` |
+| [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-metadata-integrity-signal) | SHOULD | Tamper or poisoning indicators on content or its metadata. Provider-gated. | `componentRAGContent` |
+| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-memory-configuration) | MAY | A memory store's declared identity, limits and retrieval settings. | `componentMemory` |
+| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-knowledge-source-configuration) | MAY | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` |
 
 ### 6.5 Orchestration
 
@@ -295,14 +295,14 @@ These fields cover multi-agent and autonomous execution, where agentic risk comp
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Agent-to-agent messages: sender, receiver, content, channel. | `componentReasoningCore` |
-| [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Creation or change of cron jobs, heartbeats and self-scheduled loops. | `componentReasoningCore` |
-| [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Steps per run against baseline; circular exchanges between agents. | `componentReasoningCore` |
-| [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MUST | Token, compute, storage and outbound totals per run against a budget. | `componentReasoningCore` |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
-| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | Delegated-task state changes across A2A, including callback registration. Modality: A2A. | `componentReasoningCore`, `componentAgentToolTransport` |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. Modality: A2A. | `componentReasoningCore` |
-| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#18-orchestration-multi-agent--background-execution) | MAY | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` |
+| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#f-inter-agent-message) | MUST | Agent-to-agent messages: sender, receiver, content, channel. | `componentReasoningCore` |
+| [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) | MUST | Creation or change of cron jobs, heartbeats and self-scheduled loops. | `componentReasoningCore` |
+| [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#f-loop-step-count-signal) | MUST | Steps per run against baseline; circular exchanges between agents. | `componentReasoningCore` |
+| [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#f-resource-consumption-aggregate) | MUST | Token, compute, storage and outbound totals per run against a budget. | `componentReasoningCore` |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | Declared purpose the run is authorized to pursue. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
+| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | Delegated-task state changes across A2A, including callback registration. Modality: A2A. | `componentReasoningCore`, `componentAgentToolTransport` |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | A counterparty agent's descriptor at contact, with change and verification outcome. Modality: A2A. | `componentReasoningCore` |
+| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture) | MAY | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` |
 
 ### 6.6 Identity, provenance and inventory
 
@@ -310,28 +310,28 @@ These fields cover delegated identity, inventory, and the integrity of the event
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MUST | A tool, server, model, knowledge source or memory store added, removed or modified at runtime. | `componentReasoningCore` |
-| [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | The identity behind each agent, tool and infrastructure action, per hop. | `componentIdentityProvider` |
-| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | MUST | Verified identifier against spoofable display name, and which one authorized. | `componentIdentityProvider` |
-| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | The human or service at the root of the delegation chain. Modality: delegated authority. | `componentIdentityProvider`, `componentFederationProxy` |
-| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Ordered agent hops, each integrity-bound to its parent. Modality: delegated authority. | `componentFederationProxy` |
-| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. Modality: delegated authority. | `componentFederationProxy` |
-| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. Modality: delegated authority. | `componentFederationProxy` |
-| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. Modality: token exchange. | `componentFederationProxy`, `componentIdentityProvider` |
-| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. Modality: delegated authority. | `componentFederationProxy` |
-| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. Modality: cryptographic agent identity. | `componentIdentityProvider` |
-| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#19-identity-delegation--attribution) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. Modality: cryptographic agent identity. | `componentIdentityProvider` |
-| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Version of each tool, agent and framework. Modality: dynamic third-party capability composition. | `componentToolRegistry`, `componentModelRegistry` |
-| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Source provenance of tool and agent code. Modality: dynamic third-party capability composition. | `componentToolRegistry` |
-| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#111-observability-plane-integrity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: self-attesting instrumentation. | `componentAuditRecordRepository` |
-| [Description](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Declared purpose of a tool, against which behaviour is compared. | `componentToolRegistry` |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
-| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
-| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Exposure map per tool. | `componentToolRegistry` |
-| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#110-asset-inventory--fleet-aggregates) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
+| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) | MUST | A tool, server, model, knowledge source or memory store added, removed or modified at runtime. | `componentReasoningCore` |
+| [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#f-identities-used-per-hop) | MUST | The identity behind each agent, tool and infrastructure action, per hop. | `componentIdentityProvider` |
+| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#f-verified-vs-displayed-identity) | MUST | Verified identifier against spoofable display name, and which one authorized. | `componentIdentityProvider` |
+| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#f-originating-principal-on-behalf-of) | SHOULD | The human or service at the root of the delegation chain. Modality: delegated authority. | `componentIdentityProvider`, `componentFederationProxy` |
+| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#f-delegation-chain) | SHOULD | Ordered agent hops, each integrity-bound to its parent. Modality: delegated authority. | `componentFederationProxy` |
+| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#f-granted-authorizations-scope) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. Modality: delegated authority. | `componentFederationProxy` |
+| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#f-resource-indicators-constraints) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. Modality: delegated authority. | `componentFederationProxy` |
+| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#f-credential-minting-scope-narrowing-check) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. Modality: token exchange. | `componentFederationProxy`, `componentIdentityProvider` |
+| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#f-trust-domain-crossing-delegation-depth) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. Modality: delegated authority. | `componentFederationProxy` |
+| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#f-runtime-credential-attestation) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. Modality: cryptographic agent identity. | `componentIdentityProvider` |
+| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#f-lifecycle-state) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. Modality: cryptographic agent identity. | `componentIdentityProvider` |
+| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | Version of each tool, agent and framework. Modality: dynamic third-party capability composition. | `componentToolRegistry`, `componentModelRegistry` |
+| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | Source provenance of tool and agent code. Modality: dynamic third-party capability composition. | `componentToolRegistry` |
+| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
+| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: self-attesting instrumentation. | `componentAuditRecordRepository` |
+| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | Declared purpose of a tool, against which behaviour is compared. | `componentToolRegistry` |
+| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
+| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
+| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | Exposure map per tool. | `componentToolRegistry` |
+| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
 
 ---
 
@@ -385,8 +385,8 @@ References 4 and 14 to 16 are cited in this document. The primary source for eve
 36. **OpenTelemetry, core specification.** Signals, context propagation, sampling. <https://opentelemetry.io/docs/specs/otel/> · **W3C Trace Context**: <https://www.w3.org/TR/trace-context/> · MCP context propagation via `params._meta` (Specification Enhancement Proposal **SEP-414**): <https://modelcontextprotocol.io/community/seps/414-request-meta>
 37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>
 38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §5](Telemetry-Cross-Mapping-Addendum.md#5-owasp-aos-cross-reference). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
-39. **Model Context Protocol (MCP).** <https://modelcontextprotocol.io/>. Tools, resources, prompts, sampling, elicitation, roots (AD §1.5).
-40. **A2A, Agent-to-Agent Protocol.** <https://a2a-protocol.org/>. Agent cards, task lifecycle, push-notification configuration (AD §1.8).
+39. **Model Context Protocol (MCP).** <https://modelcontextprotocol.io/>. Tools, resources, prompts, sampling, elicitation, roots (AD §1.3).
+40. **A2A, Agent-to-Agent Protocol.** <https://a2a-protocol.org/>. Agent cards, task lifecycle, push-notification configuration (AD §1.5).
 
 <!-- list break: reference numbers are not contiguous -->
 

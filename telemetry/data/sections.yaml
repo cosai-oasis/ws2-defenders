@@ -1,122 +1,9 @@
-# Table layout and row order for the generated regions.
-ad_field_tables:
-- number: '1.1'
-  title: Application & Agent Reasoning Core
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :------------ | :---- | :-------------------------------------------------------------------------- | :------------ |'
-  fields: [agent_name, agent_runtime_instance_id, workflow_run_id, session_turn_step_ids, trace_context_propagated, organization_tenant_id, trigger_type_source_event, action_type, execution_status, stop_reason, surface_app, system_prompt_instruction_config, autonomy_level]
-- number: '1.2'
-  title: Input Handling & Trust Provenance
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :------------ | :---- | :------------------------------------------------------------------------- | :------------- |'
-  fields:
-  - model_input
-  - input_source_channel
-  - input_trust_classification
-  - source_host_ip_request_metadata
-  - guardrail_input_verdict
-  - content_modality_attachment_identity
-  - guardrail_modification_record
-  - threat_classification_atlas_technique_tag
-  - encoded_obfuscated_payload_indicator
-- number: '1.3'
-  title: Output Handling, Egress & Refusals
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :------------ | :---- | :----------------------------------------------------------------------- | :--------------- |'
-  fields: [response_model_output, output_egress_destination, citations_source_attribution, observation_thought_reasoning_trace, guardrail_output_verdict, llm_refusal]
-- number: '1.4'
-  title: The Model & Model Serving
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :-------------- | :---- | :--------------------------------------------------------------------------- | :--------- |'
-  fields:
-  - model_name_version
-  - provider_endpoint_identity
-  - inference_parameters
-  - input_output_token_counts
-  - llm_error_exception
-  - model_provenance_signing_hash
-  - pre_forward_pass_state_digest_vector
-  - token_malformation_context_corruption_indicator
-- number: '1.5'
-  title: Tools & External Services
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :------------- | :---- | :-------------------------------------------------------------------- | :----------------- |'
-  fields: [tool_call_io, tool_name, tool_type_trust_boundary, tool_id, tool_execution_id, tool_definition_digest, execution_environment_sandbox, mcp_server_identity_primitive, tool_error_exception, tool_acl_required_scope, tool_privacy_classification, tool_selection_rationale]
-- number: '1.6'
-  title: Memory
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :---------------- | :---- | :--------------------------------------------------------------------- | :------------ |'
-  fields: [memory_write_event, memory_read_injection_event, memory_provenance_source, memory_integrity_poisoning_signal, memory_footprint_growth, declared_memory_configuration, memory_write_rationale]
-- number: '1.7'
-  title: Retrieval & Content (RAG)
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :-------------------- | :---- | :-------------------------------------------------------------- | :--------------- |'
-  fields:
-  - retrieval_event
-  - retrieved_content_source_provenance
-  - retrieved_content_metadata_integrity_signal
-  - declared_knowledge_source_configuration
-- number: '1.8'
-  title: Orchestration, Multi-Agent & Background Execution
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :-------------- | :---- | :------------------------------------------------------------------------ | :------------ |'
-  fields: [inter_agent_message, a2a_task_lifecycle_event, peer_agent_card_descriptor, background_scheduled_task_event, loop_step_count_signal, resource_consumption_aggregate, task_intent_declaration, protocol_envelope_capture]
-- number: '1.9'
-  title: Identity, Delegation & Attribution
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :---------- | :---- | :------------------------------------------------------------------------------ | :---------- |'
-  fields:
-  - identities_used_per_hop
-  - verified_vs_displayed_identity
-  - originating_principal_on_behalf_of
-  - delegation_chain
-  - granted_authorizations_scope
-  - resource_indicators_constraints
-  - credential_minting_scope_narrowing_check
-  - trust_domain_crossing_delegation_depth
-  - runtime_credential_attestation
-  - lifecycle_state
-- number: '1.10'
-  title: Asset Inventory & Fleet Aggregates
-  header:
-  - '| Field / Metric | Cls | Capture (concept) | Evidence |'
-  - '| :------------------------------ | :---- | :-------------------------------------------------------------- | :------- |'
-  fields: [capability_set_change_event, tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, component_dependency_graph, inventory_attestation_signature, tool_description, tool_status, creator_id_oncall_creation_update_dates, surfaces_supported, fleet_counts]
-- number: '1.11'
-  title: Observability-Plane Integrity
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :---------------- | :---- | :----------------------------------------------------------------------- | :---------- |'
-  fields:
-  - enforcement_point_availability_failure_mode
-  - instrumentation_coverage_hook_attestation
-  - event_sequence_continuity
-  - policy_reason_code
-- number: '1.12'
-  title: Policy Enforcement & Mediation
-  header:
-  - '| Field | Cls | Capture (concept) | Evidence |'
-  - '| :------------- | :---- | :------------------------------------------------------------------------------- | :------- |'
-  fields:
-  - authorization_decision_record
-  - attribute_source_trusted_provenance_marking
-  - session_taint_labels_information_flow_decisions
-  - human_approval_elicitation_event
-  - backend_route_restriction_decision
-  - mediation_coverage_bypass_path
-rfc_field_tables:
+# Field steps (RFC §6 and AD §1 share them) and the layout of the other generated regions.
+field_steps:
 - number: '6.1'
+  ad_number: '1.1'
   title: Identifiers, trace context and model identity
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
@@ -142,8 +29,9 @@ rfc_field_tables:
   - pre_forward_pass_state_digest_vector
   - token_malformation_context_corruption_indicator
 - number: '6.2'
+  ad_number: '1.2'
   title: Content, trust, verdicts and their availability
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
@@ -166,8 +54,9 @@ rfc_field_tables:
   - observation_thought_reasoning_trace
   - encoded_obfuscated_payload_indicator
 - number: '6.3'
+  ad_number: '1.3'
   title: Tool calls and policy decisions
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
@@ -190,8 +79,9 @@ rfc_field_tables:
   - tool_privacy_classification
   - policy_reason_code
 - number: '6.4'
+  ad_number: '1.4'
   title: Memory and retrieval
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
@@ -207,14 +97,16 @@ rfc_field_tables:
   - declared_memory_configuration
   - declared_knowledge_source_configuration
 - number: '6.5'
+  ad_number: '1.5'
   title: Orchestration
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields: [inter_agent_message, background_scheduled_task_event, loop_step_count_signal, resource_consumption_aggregate, task_intent_declaration, a2a_task_lifecycle_event, peer_agent_card_descriptor, protocol_envelope_capture]
 - number: '6.6'
+  ad_number: '1.6'
   title: Identity, provenance and inventory
-  header:
+  rfc_header:
   - '| Field | Tier | What it records | Emitted by |'
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
@@ -240,6 +132,9 @@ rfc_field_tables:
   - creator_id_oncall_creation_update_dates
   - surfaces_supported
   - fleet_counts
+ad_field_header:
+- '| Field | Tier | Role | What it records | Emitted by | Grounding attacks |'
+- '| :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |'
 ad_pattern_table:
   header:
   - '| Pattern | Indicates | Fields correlated | Evidence |'
