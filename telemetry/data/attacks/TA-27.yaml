@@ -5,6 +5,7 @@ label: '**Morris II, self-replicating GenAI worm** (Cohen, Bitton & Nassi, Mar 2
 ref: 62
 what_happened: A **zero-click adversarial self-replicating prompt** that reproduces itself in the assistant's output and propagates between connected GenAI systems, demonstrated against a RAG-based email assistant that ingests mail automatically and retrieves prior correspondence. Propagation is the payload.
 detecting_fields_text: Inter-Agent Message, Retrieved-Content Source / Provenance, Model Input, Trigger Type, Memory Write Event
+fields: [inter_agent_message, retrieved_content_source_provenance, model_input, trigger_type_source_event, memory_write_event]
 components_text: RAGContent, Orchestration
 atlas_text: '`AML.T0061` LLM Prompt Self-Replication; `AML.T0070` RAG Poisoning; `AML.T0051.001` Indirect'
 atlas_notes: Zero-click propagation between GenAI systems. ATLAS case study `AML.CS0024`

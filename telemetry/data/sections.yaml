@@ -46,7 +46,7 @@ ad_field_tables:
   header:
   - '| Field | Cls | Capture (concept) | Evidence |'
   - '| :------------- | :---- | :-------------------------------------------------------------------- | :----------------- |'
-  fields: [tool_call_i_o, tool_name, tool_type_trust_boundary, tool_id, tool_execution_id, tool_definition_digest, execution_environment_sandbox, mcp_server_identity_primitive, tool_error_exception, tool_acl_required_scope, tool_privacy_classification, tool_selection_rationale]
+  fields: [tool_call_io, tool_name, tool_type_trust_boundary, tool_id, tool_execution_id, tool_definition_digest, execution_environment_sandbox, mcp_server_identity_primitive, tool_error_exception, tool_acl_required_scope, tool_privacy_classification, tool_selection_rationale]
 - number: '1.6'
   title: Memory
   header:
@@ -90,7 +90,7 @@ ad_field_tables:
   header:
   - '| Field / Metric | Cls | Capture (concept) | Evidence |'
   - '| :------------------------------ | :---- | :-------------------------------------------------------------- | :------- |'
-  fields: [capability_set_change_event, tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, component_dependency_graph, inventory_attestation_signature, description, status_active_disabled, creator_id_oncall_creation_update_dates, surfaces_supported, fleet_counts]
+  fields: [capability_set_change_event, tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, component_dependency_graph, inventory_attestation_signature, tool_description, tool_status, creator_id_oncall_creation_update_dates, surfaces_supported, fleet_counts]
 - number: '1.11'
   title: Observability-Plane Integrity
   header:
@@ -172,7 +172,7 @@ rfc_field_tables:
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields:
   - execution_environment_sandbox
-  - tool_call_i_o
+  - tool_call_io
   - tool_name
   - tool_type_trust_boundary
   - tool_execution_id
@@ -235,8 +235,8 @@ rfc_field_tables:
   - component_dependency_graph
   - inventory_attestation_signature
   - event_sequence_continuity
-  - description
-  - status_active_disabled
+  - tool_description
+  - tool_status
   - creator_id_oncall_creation_update_dates
   - surfaces_supported
   - fleet_counts

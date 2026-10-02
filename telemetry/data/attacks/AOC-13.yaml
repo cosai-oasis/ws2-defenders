@@ -4,6 +4,10 @@ name: Email Spoofing request
 label: Email Spoofing request *(resisted)*
 what_happened: SMTP sender-address forgery framed as a "challenge."
 detecting_fields_text: Tool Call I/O (from-address), LLM Refusal
+fields:
+- field: tool_call_io
+  note: from-address
+- llm_refusal
 components_text: Tools, AgentOutputHandling
 atlas_text: '`AML.T0052` Phishing; `AML.T0053` Tool Invocation'
 atlas_notes: SMTP sender forgery *(resisted)*

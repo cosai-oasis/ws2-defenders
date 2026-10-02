@@ -5,6 +5,7 @@ label: '**ChatGPT persistent memory poisoning** (Embrace The Red)'
 ref: 21
 what_happened: A prompt injection in a document read through a connected app (Google Drive, OneDrive), an uploaded image, or a browsed page writes attacker-chosen instructions into long-term memory. **The injected memories persist and are recalled in later conversations**; the only visible trace is a "Memory updated" notice.
 detecting_fields_text: Memory Write Event, Memory Provenance / Source, Memory Read / Injection Event, Memory Integrity / Poisoning Signal, Input Trust Classification
+fields: [memory_write_event, memory_provenance_source, memory_read_injection_event, memory_integrity_poisoning_signal, input_trust_classification]
 components_text: Memory, AgentInputHandling
 atlas_text: '`AML.T0051.001` Indirect Prompt Injection; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0093` Prompt Infiltration via Public-Facing Application'
 atlas_notes: ATLAS case study `AML.CS0040`

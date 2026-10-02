@@ -5,6 +5,15 @@ label: Samsung source-code leak (Mar 2023)
 ref: 8
 what_happened: Engineers pasted proprietary code / notes / specs into ChatGPT; data was retained externally.
 detecting_fields_text: Model Input (large code payload), Identities Used, Surface/App (external service), Tool Privacy Classification, Agent Name (off-inventory)
+fields:
+- field: model_input
+  note: large code payload
+- identities_used_per_hop
+- field: surface_app
+  note: external service
+- tool_privacy_classification
+- field: agent_name
+  note: off-inventory
 components_text: ApplicationInputHandling, Identity
 atlas_text: '`AML.T0057` Data Leakage (self-inflicted)'
 atlas_notes: Sensitive data pasted to external service

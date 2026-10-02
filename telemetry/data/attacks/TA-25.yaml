@@ -5,6 +5,7 @@ label: '**Multi-agent framework against government systems** (Taiwan MODA / Drea
 ref: 60
 what_happened: An operator ran a **multi-agent framework** built on two agent runtimes through 12 attack waves over four days; a recovered 160 MB workspace of 1,395 files documented the orchestration. The defending ministry detected abnormal agent-driven activity rather than a human operator's pattern.
 detecting_fields_text: Inter-Agent Message, Delegation Chain, Background / Scheduled Task Event, Loop / Step-Count Signal, Trigger Type
+fields: [inter_agent_message, delegation_chain, background_scheduled_task_event, loop_step_count_signal, trigger_type_source_event]
 components_text: Orchestration, Identity
 atlas_text: '`AML.T0124` Autonomous Attack Orchestration; `AML.T0118` Autonomous AI Agent Communication'
 atlas_notes: Multi-agent orchestration in the wild. ATLAS case study `AML.CS0071`

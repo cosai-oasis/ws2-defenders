@@ -5,6 +5,15 @@ label: LangChain remote code execution (2023, multiple CVEs)
 ref: 9
 what_happened: Prompt injection makes the LLM emit malicious Python that LangChain executes unsandboxed (CVE-2023-36095/-29374/-34540) → server compromise.
 detecting_fields_text: Tool Call I/O, Tool Name (`code_interpreter`,`PALChain`,`PandasQueryEngine`), Tool Type, Tool Error/Exception, Observation/Thought, Action Type, Tool ACL/Scope
+fields:
+- tool_call_io
+- field: tool_name
+  note: '`code_interpreter`,`PALChain`,`PandasQueryEngine`'
+- tool_type_trust_boundary
+- tool_error_exception
+- observation_thought_reasoning_trace
+- action_type
+- tool_acl_required_scope
 components_text: Tools, ModelFrameworksAndCode
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation; `AML.T0102` Generate Malicious Commands'
 atlas_notes: Injection → unsandboxed code exec

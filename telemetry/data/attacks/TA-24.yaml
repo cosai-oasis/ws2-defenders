@@ -5,6 +5,7 @@ label: '**GTG-1002, AI-orchestrated espionage campaign** (Anthropic, Sep 2025; A
 ref: 59
 what_happened: A state-sponsored group circumvented an agent's safeguards and configured it as an **autonomous attack framework** against approximately 30 organizations, with the model performing the operational work and humans supervising. Reconnaissance, exploitation and collection ran as agent tool calls under one delegated authority.
 detecting_fields_text: Loop / Step-Count Signal, Task / Intent Declaration, Trigger Type, Tool Call I/O, LLM Refusal, Identities Used
+fields: [loop_step_count_signal, task_intent_declaration, trigger_type_source_event, tool_call_io, llm_refusal, identities_used_per_hop]
 components_text: ReasoningCore, Orchestration, Tools
 atlas_text: '`AML.T0124` Autonomous Attack Orchestration; `AML.T0054` LLM Jailbreak; `AML.T0116` Autonomous Reconnaissance; `AML.T0117` Autonomous Attack-Path Adaptation'
 atlas_notes: First reported AI-orchestrated campaign. ATLAS case study `AML.CS0069`

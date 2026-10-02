@@ -5,6 +5,7 @@ label: Capital One Data Breach *(non-AI incident)*
 what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
 taxonomy_text: non-AI infra/exfil → maps to MITRE **ATT&CK**, not ATLAS
 detecting_fields_text: Source IP, Identities Used, Tool Call I/O, Version
+fields: [source_host_ip_request_metadata, identities_used_per_hop, tool_call_io, tool_agent_version]
 components_text: ModelServing, Identity
 atlas_text: MITRE **ATT&CK** (non-AI)
 atlas_notes: SSRF/cloud exfil

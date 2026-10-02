@@ -4,6 +4,7 @@ name: Compliance w/ Non-Owner
 label: Compliance with Non-Owner Instructions
 what_happened: Agent ran shell cmds (`ls -la`,`pwd`), transferred files, and disclosed 124 email records for a **non-owner**; only refused overtly suspicious asks.
 detecting_fields_text: Input Trust Class, Identities Used, Tool Call I/O, Tool Name
+fields: [input_trust_classification, identities_used_per_hop, tool_call_io, tool_name]
 components_text: AgentInputHandling, Tools, Identity
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation'
 atlas_notes: Non-owner authority → shell/file/data actions

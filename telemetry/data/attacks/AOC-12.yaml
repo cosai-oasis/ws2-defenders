@@ -4,6 +4,7 @@ name: Prompt Injection via Broadcast
 label: Prompt Injection via Broadcast *(resisted)*
 what_happened: base64 payloads, image/OCR instructions, fake config overrides, XML/JSON privilege-escalation tags.
 detecting_fields_text: Model Input, Encoded-Payload Indicator, Guardrail(Input) Verdict
+fields: [model_input, encoded_obfuscated_payload_indicator, guardrail_input_verdict]
 components_text: AgentInputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0068` LLM Prompt Obfuscation'
 atlas_notes: base64/image/OCR/markup tags *(resisted)*

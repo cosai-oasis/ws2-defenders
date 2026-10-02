@@ -5,6 +5,16 @@ label: Slack AI private-channel exfiltration (Aug 2024)
 ref: 5
 what_happened: 'Indirect prompt injection: hidden instructions posted in a public channel are retrieved when users query Slack AI, which then exfiltrates private-channel data via phishing links.'
 detecting_fields_text: Model Input, Response, Tool Call I/O (retrieval), Identities Used, Tool Error (absence), Action Type (LLM→retrieval→LLM)
+fields:
+- model_input
+- response_model_output
+- field: tool_call_io
+  note: retrieval
+- identities_used_per_hop
+- field: tool_error_exception
+  note: absence
+- field: action_type
+  note: LLM→retrieval→LLM
 components_text: RAGContent, Tools, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0057` Data Leakage; `AML.T0070` RAG Poisoning'
 atlas_notes: Retrieval-mediated exfil

@@ -5,6 +5,7 @@ label: '**Storm-2139, Azure OpenAI guardrail bypass at scale** (Microsoft, Dec 2
 ref: 57
 what_happened: A criminal group scraped exposed customer credentials, accessed generative-AI accounts, and operated **custom tooling that bypassed safety guardrails and modified service capabilities**, reselling the bypass as a service. The second documented guardrail defeat in this corpus after `TA-01`, and the first operated as a business.
 detecting_fields_text: Guardrail (Input) Verdict, Guardrail (Output) Verdict, LLM Refusal, Identities Used, Organization / Tenant ID
+fields: [guardrail_input_verdict, guardrail_output_verdict, llm_refusal, identities_used_per_hop, organization_tenant_id]
 components_text: ApplicationInputHandling, ModelServing, Identity
 atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0012` Valid Accounts; `AML.T0048.003` External Harms: User Harm'
 atlas_notes: Guardrail bypass operated as a service

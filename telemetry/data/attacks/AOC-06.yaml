@@ -4,6 +4,7 @@ name: Agents Reflect Provider Values
 label: Agents Reflect Provider Values
 what_happened: Provider API silently **truncated** responses with "unknown error" on politically sensitive topics.
 detecting_fields_text: Provider/Endpoint Identity, LLM Error, finish reason
+fields: [provider_endpoint_identity, llm_error_exception, stop_reason]
 components_text: ModelServing, TheModel
 atlas_text: '`AML.T0048`* External Harms / provider policy'
 atlas_notes: Provider-side silent truncation (governance signal)

@@ -4,6 +4,11 @@ name: Collaboration / Knowledge Sharing
 label: Agent Collaboration / Knowledge Sharing
 what_happened: Cross-agent **skill/capability transfer** (teaching another agent to obtain a browser/download capability & bypass anti-bot).
 detecting_fields_text: Inter-Agent Message, Tool Name (new capability), Delegation Chain
+fields:
+- inter_agent_message
+- field: tool_name
+  note: new capability
+- delegation_chain
 components_text: Orchestration, Tools
 atlas_text: '`AML.T0118.001` Autonomous AI Agent Communication: Direct Agent Communication; `AML.T0053` Tool Invocation; `AML.T0061` Self-Replication'
 atlas_notes: Cross-agent capability transfer

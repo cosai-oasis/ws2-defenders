@@ -4,6 +4,7 @@ name: Disclosure of Sensitive Info
 label: Disclosure of Sensitive Information
 what_happened: Indirect/escalating framing (metadata→body→secrets) extracted **unredacted SSN, bank, medical** data from stored emails.
 detecting_fields_text: Tool Call I/O, Response, Output Egress, Tool Privacy Class
+fields: [tool_call_io, response_model_output, output_egress_destination, tool_privacy_classification]
 components_text: Tools, AgentOutputHandling
 atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0051.001` Indirect Injection'
 atlas_notes: Escalating indirect extraction

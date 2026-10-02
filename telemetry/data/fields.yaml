@@ -263,7 +263,7 @@
   emitted_by: [componentTheModel]
   capture: Signal of context-induced token-entropy anomalies correlated with confabulation.
   evidence: [IR-02]
-- id: tool_call_i_o
+- id: tool_call_io
   name: Tool Call I/O
   tier: MUST
   records: Full arguments and output of every tool or MCP call.
@@ -610,14 +610,14 @@
   emitted_by: [componentApplication, componentToolRegistry]
   capture: Cryptographic signature over the emitted inventory (signature value + key identifier), binding the declared composition to a signer.
   evidence: [TA-06, AOC-10, IR-04]
-- id: description
+- id: tool_description
   name: Description
   tier: MAY
   records: Declared purpose of a tool, against which behaviour is compared.
   emitted_by: [componentToolRegistry]
   capture: 'Declared purpose: detects misleadingly-described ("read-only" but writes) tools.'
   evidence: [AOC-14]
-- id: status_active_disabled
+- id: tool_status
   name: Status (active/disabled)
   tier: MAY
   records: Whether a tool is meant to be reachable.

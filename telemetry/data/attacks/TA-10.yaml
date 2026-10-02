@@ -5,6 +5,17 @@ label: LLM DoS via context-window exhaustion (OWASP LLM04)
 ref: 13
 what_happened: Near-limit / recursive-expansion / "sponge" inputs maximize compute per token → cost blow-up and service degradation.
 detecting_fields_text: Model Input (anomalously large), Response (max-length), Execution Status (exit/timeout), Source IP, LLM Error (overflow), sessions-per-agent, execution-status breakdowns
+fields:
+- field: model_input
+  note: anomalously large
+- field: response_model_output
+  note: max-length
+- field: execution_status
+  note: exit/timeout
+- source_host_ip_request_metadata
+- field: llm_error_exception
+  note: overflow
+- fleet_counts
 components_text: ModelServing, ApplicationInputHandling
 atlas_text: '`AML.T0029` Denial of AI Service; `AML.T0034.001` Cost Harvesting: Resource-Intensive Queries'
 atlas_notes: Sponge/recursive inputs

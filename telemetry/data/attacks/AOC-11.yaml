@@ -4,6 +4,11 @@ name: Libelous within Community
 label: Libelous within Agents' Community
 what_happened: Impersonated owner + fabricated emergency with defamatory claims → **mass email broadcast** + attempted public post.
 detecting_fields_text: Verified-vs-Displayed Identity, Output Egress (broadcast scope), Inter-Agent Message
+fields:
+- verified_vs_displayed_identity
+- field: output_egress_destination
+  note: broadcast scope
+- inter_agent_message
 components_text: Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0061` Self-Replication; `AML.T0052.000` Spearphishing via LLM'
 atlas_notes: Impersonation → mass defamatory broadcast

@@ -5,6 +5,11 @@ label: '**Rules File Backdoor, AI coding-assistant instruction poisoning** (Pill
 ref: 56
 what_happened: Malicious instructions hidden with **invisible Unicode characters** in the rules files that configure coding assistants, distributed through open-source repositories, causing the assistant to emit backdoored code. The instruction configuration is the payload, and it is not the system prompt the vendor shipped.
 detecting_fields_text: System Prompt / Instruction Config, Encoded / Obfuscated Payload Indicator, Repository / Code Path / Software Ref, Attribute Source / Trusted-Provenance Marking
+fields:
+- system_prompt_instruction_config
+- encoded_obfuscated_payload_indicator
+- repository_code_path_software_ref
+- attribute_source_trusted_provenance_marking
 components_text: AgentSystemInstruction, ModelFrameworksAndCode
 atlas_text: '`AML.T0018.003` Modify Prompt Construction Logic; `AML.T0068` LLM Prompt Obfuscation; `AML.T0010.001` AI Supply Chain Compromise: AI Software'
 atlas_notes: Instruction configuration as supply-chain payload

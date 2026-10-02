@@ -4,6 +4,7 @@ name: Agent Harm
 label: Agent Harm
 what_happened: Guilt/gaslighting framing drove **escalating self-destructive concessions** (delete names, wipe memory, expose files, leave server, self-DoS).
 detecting_fields_text: Memory Write, Observation/Thought, Lifecycle State, Autonomy Level
+fields: [memory_write_event, observation_thought_reasoning_trace, lifecycle_state, autonomy_level]
 components_text: Memory, ReasoningCore
 atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0051.000` LLM Prompt Injection: Direct'
 atlas_notes: Guilt/gaslighting → escalating self-destruction

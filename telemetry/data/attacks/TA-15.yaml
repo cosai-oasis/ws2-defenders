@@ -5,6 +5,12 @@ label: '**MCP tool-description poisoning** (Invariant Labs, Apr 2025)'
 ref: 18
 what_happened: The tool's **docstring description** carries the injection. Ingested into agent context at discovery, it instructs the agent to read credential files and place their contents into a tool argument, exfiltrating them to the poisoned server when the tool runs. The declared contract is itself the payload.
 detecting_fields_text: Tool Definition Digest, Tool Call I/O (arguments), MCP Server Identity & Primitive, Human Approval / Elicitation Event
+fields:
+- tool_definition_digest
+- field: tool_call_io
+  note: arguments
+- mcp_server_identity_primitive
+- human_approval_elicitation_event
 components_text: Tools, ToolServer
 atlas_text: '`AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0098` AI Agent Tool Credential Harvesting; `AML.T0086` Exfiltration via AI Agent Tool Invocation'
 atlas_notes: ATLAS case study `AML.CS0054`

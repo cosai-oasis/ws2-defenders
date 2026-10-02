@@ -12,8 +12,7 @@ import os
 import re
 import sys
 
-import yaml
-
+import yamlio
 from mdtables import cells, find_tables, gh_anchor
 
 DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), '..')
@@ -28,7 +27,13 @@ def read(name):
         return f.read().split('\n')
 
 
+SLUG_OVERRIDES = {'Tool Call I/O': 'tool_call_io', 'Description': 'tool_description',
+                  'Status (active/disabled)': 'tool_status'}
+
+
 def slug(name):
+    if name in SLUG_OVERRIDES:
+        return SLUG_OVERRIDES[name]
     return re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
 
 
@@ -157,22 +162,8 @@ for line in refs_block.split('\n'):
 refs_intro = refs_block.strip('\n').split('\n\n')[0]
 
 # ---------------------------------------------------------------- write
-class Dumper(yaml.SafeDumper):
-    pass
-
-
-def _list(d, v):
-    flow = all(isinstance(x, str) and len(x) < 40 for x in v) and v
-    return d.represent_sequence('tag:yaml.org,2002:seq', v, flow_style=bool(flow))
-
-
-Dumper.add_representer(list, _list)
-
-
 def dump(obj, path, comment):
-    with open(os.path.join(DATA, path), 'w', encoding='utf-8') as f:
-        f.write(comment)
-        yaml.dump(obj, f, Dumper=Dumper, sort_keys=False, allow_unicode=True, width=10**6)
+    yamlio.dump(obj, os.path.join(DATA, path), comment)
 
 
 ORDER = ['id', 'name', 'name_note', 'tags', 'tier', 'tier_mark', 'records', 'emitted_by',

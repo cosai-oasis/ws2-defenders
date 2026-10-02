@@ -5,6 +5,10 @@ label: Poison-RAG
 what_happened: Manipulate **item metadata tags** in black-box RAG to suppress/promote items.
 taxonomy_text: data/metadata poisoning → `AML.T0070`, `AML.T0059`
 detecting_fields_text: Retrieval Event, Retrieved-Content Source, Metadata Integrity Signal
+fields:
+- retrieval_event
+- retrieved_content_source_provenance
+- retrieved_content_metadata_integrity_signal
 components_text: RAGContent
 atlas_text: '`AML.T0070` RAG Poisoning; `AML.T0059` Erode Dataset Integrity'
 atlas_notes: Metadata-tag poisoning
