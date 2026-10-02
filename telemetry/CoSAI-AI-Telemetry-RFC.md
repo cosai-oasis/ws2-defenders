@@ -120,7 +120,7 @@ Prompt injection succeeds when content from an untrusted origin is consumed as i
 
 ### 4.4 The agent might be lying
 
-The threat model in [XM §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat-model-the-most-important-contribution) treats a compromised agent as a potential source of false statements, not only as a victim. `AOC-01` [[2]](#primary-sources-attack-corpus--taxonomy) shows that agents do misreport: it declared a secret destroyed while the data remained recoverable.
+The threat model in [XM §6.1](Telemetry-Cross-Mapping-Addendum.md#61-the-threat-model-the-most-important-contribution) treats a compromised agent as a potential source of false statements, not only as a victim. The corpus shows that agents do misreport [[2]](#primary-sources-attack-corpus--taxonomy). In `AOC-07` the agent declared "I'm done responding" more than a dozen times and kept replying; in `AOC-01` it claimed a secret had been deleted while the data remained recoverable.
 
 These fields are self-asserted and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** (§6.1), **Observation / Thought** (§6.2), **Tool Selection Rationale** (§6.3), **Memory Write Rationale** (§6.4), and **Task / Intent Declaration** (§6.5). **Peer Agent Card / Descriptor** (§6.5) is the counterparty's assertion rather than the agent's own, and carries the same weakness. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** (§6.2) is a cross-cutting MUST.
 
