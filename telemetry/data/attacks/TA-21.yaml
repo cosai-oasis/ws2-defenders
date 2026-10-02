@@ -1,0 +1,11 @@
+# TA-21. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-21
+name: Rules File Backdoor
+label: '**Rules File Backdoor, AI coding-assistant instruction poisoning** (Pillar Security, Mar 2025)'
+ref: 56
+what_happened: Malicious instructions hidden with **invisible Unicode characters** in the rules files that configure coding assistants, distributed through open-source repositories, causing the assistant to emit backdoored code. The instruction configuration is the payload, and it is not the system prompt the vendor shipped.
+detecting_fields_text: System Prompt / Instruction Config, Encoded / Obfuscated Payload Indicator, Repository / Code Path / Software Ref, Attribute Source / Trusted-Provenance Marking
+components_text: AgentSystemInstruction, ModelFrameworksAndCode
+atlas_text: '`AML.T0018.003` Modify Prompt Construction Logic; `AML.T0068` LLM Prompt Obfuscation; `AML.T0010.001` AI Supply Chain Compromise: AI Software'
+atlas_notes: Instruction configuration as supply-chain payload
+reference: 'Rules File Backdoor: invisible-Unicode instructions in AI coding-assistant rules files, distributed through repositories. Pillar Security, 18 March 2025. MITRE ATLAS case study **`AML.CS0041`**. <https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents>'

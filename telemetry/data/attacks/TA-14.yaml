@@ -1,0 +1,11 @@
+# TA-14. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-14
+name: MCPoison
+label: '**MCPoison, Cursor MCP configuration trust bypass** (CVE-2025-54136, CVSS 7.2; fixed in 1.3, 29 Jul 2025)'
+ref: 17
+what_happened: 'Trust is bound only to an MCP entry''s **name**: once a configuration is approved, later changes to its command or arguments run without re-validation or prompt. An attacker with repository write access swaps the payload after approval, and the malicious command re-executes every time the project is opened. **The declared tool contract is unchanged; what mutates is the launch command in the configuration entry**, so the detecting field is the capability-set change rather than a digest over the contract.'
+detecting_fields_text: Capability-Set Change Event, Execution Environment / Sandbox
+components_text: Tools, ToolRegistry
+atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0011.002` Poisoned AI Agent Tool; `AML.T0053` Tool Invocation'
+atlas_notes: Approved MCP configuration entry's launch command mutated after approval
+reference: MCPoison, Cursor MCP configuration trust bypass, **CVE-2025-54136** (CVSS 7.2; affects ≤ 1.2.4, fixed in 1.3 on 29 July 2025). Check Point Research; disclosed to the vendor 16 July 2025, published 5 August 2025. <https://research.checkpoint.com/2025/cursor-vulnerability-mcpoison/>

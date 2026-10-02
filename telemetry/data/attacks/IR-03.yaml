@@ -1,0 +1,10 @@
+# IR-03. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: IR-03
+name: Poison-RAG
+label: Poison-RAG
+what_happened: Manipulate **item metadata tags** in black-box RAG to suppress/promote items.
+taxonomy_text: data/metadata poisoning → `AML.T0070`, `AML.T0059`
+detecting_fields_text: Retrieval Event, Retrieved-Content Source, Metadata Integrity Signal
+components_text: RAGContent
+atlas_text: '`AML.T0070` RAG Poisoning; `AML.T0059` Erode Dataset Integrity'
+atlas_notes: Metadata-tag poisoning

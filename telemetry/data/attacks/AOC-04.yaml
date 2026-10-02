@@ -1,0 +1,9 @@
+# AOC-04. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: AOC-04
+name: Waste of Resources / Looping
+label: Waste of Resources / Looping
+what_happened: Multi-day inter-agent relay loop (~60 K tokens); spawned **infinite shell loops & cron jobs with no termination**.
+detecting_fields_text: Inter-Agent Message, Loop Signal, Background Task Event, Resource Aggregate, Token Counts
+components_text: Orchestration, ReasoningCore
+atlas_text: '`AML.T0034.002` Agentic Resource Consumption; `AML.T0118` Autonomous AI Agent Communication; `AML.T0029` Denial of AI Service; `AML.T0061` Self-Replication'
+atlas_notes: Multi-agent loop; runaway cron/shell

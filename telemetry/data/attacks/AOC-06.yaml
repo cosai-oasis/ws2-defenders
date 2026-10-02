@@ -1,0 +1,9 @@
+# AOC-06. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: AOC-06
+name: Agents Reflect Provider Values
+label: Agents Reflect Provider Values
+what_happened: Provider API silently **truncated** responses with "unknown error" on politically sensitive topics.
+detecting_fields_text: Provider/Endpoint Identity, LLM Error, finish reason
+components_text: ModelServing, TheModel
+atlas_text: '`AML.T0048`* External Harms / provider policy'
+atlas_notes: Provider-side silent truncation (governance signal)

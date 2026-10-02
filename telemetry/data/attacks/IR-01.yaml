@@ -1,0 +1,10 @@
+# IR-01. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: IR-01
+name: Breaking the Prompt Wall
+label: Breaking the Prompt Wall
+what_happened: Lightweight prompt-injection templates bypass safety filters across chat, file upload, and agent config.
+taxonomy_text: AT1070/AT1051/AT1091/AT1040 → `AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`
+detecting_fields_text: Model Input, Input Source/Trust, Guardrail Verdict, LLM Refusal
+components_text: ApplicationInputHandling, AgentInputHandling
+atlas_text: '`AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`'
+atlas_notes: See §3.3

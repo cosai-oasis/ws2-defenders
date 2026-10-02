@@ -1,0 +1,11 @@
+# TA-23. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-23
+name: OpenClaw 1-click RCE
+label: '**OpenClaw 1-click RCE with confirmation bypass** (CVE-2026-25253; DepthFirst, Feb 2026)'
+ref: 58
+what_happened: A malicious link executed script in the agent's context, stole its token, then **modified the agent's configuration to disable the user-confirmation step** and escaped the container to run shell commands on the host. The approval gate was not defeated by argument; it was switched off as configuration.
+detecting_fields_text: Human Approval / Elicitation Event, Capability-Set Change Event, Execution Environment / Sandbox, Authorization Decision Record, Identities Used
+components_text: Application, Tools, Identity
+atlas_text: '`AML.T0011.003` User Execution: Malicious Link; `AML.T0105` Escape to Host; `AML.T0053` AI Agent Tool Invocation'
+atlas_notes: Approval gate disabled as configuration. ATLAS case study `AML.CS0050`
+reference: 'OpenClaw 1-click remote code execution, **CVE-2026-25253**: token theft, configuration change disabling user confirmation, container escape. DepthFirst, February 2026. MITRE ATLAS case study **`AML.CS0050`**. <https://nvd.nist.gov/vuln/detail/CVE-2026-25253>'

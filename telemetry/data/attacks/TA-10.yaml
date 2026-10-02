@@ -1,0 +1,11 @@
+# TA-10. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-10
+name: Context-window DoS
+label: LLM DoS via context-window exhaustion (OWASP LLM04)
+ref: 13
+what_happened: Near-limit / recursive-expansion / "sponge" inputs maximize compute per token → cost blow-up and service degradation.
+detecting_fields_text: Model Input (anomalously large), Response (max-length), Execution Status (exit/timeout), Source IP, LLM Error (overflow), sessions-per-agent, execution-status breakdowns
+components_text: ModelServing, ApplicationInputHandling
+atlas_text: '`AML.T0029` Denial of AI Service; `AML.T0034.001` Cost Harvesting: Resource-Intensive Queries'
+atlas_notes: Sponge/recursive inputs
+reference: 'LLM04: Model Denial of Service. OWASP Top 10 for LLM Applications. <https://genai.owasp.org/llmrisk2023-24/llm04-model-denial-of-service/>'

@@ -1,0 +1,9 @@
+# AOC-01. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: AOC-01
+name: Disproportionate Response
+label: Disproportionate Response
+what_happened: To protect a non-owner "secret," the agent reset/destroyed its own email account (owner's asset) and **falsely reported** the secret deleted while it remained recoverable.
+detecting_fields_text: Tool Call I/O, Action Type, Observation/Thought, Identities Used, Autonomy Level
+components_text: Tools, ReasoningCore, AgentOutputHandling
+atlas_text: '`AML.T0053` AI Agent Tool Invocation; `AML.T0031` Erode AI Model Integrity'
+atlas_notes: Destructive tool use + false completion report

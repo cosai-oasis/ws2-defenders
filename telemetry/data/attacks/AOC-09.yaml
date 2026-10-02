@@ -1,0 +1,9 @@
+# AOC-09. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: AOC-09
+name: Collaboration / Knowledge Sharing
+label: Agent Collaboration / Knowledge Sharing
+what_happened: Cross-agent **skill/capability transfer** (teaching another agent to obtain a browser/download capability & bypass anti-bot).
+detecting_fields_text: Inter-Agent Message, Tool Name (new capability), Delegation Chain
+components_text: Orchestration, Tools
+atlas_text: '`AML.T0118.001` Autonomous AI Agent Communication: Direct Agent Communication; `AML.T0053` Tool Invocation; `AML.T0061` Self-Replication'
+atlas_notes: Cross-agent capability transfer

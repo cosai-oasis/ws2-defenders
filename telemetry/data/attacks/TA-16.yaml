@@ -1,0 +1,11 @@
+# TA-16. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-16
+name: '`postmark-mcp` rug pull'
+label: '**`postmark-mcp` npm rug pull** (malicious from v1.0.16; removed 25 Sep 2025)'
+ref: 19
+what_happened: 'The actor registered the package name, published working versions until it passed 1,000 weekly downloads, then performed a **rug pull**: the malicious release BCC''d every email sent through the server, with attachments and headers, to an attacker address. The declared tool contract did not change; the shipped version did.'
+detecting_fields_text: MCP Server Identity & Primitive (name **and version**), Output Egress Destination, Tool Call I/O, Version / Repository / Software Ref, AgBOM / Inventory Snapshot
+components_text: Tools, ToolServer, AgentOutputHandling
+atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.001` AI Agent Tool Poisoning: Implementation; `AML.T0073` Impersonation; `AML.T0086`'
+atlas_notes: ATLAS case study `AML.CS0053`
+reference: '`postmark-mcp` malicious npm package (first malicious MCP server found in the wild); malicious from v1.0.16, removed from npm 25 September 2025. Koi Security. MITRE ATLAS case study **`AML.CS0053`**. <https://www.koi.ai/blog/postmark-mcp-npm-malicious-backdoor-email-theft>'

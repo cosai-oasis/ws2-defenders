@@ -1,0 +1,11 @@
+# TA-26. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-26
+name: Computer-use data destruction
+label: '**Data destruction via computer-use agent** (HiddenLayer, Oct 2024)'
+ref: 61
+what_happened: 'A prompt injection embedded in a **PDF** reached a computer-use agent when a user asked it to work with the file, used jailbreak and obfuscation to clear the guardrails, and invoked the agent''s `bash` tool to destroy user data. The corpus''s first computer-use instance: the capability is a shell, and the carrier is an attachment.'
+detecting_fields_text: Content Modality & Attachment Identity, Input Trust Classification, Guardrail (Input) Verdict, Tool Call I/O, Action Type
+components_text: AgentInputHandling, Tools
+atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0054` LLM Jailbreak; `AML.T0068` LLM Prompt Obfuscation; `AML.T0053` AI Agent Tool Invocation'
+atlas_notes: Attachment-borne injection → shell. ATLAS case study `AML.CS0046`
+reference: 'Indirect prompt injection of Claude Computer Use: PDF-borne injection invoking the agent''s shell tool to destroy user data. HiddenLayer, 24 October 2024. MITRE ATLAS case study **`AML.CS0046`**. <https://hiddenlayer.com/innovation-hub/indirect-prompt-injection-of-claude-computer-use/>'

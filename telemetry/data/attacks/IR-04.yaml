@@ -1,0 +1,10 @@
+# IR-04. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: IR-04
+name: Capital One
+label: Capital One Data Breach *(non-AI incident)*
+what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
+taxonomy_text: non-AI infra/exfil → maps to MITRE **ATT&CK**, not ATLAS
+detecting_fields_text: Source IP, Identities Used, Tool Call I/O, Version
+components_text: ModelServing, Identity
+atlas_text: MITRE **ATT&CK** (non-AI)
+atlas_notes: SSRF/cloud exfil

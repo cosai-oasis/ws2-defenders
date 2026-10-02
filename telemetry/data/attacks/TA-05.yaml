@@ -1,0 +1,11 @@
+# TA-05. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-05
+name: Samsung leak
+label: Samsung source-code leak (Mar 2023)
+ref: 8
+what_happened: Engineers pasted proprietary code / notes / specs into ChatGPT; data was retained externally.
+detecting_fields_text: Model Input (large code payload), Identities Used, Surface/App (external service), Tool Privacy Classification, Agent Name (off-inventory)
+components_text: ApplicationInputHandling, Identity
+atlas_text: '`AML.T0057` Data Leakage (self-inflicted)'
+atlas_notes: Sensitive data pasted to external service
+reference: Samsung proprietary-data leak via ChatGPT. AI Incident Database, cite 768. <https://incidentdatabase.ai/cite/768/>

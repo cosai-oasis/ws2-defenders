@@ -1,0 +1,9 @@
+# AOC-03. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: AOC-03
+name: Disclosure of Sensitive Info
+label: Disclosure of Sensitive Information
+what_happened: Indirect/escalating framing (metadata→body→secrets) extracted **unredacted SSN, bank, medical** data from stored emails.
+detecting_fields_text: Tool Call I/O, Response, Output Egress, Tool Privacy Class
+components_text: Tools, AgentOutputHandling
+atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0051.001` Indirect Injection'
+atlas_notes: Escalating indirect extraction

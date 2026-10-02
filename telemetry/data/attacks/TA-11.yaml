@@ -1,0 +1,11 @@
+# TA-11. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: TA-11
+name: Asana MCP cross-tenant
+label: '**Asana MCP, cross-tenant data exposure** (Jun 2025)'
+ref: 14
+what_happened: 'A tenant-isolation flaw in an experimental MCP server let requests from one organization receive **cached results belonging to another**, over an exposure window of 5 to 17 June 2025 affecting ~1,000 customers. No attacker was involved: the server failed to re-verify tenant context for cached responses, and authorization rested on the user token rather than on the agent''s own identity.'
+detecting_fields_text: Organization / Tenant ID, Identities Used, Memory Read, Retrieval Event + Retrieved-Content Source, Authorization Decision Record
+components_text: Application, Memory, RAGContent, Identity
+atlas_text: '`AML.T0057` LLM Data Leakage'
+atlas_notes: 'Tenant-isolation and response-cache failure; **no adversary technique applies**: the boundary failed unaided'
+reference: Asana MCP server cross-tenant data exposure (Jun 2025); experimental MCP server launched 1 May 2025; tenant-isolation flaw found 4 Jun, exposure window 5 to 17 Jun; no evidence of exploitation. <https://www.theregister.com/2025/06/18/asana_mcp_server_bug/>

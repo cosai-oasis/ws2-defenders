@@ -1,0 +1,10 @@
+# IR-05. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+id: IR-05
+name: AGENTPOISON
+label: AGENTPOISON
+what_happened: Optimized trigger-based adversarial queries poison agent memory/RAG.
+taxonomy_text: memory/RAG poisoning → `AML.T0070`, `AML.T0020`, `AML.T0043`
+detecting_fields_text: Memory Write/Read, Retrieval Event, Integrity/Poisoning Signal
+components_text: Memory, RAGContent
+atlas_text: '`AML.T0070`, `AML.T0020`, `AML.T0043.004` Craft Adversarial Data: Insert Backdoor Trigger'
+atlas_notes: Trigger-based memory/RAG poisoning
