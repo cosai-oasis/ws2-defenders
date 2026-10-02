@@ -138,16 +138,21 @@ publications:
     reference: 31
     version: '2.0'
     published: '2024-02-26'
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every CSF 2.0 category XM §6 cites (DE.CM, DE.AE, RS.MA, RS.AN, PR.AA, ID.AM) is a category of CSF 2.0
   nist_ai_rmf:
     name: NIST AI Risk Management Framework
     reference: 30
     version: '1.0'
     published: '2023-01-26'
-    verified: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: XM §6 cites only the four functions of AI RMF 1.0; no revised draft published as of 2026-10-02
     note: Under revision; XM also cites the Cyber AI Profile, NIST IR 8596 initial preliminary draft (2025-12-16).
   iso_42001:
     name: ISO/IEC 42001
     reference: 33
     version: '2023'
     verified: false
+    note: Paid standard, not checked against the text; XM §6 cites one Annex A control (A.6.2.8) as numbered in public summaries.

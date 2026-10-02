@@ -34,8 +34,8 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 | OWASP Agent Observability Standard | 0.1.0 (2025-12-30) | [[38]](#standards--frameworks) | yes, 2026-10-02 |
 | Model Context Protocol | 2026-07-28 | [[39]](#standards--frameworks) | not yet |
 | Agent2Agent Protocol | v1.0.1 (2026-05-28) | [[40]](#standards--frameworks) | not yet |
-| NIST Cybersecurity Framework | 2.0 (2024-02-26) | [[31]](#standards--frameworks) | not yet |
-| NIST AI Risk Management Framework | 1.0 (2023-01-26) | [[30]](#standards--frameworks) | not yet |
+| NIST Cybersecurity Framework | 2.0 (2024-02-26) | [[31]](#standards--frameworks) | yes, 2026-10-02 |
+| NIST AI Risk Management Framework | 1.0 (2023-01-26) | [[30]](#standards--frameworks) | yes, 2026-10-02 |
 | ISO/IEC 42001 | 2023 | [[33]](#standards--frameworks) | not yet |
 <!-- END GENERATED: xm pins -->
 
@@ -714,7 +714,7 @@ The OWASP Agent Observability Standard (AOS) [[38]](#standards--frameworks) defi
 
 **Instrument.** AOS hooks cover agent triggers, messages, tool calls, memory and knowledge retrieval, and MCP traffic, and [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) records which of them are live. A guardian's `allow` and `deny` map to the guardrail verdicts. Its `modify` decision maps to [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record), its `reasonCode` to [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#f-policy-reason-code), and a failed or timed-out callout to [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#f-enforcement-point-availability-failure-mode).
 
-**Trace.** AOS step events carry the identifiers of RFC §6.1 and the content, tool, memory and retrieval fields of §§6.2 to 6.4. Their `reasoning` attributes correspond to [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) and [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale). The MCP and A2A protocol events correspond to [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive), [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) and [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture). Span naming is left to the OpenTelemetry binding ([§2](#2-opentelemetry)).
+**Trace.** AOS step events carry the identifiers of RFC §6.1 and the content, tool, memory and retrieval fields of RFC §§6.2 to 6.4. Their `reasoning` attributes correspond to [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) and [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale). The MCP and A2A protocol events correspond to [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive), [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) and [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture). Span naming is left to the OpenTelemetry binding ([§2](#2-opentelemetry)).
 
 **Inspect.** The AgBOM corresponds to [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot), and its refresh on change to [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event). CycloneDX `dependencies` and `signatures` correspond to [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) and [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature). Only the CycloneDX binding exists, as one worked example that uses CycloneDX's generic `properties` bag. The SPDX and SWID bindings are placeholders ([#20](https://github.com/OWASP/www-project-agent-observability-standard/issues/20), [#21](https://github.com/OWASP/www-project-agent-observability-standard/issues/21)).
 
@@ -893,117 +893,25 @@ Maps each conceptual field to the [AITF](https://github.com/cosai-oasis/ws2-defe
 
 ---
 
-## 6. Implications for NIST AI RMF and NIST CSF (incl. the Cyber AI Profile)
+## 6. NIST CSF, AI RMF and ISO/IEC 42001
 
+These three are governance frameworks. They do not carry telemetry; they use it as evidence that controls operate, which places them at the **A** end of the [priority order](CoSAI-AI-Telemetry-RFC.md#41-detection-first). The field set is chosen for detection and response, and its audit value follows from that choice. No field is added to improve coverage of any of them.
 
-§§1 to 3 route this field set toward **schemas**; §§4 and 5 reference it against **adjacent technical standards**. This appendix and [§7](#7-implications-for-isoiec-42001) address a different consumer: **governance frameworks that use telemetry as control evidence**.
+### 6.1 What they are, and the versions mapped
 
-That places them at the **A** end of this document's [use-case priority](CoSAI-AI-Telemetry-RFC.md#41-detection-first): compliance audit, the lowest of the four. The ordering is deliberate: **this field set is designed for detection and response, and its audit value is a by-product.** A telemetry programme built to satisfy an auditor produces different fields than one built to catch `TA-01`, and where the two diverge this document follows detection. The useful consequence is that a deployment implementing the MUST tier for **D** and **R** reasons will find it has already produced most of the evidence these frameworks ask for, which is a far easier argument to fund than the reverse.
+**NIST CSF 2.0** [[31]](#standards--frameworks) (26 February 2024) organizes cybersecurity outcomes under six functions: GV, ID, PR, DE, RS and RC. The **Cyber AI Profile** [[32]](#standards--frameworks), NIST IR 8596, overlays three AI focus areas on it: securing AI systems (*Secure*), AI-enabled cyber defence (*Defend*), and thwarting AI-enabled attacks (*Thwart*). It is an initial preliminary draft (16 December 2025), and no Initial Public Draft has been published as of 2 October 2026. **NIST AI RMF 1.0** [[30]](#standards--frameworks) (January 2023) organizes AI risk management under GOVERN, MAP, MEASURE and MANAGE; it is under revision, with no draft published. **ISO/IEC 42001:2023** [[33]](#standards--frameworks) specifies a certifiable AI management system, with its controls in Annex A. It is a paid standard, and the control number below comes from public summaries rather than the text.
 
-> **Framework status as of 11 September 2026.** NIST AI RMF 1.0 (January 2023) **is being revised as part of the White House AI Action Plan**; no revised draft has published, so the MEASURE mapping in [§6.3](#63-ai-rmf-mapping-by-function) is drawn against 1.0. The **Cyber AI Profile** remains at *initial preliminary draft* (**NIST IR 8596**, published 16 December 2025): the comment period closed 30 January 2026, NIST ran Cyber AI Profile working sessions in April and May 2026, and **no Initial Public Draft has published**. The three focus areas are confirmed as *Securing AI System Components* (**Secure**), *Conducting AI-Enabled Cyber Defense* (**Defend**) and *Thwarting AI-enabled Cyber Attacks* (**Thwart**). Every CSF 2.0 category identifier cited in [§6.2](#62-csf-20-mapping-by-function) and [§6.3](#63-ai-rmf-mapping-by-function) is verified against NIST's published CSF reference data.
+### 6.2 Correspondence
 
-### 6.1 Why these two frameworks, and how they differ
+The MUST tier evidences CSF continuous monitoring (DE.CM) and adverse event analysis (DE.AE). The identifier, provenance and delegation fields evidence incident management and analysis (RS.MA, RS.AN). The identity and authorization fields of RFC §§6.3 and 6.6 evidence identity management and access control (PR.AA), and [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) makes asset management (ID.AM) continuous rather than periodic. RECOVER and the organizational half of GOVERN are weakly evidenced, because they are not telemetry problems.
 
+In AI RMF terms the field set measures the security slice of MEASURE and MANAGE. Fairness, bias and the other trustworthiness characteristics are outside it.
 
-| Framework | What it governs | Relationship to this document |
-| :-------------------- | :------------------------ | :-------------------------------------------------------- |
-| **NIST AI RMF 1.0** (+ **AI 600-1** Generative AI Profile) | AI-specific risk management across **GOVERN / MAP / MEASURE / MANAGE** | Asks *whether AI risks are identified, measured and managed.* This field set is the **measurement substrate**: mostly MEASURE, with MANAGE for response |
-| **NIST CSF 2.0** (+ the **Cyber AI Profile**, NIST IR 8596) | Cybersecurity outcomes across **GV / ID / PR / DE / RS / RC** | Asks *whether attacks are detected and responded to.* This is the closer fit by far, the document's D and R priorities map almost one-to-one onto **DE** and **RS** |
+ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.2.8 in public summaries) without specifying what to log; the field set supplies that content. Certification evidence also needs retention, access control and chain of custody, which [RFC §2.2](CoSAI-AI-Telemetry-RFC.md#22-not-in-scope) leaves to a later publication.
 
-The **Cyber AI Profile** is the significant development for this work. It is a CSF 2.0 *community profile* that overlays three **AI Focus Areas** on existing CSF outcomes:
+### 6.3 Asks
 
-- **Secure**: securing AI systems and their infrastructure.
-- **Defend**: using AI to strengthen cyber defence.
-- **Thwart**: defending against adversarial *uses* of AI.
-
-**This document sits squarely in *Secure*, and it is the telemetry layer that focus area presupposes.** The Profile asks organizations to achieve CSF detection and response outcomes *for AI systems*; it does not specify which fields make that possible. That is precisely the gap this document fills, and the alignment is close enough that the CoSAI field set is a credible candidate reference for Profile implementers.
-
-### 6.2 CSF 2.0 mapping, by function
-
-
-CSF Categories cited: **GV.OC** Organizational Context · **GV.SC** Cybersecurity Supply Chain Risk Management · **ID.AM** Asset Management · **ID.RA** Risk Assessment · **PR.AA** Identity Management, Authentication and Access Control · **PR.DS** Data Security · **DE.CM** Continuous Monitoring · **DE.AE** Adverse Event Analysis · **RS.MA** Incident Management · **RS.AN** Incident Analysis · **RC.RP** Incident Recovery Plan Execution.
-
-| CSF function | Telemetry that evidences it | Coverage |
-| :------ | :----------------------------------------------------------------- | :----------------------------- |
-| **GOVERN** (GV.OC, GV.SC) | Asset inventory and AgBOM (AD §1.6); model provenance and signing (AD §1.1); dependency graph and version (AD §1.6); autonomy level and task declaration (AD §1.1) | **Partial**: supply-chain outcomes are well served; policy and role outcomes are organizational, not telemetric |
-| **IDENTIFY** (ID.AM, ID.RA) | Agent name, instance ID, surface (AD §1.1); capability-set change (AD §1.6); AgBOM (AD §1.6); tool and MCP inventory (AD §1.3); fleet aggregates (AD §1.6) | **Strong**: Capability-Set Change is the field that makes ID.AM *continuous* rather than periodic |
-| **PROTECT** (PR.AA, PR.DS) | Identities used, verified-vs-displayed identity, granted authorizations, credential minting (AD §1.6); authorization decision record (AD §1.3); guardrail verdicts (AD §1.2); sandbox posture (AD §1.3) | **Strong**: AD §§1.3 and 1.6 are PR.AA evidence almost verbatim |
-| **DETECT** (DE.CM, DE.AE) | **The entire MUST tier.** Input trust classification and guardrail verdicts (AD §1.2); output egress and refusals (AD §1.2); tool call I/O (AD §1.3); memory and retrieval events (AD §1.4); loop and resource signals (AD §1.5); session taint (AD §1.3); every [correlation pattern](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) | **Strongest alignment in the document.** DE.CM is continuous monitoring; DE.AE is the correlation-pattern layer |
-| **RESPOND** (RS.MA, RS.AN) | The identifier hierarchy and trace context (AD §1.1); tool execution IDs (AD §1.3); memory and retrieval provenance (AD §1.4); delegation chain (AD §1.6); ATLAS technique tag (AD §1.2); event sequence continuity (AD §1.6) | **Strong**: this is the document's **R** priority, and the ATLAS tag makes RS.AN findings portable |
-| **RECOVER** (RC.RP) | Lifecycle state and revocation (AD §1.6); instance ID for per-instance quarantine (AD §1.1); capability-set change for rollback verification (AD §1.6) | **Weak, and appropriately so**: recovery is largely an operational discipline; telemetry scopes it but does not perform it |
-
-Coverage is strongest where this document concentrates (**DETECT**, **RESPOND**) and weakest where its priorities place least weight (**RECOVER**, the organizational half of **GOVERN**). That follows the [D > R > Q > A ordering](CoSAI-AI-Telemetry-RFC.md#41-detection-first), and it shows which CSF outcomes this field set will and will not evidence.
-
-### 6.3 AI RMF mapping, by function
-
-
-| AI RMF function | Telemetry that evidences it | Coverage |
-| :---- | :-------------------------------------------------------- | :----------------------------------------- |
-| **GOVERN** | Autonomy level (AD §1.1); task/intent declaration (AD §1.5); tool ACL and scope (AD §1.3); human approval events (AD §1.3) | Partial: **Human Approval / Elicitation** (AD §1.3) is the strongest single piece of GOVERN evidence, because it records oversight *actually exercised* rather than merely documented |
-| **MAP** | Component taxonomy (the CoSAI Risk Map [[23]](#standards--frameworks) component that emits each field, AD §1); AgBOM (AD §1.6); trust boundaries (AD §1.3); [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) attack corpus | Strong: the risk-map component mapping and attack inventory are MAP artifacts in substance |
-| **MEASURE** | **The whole field set.** Every MUST field; guardrail scores; refusal rates; loop and resource metrics; ATLAS-tagged detections | **The natural home.** AI RMF asks that AI risks be measured; this document specifies what to measure and why |
-| **MANAGE** | Incident response fields (AD §§1.1, 1.3 and 1.6); enforcement decisions and taint (AD §1.3); kill-switch and lifecycle state (AD §1.6); [correlation patterns](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) | Strong for security risk; silent on fairness, bias, and environmental risk, which are out of scope here |
-
-**Scope note.** AI RMF's trustworthiness characteristics extend well beyond security: validity, fairness, bias management, interpretability, and environmental impact. **This document evidences the security slice only.** An organization using AI RMF should not read comprehensive MEASURE coverage into it. The `gen_ai.evaluation.*` conventions discussed in [§2.1](#21-what-it-is-and-the-version-mapped) are the natural carrier for the quality and fairness slice, which is one more reason to keep security guardrail signals distinguishable from quality evaluations rather than merging them.
-
-### 6.4 What this implies
-
-
-1. **Propose the field set as a reference implementation for the Cyber AI Profile's *Secure* focus area.** The Profile specifies outcomes for securing AI systems but not the telemetry that evidences them; this document supplies exactly that and is attack-grounded, which is the kind of justification a NIST community profile can cite. **This is the highest-value action in this appendix**, and the timing is favourable while the Profile is between preliminary and public draft.
-2. **Publish a CSF subcategory-level mapping.** [§6.2](#62-csf-20-mapping-by-function) maps to Category granularity; auditors work at Subcategory granularity (106 subcategories). A per-subcategory mapping is mechanical work with real adoption value, and it is the single most requested artifact when a security framework meets a compliance programme.
-3. **Do not reshape the field set to improve framework coverage.** The weak areas (RECOVER, organizational GOVERN) are weak because they are not telemetry problems. Adding fields to improve a coverage table would violate the [evidence rule](CoSAI-AI-Telemetry-RFC.md#47-tiers) and inflate the MUST tier for **A**-tier benefit.
-4. **Track the AI RMF revision.** AI RMF 1.0 is under revision and the Generative AI Profile (AI 600-1) already extends it; if the revision adds agentic content, the [MEASURE](#63-ai-rmf-mapping-by-function) mapping should be re-checked against it.
-
----
-
-## 7. Implications for ISO/IEC 42001
-
-
-**ISO/IEC 42001:2023** specifies an **AI Management System (AIMS)**: a certifiable management-system standard in the ISO tradition, structured as management-system clauses 4 to 10 plus **Annex A**, a normative reference set of **38 controls under nine control objectives, A.2 to A.10**, selected through a **Statement of Applicability (SoA)**.
-
-The relationship differs from every other appendix here, and the difference is the point:
-
-- **NIST frameworks ask whether outcomes are achieved.** Telemetry is evidence.
-- **ISO/IEC 42001 asks whether a *management system* exists, operates, and is improved.** Telemetry is evidence *and* the raw material for the monitoring, measurement, analysis and evaluation the standard requires of the system itself.
-
-**42001 is also the only framework here that is certifiable.** That raises the bar on evidentiary quality: an auditor will ask not just whether telemetry exists but whether it is retained, access-controlled, and demonstrably used as an input to management review. That is a records-management property, not a field-selection property, and it is where this document is thinnest.
-
-### 7.1 Annex A mapping
-
-
-> **Granularity and sourcing.** This mapping is drawn at **control-objective** level. The objective structure it rests on (nine objectives numbered A.2 to A.10, 38 controls between them) is corroborated across independent public summaries of Annex A. The **individual control identifiers** named below and in [§7.3](#73-what-this-implies) (`A.4.2`, `A.4.5`, `A.5.4`, `A.5.5`, `A.6.2.8`, `A.7.4`, `A.8.4`, `A.9.3`) are **indicative**: ISO/IEC 42001 is a paid standard, those identifiers were taken from public summaries rather than from the purchased text, and numbering *within* an objective is where secondary sources are least reliable. Verify each against the standard before citing this mapping in a Statement of Applicability or treating it as normative. The objective-level mapping does not depend on them.
-
-| Annex A objective | Telemetry that evidences it | Coverage |
-| :----------- | :----------------------------------------------------- | :------------------------------------ |
-| **A.2 Policies related to AI** | System prompt / instruction config (AD §1.1) as the enforced expression of policy; authorization decision record and rule identity (AD §1.3) | Partial: AD §1.3 evidences policy *in force*, which is stronger than a policy document |
-| **A.3 Internal organization** | Creator, oncall, ownership metadata (AD §1.6) | Weak: organizational, not telemetric |
-| **A.4 Resources for AI systems** | AgBOM and dependency graph (AD §1.6); model, tool, memory and knowledge inventory (AD §§1.1, 1.3 and 1.4); token, compute and storage aggregates (AD §1.5) | **Strong**: the AgBOM cluster is an A.4 artifact almost exactly; A.4.2 *Resource documentation* and A.4.5 *System and computing resources* are directly served |
-| **A.5 Assessing impacts of AI systems** | [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) attack corpus; guardrail and refusal rates as realized-impact measures | Partial: supplies the security input to impact assessment, not the assessment |
-| **A.6 AI system life cycle** | **Event logs (A.6.2.8) is the direct hit**: AD §1 in their entirety; capability-set change (AD §1.6) for change control; verification via evaluation and guardrail records | **Strongest alignment.** 42001 requires event logging without specifying content; this document specifies the content |
-| **A.7 Data for AI systems** | Retrieval provenance (AD §1.4); memory provenance (AD §1.4); input source and trust classification (AD §1.2); data classification constraints (AD §1.6) | **Strong**: A.7's provenance and quality controls are served by the provenance fields, which exist here for detection reasons and satisfy A.7 as a by-product |
-| **A.8 Information for interested parties** | Incident-response evidence (AD §§1.1, 1.3 and 1.6); ATLAS-tagged detections (AD §1.2) supporting incident communication | Partial: supplies substance for A.8.4 incident communication; the communication process itself is out of scope |
-| **A.9 Use of AI systems** | Autonomy level (AD §1.1); task/intent declaration (AD §1.5); human approval events (AD §1.3); trigger type (AD §1.1); surface (AD §1.1) | **Strong**: A.9's *intended use* and *responsible use* controls are evidenced by exactly the fields that detect goal drift |
-| **A.10 Third-party and customer relationships** | MCP server identity (AD §1.3); peer agent card (AD §1.5); provider identity (AD §1.1); model provenance (AD §1.1); delegation chain (AD §1.6) | **Strong**: third-party AI dependencies are visible through the tool, MCP, A2A and supply-chain fields |
-
-### 7.2 Where this document is thin, and what would fix it
-
-
-Three of the four weak areas are properly out of scope. The fourth is a genuine gap.
-
-1. **Organizational controls (A.3, parts of A.2, A.8)** are roles, reporting lines and communication processes. Not telemetry. Out of scope, correctly.
-2. **Impact assessment (A.5)** is a *process* control. This document supplies inputs; it should not attempt the assessment.
-3. **Non-security trustworthiness**, fairness, bias, and societal impact under A.5.4 and A.5.5, is outside this document's remit, as it is for [AI RMF](#63-ai-rmf-mapping-by-function).
-4. **Records management is a real gap.** 42001 clause 7.5 (documented information) and clause 9 (monitoring, measurement, analysis and evaluation; internal audit; management review) require telemetry to be *retained, controlled, and demonstrably used*. This document leaves retention, access control and chain of custody to a later CoSAI publication ([RFC §2.2](CoSAI-AI-Telemetry-RFC.md#22-not-in-scope)), so it specifies none of the **evidentiary properties** those clauses need: immutability, defined retention periods per field class, chain of custody, or reviewer access records. **Event Sequence Continuity** (AD §1.6) is the nearest thing and is SHOULD. **Recommendation:** if CoSAI wants this field set to be usable as certification evidence, that later publication should set per-tier retention minimums in a normative table.
-
-### 7.3 What this implies
-
-
-1. **Position the field set as the content specification for the Annex A event-logging control** (`A.6.2.8` as public summaries number it). 42001 requires event logging across the AI life cycle without saying what to log. This is the clearest single fit between the two documents, and (as with the Cyber AI Profile) it lets an organization satisfy a standard using telemetry it built for detection. The position turns on A.6 containing an event-logging requirement that specifies no content, which is corroborated independently of the control's number; if the purchased text numbers it differently, the argument moves with it unchanged.
-2. **Map to Statement of Applicability granularity.** SoA is where 42001 implementation happens. A mapping at individual-control level (A.6.2.8, A.7.4, A.9.3 …) rather than objective level would let an organization cite specific fields per control. Same recommendation, and same mechanical-but-valuable character, as the CSF subcategory mapping in [§6.4](#64-what-this-implies). One prerequisite differs: at individual-control granularity the numbering is load-bearing, so that work needs the purchased text rather than the public summaries this appendix was built from.
-3. **Close the records-management gap** if certification evidence is a goal, see [§7.2](#72-where-this-document-is-thin-and-what-would-fix-it) item 4. This is the one place where a compliance framework surfaces a genuine weakness rather than an out-of-scope boundary.
-4. **Reuse, do not re-derive.** ISO/IEC 42001 and NIST AI RMF overlap substantially; organizations frequently run both. The mappings in [§6](#6-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile) and here should share a single underlying field→control table with two views, rather than diverging.
-
-> **The through-line for both appendices.** These frameworks are **consumers** of this telemetry, not designers of it. The document's value to them is that a field set built to catch documented attacks turns out to evidence a large share of what they ask for, and that the evidence carries attack grounding, which is more defensible under audit than a control asserted to exist. The direction of derivation should not reverse: **do not add fields to improve a coverage table.**
+**Propose the field set to NIST as content for the Cyber AI Profile's *Secure* focus area.** The Profile states outcomes for securing AI systems but not the telemetry that evidences them, and each field here rests on documented attacks. NIST takes input before the Initial Public Draft.
 
 ---
 
@@ -1019,10 +927,10 @@ Three of the four weak areas are properly out of scope. The fourth is a genuine 
 <!-- list break: reference numbers are not contiguous -->
 
 29. **MITRE ATT&CK**: adversary tactics & techniques knowledge base (ATLAS-aligned). MITRE. <https://attack.mitre.org/>
-30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-implications-for-nist-ai-rmf-and-nist-csf-incl-the-cyber-ai-profile).
+30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-nist-csf-ai-rmf-and-isoiec-42001).
 31. **NIST Cybersecurity Framework (CSF) 2.0**: GV / ID / PR / DE / RS / RC; 6 functions, 22 categories, 106 subcategories. <https://www.nist.gov/cyberframework>
-32. **NIST Cyber AI Profile**: *Cybersecurity Framework Profile for Artificial Intelligence: NIST Community Profile*, **NIST IR 8596**, *initial preliminary draft* published 16 December 2025; CSF 2.0 community profile overlaying the **Secure / Defend / Thwart** AI focus areas. Comment period closed 30 January 2026; working sessions held April and May 2026; **no Initial Public Draft as of 11 September 2026**. <https://csrc.nist.gov/pubs/ir/8596/iprd> · project: <https://www.nccoe.nist.gov/projects/cyber-ai-profile>
-33. **ISO/IEC 42001:2023**: *Information technology — Artificial intelligence — Management system.* Clauses 4 to 10 plus **Annex A** (38 controls under 9 objectives, A.2 to A.10) selected via a Statement of Applicability. Paid standard. <https://www.iso.org/standard/42001>. Mapped in [XM §7](Telemetry-Cross-Mapping-Addendum.md#7-implications-for-isoiec-42001).
+32. **NIST Cyber AI Profile**: *Cybersecurity Framework Profile for Artificial Intelligence: NIST Community Profile*, **NIST IR 8596**, *initial preliminary draft* published 16 December 2025; CSF 2.0 community profile overlaying the **Secure / Defend / Thwart** AI focus areas. Comment period closed 30 January 2026; working sessions held April and May 2026; **no Initial Public Draft as of 2 October 2026**. <https://csrc.nist.gov/pubs/ir/8596/iprd> · project: <https://www.nccoe.nist.gov/projects/cyber-ai-profile>
+33. **ISO/IEC 42001:2023**: *Information technology — Artificial intelligence — Management system.* Clauses 4 to 10 plus **Annex A** (38 controls under 9 objectives, A.2 to A.10) selected via a Statement of Applicability. Paid standard. <https://www.iso.org/standard/42001>. Mapped in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-nist-csf-ai-rmf-and-isoiec-42001).
 
 <!-- list break: reference numbers are not contiguous -->
 
