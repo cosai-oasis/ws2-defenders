@@ -8,7 +8,8 @@ into ~/.cache/cosai-telemetry/ and never into data/.
                 'attribute:<name>'} defined at the pinned OCSF release
   otel(pin)    attribute keys, metric names and span or event names in the pinned
                semantic-convention registries (model/**.yaml)
-  aitf(pin)    attribute names in AITF's spec/schema/*.json at the pinned commit
+  aitf(pin)    attribute names AITF defines at the pinned commit: spec/schema/*.json,
+               the registry tables in spec/semantic-conventions/, and the Python SDK constants
   odis(pin)    field names in the record tables of the pinned ODIS.md
 """
 import glob
@@ -107,9 +108,17 @@ def aitf(pin, offline=False):
             for v in o:
                 walk(v)
 
-    for p in glob.glob(os.path.join(root, pin.get('path', ''), 'spec', 'schema', '*.json')):
+    base = os.path.join(root, pin.get('path', ''))
+    for p in glob.glob(os.path.join(base, 'spec', 'schema', '*.json')):
         with open(p, encoding='utf-8') as f:
             walk(json.load(f))
+    # The registry tables and the SDK constants define the rest (AITF_gaps.md: 390 attributes added in v0.4).
+    for p in glob.glob(os.path.join(base, 'spec', 'semantic-conventions', '*.md')):
+        with open(p, encoding='utf-8') as f:
+            names |= set(re.findall(r'(?m)^\| `([a-z_][a-z0-9_.]*)`', f.read()))
+    for p in glob.glob(os.path.join(base, 'sdk', 'python', 'src', 'aitf', 'semantic_conventions', '*.py')):
+        with open(p, encoding='utf-8') as f:
+            names |= set(re.findall(r'= "([a-z_][a-z0-9_]*\.[a-z0-9_.]+)"', f.read()))
     return names
 
 

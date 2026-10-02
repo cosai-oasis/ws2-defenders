@@ -1,0 +1,6012 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+# XM pass: per-field mapping to OCSF, OpenTelemetry, AITF and ODIS, the asks, and
+# Risk Map controls (tools/xm_propose.py documents the record).
+- id: Q:ocsf_ai_agent_activity
+  type: ask
+  subject:
+    ask: ocsf_ai_agent_activity
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_agent_activity
+    publication: ocsf
+    summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
+    proposes: ['class:9001']
+    tracking: [ocsf-schema#1640]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_delegation_activity
+  type: ask
+  subject:
+    ask: ocsf_ai_delegation_activity
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_delegation_activity
+    publication: ocsf
+    summary: Ratify an AI Delegation Activity class (9002) for the delegation lifecycle.
+    proposes: ['class:9002']
+    tracking: [ocsf-schema#1640]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_operation_identifiers
+  type: ask
+  subject:
+    ask: ocsf_ai_operation_identifiers
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_operation_identifiers
+    publication: ocsf
+    summary: Extend the ai_operation profile with run, turn and step identifiers, action type and trigger type.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_stop_reason
+  type: ask
+  subject:
+    ask: ocsf_stop_reason
+  source: xm-pass
+  proposal:
+    id: ocsf_stop_reason
+    publication: ocsf
+    summary: Merge ai_stop_reason_id on the ai_operation profile (End of Turn, Token Limit, Tool Use, Session Stop, Content Filter).
+    proposes: ['attribute:ai_stop_reason_id']
+    tracking: [ocsf-schema#1704]
+    status: approved
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_message_context_content
+  type: ask
+  subject:
+    ask: ocsf_message_context_content
+  source: xm-pass
+  proposal:
+    id: ocsf_message_context_content
+    publication: ocsf
+    summary: Extend message_context with prompt and response hashes, a redaction flag, the system prompt and its hash, and attachment identity, each hash with its canonicalization declaration.
+    proposes: ['attribute:prompt_hash', 'attribute:response_hash', 'attribute:is_redacted', 'attribute:system_prompt']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_trust_level
+  type: ask
+  subject:
+    ask: ocsf_trust_level
+  source: xm-pass
+  proposal:
+    id: ocsf_trust_level
+    publication: ocsf
+    summary: Add a trust_level enum usable on content and message objects.
+    proposes: ['attribute:trust_level']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_autonomy_level
+  type: ask
+  subject:
+    ask: ocsf_autonomy_level
+  source: xm-pass
+  proposal:
+    id: ocsf_autonomy_level
+    publication: ocsf
+    summary: Add an autonomy_level enum.
+    proposes: ['attribute:autonomy_level']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_guardrail
+  type: ask
+  subject:
+    ask: ocsf_ai_guardrail
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_guardrail
+    publication: ocsf
+    summary: Add an ai_guardrail object (type, verdict, score, blocked flag, threat reference), with enforcement availability and failure-mode attributes.
+    proposes: ['object:ai_guardrail']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_egress_correlation
+  type: ask
+  subject:
+    ask: ocsf_egress_correlation
+  source: xm-pass
+  proposal:
+    id: ocsf_egress_correlation
+    publication: ocsf
+    summary: Add an egress correlation attribute linking model output to its destination, recipient or URL.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_model_provenance
+  type: ask
+  subject:
+    ask: ocsf_model_provenance
+  source: xm-pass
+  proposal:
+    id: ocsf_model_provenance
+    publication: ocsf
+    summary: Standardize model provider and provenance or signing attributes in ai_operation.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_tool
+  type: ask
+  subject:
+    ask: ocsf_ai_tool
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_tool
+    publication: ocsf
+    summary: Land the ai_tool object with its mcp sub-block, primitive axis and transaction_uid join key; add a tool_trust_boundary enum and a scope attribute.
+    proposes: ['object:ai_tool', 'attribute:tool_trust_boundary', 'attribute:transaction_uid']
+    tracking: [ocsf-schema#1729]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_memory
+  type: ask
+  subject:
+    ask: ocsf_ai_memory
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_memory
+    publication: ocsf
+    summary: Add an ai_memory object (operation, provenance, footprint, poisoning score, isolation verified).
+    proposes: ['object:ai_memory']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_retrieval
+  type: ask
+  subject:
+    ask: ocsf_ai_retrieval
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_retrieval
+    publication: ocsf
+    summary: Add an ai_retrieval object (query, items, source and provenance, integrity signal).
+    proposes: ['object:ai_retrieval']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_delegation_lineage
+  type: ask
+  subject:
+    ask: ocsf_delegation_lineage
+  source: xm-pass
+  proposal:
+    id: ocsf_delegation_lineage
+    publication: ocsf
+    summary: Extend delegation with scope, constraints and lifecycle state; require parent_uid where a parent exists; add a root or subtree identifier.
+    proposes: []
+    tracking: [ocsf-schema#1739]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_runtime_attestation
+  type: ask
+  subject:
+    ask: ocsf_runtime_attestation
+  source: xm-pass
+  proposal:
+    id: ocsf_runtime_attestation
+    publication: ocsf
+    summary: Add a runtime_attestation object carrying independently issued evidence objects and an explicit not-available status with a reason.
+    proposes: ['object:runtime_attestation']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_asset
+  type: ask
+  subject:
+    ask: ocsf_ai_asset
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_asset
+    publication: ocsf
+    summary: Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage).
+    proposes: ['object:ai_asset']
+    tracking: [ocsf-schema#1724]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_bom
+  type: ask
+  subject:
+    ask: ocsf_ai_bom
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_bom
+    publication: ocsf
+    summary: Add an ai_bom object (BOM reference, format, signature, dependency edges) and a capability-change activity on Agent Activity.
+    proposes: ['object:ai_bom']
+    tracking: [ocsf-schema#1724]
+    status: open
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_authorization
+  type: ask
+  subject:
+    ask: ocsf_ai_authorization
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_authorization
+    publication: ocsf
+    summary: Add an ai_authorization object (decision, reason, code, deciding authority, rule, obligations, budget accounting and the principal or subtree join key).
+    proposes: ['object:ai_authorization']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_taint
+  type: ask
+  subject:
+    ask: ocsf_ai_taint
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_taint
+    publication: ocsf
+    summary: Add an ai_taint object (labels, scope, origin, taint-caused denial).
+    proposes: ['object:ai_taint']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_ai_approval
+  type: ask
+  subject:
+    ask: ocsf_ai_approval
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_approval
+    publication: ocsf
+    summary: Add an ai_approval object (correlation ID, status, identity-provider-verified approver, channel, scope-binding result).
+    proposes: ['object:ai_approval']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:ocsf_attribute_source
+  type: ask
+  subject:
+    ask: ocsf_attribute_source
+  source: xm-pass
+  proposal:
+    id: ocsf_attribute_source
+    publication: ocsf
+    summary: Add an attribute_source enum (idp, pdp, enforcement-state, platform, self-asserted) usable on identity, authorization and agent-state attributes.
+    proposes: ['attribute:attribute_source']
+    tracking: []
+    status: proposed
+  reason: from XM §3.1 and §3.2
+  status: proposed
+- id: Q:otel_trust_level
+  type: ask
+  subject:
+    ask: otel_trust_level
+  source: xm-pass
+  proposal:
+    id: otel_trust_level
+    publication: otel_genai
+    summary: Add gen_ai.input.trust_level on message parts (trusted or untrusted, crossed with instruction or data).
+    proposes: [gen_ai.input.trust_level]
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_security_guardrail
+  type: ask
+  subject:
+    ask: otel_security_guardrail
+  source: xm-pass
+  proposal:
+    id: otel_security_guardrail
+    publication: otel_genai
+    summary: Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_memory_provenance_footprint
+  type: ask
+  subject:
+    ask: otel_memory_provenance_footprint
+  source: xm-pass
+  proposal:
+    id: otel_memory_provenance_footprint
+    publication: otel_genai
+    summary: Add provenance and footprint attributes to gen_ai.memory.*.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_retrieval_provenance
+  type: ask
+  subject:
+    ask: otel_retrieval_provenance
+  source: xm-pass
+  proposal:
+    id: otel_retrieval_provenance
+    publication: otel_genai
+    summary: Add per-document source, owner, trust level and last-modified attributes to retrieval documents.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_turn_step_ids
+  type: ask
+  subject:
+    ask: otel_turn_step_ids
+  source: xm-pass
+  proposal:
+    id: otel_turn_step_ids
+    publication: otel_genai
+    summary: Add gen_ai.turn.id and gen_ai.step.id.
+    proposes: [gen_ai.turn.id, gen_ai.step.id]
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_trigger
+  type: ask
+  subject:
+    ask: otel_trigger
+  source: xm-pass
+  proposal:
+    id: otel_trigger
+    publication: otel_genai
+    summary: Add gen_ai.trigger.type (user_initiated or autonomous) and gen_ai.trigger.event; scheduled and self-triggered runs use it.
+    proposes: [gen_ai.trigger.type, gen_ai.trigger.event]
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_tool_digest_mcp_primitive
+  type: ask
+  subject:
+    ask: otel_tool_digest_mcp_primitive
+  source: xm-pass
+  proposal:
+    id: otel_tool_digest_mcp_primitive
+    publication: otel_genai
+    summary: Add gen_ai.tool.definitions.hash and an mcp.primitive value set (tool, resource, prompt, sampling, elicitation, roots).
+    proposes: [gen_ai.tool.definitions.hash, mcp.primitive]
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_attachment_identity
+  type: ask
+  subject:
+    ask: otel_attachment_identity
+  source: xm-pass
+  proposal:
+    id: otel_attachment_identity
+    publication: otel_genai
+    summary: Add attachment identity (name, size, hash) on message parts.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_model_provenance
+  type: ask
+  subject:
+    ask: otel_model_provenance
+  source: xm-pass
+  proposal:
+    id: otel_model_provenance
+    publication: otel_genai
+    summary: Add gen_ai.model.hash, gen_ai.model.signature and gen_ai.model.source.
+    proposes: [gen_ai.model.hash, gen_ai.model.signature, gen_ai.model.source]
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_hash_only_capture
+  type: ask
+  subject:
+    ask: otel_hash_only_capture
+  source: xm-pass
+  proposal:
+    id: otel_hash_only_capture
+    publication: otel_genai
+    summary: Ensure a hash-only content-capture mode exists for message content.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_citations
+  type: ask
+  subject:
+    ask: otel_citations
+  source: xm-pass
+  proposal:
+    id: otel_citations
+    publication: otel_genai
+    summary: Add citation attributes on output messages with a resolution flag against retrieval.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_execution_environment
+  type: ask
+  subject:
+    ask: otel_execution_environment
+  source: xm-pass
+  proposal:
+    id: otel_execution_environment
+    publication: otel_genai
+    summary: Add execution-environment attributes (sandbox, runtime, egress policy) for tool execution.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_inter_agent_messaging
+  type: ask
+  subject:
+    ask: otel_inter_agent_messaging
+  source: xm-pass
+  proposal:
+    id: otel_inter_agent_messaging
+    publication: otel_genai
+    summary: Add inter-agent messaging attributes.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_run_budget
+  type: ask
+  subject:
+    ask: otel_run_budget
+  source: xm-pass
+  proposal:
+    id: otel_run_budget
+    publication: otel_genai
+    summary: Add per-run budget and threshold semantics; document security use of the loop metrics.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_capability_change
+  type: ask
+  subject:
+    ask: otel_capability_change
+  source: xm-pass
+  proposal:
+    id: otel_capability_change
+    publication: otel_genai
+    summary: Add a capability-change event; reference an external BOM by URI or digest.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_hook_coverage
+  type: ask
+  subject:
+    ask: otel_hook_coverage
+  source: xm-pass
+  proposal:
+    id: otel_hook_coverage
+    publication: otel_genai
+    summary: Record instrumentation hook coverage as a resource attribute.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_egress_pattern
+  type: ask
+  subject:
+    ask: otel_egress_pattern
+  source: xm-pass
+  proposal:
+    id: otel_egress_pattern
+    publication: otel_genai
+    summary: Document correlating model output to its destination through the HTTP and network conventions on the child span.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: Q:otel_authorization_reference
+  type: ask
+  subject:
+    ask: otel_authorization_reference
+  source: xm-pass
+  proposal:
+    id: otel_authorization_reference
+    publication: otel_genai
+    summary: Let a span reference an authorization decision by ID, so OpenTelemetry and OCSF records join at query time.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: from XM §2.3
+  status: proposed
+- id: M:agent_name:ocsf
+  type: mapping
+  subject:
+    field: agent_name
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['profile:ai_operation', 'object:ai_agent']
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:agent_name:otel
+  type: mapping
+  subject:
+    field: agent_name
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.name]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:agent_name:aitf
+  type: mapping
+  subject:
+    field: agent_name
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.name, asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:agent_name:odis
+  type: mapping
+  subject:
+    field: agent_name
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [agent_id, owner_ref]
+    note: '`agent_id` /`owner_ref` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:agent_name
+  type: controls
+  subject:
+    field: agent_name
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:agent_runtime_instance_id:ocsf
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['object:ai_agent', 'attribute:instance_uid']
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:agent_runtime_instance_id:otel
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.id]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:agent_runtime_instance_id:aitf
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.id]
+  reason: XM §4
+  status: proposed
+- id: M:agent_runtime_instance_id:odis
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [runtime_instance_id]
+    note: '`runtime_instance_id` (6.2)'
+    sections: ['6.2']
+  reason: XM §4
+  status: proposed
+- id: C:agent_runtime_instance_id
+  type: controls
+  subject:
+    field: agent_runtime_instance_id
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:workflow_run_id:ocsf
+  type: mapping
+  subject:
+    field: workflow_run_id
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No workflow or run identifier
+    asks: [ocsf_ai_operation_identifiers]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:workflow_run_id:otel
+  type: mapping
+  subject:
+    field: workflow_run_id
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.workflow.name]
+    gap: A workflow name, not a run identifier; the run maps to the trace ID
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:workflow_run_id:aitf
+  type: mapping
+  subject:
+    field: workflow_run_id
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    note: trace id / run attr, *see note below*
+  reason: XM §4
+  status: proposed
+- id: M:workflow_run_id:odis
+  type: mapping
+  subject:
+    field: workflow_run_id
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [request_trace_id]
+    note: '`request_trace_id` (6.4)'
+    sections: ['6.4']
+  reason: XM §4
+  status: proposed
+- id: C:workflow_run_id
+  type: controls
+  subject:
+    field: workflow_run_id
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:session_turn_step_ids:ocsf
+  type: mapping
+  subject:
+    field: session_turn_step_ids
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['object:message_context']
+    gap: A session identifier only; no turn or step
+    asks: [ocsf_ai_operation_identifiers]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:session_turn_step_ids:otel
+  type: mapping
+  subject:
+    field: session_turn_step_ids
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.conversation.id]
+    gap: No turn or step identifier
+    asks: [otel_turn_step_ids]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:session_turn_step_ids:aitf
+  type: mapping
+  subject:
+    field: session_turn_step_ids
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.turn.*, gen_ai.conversation.id, gen_ai.agent.step.index]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index`'
+  reason: XM §4; XM names ['span_id'], which do not exist at the pin
+  critical: true
+  status: proposed
+- id: M:session_turn_step_ids:odis
+  type: mapping
+  subject:
+    field: session_turn_step_ids
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:session_turn_step_ids
+  type: controls
+  subject:
+    field: session_turn_step_ids
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:trace_context_propagated:ocsf
+  type: mapping
+  subject:
+    field: trace_context_propagated
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:trace_context_propagated:otel
+  type: mapping
+  subject:
+    field: trace_context_propagated
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    note: OpenTelemetry trace context (W3C traceparent) is core to the specification.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:trace_context_propagated:aitf
+  type: mapping
+  subject:
+    field: trace_context_propagated
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    note: OTel `trace_id`/`span_id`, W3C `traceparent`
+  reason: XM §4; XM names ['trace_id', 'span_id', 'traceparent'], which do not exist at the pin
+  critical: true
+  status: proposed
+- id: M:trace_context_propagated:odis
+  type: mapping
+  subject:
+    field: trace_context_propagated
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [request_trace_id]
+    note: '`request_trace_id` (6.4)'
+    sections: ['6.4']
+  reason: XM §4
+  status: proposed
+- id: C:trace_context_propagated
+  type: controls
+  subject:
+    field: trace_context_propagated
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:organization_tenant_id:ocsf
+  type: mapping
+  subject:
+    field: organization_tenant_id
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:organization_tenant_id:otel
+  type: mapping
+  subject:
+    field: organization_tenant_id
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tenant attribute in the GenAI conventions
+    note: XM recommends adopting existing tenant and resource attributes rather than an ask.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:organization_tenant_id:aitf
+  type: mapping
+  subject:
+    field: organization_tenant_id
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.tenant.*, security.tenant.*, asset.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` / resource attrs'
+  reason: XM §4
+  status: proposed
+- id: M:organization_tenant_id:odis
+  type: mapping
+  subject:
+    field: organization_tenant_id
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [trust_domain]
+    note: '`trust_domain` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:organization_tenant_id
+  type: controls
+  subject:
+    field: organization_tenant_id
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:trigger_type_source_event:ocsf
+  type: mapping
+  subject:
+    field: trigger_type_source_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No trigger type
+    asks: [ocsf_ai_operation_identifiers]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:trigger_type_source_event:otel
+  type: mapping
+  subject:
+    field: trigger_type_source_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No trigger type or source event
+    asks: [otel_trigger]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:trigger_type_source_event:aitf
+  type: mapping
+  subject:
+    field: trigger_type_source_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.trigger.*, gen_ai.agent.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.agent.*` trigger attrs'
+  reason: XM §4
+  status: proposed
+- id: M:trigger_type_source_event:odis
+  type: mapping
+  subject:
+    field: trigger_type_source_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:trigger_type_source_event
+  type: controls
+  subject:
+    field: trigger_type_source_event
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:action_type:ocsf
+  type: mapping
+  subject:
+    field: action_type
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No action type
+    asks: [ocsf_ai_operation_identifiers]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:action_type:otel
+  type: mapping
+  subject:
+    field: action_type
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:action_type:aitf
+  type: mapping
+  subject:
+    field: action_type
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.step.type]
+  reason: XM §4
+  status: proposed
+- id: M:action_type:odis
+  type: mapping
+  subject:
+    field: action_type
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [action]
+    note: '`action.{tool,method}` (6.4)'
+    sections: ['6.4']
+  reason: XM §4
+  status: proposed
+- id: C:action_type
+  type: controls
+  subject:
+    field: action_type
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:execution_status:ocsf
+  type: mapping
+  subject:
+    field: execution_status
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:execution_status:otel
+  type: mapping
+  subject:
+    field: execution_status
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [error.type]
+    note: With the span status.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:execution_status:aitf
+  type: mapping
+  subject:
+    field: execution_status
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [error.type]
+    note: span status + `error.type`
+  reason: XM §4
+  status: proposed
+- id: M:execution_status:odis
+  type: mapping
+  subject:
+    field: execution_status
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:execution_status
+  type: controls
+  subject:
+    field: execution_status
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:stop_reason:ocsf
+  type: mapping
+  subject:
+    field: stop_reason
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: ai_stop_reason_id is approved (#1704) but not in 1.9.0
+    asks: [ocsf_stop_reason]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:stop_reason:otel
+  type: mapping
+  subject:
+    field: stop_reason
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.response.finish_reasons]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:stop_reason:aitf
+  type: mapping
+  subject:
+    field: stop_reason
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.response.finish_reasons]
+  reason: XM §4
+  status: proposed
+- id: M:stop_reason:odis
+  type: mapping
+  subject:
+    field: stop_reason
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:stop_reason
+  type: controls
+  subject:
+    field: stop_reason
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:surface_app:ocsf
+  type: mapping
+  subject:
+    field: surface_app
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:surface_app:otel
+  type: mapping
+  subject:
+    field: surface_app
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No surface attribute
+    note: XM names the gap and proposes no change; decide an ask or record why none.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:surface_app:aitf
+  type: mapping
+  subject:
+    field: surface_app
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.*]
+    note: '`gen_ai.*` (surface attr)'
+  reason: XM §4
+  status: proposed
+- id: M:surface_app:odis
+  type: mapping
+  subject:
+    field: surface_app
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+    note: n/a (policy input)
+  reason: XM §4
+  status: proposed
+- id: C:surface_app
+  type: controls
+  subject:
+    field: surface_app
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:system_prompt_instruction_config:ocsf
+  type: mapping
+  subject:
+    field: system_prompt_instruction_config
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No system prompt in message_context
+    asks: [ocsf_message_context_content]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:system_prompt_instruction_config:otel
+  type: mapping
+  subject:
+    field: system_prompt_instruction_config
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.system_instructions]
+    asks: [otel_hash_only_capture]
+    note: Gated behind content-capture opt-in.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:system_prompt_instruction_config:aitf
+  type: mapping
+  subject:
+    field: system_prompt_instruction_config
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.*]
+    note: '`gen_ai.*` (system message / request)'
+  reason: XM §4
+  status: proposed
+- id: M:system_prompt_instruction_config:odis
+  type: mapping
+  subject:
+    field: system_prompt_instruction_config
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+    note: n/a (see note)
+  reason: XM §4
+  status: proposed
+- id: C:system_prompt_instruction_config
+  type: controls
+  subject:
+    field: system_prompt_instruction_config
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:autonomy_level:ocsf
+  type: mapping
+  subject:
+    field: autonomy_level
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No autonomy level
+    asks: [ocsf_autonomy_level]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:autonomy_level:otel
+  type: mapping
+  subject:
+    field: autonomy_level
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:autonomy_level:aitf
+  type: mapping
+  subject:
+    field: autonomy_level
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.state]
+  reason: XM §4
+  status: proposed
+- id: M:autonomy_level:odis
+  type: mapping
+  subject:
+    field: autonomy_level
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:autonomy_level
+  type: controls
+  subject:
+    field: autonomy_level
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  reason: XM §1.2 lists 2 controls for Execution context & agent identity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:model_input:ocsf
+  type: mapping
+  subject:
+    field: model_input
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['object:message_context', 'attribute:prompt_text']
+    gap: No content hash or redaction flag
+    asks: [ocsf_message_context_content]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:model_input:otel
+  type: mapping
+  subject:
+    field: model_input
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.input.messages]
+    asks: [otel_hash_only_capture]
+    note: Gated behind content-capture opt-in.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:model_input:aitf
+  type: mapping
+  subject:
+    field: model_input
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.prompt]
+    note: '`gen_ai.prompt` / input events'
+  reason: XM §4
+  status: proposed
+- id: M:model_input:odis
+  type: mapping
+  subject:
+    field: model_input
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [action]
+    note: '`action.parameters` (6.4)'
+    sections: ['6.4']
+  reason: XM §4
+  status: proposed
+- id: C:model_input
+  type: controls
+  subject:
+    field: model_input
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:input_source_channel:ocsf
+  type: mapping
+  subject:
+    field: input_source_channel
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:input_source_channel:otel
+  type: mapping
+  subject:
+    field: input_source_channel
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:input_source_channel:aitf
+  type: mapping
+  subject:
+    field: input_source_channel
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.*, rag.*, mcp.*]
+    note: '`gen_ai.*` / `rag.*` / `mcp.*` source'
+  reason: XM §4
+  status: proposed
+- id: M:input_source_channel:odis
+  type: mapping
+  subject:
+    field: input_source_channel
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [delegation_chain]
+    note: '`delegation_chain` origin (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:input_source_channel
+  type: controls
+  subject:
+    field: input_source_channel
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:input_trust_classification:ocsf
+  type: mapping
+  subject:
+    field: input_trust_classification
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:2004']
+    gap: No trust-provenance enum
+    asks: [ocsf_trust_level]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:input_trust_classification:otel
+  type: mapping
+  subject:
+    field: input_trust_classification
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No trust-provenance concept
+    asks: [otel_trust_level]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:input_trust_classification:aitf
+  type: mapping
+  subject:
+    field: input_trust_classification
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.*]
+    note: '`security.*` (trust/threat)'
+  reason: XM §4
+  status: proposed
+- id: M:input_trust_classification:odis
+  type: mapping
+  subject:
+    field: input_trust_classification
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [constraints]
+    note: '`constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:input_trust_classification
+  type: controls
+  subject:
+    field: input_trust_classification
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:source_host_ip_request_metadata:ocsf
+  type: mapping
+  subject:
+    field: source_host_ip_request_metadata
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:source_host_ip_request_metadata:otel
+  type: mapping
+  subject:
+    field: source_host_ip_request_metadata
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:source_host_ip_request_metadata:aitf
+  type: mapping
+  subject:
+    field: source_host_ip_request_metadata
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.*]
+    note: '`security.*` / resource attrs'
+  reason: XM §4
+  status: proposed
+- id: M:source_host_ip_request_metadata:odis
+  type: mapping
+  subject:
+    field: source_host_ip_request_metadata
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+    note: n/a (policy input)
+  reason: XM §4
+  status: proposed
+- id: C:source_host_ip_request_metadata
+  type: controls
+  subject:
+    field: source_host_ip_request_metadata
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:guardrail_input_verdict:ocsf
+  type: mapping
+  subject:
+    field: guardrail_input_verdict
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:2004']
+    gap: No guardrail-verdict object
+    asks: [ocsf_ai_guardrail]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:guardrail_input_verdict:otel
+  type: mapping
+  subject:
+    field: guardrail_input_verdict
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.evaluation.score.value]
+    gap: 'The evaluation event is quality-oriented: no blocked flag, guardrail type or threat technique'
+    asks: [otel_security_guardrail]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:guardrail_input_verdict:aitf
+  type: mapping
+  subject:
+    field: guardrail_input_verdict
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.guardrail.type, security.blocked, security.threat_type]
+  reason: XM §4
+  status: proposed
+- id: M:guardrail_input_verdict:odis
+  type: mapping
+  subject:
+    field: guardrail_input_verdict
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:guardrail_input_verdict
+  type: controls
+  subject:
+    field: guardrail_input_verdict
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:content_modality_attachment_identity:ocsf
+  type: mapping
+  subject:
+    field: content_modality_attachment_identity
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No attachment identity
+    asks: [ocsf_message_context_content]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:content_modality_attachment_identity:otel
+  type: mapping
+  subject:
+    field: content_modality_attachment_identity
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    gap: Message parts carry types; no attachment name, size or hash
+    asks: [otel_attachment_identity]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:content_modality_attachment_identity:aitf
+  type: mapping
+  subject:
+    field: content_modality_attachment_identity
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.content.*, gen_ai.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.*` content-part attrs'
+  reason: XM §4
+  status: proposed
+- id: M:content_modality_attachment_identity:odis
+  type: mapping
+  subject:
+    field: content_modality_attachment_identity
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:content_modality_attachment_identity
+  type: controls
+  subject:
+    field: content_modality_attachment_identity
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:guardrail_modification_record:ocsf
+  type: mapping
+  subject:
+    field: guardrail_modification_record
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No record that an enforcement point rewrote a payload
+    asks: [ocsf_ai_guardrail, ocsf_message_context_content]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:guardrail_modification_record:otel
+  type: mapping
+  subject:
+    field: guardrail_modification_record
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:guardrail_modification_record:aitf
+  type: mapping
+  subject:
+    field: guardrail_modification_record
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.guardrail.modification.*, security.guardrail.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.guardrail.*` + modified/redacted flags'
+  reason: XM §4
+  status: proposed
+- id: M:guardrail_modification_record:odis
+  type: mapping
+  subject:
+    field: guardrail_modification_record
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:guardrail_modification_record
+  type: controls
+  subject:
+    field: guardrail_modification_record
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:threat_classification_atlas_technique_tag:ocsf
+  type: mapping
+  subject:
+    field: threat_classification_atlas_technique_tag
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['class:2004', 'attribute:attacks']
+    note: 'No schema change: populate attacks[].technique.uid with AML.Txxxx, the tactic, and attacks[].version with the ATLAS matrix version.'
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:threat_classification_atlas_technique_tag:otel
+  type: mapping
+  subject:
+    field: threat_classification_atlas_technique_tag
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No threat-technique reference
+    asks: [otel_security_guardrail]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:threat_classification_atlas_technique_tag:aitf
+  type: mapping
+  subject:
+    field: threat_classification_atlas_technique_tag
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.threat_type, compliance.framework, compliance.control_id]
+  reason: XM §4
+  status: proposed
+- id: M:threat_classification_atlas_technique_tag:odis
+  type: mapping
+  subject:
+    field: threat_classification_atlas_technique_tag
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:threat_classification_atlas_technique_tag
+  type: controls
+  subject:
+    field: threat_classification_atlas_technique_tag
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:encoded_obfuscated_payload_indicator:ocsf
+  type: mapping
+  subject:
+    field: encoded_obfuscated_payload_indicator
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:encoded_obfuscated_payload_indicator:otel
+  type: mapping
+  subject:
+    field: encoded_obfuscated_payload_indicator
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:encoded_obfuscated_payload_indicator:aitf
+  type: mapping
+  subject:
+    field: encoded_obfuscated_payload_indicator
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.obfuscation.*, security.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` obfuscation / decoded-form attrs'
+  reason: XM §4
+  status: proposed
+- id: M:encoded_obfuscated_payload_indicator:odis
+  type: mapping
+  subject:
+    field: encoded_obfuscated_payload_indicator
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:encoded_obfuscated_payload_indicator
+  type: controls
+  subject:
+    field: encoded_obfuscated_payload_indicator
+  source: xm-pass
+  proposal:
+    controls: [controlInputValidationAndSanitization]
+  reason: XM §1.2 lists 3 controls for Input handling & trust provenance; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:response_model_output:ocsf
+  type: mapping
+  subject:
+    field: response_model_output
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['object:message_context', 'attribute:response_text']
+    gap: No content hash or redaction flag
+    asks: [ocsf_message_context_content]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:response_model_output:otel
+  type: mapping
+  subject:
+    field: response_model_output
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.output.messages]
+    asks: [otel_hash_only_capture]
+    note: Gated behind content-capture opt-in.
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:response_model_output:aitf
+  type: mapping
+  subject:
+    field: response_model_output
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.completion]
+  reason: XM §4
+  status: proposed
+- id: M:response_model_output:odis
+  type: mapping
+  subject:
+    field: response_model_output
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:response_model_output
+  type: controls
+  subject:
+    field: response_model_output
+  source: xm-pass
+  proposal:
+    controls: [controlOutputValidationAndSanitization]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:output_egress_destination:ocsf
+  type: mapping
+  subject:
+    field: output_egress_destination
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:http_activity', 'class:network_activity']
+    gap: No link from model output to the egress channel or recipient
+    asks: [ocsf_egress_correlation]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:output_egress_destination:otel
+  type: mapping
+  subject:
+    field: output_egress_destination
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No link from model output to its destination
+    asks: [otel_egress_pattern]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:output_egress_destination:aitf
+  type: mapping
+  subject:
+    field: output_egress_destination
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.call.arguments, security.pii.*]
+  reason: XM §4
+  status: proposed
+- id: M:output_egress_destination:odis
+  type: mapping
+  subject:
+    field: output_egress_destination
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [resource_indicators]
+    note: '`resource_indicators` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:output_egress_destination
+  type: controls
+  subject:
+    field: output_egress_destination
+  source: xm-pass
+  proposal:
+    controls: [controlOutputValidationAndSanitization]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:citations_source_attribution:ocsf
+  type: mapping
+  subject:
+    field: citations_source_attribution
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:citations_source_attribution:otel
+  type: mapping
+  subject:
+    field: citations_source_attribution
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.retrieval.documents]
+    gap: Output-side citations are not linked to retrieved items
+    asks: [otel_citations]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:citations_source_attribution:aitf
+  type: mapping
+  subject:
+    field: citations_source_attribution
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [rag.citation.*, rag.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `rag.*` (source) + output citation attrs'
+  reason: XM §4
+  status: proposed
+- id: M:citations_source_attribution:odis
+  type: mapping
+  subject:
+    field: citations_source_attribution
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:citations_source_attribution
+  type: controls
+  subject:
+    field: citations_source_attribution
+  source: xm-pass
+  proposal:
+    controls: [controlOutputValidationAndSanitization]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:observation_thought_reasoning_trace:ocsf
+  type: mapping
+  subject:
+    field: observation_thought_reasoning_trace
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:observation_thought_reasoning_trace:otel
+  type: mapping
+  subject:
+    field: observation_thought_reasoning_trace
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:observation_thought_reasoning_trace:aitf
+  type: mapping
+  subject:
+    field: observation_thought_reasoning_trace
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.step.thought]
+  reason: XM §4
+  status: proposed
+- id: M:observation_thought_reasoning_trace:odis
+  type: mapping
+  subject:
+    field: observation_thought_reasoning_trace
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:observation_thought_reasoning_trace
+  type: controls
+  subject:
+    field: observation_thought_reasoning_trace
+  source: xm-pass
+  proposal:
+    controls: [controlNetworkEgressControl]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:guardrail_output_verdict:ocsf
+  type: mapping
+  subject:
+    field: guardrail_output_verdict
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:2004']
+    gap: No guardrail-verdict object
+    asks: [ocsf_ai_guardrail]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:guardrail_output_verdict:otel
+  type: mapping
+  subject:
+    field: guardrail_output_verdict
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.evaluation.score.value]
+    gap: The evaluation event is quality-oriented
+    asks: [otel_security_guardrail]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:guardrail_output_verdict:aitf
+  type: mapping
+  subject:
+    field: guardrail_output_verdict
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.guardrail.*, security.pii.*]
+  reason: XM §4
+  status: proposed
+- id: M:guardrail_output_verdict:odis
+  type: mapping
+  subject:
+    field: guardrail_output_verdict
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [constraints]
+    note: '`constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:guardrail_output_verdict
+  type: controls
+  subject:
+    field: guardrail_output_verdict
+  source: xm-pass
+  proposal:
+    controls: [controlOutputValidationAndSanitization]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:llm_refusal:ocsf
+  type: mapping
+  subject:
+    field: llm_refusal
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:llm_refusal:otel
+  type: mapping
+  subject:
+    field: llm_refusal
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:llm_refusal:aitf
+  type: mapping
+  subject:
+    field: llm_refusal
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.response.finish_reasons, security.*]
+  reason: XM §4
+  status: proposed
+- id: M:llm_refusal:odis
+  type: mapping
+  subject:
+    field: llm_refusal
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:llm_refusal
+  type: controls
+  subject:
+    field: llm_refusal
+  source: xm-pass
+  proposal:
+    controls: [controlOutputValidationAndSanitization]
+  reason: XM §1.2 lists 2 controls for Output handling & egress; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:model_name_version:ocsf
+  type: mapping
+  subject:
+    field: model_name_version
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['profile:ai_operation', 'object:ai_model']
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:model_name_version:otel
+  type: mapping
+  subject:
+    field: model_name_version
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.request.model, gen_ai.response.model]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:model_name_version:aitf
+  type: mapping
+  subject:
+    field: model_name_version
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.request.model, gen_ai.provider.name]
+  reason: XM §4
+  status: proposed
+- id: M:model_name_version:odis
+  type: mapping
+  subject:
+    field: model_name_version
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:model_name_version
+  type: controls
+  subject:
+    field: model_name_version
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:provider_endpoint_identity:ocsf
+  type: mapping
+  subject:
+    field: provider_endpoint_identity
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['object:ai_model']
+    gap: Provider not standardized in the profile
+    asks: [ocsf_model_provenance]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:provider_endpoint_identity:otel
+  type: mapping
+  subject:
+    field: provider_endpoint_identity
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.provider.name]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:provider_endpoint_identity:aitf
+  type: mapping
+  subject:
+    field: provider_endpoint_identity
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.provider.name]
+  reason: XM §4
+  status: proposed
+- id: M:provider_endpoint_identity:odis
+  type: mapping
+  subject:
+    field: provider_endpoint_identity
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:provider_endpoint_identity
+  type: controls
+  subject:
+    field: provider_endpoint_identity
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:inference_parameters:ocsf
+  type: mapping
+  subject:
+    field: inference_parameters
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:inference_parameters:otel
+  type: mapping
+  subject:
+    field: inference_parameters
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:inference_parameters:aitf
+  type: mapping
+  subject:
+    field: inference_parameters
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
+  reason: XM §4
+  status: proposed
+- id: M:inference_parameters:odis
+  type: mapping
+  subject:
+    field: inference_parameters
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:inference_parameters
+  type: controls
+  subject:
+    field: inference_parameters
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:input_output_token_counts:ocsf
+  type: mapping
+  subject:
+    field: input_output_token_counts
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['object:message_context']
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:input_output_token_counts:otel
+  type: mapping
+  subject:
+    field: input_output_token_counts
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.client.token.usage]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:input_output_token_counts:aitf
+  type: mapping
+  subject:
+    field: input_output_token_counts
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, cost.*]
+  reason: XM §4
+  status: proposed
+- id: M:input_output_token_counts:odis
+  type: mapping
+  subject:
+    field: input_output_token_counts
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:input_output_token_counts
+  type: controls
+  subject:
+    field: input_output_token_counts
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:llm_error_exception:ocsf
+  type: mapping
+  subject:
+    field: llm_error_exception
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:llm_error_exception:otel
+  type: mapping
+  subject:
+    field: llm_error_exception
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [error.type]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:llm_error_exception:aitf
+  type: mapping
+  subject:
+    field: llm_error_exception
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.*, security.*]
+    note: '`gen_ai.*` error + `security.*`'
+  reason: XM §4
+  status: proposed
+- id: M:llm_error_exception:odis
+  type: mapping
+  subject:
+    field: llm_error_exception
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:llm_error_exception
+  type: controls
+  subject:
+    field: llm_error_exception
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:model_provenance_signing_hash:ocsf
+  type: mapping
+  subject:
+    field: model_provenance_signing_hash
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: Provenance and signing not standardized in the profile
+    asks: [ocsf_model_provenance]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:model_provenance_signing_hash:otel
+  type: mapping
+  subject:
+    field: model_provenance_signing_hash
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No model provenance or signing
+    asks: [otel_model_provenance]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:model_provenance_signing_hash:aitf
+  type: mapping
+  subject:
+    field: model_provenance_signing_hash
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.model.hash, supply_chain.model.signed, supply_chain.model.source, supply_chain.ai_bom.*]
+  reason: XM §4
+  status: proposed
+- id: M:model_provenance_signing_hash:odis
+  type: mapping
+  subject:
+    field: model_provenance_signing_hash
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [software_hash, approved_software_refs]
+    note: '`software_hash` (6.2), `approved_software_refs` (6.1)'
+    sections: ['6.2', '6.1']
+  reason: XM §4
+  status: proposed
+- id: C:model_provenance_signing_hash
+  type: controls
+  subject:
+    field: model_provenance_signing_hash
+  source: xm-pass
+  proposal:
+    controls: [controlModelAndDataIntegrityManagement, controlModelRegistryIntegrity, controlMessageAndPayloadResourceLimits]
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:pre_forward_pass_state_digest_vector:ocsf
+  type: mapping
+  subject:
+    field: pre_forward_pass_state_digest_vector
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:pre_forward_pass_state_digest_vector:otel
+  type: mapping
+  subject:
+    field: pre_forward_pass_state_digest_vector
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:pre_forward_pass_state_digest_vector:aitf
+  type: mapping
+  subject:
+    field: pre_forward_pass_state_digest_vector
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [drift.*]
+  reason: XM §4
+  status: proposed
+- id: M:pre_forward_pass_state_digest_vector:odis
+  type: mapping
+  subject:
+    field: pre_forward_pass_state_digest_vector
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:pre_forward_pass_state_digest_vector
+  type: controls
+  subject:
+    field: pre_forward_pass_state_digest_vector
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:token_malformation_context_corruption_indicator:ocsf
+  type: mapping
+  subject:
+    field: token_malformation_context_corruption_indicator
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:token_malformation_context_corruption_indicator:otel
+  type: mapping
+  subject:
+    field: token_malformation_context_corruption_indicator
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:token_malformation_context_corruption_indicator:aitf
+  type: mapping
+  subject:
+    field: token_malformation_context_corruption_indicator
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [drift.*, quality.*]
+  reason: XM §4
+  status: proposed
+- id: M:token_malformation_context_corruption_indicator:odis
+  type: mapping
+  subject:
+    field: token_malformation_context_corruption_indicator
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:token_malformation_context_corruption_indicator
+  type: controls
+  subject:
+    field: token_malformation_context_corruption_indicator
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Model & serving; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_call_io:ocsf
+  type: mapping
+  subject:
+    field: tool_call_io
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:6003']
+    gap: No tool object
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_call_io:otel
+  type: mapping
+  subject:
+    field: tool_call_io
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_call_io:aitf
+  type: mapping
+  subject:
+    field: tool_call_io
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result, mcp.tool.name]
+  reason: XM §4
+  status: proposed
+- id: M:tool_call_io:odis
+  type: mapping
+  subject:
+    field: tool_call_io
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [action]
+    note: '`action` (6.4)'
+    sections: ['6.4']
+  reason: XM §4
+  status: proposed
+- id: C:tool_call_io
+  type: controls
+  subject:
+    field: tool_call_io
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolServerVetting
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_name:ocsf
+  type: mapping
+  subject:
+    field: tool_name
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool object
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_name:otel
+  type: mapping
+  subject:
+    field: tool_name
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.name]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_name:aitf
+  type: mapping
+  subject:
+    field: tool_name
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.tool.name]
+  reason: XM §4
+  status: proposed
+- id: M:tool_name:odis
+  type: mapping
+  subject:
+    field: tool_name
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_name
+  type: controls
+  subject:
+    field: tool_name
+  source: xm-pass
+  proposal:
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_type_trust_boundary:ocsf
+  type: mapping
+  subject:
+    field: tool_type_trust_boundary
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool trust-boundary enum
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_type_trust_boundary:otel
+  type: mapping
+  subject:
+    field: tool_type_trust_boundary
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_type_trust_boundary:aitf
+  type: mapping
+  subject:
+    field: tool_type_trust_boundary
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.*]
+    note: '`mcp.*` vs internal'
+  reason: XM §4
+  status: proposed
+- id: M:tool_type_trust_boundary:odis
+  type: mapping
+  subject:
+    field: tool_type_trust_boundary
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_type_trust_boundary
+  type: controls
+  subject:
+    field: tool_type_trust_boundary
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_id:ocsf
+  type: mapping
+  subject:
+    field: tool_id
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool object
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_id:otel
+  type: mapping
+  subject:
+    field: tool_id
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_id:aitf
+  type: mapping
+  subject:
+    field: tool_id
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.server.name]
+    note: '`mcp.server.name` + tool id'
+  reason: XM §4
+  status: proposed
+- id: M:tool_id:odis
+  type: mapping
+  subject:
+    field: tool_id
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_id
+  type: controls
+  subject:
+    field: tool_id
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_execution_id:ocsf
+  type: mapping
+  subject:
+    field: tool_execution_id
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool-call join key
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_execution_id:otel
+  type: mapping
+  subject:
+    field: tool_execution_id
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.call.id]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_execution_id:aitf
+  type: mapping
+  subject:
+    field: tool_execution_id
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.tool.call.id]
+  reason: XM §4
+  status: proposed
+- id: M:tool_execution_id:odis
+  type: mapping
+  subject:
+    field: tool_execution_id
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_execution_id
+  type: controls
+  subject:
+    field: tool_execution_id
+  source: xm-pass
+  proposal:
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_definition_digest:ocsf
+  type: mapping
+  subject:
+    field: tool_definition_digest
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool-definition digest
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_definition_digest:otel
+  type: mapping
+  subject:
+    field: tool_definition_digest
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.tool.definitions]
+    gap: The definitions, not a stable digest of them
+    asks: [otel_tool_digest_mcp_primitive]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_definition_digest:aitf
+  type: mapping
+  subject:
+    field: tool_definition_digest
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.tool.definition.*, mcp.tool.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.tool.*` schema/description hash'
+  reason: XM §4
+  status: proposed
+- id: M:tool_definition_digest:odis
+  type: mapping
+  subject:
+    field: tool_definition_digest
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:tool_definition_digest
+  type: controls
+  subject:
+    field: tool_definition_digest
+  source: xm-pass
+  proposal:
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:execution_environment_sandbox:ocsf
+  type: mapping
+  subject:
+    field: execution_environment_sandbox
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:execution_environment_sandbox:otel
+  type: mapping
+  subject:
+    field: execution_environment_sandbox
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No sandbox or isolation attributes
+    asks: [otel_execution_environment]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:execution_environment_sandbox:aitf
+  type: mapping
+  subject:
+    field: execution_environment_sandbox
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.runtime.*, supply_chain.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `supply_chain.*` + runtime/sandbox attrs'
+  reason: XM §4
+  status: proposed
+- id: M:execution_environment_sandbox:odis
+  type: mapping
+  subject:
+    field: execution_environment_sandbox
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [binding_profile]
+    note: '`binding_profile` (6.2, partial)'
+    sections: ['6.2']
+  reason: XM §4
+  status: proposed
+- id: C:execution_environment_sandbox
+  type: controls
+  subject:
+    field: execution_environment_sandbox
+  source: xm-pass
+  proposal:
+    controls: [controlRuntimeHostIsolation]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:mcp_server_identity_primitive:ocsf
+  type: mapping
+  subject:
+    field: mcp_server_identity_primitive
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No MCP object or primitive axis
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:mcp_server_identity_primitive:otel
+  type: mapping
+  subject:
+    field: mcp_server_identity_primitive
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [mcp.method.name, mcp.protocol.version, mcp.session.id]
+    gap: No primitive discriminator; mcp.method.name partly serves
+    asks: [otel_tool_digest_mcp_primitive]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:mcp_server_identity_primitive:aitf
+  type: mapping
+  subject:
+    field: mcp_server_identity_primitive
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.primitive, mcp.server.name, mcp.server.version]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.server.name/version`, primitive attr'
+  reason: XM §4
+  status: proposed
+- id: M:mcp_server_identity_primitive:odis
+  type: mapping
+  subject:
+    field: mcp_server_identity_primitive
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:mcp_server_identity_primitive
+  type: controls
+  subject:
+    field: mcp_server_identity_primitive
+  source: xm-pass
+  proposal:
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_error_exception:ocsf
+  type: mapping
+  subject:
+    field: tool_error_exception
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_error_exception:otel
+  type: mapping
+  subject:
+    field: tool_error_exception
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [error.type]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_error_exception:aitf
+  type: mapping
+  subject:
+    field: tool_error_exception
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.*, security.*]
+    note: '`mcp.*` error, `security.*`'
+  reason: XM §4
+  status: proposed
+- id: M:tool_error_exception:odis
+  type: mapping
+  subject:
+    field: tool_error_exception
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_error_exception
+  type: controls
+  subject:
+    field: tool_error_exception
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolServerVetting
+    - controlToolServerSupplyChainIntegrity
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_acl_required_scope:ocsf
+  type: mapping
+  subject:
+    field: tool_acl_required_scope
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No tool scope attribute
+    asks: [ocsf_ai_tool]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_acl_required_scope:otel
+  type: mapping
+  subject:
+    field: tool_acl_required_scope
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_acl_required_scope:aitf
+  type: mapping
+  subject:
+    field: tool_acl_required_scope
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.auth.scope_granted]
+  reason: XM §4
+  status: proposed
+- id: M:tool_acl_required_scope:odis
+  type: mapping
+  subject:
+    field: tool_acl_required_scope
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [granted_authorizations]
+    note: '`granted_authorizations` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:tool_acl_required_scope
+  type: controls
+  subject:
+    field: tool_acl_required_scope
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_privacy_classification:ocsf
+  type: mapping
+  subject:
+    field: tool_privacy_classification
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_privacy_classification:otel
+  type: mapping
+  subject:
+    field: tool_privacy_classification
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_privacy_classification:aitf
+  type: mapping
+  subject:
+    field: tool_privacy_classification
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.pii.*, compliance.*]
+  reason: XM §4
+  status: proposed
+- id: M:tool_privacy_classification:odis
+  type: mapping
+  subject:
+    field: tool_privacy_classification
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [constraints]
+    note: '`constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:tool_privacy_classification
+  type: controls
+  subject:
+    field: tool_privacy_classification
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_selection_rationale:ocsf
+  type: mapping
+  subject:
+    field: tool_selection_rationale
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_selection_rationale:otel
+  type: mapping
+  subject:
+    field: tool_selection_rationale
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_selection_rationale:aitf
+  type: mapping
+  subject:
+    field: tool_selection_rationale
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.step.thought]
+    note: '`gen_ai.agent.step.thought` (per-step)'
+  reason: XM §4
+  status: proposed
+- id: M:tool_selection_rationale:odis
+  type: mapping
+  subject:
+    field: tool_selection_rationale
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:tool_selection_rationale
+  type: controls
+  subject:
+    field: tool_selection_rationale
+  source: xm-pass
+  proposal:
+    controls: [controlAgentPluginPermissions]
+  reason: XM §1.2 lists 6 controls for Tools & MCP; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_write_event:ocsf
+  type: mapping
+  subject:
+    field: memory_write_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:6005']
+    gap: Datastore Activity fits loosely; no memory-operation object
+    asks: [ocsf_ai_memory]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_write_event:otel
+  type: mapping
+  subject:
+    field: memory_write_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.memory.store.id, gen_ai.memory.record.id, gen_ai.operation.name]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_write_event:aitf
+  type: mapping
+  subject:
+    field: memory_write_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.*]
+  reason: XM §4
+  status: proposed
+- id: M:memory_write_event:odis
+  type: mapping
+  subject:
+    field: memory_write_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_write_event
+  type: controls
+  subject:
+    field: memory_write_event
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_read_injection_event:ocsf
+  type: mapping
+  subject:
+    field: memory_read_injection_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:6005']
+    gap: Datastore Activity fits loosely; no memory-operation object
+    asks: [ocsf_ai_memory]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_read_injection_event:otel
+  type: mapping
+  subject:
+    field: memory_read_injection_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.memory.query.text, gen_ai.memory.records]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_read_injection_event:aitf
+  type: mapping
+  subject:
+    field: memory_read_injection_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.*]
+  reason: XM §4
+  status: proposed
+- id: M:memory_read_injection_event:odis
+  type: mapping
+  subject:
+    field: memory_read_injection_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_read_injection_event
+  type: controls
+  subject:
+    field: memory_read_injection_event
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_provenance_source:ocsf
+  type: mapping
+  subject:
+    field: memory_provenance_source
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No memory provenance
+    asks: [ocsf_ai_memory]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_provenance_source:otel
+  type: mapping
+  subject:
+    field: memory_provenance_source
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No provenance attribute in the gen_ai registry
+    asks: [otel_memory_provenance_footprint]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_provenance_source:aitf
+  type: mapping
+  subject:
+    field: memory_provenance_source
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.provenance]
+  reason: XM §4
+  status: proposed
+- id: M:memory_provenance_source:odis
+  type: mapping
+  subject:
+    field: memory_provenance_source
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_provenance_source
+  type: controls
+  subject:
+    field: memory_provenance_source
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_integrity_poisoning_signal:ocsf
+  type: mapping
+  subject:
+    field: memory_integrity_poisoning_signal
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No poisoning or isolation signal
+    asks: [ocsf_ai_memory]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_integrity_poisoning_signal:otel
+  type: mapping
+  subject:
+    field: memory_integrity_poisoning_signal
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_integrity_poisoning_signal:aitf
+  type: mapping
+  subject:
+    field: memory_integrity_poisoning_signal
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.security.poisoning_score, memory.security.isolation_verified, memory.security.cross_session]
+  reason: XM §4
+  status: proposed
+- id: M:memory_integrity_poisoning_signal:odis
+  type: mapping
+  subject:
+    field: memory_integrity_poisoning_signal
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_integrity_poisoning_signal
+  type: controls
+  subject:
+    field: memory_integrity_poisoning_signal
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_footprint_growth:ocsf
+  type: mapping
+  subject:
+    field: memory_footprint_growth
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No memory footprint
+    asks: [ocsf_ai_memory]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_footprint_growth:otel
+  type: mapping
+  subject:
+    field: memory_footprint_growth
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No footprint attribute in the gen_ai registry
+    asks: [otel_memory_provenance_footprint]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_footprint_growth:aitf
+  type: mapping
+  subject:
+    field: memory_footprint_growth
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.*, cost.*]
+  reason: XM §4
+  status: proposed
+- id: M:memory_footprint_growth:odis
+  type: mapping
+  subject:
+    field: memory_footprint_growth
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_footprint_growth
+  type: controls
+  subject:
+    field: memory_footprint_growth
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:declared_memory_configuration:ocsf
+  type: mapping
+  subject:
+    field: declared_memory_configuration
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:declared_memory_configuration:otel
+  type: mapping
+  subject:
+    field: declared_memory_configuration
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:declared_memory_configuration:aitf
+  type: mapping
+  subject:
+    field: declared_memory_configuration
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [memory.config.*, memory.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `memory.*` config attrs'
+  reason: XM §4
+  status: proposed
+- id: M:declared_memory_configuration:odis
+  type: mapping
+  subject:
+    field: declared_memory_configuration
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:declared_memory_configuration
+  type: controls
+  subject:
+    field: declared_memory_configuration
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:memory_write_rationale:ocsf
+  type: mapping
+  subject:
+    field: memory_write_rationale
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:memory_write_rationale:otel
+  type: mapping
+  subject:
+    field: memory_write_rationale
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:memory_write_rationale:aitf
+  type: mapping
+  subject:
+    field: memory_write_rationale
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.step.thought]
+    note: '`gen_ai.agent.step.thought` (per-step)'
+  reason: XM §4
+  status: proposed
+- id: M:memory_write_rationale:odis
+  type: mapping
+  subject:
+    field: memory_write_rationale
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:memory_write_rationale
+  type: controls
+  subject:
+    field: memory_write_rationale
+  source: xm-pass
+  proposal:
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 3 controls for Memory; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:retrieval_event:ocsf
+  type: mapping
+  subject:
+    field: retrieval_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:6005']
+    gap: No retrieval object
+    asks: [ocsf_ai_retrieval]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:retrieval_event:otel
+  type: mapping
+  subject:
+    field: retrieval_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.retrieval.query.text, gen_ai.retrieval.documents, gen_ai.data_source.id]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:retrieval_event:aitf
+  type: mapping
+  subject:
+    field: retrieval_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [rag.*]
+  reason: XM §4
+  status: proposed
+- id: M:retrieval_event:odis
+  type: mapping
+  subject:
+    field: retrieval_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:retrieval_event
+  type: controls
+  subject:
+    field: retrieval_event
+  source: xm-pass
+  proposal:
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:retrieved_content_source_provenance:ocsf
+  type: mapping
+  subject:
+    field: retrieved_content_source_provenance
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No retrieved-content source or provenance
+    asks: [ocsf_ai_retrieval]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:retrieved_content_source_provenance:otel
+  type: mapping
+  subject:
+    field: retrieved_content_source_provenance
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No per-item source or provenance
+    asks: [otel_retrieval_provenance]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:retrieved_content_source_provenance:aitf
+  type: mapping
+  subject:
+    field: retrieved_content_source_provenance
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [rag.*]
+    note: '`rag.*` (source)'
+  reason: XM §4
+  status: proposed
+- id: M:retrieved_content_source_provenance:odis
+  type: mapping
+  subject:
+    field: retrieved_content_source_provenance
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [delegation_chain, constraints]
+    note: '`delegation_chain`/`constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:retrieved_content_source_provenance
+  type: controls
+  subject:
+    field: retrieved_content_source_provenance
+  source: xm-pass
+  proposal:
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:retrieved_content_metadata_integrity_signal:ocsf
+  type: mapping
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No retrieved-content integrity signal
+    asks: [ocsf_ai_retrieval]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:retrieved_content_metadata_integrity_signal:otel
+  type: mapping
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No per-item integrity signal or freshness
+    asks: [otel_retrieval_provenance]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:retrieved_content_metadata_integrity_signal:aitf
+  type: mapping
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [rag.*, security.*]
+  reason: XM §4
+  status: proposed
+- id: M:retrieved_content_metadata_integrity_signal:odis
+  type: mapping
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:retrieved_content_metadata_integrity_signal
+  type: controls
+  subject:
+    field: retrieved_content_metadata_integrity_signal
+  source: xm-pass
+  proposal:
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:declared_knowledge_source_configuration:ocsf
+  type: mapping
+  subject:
+    field: declared_knowledge_source_configuration
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:declared_knowledge_source_configuration:otel
+  type: mapping
+  subject:
+    field: declared_knowledge_source_configuration
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:declared_knowledge_source_configuration:aitf
+  type: mapping
+  subject:
+    field: declared_knowledge_source_configuration
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [rag.source.*, rag.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `rag.*` config/index attrs'
+  reason: XM §4
+  status: proposed
+- id: M:declared_knowledge_source_configuration:odis
+  type: mapping
+  subject:
+    field: declared_knowledge_source_configuration
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:declared_knowledge_source_configuration
+  type: controls
+  subject:
+    field: declared_knowledge_source_configuration
+  source: xm-pass
+  proposal:
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  reason: XM §1.2 lists 2 controls for RAG / retrieval; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:inter_agent_message:ocsf
+  type: mapping
+  subject:
+    field: inter_agent_message
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No inter-agent message
+    asks: [ocsf_ai_agent_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:inter_agent_message:otel
+  type: mapping
+  subject:
+    field: inter_agent_message
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No inter-agent message attributes
+    asks: [otel_inter_agent_messaging]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:inter_agent_message:aitf
+  type: mapping
+  subject:
+    field: inter_agent_message
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.*]
+    note: '`gen_ai.agent.*`, delegation activity (OCSF 9002)'
+  reason: XM §4
+  status: proposed
+- id: M:inter_agent_message:odis
+  type: mapping
+  subject:
+    field: inter_agent_message
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [delegation_chain]
+    note: '`delegation_chain` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:inter_agent_message
+  type: controls
+  subject:
+    field: inter_agent_message
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:a2a_task_lifecycle_event:ocsf
+  type: mapping
+  subject:
+    field: a2a_task_lifecycle_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No delegated-task lifecycle
+    asks: [ocsf_ai_delegation_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:a2a_task_lifecycle_event:otel
+  type: mapping
+  subject:
+    field: a2a_task_lifecycle_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:a2a_task_lifecycle_event:aitf
+  type: mapping
+  subject:
+    field: a2a_task_lifecycle_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: delegation activity (OCSF 9002); a2a attrs'
+    constructs: [a2a.task.lifecycle.*, a2a.push.config.*]
+  reason: XM §4
+  status: proposed
+- id: M:a2a_task_lifecycle_event:odis
+  type: mapping
+  subject:
+    field: a2a_task_lifecycle_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [delegation_id, parent_delegation_ref]
+    note: '`delegation_id`, `parent_delegation_ref` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:a2a_task_lifecycle_event
+  type: controls
+  subject:
+    field: a2a_task_lifecycle_event
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:peer_agent_card_descriptor:ocsf
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:peer_agent_card_descriptor:otel
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:peer_agent_card_descriptor:aitf
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.peer.*, gen_ai.agent.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.agent.*` peer attrs'
+  reason: XM §4
+  status: proposed
+- id: M:peer_agent_card_descriptor:odis
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [agent_id, approved_software_refs]
+    note: '`agent_id`, `approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:peer_agent_card_descriptor
+  type: controls
+  subject:
+    field: peer_agent_card_descriptor
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:background_scheduled_task_event:ocsf
+  type: mapping
+  subject:
+    field: background_scheduled_task_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No background-task event
+    asks: [ocsf_ai_agent_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:background_scheduled_task_event:otel
+  type: mapping
+  subject:
+    field: background_scheduled_task_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No background-task or termination-condition signal
+    asks: [otel_trigger]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:background_scheduled_task_event:aitf
+  type: mapping
+  subject:
+    field: background_scheduled_task_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.next_action]
+    note: '`gen_ai.agent.next_action` / step events'
+  reason: XM §4
+  status: proposed
+- id: M:background_scheduled_task_event:odis
+  type: mapping
+  subject:
+    field: background_scheduled_task_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:background_scheduled_task_event
+  type: controls
+  subject:
+    field: background_scheduled_task_event
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:loop_step_count_signal:ocsf
+  type: mapping
+  subject:
+    field: loop_step_count_signal
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No loop or step signal
+    asks: [ocsf_ai_agent_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:loop_step_count_signal:otel
+  type: mapping
+  subject:
+    field: loop_step_count_signal
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    gap: Agent metrics count calls; no limit or termination semantics
+    asks: [otel_run_budget]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:loop_step_count_signal:aitf
+  type: mapping
+  subject:
+    field: loop_step_count_signal
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+  reason: XM §4; XM names ['gen_ai.agent.turn_count'], which do not exist at the pin
+  critical: true
+  status: proposed
+- id: M:loop_step_count_signal:odis
+  type: mapping
+  subject:
+    field: loop_step_count_signal
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:loop_step_count_signal
+  type: controls
+  subject:
+    field: loop_step_count_signal
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:resource_consumption_aggregate:ocsf
+  type: mapping
+  subject:
+    field: resource_consumption_aggregate
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No resource aggregate, and no budget accounting on the consuming action
+    asks: [ocsf_ai_agent_activity, ocsf_ai_authorization]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:resource_consumption_aggregate:otel
+  type: mapping
+  subject:
+    field: resource_consumption_aggregate
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.client.token.usage]
+    gap: No per-run budget or threshold
+    asks: [otel_run_budget]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:resource_consumption_aggregate:aitf
+  type: mapping
+  subject:
+    field: resource_consumption_aggregate
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [cost.*, gen_ai.usage.*]
+  reason: XM §4
+  status: proposed
+- id: M:resource_consumption_aggregate:odis
+  type: mapping
+  subject:
+    field: resource_consumption_aggregate
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [constraints]
+    note: '`constraints` (rate) (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:resource_consumption_aggregate
+  type: controls
+  subject:
+    field: resource_consumption_aggregate
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:task_intent_declaration:ocsf
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:task_intent_declaration:otel
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:task_intent_declaration:aitf
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.next_action]
+  reason: XM §4
+  status: proposed
+- id: M:task_intent_declaration:odis
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [task_id, task_description]
+    note: '`task_id`, `task_description` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:task_intent_declaration
+  type: controls
+  subject:
+    field: task_intent_declaration
+  source: xm-pass
+  proposal:
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:protocol_envelope_capture:ocsf
+  type: mapping
+  subject:
+    field: protocol_envelope_capture
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:protocol_envelope_capture:otel
+  type: mapping
+  subject:
+    field: protocol_envelope_capture
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:protocol_envelope_capture:aitf
+  type: mapping
+  subject:
+    field: protocol_envelope_capture
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [mcp.envelope.*, mcp.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `mcp.*` / a2a raw payload'
+  reason: XM §4
+  status: proposed
+- id: M:protocol_envelope_capture:odis
+  type: mapping
+  subject:
+    field: protocol_envelope_capture
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:protocol_envelope_capture
+  type: controls
+  subject:
+    field: protocol_envelope_capture
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Orchestration & multi-agent; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:identities_used_per_hop:ocsf
+  type: mapping
+  subject:
+    field: identities_used_per_hop
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:3002', 'object:delegation']
+    gap: Credential events and the delegation context exist; per-hop identity is not tied to the AI operation
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:identities_used_per_hop:otel
+  type: mapping
+  subject:
+    field: identities_used_per_hop
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:identities_used_per_hop:aitf
+  type: mapping
+  subject:
+    field: identities_used_per_hop
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.*]
+    note: '`identity.*` (OCSF Authentication 3002)'
+  reason: XM §4
+  status: proposed
+- id: M:identities_used_per_hop:odis
+  type: mapping
+  subject:
+    field: identities_used_per_hop
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [actor]
+    note: '`actor`, chain (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:identities_used_per_hop
+  type: controls
+  subject:
+    field: identities_used_per_hop
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:verified_vs_displayed_identity:ocsf
+  type: mapping
+  subject:
+    field: verified_vs_displayed_identity
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:verified_vs_displayed_identity:otel
+  type: mapping
+  subject:
+    field: verified_vs_displayed_identity
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:verified_vs_displayed_identity:aitf
+  type: mapping
+  subject:
+    field: verified_vs_displayed_identity
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.auth.method, identity.auth.result]
+  reason: XM §4
+  status: proposed
+- id: M:verified_vs_displayed_identity:odis
+  type: mapping
+  subject:
+    field: verified_vs_displayed_identity
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [originating_principal, actor]
+    note: '`originating_principal`/`actor` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:verified_vs_displayed_identity
+  type: controls
+  subject:
+    field: verified_vs_displayed_identity
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:originating_principal_on_behalf_of:ocsf
+  type: mapping
+  subject:
+    field: originating_principal_on_behalf_of
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:originating_principal_on_behalf_of:otel
+  type: mapping
+  subject:
+    field: originating_principal_on_behalf_of
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:originating_principal_on_behalf_of:aitf
+  type: mapping
+  subject:
+    field: originating_principal_on_behalf_of
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.*]
+  reason: XM §4
+  status: proposed
+- id: M:originating_principal_on_behalf_of:odis
+  type: mapping
+  subject:
+    field: originating_principal_on_behalf_of
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [originating_principal]
+    note: '`originating_principal` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:originating_principal_on_behalf_of
+  type: controls
+  subject:
+    field: originating_principal_on_behalf_of
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+    - controlAgentCredentialIsolation
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:delegation_chain:ocsf
+  type: mapping
+  subject:
+    field: delegation_chain
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['object:delegation', 'attribute:parent_uid']
+    gap: parent_uid is optional, so one record without it breaks the walk; no root or subtree identifier
+    asks: [ocsf_delegation_lineage, ocsf_ai_delegation_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:delegation_chain:otel
+  type: mapping
+  subject:
+    field: delegation_chain
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:delegation_chain:aitf
+  type: mapping
+  subject:
+    field: delegation_chain
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    note: delegation activity (OCSF 9002)
+  reason: XM §4
+  status: proposed
+- id: M:delegation_chain:odis
+  type: mapping
+  subject:
+    field: delegation_chain
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [delegation_chain, delegation_id, parent_delegation_ref]
+    note: '`delegation_chain`, `delegation_id`, `parent_delegation_ref` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:delegation_chain
+  type: controls
+  subject:
+    field: delegation_chain
+  source: xm-pass
+  proposal:
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:granted_authorizations_scope:ocsf
+  type: mapping
+  subject:
+    field: granted_authorizations_scope
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No granted scope on delegation
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:granted_authorizations_scope:otel
+  type: mapping
+  subject:
+    field: granted_authorizations_scope
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:granted_authorizations_scope:aitf
+  type: mapping
+  subject:
+    field: granted_authorizations_scope
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.auth.scope_granted]
+  reason: XM §4
+  status: proposed
+- id: M:granted_authorizations_scope:odis
+  type: mapping
+  subject:
+    field: granted_authorizations_scope
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [granted_authorizations, attenuation_profile_ref]
+    note: '`granted_authorizations`, `attenuation_profile_ref` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:granted_authorizations_scope
+  type: controls
+  subject:
+    field: granted_authorizations_scope
+  source: xm-pass
+  proposal:
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:resource_indicators_constraints:ocsf
+  type: mapping
+  subject:
+    field: resource_indicators_constraints
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No constraints on delegation
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:resource_indicators_constraints:otel
+  type: mapping
+  subject:
+    field: resource_indicators_constraints
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:resource_indicators_constraints:aitf
+  type: mapping
+  subject:
+    field: resource_indicators_constraints
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.*, compliance.*]
+  reason: XM §4
+  status: proposed
+- id: M:resource_indicators_constraints:odis
+  type: mapping
+  subject:
+    field: resource_indicators_constraints
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [resource_indicators, constraints]
+    note: '`resource_indicators`, `constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:resource_indicators_constraints
+  type: controls
+  subject:
+    field: resource_indicators_constraints
+  source: xm-pass
+  proposal:
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:credential_minting_scope_narrowing_check:ocsf
+  type: mapping
+  subject:
+    field: credential_minting_scope_narrowing_check
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:3002']
+    gap: No requested-versus-granted scope
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:credential_minting_scope_narrowing_check:otel
+  type: mapping
+  subject:
+    field: credential_minting_scope_narrowing_check
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:credential_minting_scope_narrowing_check:aitf
+  type: mapping
+  subject:
+    field: credential_minting_scope_narrowing_check
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.credential.mint.*, identity.auth.scope_granted]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.auth.scope_granted` + token-exchange attrs'
+  reason: XM §4
+  status: proposed
+- id: M:credential_minting_scope_narrowing_check:odis
+  type: mapping
+  subject:
+    field: credential_minting_scope_narrowing_check
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [granted_authorizations, binding_profile]
+    note: '`granted_authorizations`, `binding_profile` (6.2/6.3)'
+    sections: [6.2/6.3]
+  reason: XM §4
+  status: proposed
+- id: C:credential_minting_scope_narrowing_check
+  type: controls
+  subject:
+    field: credential_minting_scope_narrowing_check
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+    - controlAgentCredentialIsolation
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:trust_domain_crossing_delegation_depth:ocsf
+  type: mapping
+  subject:
+    field: trust_domain_crossing_delegation_depth
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No trust-domain crossing; depth derivable only if every hop carries parent_uid
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:trust_domain_crossing_delegation_depth:otel
+  type: mapping
+  subject:
+    field: trust_domain_crossing_delegation_depth
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:trust_domain_crossing_delegation_depth:aitf
+  type: mapping
+  subject:
+    field: trust_domain_crossing_delegation_depth
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.boundary.*, identity.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.*` domain/depth attrs'
+  reason: XM §4
+  status: proposed
+- id: M:trust_domain_crossing_delegation_depth:odis
+  type: mapping
+  subject:
+    field: trust_domain_crossing_delegation_depth
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [trust_domain, max_depth]
+    note: '`trust_domain` (6.1, 6.2), `max_depth` (6.3)'
+    sections: ['6.1, 6.2', '6.3']
+  reason: XM §4
+  status: proposed
+- id: C:trust_domain_crossing_delegation_depth
+  type: controls
+  subject:
+    field: trust_domain_crossing_delegation_depth
+  source: xm-pass
+  proposal:
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:runtime_credential_attestation:ocsf
+  type: mapping
+  subject:
+    field: runtime_credential_attestation
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No runtime attestation (OCSF attestation means record integrity)
+    asks: [ocsf_runtime_attestation]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:runtime_credential_attestation:otel
+  type: mapping
+  subject:
+    field: runtime_credential_attestation
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:runtime_credential_attestation:aitf
+  type: mapping
+  subject:
+    field: runtime_credential_attestation
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.auth.method, identity.trust.method]
+    note: '`identity.auth.method` (mTLS/SPIFFE/OAuth/DID-VC), `identity.trust.method`'
+  reason: XM §4
+  status: proposed
+- id: M:runtime_credential_attestation:odis
+  type: mapping
+  subject:
+    field: runtime_credential_attestation
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [attestation_evidence, issuer, holder_key_ref, expires_at, binding_profile]
+    note: '`attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2)'
+    sections: ['6.2']
+  reason: XM §4
+  status: proposed
+- id: C:runtime_credential_attestation
+  type: controls
+  subject:
+    field: runtime_credential_attestation
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:lifecycle_state:ocsf
+  type: mapping
+  subject:
+    field: lifecycle_state
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No lifecycle state on delegation
+    asks: [ocsf_delegation_lineage]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:lifecycle_state:otel
+  type: mapping
+  subject:
+    field: lifecycle_state
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:lifecycle_state:aitf
+  type: mapping
+  subject:
+    field: lifecycle_state
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.lifecycle.operation]
+  reason: XM §4
+  status: proposed
+- id: M:lifecycle_state:odis
+  type: mapping
+  subject:
+    field: lifecycle_state
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [lifecycle_state]
+    note: '`lifecycle_state` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:lifecycle_state
+  type: controls
+  subject:
+    field: lifecycle_state
+  source: xm-pass
+  proposal:
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  reason: XM §1.2 lists 7 controls for Identity, delegation & attestation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:capability_set_change_event:ocsf
+  type: mapping
+  subject:
+    field: capability_set_change_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No capability-change event
+    asks: [ocsf_ai_bom, ocsf_ai_agent_activity]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:capability_set_change_event:otel
+  type: mapping
+  subject:
+    field: capability_set_change_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No capability-change event
+    asks: [otel_capability_change]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:capability_set_change_event:aitf
+  type: mapping
+  subject:
+    field: capability_set_change_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.capability.*, asset.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` change events'
+  reason: XM §4
+  status: proposed
+- id: M:capability_set_change_event:odis
+  type: mapping
+  subject:
+    field: capability_set_change_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:capability_set_change_event
+  type: controls
+  subject:
+    field: capability_set_change_event
+  source: xm-pass
+  proposal:
+    controls: [controlAgentInventoryManagement, controlThirdPartyCapabilityAdmission]
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_agent_version:ocsf
+  type: mapping
+  subject:
+    field: tool_agent_version
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:inventory_info']
+    gap: No AI-asset object
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_agent_version:otel
+  type: mapping
+  subject:
+    field: tool_agent_version
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_agent_version:aitf
+  type: mapping
+  subject:
+    field: tool_agent_version
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.*, asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:tool_agent_version:odis
+  type: mapping
+  subject:
+    field: tool_agent_version
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:tool_agent_version
+  type: controls
+  subject:
+    field: tool_agent_version
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:repository_code_path_software_ref:ocsf
+  type: mapping
+  subject:
+    field: repository_code_path_software_ref
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:inventory_info']
+    gap: No AI-asset object
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:repository_code_path_software_ref:otel
+  type: mapping
+  subject:
+    field: repository_code_path_software_ref
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:repository_code_path_software_ref:aitf
+  type: mapping
+  subject:
+    field: repository_code_path_software_ref
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.*, asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:repository_code_path_software_ref:odis
+  type: mapping
+  subject:
+    field: repository_code_path_software_ref
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:repository_code_path_software_ref
+  type: controls
+  subject:
+    field: repository_code_path_software_ref
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:agbom_inventory_snapshot:ocsf
+  type: mapping
+  subject:
+    field: agbom_inventory_snapshot
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No agent-composition BOM
+    asks: [ocsf_ai_bom]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:agbom_inventory_snapshot:otel
+  type: mapping
+  subject:
+    field: agbom_inventory_snapshot
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No BOM reference
+    asks: [otel_capability_change]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:agbom_inventory_snapshot:aitf
+  type: mapping
+  subject:
+    field: agbom_inventory_snapshot
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.ai_bom.*]
+  reason: XM §4
+  status: proposed
+- id: M:agbom_inventory_snapshot:odis
+  type: mapping
+  subject:
+    field: agbom_inventory_snapshot
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [approved_software_refs]
+    note: '`approved_software_refs` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:agbom_inventory_snapshot
+  type: controls
+  subject:
+    field: agbom_inventory_snapshot
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:component_dependency_graph:ocsf
+  type: mapping
+  subject:
+    field: component_dependency_graph
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No dependency graph
+    asks: [ocsf_ai_bom]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:component_dependency_graph:otel
+  type: mapping
+  subject:
+    field: component_dependency_graph
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:component_dependency_graph:aitf
+  type: mapping
+  subject:
+    field: component_dependency_graph
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.ai_bom.*]
+    note: '`supply_chain.ai_bom.*` (dependency edges)'
+  reason: XM §4
+  status: proposed
+- id: M:component_dependency_graph:odis
+  type: mapping
+  subject:
+    field: component_dependency_graph
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:component_dependency_graph
+  type: controls
+  subject:
+    field: component_dependency_graph
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:inventory_attestation_signature:ocsf
+  type: mapping
+  subject:
+    field: inventory_attestation_signature
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No BOM signature
+    asks: [ocsf_ai_bom]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:inventory_attestation_signature:otel
+  type: mapping
+  subject:
+    field: inventory_attestation_signature
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:inventory_attestation_signature:aitf
+  type: mapping
+  subject:
+    field: inventory_attestation_signature
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [supply_chain.*]
+    note: '`supply_chain.*` signature attrs'
+  reason: XM §4
+  status: proposed
+- id: M:inventory_attestation_signature:odis
+  type: mapping
+  subject:
+    field: inventory_attestation_signature
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [software_hash, attestation_evidence]
+    note: '`software_hash`, `attestation_evidence` (6.2)'
+    sections: ['6.2']
+  reason: XM §4
+  status: proposed
+- id: C:inventory_attestation_signature
+  type: controls
+  subject:
+    field: inventory_attestation_signature
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_description:ocsf
+  type: mapping
+  subject:
+    field: tool_description
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:inventory_info']
+    gap: No AI-asset object
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_description:otel
+  type: mapping
+  subject:
+    field: tool_description
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_description:aitf
+  type: mapping
+  subject:
+    field: tool_description
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:tool_description:odis
+  type: mapping
+  subject:
+    field: tool_description
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+    note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:tool_description
+  type: controls
+  subject:
+    field: tool_description
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:tool_status:ocsf
+  type: mapping
+  subject:
+    field: tool_status
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:inventory_info']
+    gap: No AI-asset object
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:tool_status:otel
+  type: mapping
+  subject:
+    field: tool_status
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:tool_status:aitf
+  type: mapping
+  subject:
+    field: tool_status
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:tool_status:odis
+  type: mapping
+  subject:
+    field: tool_status
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+    note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:tool_status
+  type: controls
+  subject:
+    field: tool_status
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:creator_id_oncall_creation_update_dates:ocsf
+  type: mapping
+  subject:
+    field: creator_id_oncall_creation_update_dates
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:inventory_info']
+    gap: No AI-asset object
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:creator_id_oncall_creation_update_dates:otel
+  type: mapping
+  subject:
+    field: creator_id_oncall_creation_update_dates
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:creator_id_oncall_creation_update_dates:aitf
+  type: mapping
+  subject:
+    field: creator_id_oncall_creation_update_dates
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:creator_id_oncall_creation_update_dates:odis
+  type: mapping
+  subject:
+    field: creator_id_oncall_creation_update_dates
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+    note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:creator_id_oncall_creation_update_dates
+  type: controls
+  subject:
+    field: creator_id_oncall_creation_update_dates
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:surfaces_supported:ocsf
+  type: mapping
+  subject:
+    field: surfaces_supported
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:surfaces_supported:otel
+  type: mapping
+  subject:
+    field: surfaces_supported
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:surfaces_supported:aitf
+  type: mapping
+  subject:
+    field: surfaces_supported
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.*]
+  reason: XM §4
+  status: proposed
+- id: M:surfaces_supported:odis
+  type: mapping
+  subject:
+    field: surfaces_supported
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+    note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+    sections: ['6.1']
+  reason: XM §4
+  status: proposed
+- id: C:surfaces_supported
+  type: controls
+  subject:
+    field: surfaces_supported
+  source: xm-pass
+  proposal:
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:fleet_counts:ocsf
+  type: mapping
+  subject:
+    field: fleet_counts
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: Fleet aggregates are derived
+    note: Derived from per-event records; no ask.
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:fleet_counts:otel
+  type: mapping
+  subject:
+    field: fleet_counts
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:fleet_counts:aitf
+  type: mapping
+  subject:
+    field: fleet_counts
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: none
+    note: (derived)
+  reason: XM §4
+  status: proposed
+- id: M:fleet_counts:odis
+  type: mapping
+  subject:
+    field: fleet_counts
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:fleet_counts
+  type: controls
+  subject:
+    field: fleet_counts
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 4 controls for Asset inventory & fleet; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:enforcement_point_availability_failure_mode:ocsf
+  type: mapping
+  subject:
+    field: enforcement_point_availability_failure_mode
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No enforcement availability or fail-open representation
+    asks: [ocsf_ai_guardrail]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:enforcement_point_availability_failure_mode:otel
+  type: mapping
+  subject:
+    field: enforcement_point_availability_failure_mode
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:enforcement_point_availability_failure_mode:aitf
+  type: mapping
+  subject:
+    field: enforcement_point_availability_failure_mode
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.enforcement.*, security.guardrail.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.guardrail.*` availability/latency'
+  reason: XM §4
+  status: proposed
+- id: M:enforcement_point_availability_failure_mode:odis
+  type: mapping
+  subject:
+    field: enforcement_point_availability_failure_mode
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:enforcement_point_availability_failure_mode
+  type: controls
+  subject:
+    field: enforcement_point_availability_failure_mode
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:instrumentation_coverage_hook_attestation:ocsf
+  type: mapping
+  subject:
+    field: instrumentation_coverage_hook_attestation
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No hook-coverage representation
+    asks: [ocsf_ai_asset]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:instrumentation_coverage_hook_attestation:otel
+  type: mapping
+  subject:
+    field: instrumentation_coverage_hook_attestation
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No instrumentation-coverage representation
+    asks: [otel_hook_coverage]
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:instrumentation_coverage_hook_attestation:aitf
+  type: mapping
+  subject:
+    field: instrumentation_coverage_hook_attestation
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [asset.instrumentation.*, asset.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `asset.*` / instrumentation attrs'
+  reason: XM §4
+  status: proposed
+- id: M:instrumentation_coverage_hook_attestation:odis
+  type: mapping
+  subject:
+    field: instrumentation_coverage_hook_attestation
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:instrumentation_coverage_hook_attestation
+  type: controls
+  subject:
+    field: instrumentation_coverage_hook_attestation
+  source: xm-pass
+  proposal:
+    controls: [controlAuditTrailCompleteness]
+  reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:event_sequence_continuity:ocsf
+  type: mapping
+  subject:
+    field: event_sequence_continuity
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: ['profile:record_integrity', 'object:attestation', 'attribute:prev_event', 'attribute:chain_uid']
+    note: 'No new schema: continuity maps to attestation.prev_event and attestation.chain_uid.'
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:event_sequence_continuity:otel
+  type: mapping
+  subject:
+    field: event_sequence_continuity
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:event_sequence_continuity:aitf
+  type: mapping
+  subject:
+    field: event_sequence_continuity
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [observability.sequence.*]
+    note: Closed in AITF v0.4 (AITF_gaps.md).
+  reason: XM §4
+  status: proposed
+- id: M:event_sequence_continuity:odis
+  type: mapping
+  subject:
+    field: event_sequence_continuity
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:event_sequence_continuity
+  type: controls
+  subject:
+    field: event_sequence_continuity
+  source: xm-pass
+  proposal:
+    controls:
+    - controlAuditTrailCompleteness
+    - controlAuditTrailIntegrityVerification
+    - controlAuditRecordRepositoryIndependence
+  reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:policy_reason_code:ocsf
+  type: mapping
+  subject:
+    field: policy_reason_code
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No machine-readable enforcement reason code
+    asks: [ocsf_ai_authorization]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:policy_reason_code:otel
+  type: mapping
+  subject:
+    field: policy_reason_code
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:policy_reason_code:aitf
+  type: mapping
+  subject:
+    field: policy_reason_code
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.*, compliance.control_id]
+  reason: XM §4
+  status: proposed
+- id: M:policy_reason_code:odis
+  type: mapping
+  subject:
+    field: policy_reason_code
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:policy_reason_code
+  type: controls
+  subject:
+    field: policy_reason_code
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 3 controls for Observability-plane integrity; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:authorization_decision_record:ocsf
+  type: mapping
+  subject:
+    field: authorization_decision_record
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: ['class:3003']
+    gap: No authorization-decision object for AI operations
+    asks: [ocsf_ai_authorization]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:authorization_decision_record:otel
+  type: mapping
+  subject:
+    field: authorization_decision_record
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    asks: [otel_authorization_reference]
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:authorization_decision_record:aitf
+  type: mapping
+  subject:
+    field: authorization_decision_record
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.authorization.*, security.*, compliance.control_id]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` decision + `compliance.control_id`'
+  reason: XM §4
+  status: proposed
+- id: M:authorization_decision_record:odis
+  type: mapping
+  subject:
+    field: authorization_decision_record
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+    note: n/a (see note)
+  reason: XM §4
+  status: proposed
+- id: C:authorization_decision_record
+  type: controls
+  subject:
+    field: authorization_decision_record
+  source: xm-pass
+  proposal:
+    controls:
+    - controlTrustedPolicyEnforcementPoint
+    - controlExternalizedAuthorizationDecisioning
+    - controlResourceAuthorizationEnforcement
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:attribute_source_trusted_provenance_marking:ocsf
+  type: mapping
+  subject:
+    field: attribute_source_trusted_provenance_marking
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No attribute-provenance marking
+    asks: [ocsf_attribute_source]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:attribute_source_trusted_provenance_marking:otel
+  type: mapping
+  subject:
+    field: attribute_source_trusted_provenance_marking
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:attribute_source_trusted_provenance_marking:aitf
+  type: mapping
+  subject:
+    field: attribute_source_trusted_provenance_marking
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.attribute_source.*]
+    note: Closed in AITF v0.4 (AITF_gaps.md).
+  reason: XM §4
+  status: proposed
+- id: M:attribute_source_trusted_provenance_marking:odis
+  type: mapping
+  subject:
+    field: attribute_source_trusted_provenance_marking
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [attestation_evidence]
+    note: '`attestation_evidence` (6.2, partial)'
+    sections: ['6.2']
+  reason: XM §4
+  status: proposed
+- id: C:attribute_source_trusted_provenance_marking
+  type: controls
+  subject:
+    field: attribute_source_trusted_provenance_marking
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:session_taint_labels_information_flow_decisions:ocsf
+  type: mapping
+  subject:
+    field: session_taint_labels_information_flow_decisions
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No information-flow or taint labels
+    asks: [ocsf_ai_taint]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:session_taint_labels_information_flow_decisions:otel
+  type: mapping
+  subject:
+    field: session_taint_labels_information_flow_decisions
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:session_taint_labels_information_flow_decisions:aitf
+  type: mapping
+  subject:
+    field: session_taint_labels_information_flow_decisions
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.taint.*, security.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `security.*` labels'
+  reason: XM §4
+  status: proposed
+- id: M:session_taint_labels_information_flow_decisions:odis
+  type: mapping
+  subject:
+    field: session_taint_labels_information_flow_decisions
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [constraints]
+    note: '`constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:session_taint_labels_information_flow_decisions
+  type: controls
+  subject:
+    field: session_taint_labels_information_flow_decisions
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:human_approval_elicitation_event:ocsf
+  type: mapping
+  subject:
+    field: human_approval_elicitation_event
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No human-approval lifecycle
+    asks: [ocsf_ai_approval]
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:human_approval_elicitation_event:otel
+  type: mapping
+  subject:
+    field: human_approval_elicitation_event
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:human_approval_elicitation_event:aitf
+  type: mapping
+  subject:
+    field: human_approval_elicitation_event
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [identity.approval.*, identity.*]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `identity.*` approver + approval attrs'
+  reason: XM §4
+  status: proposed
+- id: M:human_approval_elicitation_event:odis
+  type: mapping
+  subject:
+    field: human_approval_elicitation_event
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: partial
+    constructs: [originating_principal]
+    note: '`originating_principal` (6.3, partial)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:human_approval_elicitation_event
+  type: controls
+  subject:
+    field: human_approval_elicitation_event
+  source: xm-pass
+  proposal:
+    controls: [controlInformedAgentConsentSurface]
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field
+  status: proposed
+- id: M:backend_route_restriction_decision:ocsf
+  type: mapping
+  subject:
+    field: backend_route_restriction_decision
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: unassessed
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:backend_route_restriction_decision:otel
+  type: mapping
+  subject:
+    field: backend_route_restriction_decision
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:backend_route_restriction_decision:aitf
+  type: mapping
+  subject:
+    field: backend_route_restriction_decision
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.route.*, gen_ai.provider.name]
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.provider.name` + routing constraint attrs'
+  reason: XM §4
+  status: proposed
+- id: M:backend_route_restriction_decision:odis
+  type: mapping
+  subject:
+    field: backend_route_restriction_decision
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [resource_indicators, constraints]
+    note: '`resource_indicators`, `constraints` (6.3)'
+    sections: ['6.3']
+  reason: XM §4
+  status: proposed
+- id: C:backend_route_restriction_decision
+  type: controls
+  subject:
+    field: backend_route_restriction_decision
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
+- id: M:mediation_coverage_bypass_path:ocsf
+  type: mapping
+  subject:
+    field: mediation_coverage_bypass_path
+    publication: ocsf
+  source: xm-pass
+  proposal:
+    coverage: none
+    gap: No mediation-coverage representation
+    note: XM names the gap and proposes no change; decide an ask or record why none.
+  reason: XM §3.1 cluster row, per field
+  status: proposed
+- id: M:mediation_coverage_bypass_path:otel
+  type: mapping
+  subject:
+    field: mediation_coverage_bypass_path
+    publication: otel
+  source: xm-pass
+  proposal:
+    coverage: out_of_scope
+    note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+  reason: XM §2.2 cluster row, per field
+  status: proposed
+- id: M:mediation_coverage_bypass_path:aitf
+  type: mapping
+  subject:
+    field: mediation_coverage_bypass_path
+    publication: aitf
+  source: xm-pass
+  proposal:
+    coverage: covered
+    constructs: [security.mediation.*]
+    note: Closed in AITF v0.4 (AITF_gaps.md).
+  reason: XM §4
+  status: proposed
+- id: M:mediation_coverage_bypass_path:odis
+  type: mapping
+  subject:
+    field: mediation_coverage_bypass_path
+    publication: odis
+  source: xm-pass
+  proposal:
+    coverage: none
+  reason: XM §4
+  status: proposed
+- id: C:mediation_coverage_bypass_path
+  type: controls
+  subject:
+    field: mediation_coverage_bypass_path
+  source: xm-pass
+  proposal:
+    controls: []
+  reason: XM §1.2 lists 5 controls for Policy enforcement & mediation; kept those whose Risk Map components include an emitter of this field; the field has no Risk Map emitter, so none is kept by the component test
+  status: proposed
