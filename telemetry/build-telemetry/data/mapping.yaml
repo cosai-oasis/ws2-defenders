@@ -135,54 +135,63 @@ asks:
   proposes: [gen_ai.input.trust_level]
   tracking: []
   status: proposed
+  rationale: '`gen_ai.input.trust_level` (trusted-instruction / trusted-data / untrusted-instruction / untrusted-data), crossing origin authority with whether the segment was consumed as instruction or as data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). This is the single highest-value addition and the one with no current analogue anywhere in the conventions. It is cheap (an enum on an existing structure) and it is the field the CoSAI Risk Map treats as the core agentic control (AD §1.2).'
 - id: otel_security_guardrail
   publication: otel_genai
   summary: Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*.
   proposes: []
   tracking: []
   status: proposed
+  rationale: 'The evaluation event already carries name, score, label, and explanation, the right shape for a classifier verdict. What it lacks is the security semantics: a **blocked / allowed** outcome, a guardrail **type**, and a **threat technique** reference. Reusing evaluation avoids a parallel namespace; the alternative is a dedicated `gen_ai.guardrail.*`. Either way, this is the field that makes classifier *bypass* detectable (`TA-01`).'
 - id: otel_memory_provenance_footprint
   publication: otel_genai
   summary: Add provenance and footprint attributes to gen_ai.memory.*.
   proposes: []
   tracking: []
   status: proposed
+  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-the-genai-conventions-cover-today)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
 - id: otel_retrieval_provenance
   publication: otel_genai
   summary: Add per-document source, owner, trust level and last-modified attributes to retrieval documents.
   proposes: []
   tracking: []
   status: proposed
+  rationale: '`gen_ai.retrieval.documents` exists; per-document **source, owner, trust level, and last-modified** do not, and `TA-09` turns specifically on recently-modified retrievable content.'
 - id: otel_turn_step_ids
   publication: otel_genai
   summary: Add gen_ai.turn.id and gen_ai.step.id.
   proposes: [gen_ai.turn.id, gen_ai.step.id]
   tracking: []
   status: proposed
+  rationale: '`gen_ai.conversation.id` and `gen_ai.workflow.name` exist; the intermediate levels do not. `TA-08` and `IR-01` are across-turn patterns (AD §1.1).'
 - id: otel_trigger
   publication: otel_genai
   summary: Add gen_ai.trigger.type (user_initiated or autonomous) and gen_ai.trigger.event; scheduled and self-triggered runs use it.
   proposes: [gen_ai.trigger.type, gen_ai.trigger.event]
   tracking: []
   status: proposed
+  rationale: Whether a run was user-initiated or autonomous, and what event started it. `TA-01` is zero-click; this is the first filter of any injection hunt.
 - id: otel_tool_digest_mcp_primitive
   publication: otel_genai
   summary: Add gen_ai.tool.definitions.hash and an mcp.primitive value set (tool, resource, prompt, sampling, elicitation, roots).
   proposes: [gen_ai.tool.definitions.hash, mcp.primitive]
   tracking: []
   status: proposed
+  rationale: '`gen_ai.tool.definitions` and `mcp.method.name` already carry the raw material; a stable hash attribute and an explicit primitive value set make definition drift and non-tool MCP surfaces queryable (AD §1.3).'
 - id: otel_attachment_identity
   publication: otel_genai
   summary: Add attachment identity (name, size, hash) on message parts.
   proposes: []
   tracking: []
   status: proposed
+  rationale: ': name, size, and hash. `AOC-12` is an image/OCR injection; `AOC-05` is attachment flooding.'
 - id: otel_model_provenance
   publication: otel_genai
   summary: Add gen_ai.model.hash, gen_ai.model.signature and gen_ai.model.source.
   proposes: [gen_ai.model.hash, gen_ai.model.signature, gen_ai.model.source]
   tracking: []
   status: proposed
+  rationale: ': hash, signature, source, completing the supply-chain story that `gen_ai.request.model` starts.'
 - id: otel_hash_only_capture
   publication: otel_genai
   summary: Ensure a hash-only content-capture mode exists for message content.

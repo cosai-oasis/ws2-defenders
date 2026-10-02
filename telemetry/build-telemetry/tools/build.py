@@ -7,7 +7,9 @@ basis, rationale, the patterns that read the field; between GENERATED markers,
 one per step), §2 patterns (summary, an entry per pattern by stage, coverage;
 between GENERATED markers), §3.2 to §3.4 inventory
 tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
-tables, which link to each field's AD entry, and the tier totals the RFC states.
+tables, which link to each field's AD entry, and the tier totals the RFC states; XM's
+pins table, asks summary, per-step correspondence tables and ask lists, from
+data/mapping.yaml and data/sources.yaml.
 Everything else in both documents is hand-written and left untouched.
 
 Usage:
@@ -28,7 +30,7 @@ from mdtables import find_tables, gh_anchor, row
 
 DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))   # the documents: telemetry/
 DATA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))   # build-telemetry/data/
-RFC, AD = 'CoSAI-AI-Telemetry-RFC.md', 'Telemetry-Attack-Detection-Addendum.md'
+RFC, AD, XM = 'CoSAI-AI-Telemetry-RFC.md', 'Telemetry-Attack-Detection-Addendum.md', 'Telemetry-Cross-Mapping-Addendum.md'
 
 
 def load(path):
@@ -311,6 +313,120 @@ def build_rfc(text):
     return '\n'.join(lines)
 
 
+# ---------------------------------------------------------------- XM
+mapping = rules.load_mapping()
+publications = load('sources.yaml')['publications']
+asks = {a['id']: a for a in (mapping or {}).get('asks', [])}
+XM_PUBS = {'ocsf': 'OCSF', 'otel': 'OpenTelemetry', 'aitf': 'AITF', 'odis': 'ODIS'}
+PIN_KEYS = {'ocsf': ['ocsf'], 'otel': ['otel_genai', 'otel_semconv'], 'aitf': ['aitf'], 'odis': ['odis']}
+COVERAGE = {'covered': 'covered', 'partial': 'partial', 'none': 'none', 'out_of_scope': 'out of scope'}
+STATUS_ORDER = ['released', 'approved', 'open', 'proposed', 'declined']
+
+
+def ask_anchor(aid):
+    return 'ask-' + aid.replace('_', '-')
+
+
+def tracking_link(ref):
+    repo, num = ref.split('#')
+    org = {'ocsf-schema': 'ocsf'}.get(repo, repo)
+    return f'[{ref}](https://github.com/{org}/{repo}/issues/{num})'
+
+
+def pin_text(key):
+    p = publications[key]
+    ver = p.get('release') or p.get('version') or f"commit `{p['commit'][:7]}`"
+    date = p.get('released') or p.get('committed') or p.get('published') or ''
+    return f"{ver}" + (f" ({date})" if date else '')
+
+
+def closes(aid):
+    return [(fid, pub) for fid, entry in mapping['fields'].items() for pub, e in entry.items()
+            if pub != 'controls' and aid in e.get('asks', [])]
+
+
+def evidence(fid):
+    f = fields[fid]
+    if 'required_to_read' in f.get('basis', {}):
+        return f"{f['tier']}, on a dependency"
+    return f"{f['tier']}, {len(rules.instances(fid, attacks))} instances"
+
+
+def xm_pins():
+    out = ['| Publication | Pinned at | Reference | Mapping checked against the pin |',
+           '| :------------------ | :------------------ | :--- | :------------------ |']
+    for key, p in publications.items():
+        checked = f"yes, {p['verified_on']}" if p.get('verified_on') else ('yes' if p.get('verified') else 'not yet')
+        out.append(row([p['name'], pin_text(key), f"[[{p['reference']}]](#standards--frameworks)", checked]))
+    return out
+
+
+def xm_summary():
+    out = ['| Publication | Covered | Partial | None | Out of scope | Asks |',
+           '| :------------------ | ---: | ---: | ---: | ---: | :------------------ |']
+    for pub, name in XM_PUBS.items():
+        cov = {}
+        for entry in mapping['fields'].values():
+            c = entry.get(pub, {}).get('coverage')
+            cov[c] = cov.get(c, 0) + 1
+        mine = [a for a in asks.values() if a['publication'] in PIN_KEYS[pub]]
+        by = ', '.join(f"{sum(a['status'] == s for a in mine)} {s}" for s in STATUS_ORDER if any(a['status'] == s for a in mine))
+        out.append(row([name, str(cov.get('covered', 0)), str(cov.get('partial', 0)), str(cov.get('none', 0)),
+                        str(cov.get('out_of_scope', 0)), f"{len(mine)}: {by}" if mine else 'none']))
+    return out
+
+
+def xm_correspondence(pub):
+    has_asks = pub in ('ocsf', 'otel')
+    head = ['Field', 'Tier', 'Coverage', 'Carried by', 'Gap or note'] + (['Asks'] if has_asks else [])
+    out = []
+    for st in steps:
+        out += ['', f"**RFC §{st['number']} {st['title']}**", '', '| ' + ' | '.join(head) + ' |',
+                '| ' + ' | '.join([':------------------', ':----', ':-------', ':------------------', ':------------------'] + ([':----------'] if has_asks else [])) + ' |']
+        for fid in st['fields']:
+            e = mapping['fields'][fid].get(pub, {'coverage': 'none'})
+            cells = [f"[{fields[fid]['name']}]({AD}#{anchor(fid)})", fields[fid]['tier'],
+                     COVERAGE.get(e['coverage'], e['coverage']),
+                     ', '.join(f'`{c}`' for c in e.get('constructs', [])),
+                     ' '.join(x for x in (e.get('gap', '') + ('.' if e.get('gap') and not e['gap'].endswith('.') else ''), e.get('note', '')) if x)]
+            if has_asks:
+                cells.append(', '.join(f'[{a}](#{ask_anchor(a)})' for a in e.get('asks', [])))
+            out.append(row(cells))
+    return out[1:]
+
+
+def xm_asks(pub):
+    mine = [a for a in asks.values() if a['publication'] in PIN_KEYS[pub]]
+    weight = lambda a: (STATUS_ORDER.index(a['status']),
+                        -max((RANK_STRENGTH[fields[f]['tier']] for f, _ in closes(a['id'])), default=0),
+                        -sum(len(rules.instances(f, attacks)) for f, _ in closes(a['id'])), a['id'])
+    out = []
+    for a in sorted(mine, key=weight):
+        track = ' '.join(tracking_link(r) for r in a.get('tracking', []))
+        closed = series([f"[{fields[f]['name']}]({AD}#{anchor(f)}) ({evidence(f)})"
+                         for f in dict.fromkeys(f for f, _ in closes(a['id']))])
+        out += ['', f'<a id="{ask_anchor(a["id"])}"></a>**`{a["id"]}`** ({a["status"]}' + (f'; {track}' if track else '') + f'). {a["summary"]}'
+                + f' *Closes:* {closed}.' + (f' {a["rationale"]}' if a.get('rationale') else '')]
+    return out[1:]
+
+
+RANK_STRENGTH = {'MUST': 3, 'SHOULD': 2, 'MAY': 1}
+
+
+def build_xm(text):
+    if mapping is None or '<!-- BEGIN GENERATED: xm pins -->' not in text:
+        return text   # XM not yet restructured to carry generated regions
+    text = markers(text, 'xm pins', xm_pins())
+    text = markers(text, 'xm summary', xm_summary())
+    for pub in XM_PUBS:
+        if f'<!-- BEGIN GENERATED: xm correspondence {pub} -->' in text:
+            text = markers(text, f'xm correspondence {pub}', xm_correspondence(pub))
+    for pub in ('ocsf', 'otel'):
+        if f'<!-- BEGIN GENERATED: xm asks {pub} -->' in text:
+            text = markers(text, f'xm asks {pub}', xm_asks(pub))
+    return text
+
+
 # ---------------------------------------------------------------- main
 def main():
     # argparse rejects unknown options and handles -h, so a mistyped flag exits before anything is written.
@@ -323,7 +439,7 @@ def main():
     if problems:
         sys.exit('data/ breaks the rules (tools/rules.py):\n  ' + '\n  '.join(problems))
     drift = False
-    for name, build in ((AD, build_ad), (RFC, build_rfc)):
+    for name, build in ((AD, build_ad), (RFC, build_rfc), (XM, build_xm)):
         path = os.path.join(DIR, name)
         with open(path, encoding='utf-8') as f:
             old = f.read()

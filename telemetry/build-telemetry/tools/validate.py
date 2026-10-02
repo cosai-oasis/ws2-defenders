@@ -148,6 +148,12 @@ def document_checks(T, n_attacks, tiers):
             nums = [m.group(3)] + (re.findall(r'\d+(?:\.\d+)?', m.group(4)) if m.group(2) else [])
             bad += [m.group(0) for n in nums if n not in NUMS[target]]
         check(f'{k}: every § reference resolves in its target document', sorted(set(bad)))
+        # A linked reference resolves and still points at the wrong section when its number was
+        # remapped and its anchor was not, or the reverse: the number in the text must be the
+        # number the anchor's heading carries ('§2.8' links to '#28-...').
+        skew = [m.group(0) for m in re.finditer(r'\[(?:(?:RFC|AD|XM) )?§(\d+(?:\.\d+)?)\]\([^)#]*#(\d+)-[^)]*\)', t)
+                if m.group(1).replace('.', '') != m.group(2)]
+        check(f'{k}: every linked § number matches its anchor', skew)
 
     print('5c. tiers and fields')
     rows, sub = Counter(), {}
