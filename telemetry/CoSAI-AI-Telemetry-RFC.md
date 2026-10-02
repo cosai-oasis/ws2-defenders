@@ -365,7 +365,7 @@ References 4 and 14 to 16 are cited in this document. The primary source for eve
 
 ### Standards & frameworks
 
-23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. Identifiers this document names that are not on `main` are proposals. PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507), open and in draft, adds `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskUnsafeInterAgentPropagation` and `controlAgentMemoryIntegrity` are proposed separately.
+23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. Identifiers are resolved against `develop` at commit `37e7bed` (30 September 2026). Those not yet on `develop` are proposals: most come from PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507), open and in draft; `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskCrossAgentReputationPoisoning`, `riskErroneousAgentAction` and `controlMemoryReferentRevalidation` come from issues [#524](https://github.com/cosai-oasis/secure-ai-tooling/issues/524) to [#527](https://github.com/cosai-oasis/secure-ai-tooling/issues/527), proposed on a branch stacked on #507 (commit `0e9601d`).
 
 <!-- list break: reference numbers are not contiguous -->
 
