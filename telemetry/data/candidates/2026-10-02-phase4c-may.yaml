@@ -9,7 +9,10 @@
     basis:
       may: [thin]
   reason: no instance edge (four analogical) and no MUST field reads it; the tier Josiah set on 2026-10-02 under the amended §4.7
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: T:encoded_obfuscated_payload_indicator
   type: tier
   subject:
@@ -22,7 +25,10 @@
     rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'
   reason: 'two independent instance edges (AOC-12, TA-21), no modality, no Q/A dominance, not research-grade. Its old basis, "a derived detector output", is gone from §4.7. Redundancy with Model Input fails because raw content is deployment policy and the hash cannot be decoded. If rejected, the alternative is B:… may: [redundant], which holds only for deployments that retain raw input'
   critical: true
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: C:encoded_obfuscated_payload_indicator:invisible-unicode
   type: capture
   subject:
@@ -32,7 +38,10 @@
     capture_addition: Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
   reason: the accepted TA-21 edge is invisible Unicode in a rules file, which the capture text (base64, OCR, markup tags) does not name. Accept this, or re-class E:TA-21:encoded_obfuscated_payload_indicator as analogical, which leaves one instance and makes the field MAY on thin evidence
   critical: true
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:provider_endpoint_identity
   type: basis
   subject:
@@ -43,7 +52,10 @@
       may: [qa, redundant]
   reason: three instances clear the evidence count; the existing rationale keeps it MAY on the priority gate (Q/A-dominant) and because its D concerns are carried by Model Name + Version and Output Egress Destination
   critical: true
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:pre_forward_pass_state_digest_vector
   type: basis
   subject:
@@ -53,7 +65,10 @@
     basis:
       may: [research, thin]
   reason: research-grade (existing rationale); two analogical edges only
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:token_malformation_context_corruption_indicator
   type: basis
   subject:
@@ -63,7 +78,10 @@
     basis:
       may: [research, thin]
   reason: research-grade (existing rationale); one analogical edge only
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:tool_id
   type: basis
   subject:
@@ -74,7 +92,10 @@
       may: [redundant, thin]
     rationale: Tool Name together with **MCP Server Identity & Primitive** (both MUST) already identifies the implementation across servers; a unique ID makes the join cheaper, not possible.
   reason: no instance; Tool Name with MCP Server Identity & Primitive identifies the implementation
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:tool_privacy_classification
   type: basis
   subject:
@@ -85,7 +106,10 @@
       may: [qa, redundant]
   reason: two instances (AOC-03, TA-05) clear the evidence count; the existing rationale keeps it MAY as A-dominant governance metadata whose D value Tool ACL/Scope and Output Egress carry
   critical: true
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:declared_memory_configuration
   type: basis
   subject:
@@ -95,7 +119,10 @@
     basis:
       may: [thin]
   reason: one instance (TA-30) and no MUST field reads it; Memory Footprint can be read against hard-coded limits (existing rationale)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:declared_knowledge_source_configuration
   type: basis
   subject:
@@ -105,7 +132,10 @@
     basis:
       may: [thin]
   reason: no instance (three analogical edges); existing rationale
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:protocol_envelope_capture
   type: basis
   subject:
@@ -115,7 +145,10 @@
     basis:
       may: [qa, redundant]
   reason: Q-dominant and duplicates the interpreted fields (existing rationale)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:tool_description
   type: basis
   subject:
@@ -126,7 +159,10 @@
       may: [thin]
     rationale: No documented instance turns on a tool whose declared purpose misdescribes its behaviour; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
   reason: no instance (AOC-14 analogical)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:tool_status
   type: basis
   subject:
@@ -137,7 +173,10 @@
       may: [thin]
     rationale: No documented instance involves a call to a tool that should have been unreachable; `AOC-02` motivates it analogically.
   reason: no instance (AOC-02 analogical)
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:creator_id_oncall_creation_update_dates
   type: basis
   subject:
@@ -148,7 +187,10 @@
       may: [thin]
     rationale: Its value is response routing (who owns the asset) and change correlation. No documented instance turns on it, and the freshness signal it offers for retrieved content is carried by **Retrieved-Content Source / Provenance**.
   reason: no instance (IR-04, TA-09 analogical); its value is response routing and change correlation
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:surfaces_supported
   type: basis
   subject:
@@ -159,7 +201,10 @@
       may: [qa, redundant]
     rationale: An exposure map is inventory and audit material; the surface an event actually arrived on is **Surface / App** (MUST).
   reason: no instance (AOC-08 analogical); an exposure map is inventory material
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:fleet_counts
   type: basis
   subject:
@@ -170,7 +215,10 @@
       may: [redundant]
     rationale: Each count is an aggregate over per-event MUST fields (Agent (Runtime) Instance ID, Session / Turn / Step IDs, Identities Used, Tool Call I/O), so it can be computed where it is needed.
   reason: no instance (four analogical edges); aggregates computable from per-event MUST fields
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:policy_reason_code
   type: basis
   subject:
@@ -181,4 +229,7 @@
       may: [qa, redundant]
     rationale: A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by the guardrail verdicts and the **Authorization Decision Record**.
   reason: existing rationale; its redundancy now rests on the guardrail verdicts and Authorization Decision Record, since the ATLAS tag is MAY
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

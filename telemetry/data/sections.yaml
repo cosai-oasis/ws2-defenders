@@ -50,8 +50,8 @@ field_steps:
   - instrumentation_coverage_hook_attestation
   - enforcement_point_availability_failure_mode
   - guardrail_modification_record
-  - observation_thought_reasoning_trace
   - encoded_obfuscated_payload_indicator
+  - observation_thought_reasoning_trace
   - threat_classification_atlas_technique_tag
 - number: '6.3'
   ad_number: '1.3'

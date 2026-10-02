@@ -225,19 +225,24 @@
   role: label
   record: event
   origin: derived
+  basis:
+    may: [thin]
   records: MITRE ATLAS technique IDs on any event where a detection fires.
   emitted_by_text: any detector
   capture: '**Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.'
   rationale: Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
 - id: encoded_obfuscated_payload_indicator
   name: Encoded / Obfuscated Payload Indicator
-  tier: MAY
+  tier: MUST
   role: label
   record: event
   origin: derived
+  basis:
+    evidence: [AOC-12, TA-21]
   records: Flag and decoded form of base64, image-embedded or markup-authority input.
   emitted_by: [componentAgentInputHandling]
-  capture: Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags.
+  capture: Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags. Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
+  rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'
 - id: response_model_output
   name: Response / Model Output
   tier: MUST
@@ -315,6 +320,8 @@
   role: identifier
   record: event
   origin: observed
+  basis:
+    may: [qa, redundant]
   records: Which provider or endpoint served the call.
   emitted_by: [componentModelServing]
   capture: Which provider/endpoint served the call. The reason the completion ended is **Stop Reason** (§1.1).
@@ -367,6 +374,8 @@
   role: content
   record: event
   origin: derived
+  basis:
+    may: [research, thin]
   records: Digest of the exact inputs to a forward pass, for replay and drift detection.
   emitted_by: [componentTheModel]
   capture: Content-addressed digest (+ pooled vector) of the exact inputs to a forward pass, captured pre-inference for replay/drift detection.
@@ -377,6 +386,8 @@
   role: label
   record: event
   origin: derived
+  basis:
+    may: [research, thin]
   records: Token-entropy anomalies correlated with confabulation.
   emitted_by: [componentTheModel]
   capture: Signal of context-induced token-entropy anomalies correlated with confabulation.
@@ -417,9 +428,12 @@
   role: identifier
   record: event
   origin: declared
+  basis:
+    may: [redundant, thin]
   records: Unique tool-implementation ID across MCP servers.
   emitted_by: [componentTools]
   capture: Unique tool-implementation ID for unambiguous attribution across many MCP servers.
+  rationale: Tool Name together with **MCP Server Identity & Primitive** (both MUST) already identifies the implementation across servers; a unique ID makes the join cheaper, not possible.
 - id: tool_execution_id
   name: Tool Execution ID
   tags: [AOS]
@@ -495,6 +509,8 @@
   role: label
   record: state
   origin: declared
+  basis:
+    may: [qa, redundant]
   records: Sensitivity class of the data a tool touches.
   emitted_by: [componentTools]
   capture: Sensitivity class of data the tool touches, feeds DLP / data-flow governance.
@@ -569,6 +585,8 @@
   role: descriptor
   record: state
   origin: declared
+  basis:
+    may: [thin]
   records: A memory store's declared identity, limits and retrieval settings.
   emitted_by: [componentMemory]
   capture: 'The memory store''s declared identity and limits: name, type, backend, size cap, retention, and retrieval spec (top-k, scoring). The baseline that **Memory Footprint** is measured against.'
@@ -623,6 +641,8 @@
   role: descriptor
   record: state
   origin: declared
+  basis:
+    may: [thin]
   records: A knowledge source's declared identity, schema and search parameters.
   emitted_by: [componentRAGContent]
   capture: 'Each knowledge source''s declared identity and contract: name, description, index/collection identity, schema, and search parameters (top-k, filters, scoring, reranker).'
@@ -709,6 +729,8 @@
   role: content
   record: event
   origin: observed
+  basis:
+    may: [qa, redundant]
   records: Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields.
   emitted_by: [componentAgentToolTransport]
   capture: The raw MCP / A2A JSON-RPC envelope (method, id, params) alongside the interpreted fields, preserving protocol-level detail that framework-level abstraction discards.
@@ -894,36 +916,48 @@
   role: content
   record: state
   origin: declared
+  basis:
+    may: [thin]
   records: Declared purpose of a tool, against which behaviour is compared.
   emitted_by: [componentToolRegistry]
   capture: 'Declared purpose: detects misleadingly-described ("read-only" but writes) tools.'
+  rationale: No documented instance turns on a tool whose declared purpose misdescribes its behaviour; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
 - id: tool_status
   name: Status (active/disabled)
   tier: MAY
   role: label
   record: state
   origin: declared
+  basis:
+    may: [thin]
   records: Whether a tool is meant to be reachable.
   emitted_by: [componentToolRegistry]
   capture: Detects calls to tools that should be unreachable.
+  rationale: No documented instance involves a call to a tool that should have been unreachable; `AOC-02` motivates it analogically.
 - id: creator_id_oncall_creation_update_dates
   name: Creator ID / Oncall / Creation & Update dates
   tier: MAY
   role: descriptor
   record: state
   origin: declared
+  basis:
+    may: [thin]
   records: Ownership and change dates.
   emitted_by: [componentToolRegistry, componentModelRegistry]
   capture: Ownership, age-based risk, change-correlation for IR speed; recently-changed assets/content correlate with attack timelines.
+  rationale: Its value is response routing (who owns the asset) and change correlation. No documented instance turns on it, and the freshness signal it offers for retrieved content is carried by **Retrieved-Content Source / Provenance**.
 - id: surfaces_supported
   name: Surfaces Supported
   tier: MAY
   role: descriptor
   record: state
   origin: declared
+  basis:
+    may: [qa, redundant]
   records: Exposure map per tool.
   emitted_by: [componentToolRegistry]
   capture: Exposure map per tool.
+  rationale: An exposure map is inventory and audit material; the surface an event actually arrived on is **Surface / App** (MUST).
 - id: fleet_counts
   name: Fleet counts
   name_note: (agents by framework/type; sessions L1/L7/L28; users MAU/power-user; tool-call volume & agent↔tool map; surface & status breakdowns)
@@ -931,9 +965,12 @@
   role: measure
   record: aggregate
   origin: derived
+  basis:
+    may: [redundant]
   records: 'Fleet aggregates: agents, sessions, users, tool-call volume.'
   emitted_by_text: fleet level
   capture: Aggregate anomaly, shadow-AI, and CVE-exposure signals.
+  rationale: Each count is an aggregate over per-event MUST fields (Agent (Runtime) Instance ID, Session / Turn / Step IDs, Identities Used, Tool Call I/O), so it can be computed where it is needed.
 - id: enforcement_point_availability_failure_mode
   name: Enforcement-Point Availability & Failure Mode
   tier: MUST
@@ -975,10 +1012,12 @@
   role: label
   record: event
   origin: observed
+  basis:
+    may: [qa, redundant]
   records: Machine-readable reason code for an enforcement decision.
   emitted_by_text: enforcement points
   capture: Machine-readable reason code(s) for an enforcement decision, alongside the existing free-text detector name and score.
-  rationale: A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by Guardrail Verdict and classified by the ATLAS tag.
+  rationale: A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by the guardrail verdicts and the **Authorization Decision Record**.
 - id: authorization_decision_record
   name: Authorization Decision Record
   tags: [CPEX]

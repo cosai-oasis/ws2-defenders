@@ -126,15 +126,15 @@ These fields establish what is running and where: the asset inventory of the AI 
 
 <a id="f-provider-endpoint-identity"></a>**Provider / Endpoint Identity.** Which provider/endpoint served the call. The reason the completion ended is **Stop Reason** (§1.1).
 
-*Tier:* MAY. `TA-28` is the case that tests the tier. `AOC-06` is a governance and availability signal rather than a discrete adversary technique, which makes the field Q- and A-dominant, and the D concern it is usually asked to carry, model substitution, belongs to Model Name + Version. `TA-28` is different: a backdoor using a provider's own API as its command-and-control channel, where the exfiltration destination is an endpoint the application legitimately calls. That is a detection argument rather than a governance one, and it is carried by **Output Egress Destination** (§1.2, MUST) recording the destination together with what left, not by provider identity alone, because a legitimate call and a C2 beacon share the provider. The field stays MAY because knowing *which* provider was called does not separate them; knowing what was sent does.
+*Tier:* MAY, dominant value Q or A and redundant with MUST fields. `TA-28` is the case that tests the tier. `AOC-06` is a governance and availability signal rather than a discrete adversary technique, which makes the field Q- and A-dominant, and the D concern it is usually asked to carry, model substitution, belongs to Model Name + Version. `TA-28` is different: a backdoor using a provider's own API as its command-and-control channel, where the exfiltration destination is an endpoint the application legitimately calls. That is a detection argument rather than a governance one, and it is carried by **Output Egress Destination** (§1.2, MUST) recording the destination together with what left, not by provider identity alone, because a legitimate call and a C2 beacon share the provider. The field stays MAY because knowing *which* provider was called does not separate them; knowing what was sent does.
 
 <a id="f-pre-forward-pass-state-digest-vector"></a>**Pre-Forward-Pass State Digest/Vector.** Content-addressed digest (+ pooled vector) of the exact inputs to a forward pass, captured pre-inference for replay/drift detection.
 
-*Tier:* MAY. A research-grade signal.
+*Tier:* MAY, research-grade signal and fewer than two documented instances. A research-grade signal.
 
 <a id="f-token-malformation-context-corruption-indicator"></a>**Token Malformation / Context-Corruption Indicator.** Signal of context-induced token-entropy anomalies correlated with confabulation.
 
-*Tier:* MAY. A research-grade signal.
+*Tier:* MAY, research-grade signal and fewer than two documented instances. A research-grade signal.
 <!-- END GENERATED: fields 6.1 -->
 
 ### 1.2 Content, trust, verdicts and their availability
@@ -161,8 +161,8 @@ This step also records whether the telemetry plane worked. Every other field ass
 | **Instrumentation Coverage / Hook Attestation** | MUST | descriptor | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer | `TA-17`,*`AOC-01`*,*`AOC-09`*,*`AOC-10`* |
 | **Enforcement-Point Availability & Failure Mode** | MUST | outcome | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points | `TA-01`,*`TA-10`*,*`IR-01`*,*`AOC-12`* |
 | **Guardrail Modification Record** **[AOS]** | MUST ‡ | outcome | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point | `TA-01`,*`IR-01`*,*`AOC-03`*,*`AOC-12`* |
+| **Encoded / Obfuscated Payload Indicator** | MUST | label | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
 | **Observation / Thought (reasoning trace)** | SHOULD | content | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` | `TA-06`,`TA-08`,`TA-09`,`IR-02`,`AOC-01`,`AOC-07`,*`AOC-10`* |
-| **Encoded / Obfuscated Payload Indicator** | MAY | label | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
 | **Threat Classification / ATLAS Technique Tag** | MAY † | label | MITRE ATLAS technique IDs on any event where a detection fires. | any detector | *`TA-01`*,*`TA-07`*,*`IR-01`*,*`AOC-12`* |
 
 **Field entries.**
@@ -227,17 +227,17 @@ This step also records whether the telemetry plane worked. Every other field ass
 
 *Tier:* MUST, needed to read [Model Input](#f-model-input), [Response / Model Output](#f-response-model-output), [Guardrail (Input) Verdict](#f-guardrail-input-verdict) and [Guardrail (Output) Verdict](#f-guardrail-output-verdict). Applies whenever an enforcement point or redaction pipeline rewrites rather than blocks. Without it, **Model Input**, **Response** and a guardrail verdict of `modify` record content that was not what the model or the recipient saw, so the record is *actively wrong*. Its value is R first and D second. `TA-01`, whose chain bypassed link redaction, is an instance, but the tier rests on the dependency.
 
+<a id="f-encoded-obfuscated-payload-indicator"></a>**Encoded / Obfuscated Payload Indicator.** Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags. Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
+
+*Tier:* MUST, on 2 documented instances. The corpus's obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR'd images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.
+
 <a id="f-observation-thought-reasoning-trace"></a>**Observation / Thought (reasoning trace).** Chain-of-thought/observations *when the provider exposes it*. Reveals whether a harmful act was injected, misauthorized, or self-initiated.
 
 *Tier:* SHOULD, provider-gated. High-value forensics for separating a compromised agent from a misconfigured one (`AOC-01`, `AOC-07`), but frequently unavailable from provider APIs and privacy-sensitive.
 
-<a id="f-encoded-obfuscated-payload-indicator"></a>**Encoded / Obfuscated Payload Indicator.** Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags.
-
-*Tier:* MAY.
-
 <a id="f-threat-classification-atlas-technique-tag"></a>**Threat Classification / ATLAS Technique Tag.** **Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.
 
-*Tier:* MAY. Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
+*Tier:* MAY, fewer than two documented instances. Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
 <!-- END GENERATED: fields 6.2 -->
 
 † **Applies when a detection fires** (not on every benign event). MAY under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers): no documented instance requires it and no MUST field depends on it. This document still recommends it for every fired detection. The tag is a derived classification, not raw telemetry: detection logic sets it using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) attack→ATLAS mapping so downstream SIEM/XDR correlation and compliance reporting can pivot on `AML.Txxxx`.
@@ -338,15 +338,15 @@ A tool call is where an agent crosses from reasoning to acting: the perimeter be
 
 <a id="f-tool-id"></a>**Tool ID.** Unique tool-implementation ID for unambiguous attribution across many MCP servers.
 
-*Tier:* MAY.
+*Tier:* MAY, redundant with MUST fields and fewer than two documented instances. Tool Name together with **MCP Server Identity & Primitive** (both MUST) already identifies the implementation across servers; a unique ID makes the join cheaper, not possible.
 
 <a id="f-tool-privacy-classification"></a>**Tool Privacy Classification.** Sensitivity class of data the tool touches, feeds DLP / data-flow governance.
 
-*Tier:* MAY. DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
+*Tier:* MAY, dominant value Q or A and redundant with MUST fields. DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
 
 <a id="f-policy-reason-code"></a>**Policy Reason Code.** Machine-readable reason code(s) for an enforcement decision, alongside the existing free-text detector name and score.
 
-*Tier:* MAY. A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by Guardrail Verdict and classified by the ATLAS tag.
+*Tier:* MAY, dominant value Q or A and redundant with MUST fields. A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by the guardrail verdicts and the **Authorization Decision Record**.
 <!-- END GENERATED: fields 6.3 -->
 
 ### 1.4 Memory and retrieval
@@ -414,11 +414,11 @@ Persistent memory is the one surface where an attack outlives the session that p
 
 <a id="f-declared-memory-configuration"></a>**Declared Memory Configuration.** The memory store's declared identity and limits: name, type, backend, size cap, retention, and retrieval spec (top-k, scoring). The baseline that **Memory Footprint** is measured against.
 
-*Tier:* MAY. `TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field's job (a baseline for Memory Footprint) can be met by hard-coding known limits.
+*Tier:* MAY, fewer than two documented instances. `TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field's job (a baseline for Memory Footprint) can be met by hard-coding known limits.
 
 <a id="f-declared-knowledge-source-configuration"></a>**Declared Knowledge-Source Configuration.** Each knowledge source's declared identity and contract: name, description, index/collection identity, schema, and search parameters (top-k, filters, scoring, reranker).
 
-*Tier:* MAY. On the same reasoning as Declared Memory Configuration: a silently altered retrieval config or repointed index is not in the corpus, and `IR-03` poisons metadata, not search configuration.
+*Tier:* MAY, fewer than two documented instances. On the same reasoning as Declared Memory Configuration: a silently altered retrieval config or repointed index is not in the corpus, and `IR-03` poisons metadata, not search configuration.
 <!-- END GENERATED: fields 6.4 -->
 
 ### 1.5 Orchestration
@@ -469,7 +469,7 @@ Multi-agent and autonomous execution, where the corpus shows agentic risk compou
 
 <a id="f-protocol-envelope-capture"></a>**Protocol Envelope Capture.** The raw MCP / A2A JSON-RPC envelope (method, id, params) alongside the interpreted fields, preserving protocol-level detail that framework-level abstraction discards.
 
-*Tier:* MAY. Q-dominant, duplicates interpreted fields, carries raw-content privacy weight, and is not modality-gated.
+*Tier:* MAY, dominant value Q or A and redundant with MUST fields. Q-dominant, duplicates interpreted fields, carries raw-content privacy weight, and is not modality-gated.
 <!-- END GENERATED: fields 6.5 -->
 
 ### 1.6 Identity, provenance and inventory
@@ -576,23 +576,23 @@ The inventory fields describe posture rather than per-request activity, and most
 
 <a id="f-tool-description"></a>**Description.** Declared purpose: detects misleadingly-described ("read-only" but writes) tools.
 
-*Tier:* MAY.
+*Tier:* MAY, fewer than two documented instances. No documented instance turns on a tool whose declared purpose misdescribes its behaviour; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
 
 <a id="f-tool-status"></a>**Status (active/disabled).** Detects calls to tools that should be unreachable.
 
-*Tier:* MAY.
+*Tier:* MAY, fewer than two documented instances. No documented instance involves a call to a tool that should have been unreachable; `AOC-02` motivates it analogically.
 
 <a id="f-creator-id-oncall-creation-update-dates"></a>**Creator ID / Oncall / Creation & Update dates.** Ownership, age-based risk, change-correlation for IR speed; recently-changed assets/content correlate with attack timelines.
 
-*Tier:* MAY.
+*Tier:* MAY, fewer than two documented instances. Its value is response routing (who owns the asset) and change correlation. No documented instance turns on it, and the freshness signal it offers for retrieved content is carried by **Retrieved-Content Source / Provenance**.
 
 <a id="f-surfaces-supported"></a>**Surfaces Supported.** Exposure map per tool.
 
-*Tier:* MAY.
+*Tier:* MAY, dominant value Q or A and redundant with MUST fields. An exposure map is inventory and audit material; the surface an event actually arrived on is **Surface / App** (MUST).
 
 <a id="f-fleet-counts"></a>**Fleet counts** (agents by framework/type; sessions L1/L7/L28; users MAU/power-user; tool-call volume & agent↔tool map; surface & status breakdowns). Aggregate anomaly, shadow-AI, and CVE-exposure signals.
 
-*Tier:* MAY.
+*Tier:* MAY, redundant with MUST fields. Each count is an aggregate over per-event MUST fields (Agent (Runtime) Instance ID, Session / Turn / Step IDs, Identities Used, Tool Call I/O), so it can be computed where it is needed.
 <!-- END GENERATED: fields 6.6 -->
 
 ## 2. Correlation Patterns
