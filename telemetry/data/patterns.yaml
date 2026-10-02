@@ -32,7 +32,6 @@
   join: [identities_used_per_hop]
   conditions:
   - An identity appears from a **Source host / IP** outside its history.
-  - Optionally on a new **Surface / App**.
   requires: [source_host_ip_request_metadata, identities_used_per_hop]
   enriches: [surface_app]
   baseline: Source history per identity.
@@ -46,7 +45,6 @@
   join: [model_input]
   conditions:
   - The same **Model Input** content hash arrives under many distinct **Identities Used** within a window.
-  - Optionally from several **Source host / IP** values.
   requires: [model_input, identities_used_per_hop]
   enriches: [source_host_ip_request_metadata]
   baseline: Distinct identities per input hash in ordinary traffic.

@@ -675,14 +675,12 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 <a id="p-identity-from-new-source"></a>**Same identity from a new source.** Credential theft or session hijack. Minimum tier MUST. Fires when:
 
 1. An identity appears from a **Source host / IP** outside its history.
-2. Optionally on a new **Surface / App**.
 
 *Joins on* [Identities Used (per hop)](#f-identities-used-per-hop). *Reads* [Source host / IP + request metadata](#f-source-host-ip-request-metadata). *Enriched by* [Surface / App](#f-surface-app). *Baseline:* Source history per identity. *Catches* `AOC-15`; analogically `IR-04`.
 
 <a id="p-same-input-many-identities"></a>**Same input across many identities.** Automated injection campaign. Minimum tier MUST. Fires when:
 
 1. The same **Model Input** content hash arrives under many distinct **Identities Used** within a window.
-2. Optionally from several **Source host / IP** values.
 
 *Joins on* [Model Input](#f-model-input). *Reads* [Identities Used (per hop)](#f-identities-used-per-hop). *Enriched by* [Source host / IP + request metadata](#f-source-host-ip-request-metadata). *Baseline:* Distinct identities per input hash in ordinary traffic. *Catches* none in the corpus. *Motivation:* Template reuse in `IR-01`; no corpus entry records one payload under many identities.
 
