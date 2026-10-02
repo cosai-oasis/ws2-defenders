@@ -13,6 +13,7 @@ listed.
   basis    sets `basis:` on the field
   capture  appends the accepted clause to the field's capture definition
   facets   sets role, record and origin (and a compound note) on the field
+  risks    sets `risks:` on the attack (Risk Map IDs, primary first)
 
 After the edges are applied, a field's evidence is derived from the attacks
 that name it (build.py), so `evidence:` is removed from fields.yaml.
@@ -102,7 +103,7 @@ def main():
     if uncurated:
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
-    order = ('attack', 'edge', 'alias', 'basis', 'capture', 'facets')
+    order = ('attack', 'edge', 'alias', 'basis', 'capture', 'facets', 'risks')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -126,6 +127,8 @@ def main():
                     set_edge(attacks[s['attack']], s['field'], g)
                 elif kind == 'basis':
                     fmap[s['field']]['basis'] = c['proposal']['basis']
+                elif kind == 'risks':
+                    attacks[s['attack']]['risks'] = list(c['proposal']['risks'])
                 elif kind == 'facets':
                     fmap[s['field']].update({k: v for k, v in c['proposal'].items()})
                 elif kind == 'capture':
