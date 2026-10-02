@@ -5,6 +5,8 @@
   records: Logical name or type of the agent; exposes off-inventory agents.
   emitted_by: [componentReasoningCore]
   capture: Logical name/type of the agent (e.g. "Deep Research agent"). Detects off-inventory / "shadow" agents.
+  basis:
+    evidence: [TA-05, TA-31]
 - id: agent_runtime_instance_id
   name: Agent (Runtime) Instance ID
   tier: MUST

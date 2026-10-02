@@ -6068,13 +6068,21 @@
   source: tier
   proposal:
     basis:
-      required_to_read: every §6.1 identifier chain
-  reason: 'RFC §6.1: every later detection resolves through these identifiers; one instance edge (TA-05)'
+      evidence: [TA-05, TA-31]
+  reason: 'two independent instances once A:TA-31 is accepted: TA-05 (an off-inventory agent) and TA-31 (one name bound to two peers in multi-agent hosts)'
   critical: true
-  status: deferred
+  status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
   note: one instance (TA-05), no dependency; tier waits on the RFC §4.7 amendment for single-instance fields, and on a search for more off-inventory-agent instances
+  amended:
+  - proposal:
+      basis:
+        required_to_read: every §6.1 identifier chain
+    reason: 'RFC §6.1: every later detection resolves through these identifiers; one instance edge (TA-05)'
+    by: jo5iah
+    'on': '2026-10-02'
+  applied: '2026-10-02'
 - id: B:agent_runtime_instance_id
   type: basis
   subject:

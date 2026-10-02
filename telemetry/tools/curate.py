@@ -15,7 +15,8 @@ an attack or pattern cell resolved by judgement), and, from intake, tier,
 field and pattern.
 
 `amend` replaces the proposal of an undecided candidate and keeps the old one
-under `amended:`, so the registry records what was proposed before.
+under `amended:`, so the registry records what was proposed before. Amending a
+deferred candidate reopens it as proposed.
 
 Grounding classes for edges, following RFC §4.7:
   instance    the documented attack contains the event or state the field
@@ -124,8 +125,10 @@ def cmd_amend(a):
         for c in cs:
             if c['id'] != a.ids[0]:
                 continue
-            if c['status'] != 'proposed':
-                sys.exit(f"{c['id']} is {c['status']}; only proposed candidates can be amended")
+            if c['status'] not in ('proposed', 'deferred'):
+                sys.exit(f"{c['id']} is {c['status']}; only proposed or deferred candidates can be amended")
+            if c['status'] == 'deferred':          # amending a parked candidate reopens it
+                c['status'] = 'proposed'
             c.setdefault('amended', []).append({'proposal': c['proposal'], 'reason': c.get('reason'),
                                                 'by': a.by, 'on': datetime.date.today().isoformat()})
             c['proposal'] = new

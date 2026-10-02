@@ -137,6 +137,10 @@ def main():
     for a in attacks.values():
         a.pop('detecting_fields_text', None)     # rendered from `fields:` from now on
 
+    waiting = [c['id'] for c in all_c.values() if c['status'] == 'accepted' and not c.get('applied')
+               and c['type'] not in order]
+    if waiting:
+        print('accepted, no apply rule yet (phase 5):', ', '.join(waiting))
     print(f'applied {applied}; skipped {len(skipped)} undecided or deferred:',
           ', '.join(c['id'] for c in skipped) or 'none')
     if dry:
