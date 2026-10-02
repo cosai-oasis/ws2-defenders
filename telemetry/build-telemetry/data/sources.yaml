@@ -103,8 +103,11 @@ publications:
     repository: https://github.com/OWASP/www-project-agent-observability-standard
     commit: e4a50f63cdf912a34262632f1379f674522fe237
     committed: '2025-12-30'
-    verified: false
-    note: Confirm this is the repository the standard is published from (aos.owasp.org), and pin its version if it has one.
+    version: 0.1.0
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every AOS name XM §4 cites found in specification/ or docs/spec/ at this commit; the repository's homepage is aos.owasp.org, version.txt and aos_schema.json say 0.1.0
+    note: Specification last changed 2025-11-10 (70af158); this commit is the repository head.
   cpex:
     name: CPEX
     reference: 44
