@@ -396,7 +396,7 @@
   - Behaviour in that session departs from the request.
   requires: [memory_write_event, memory_provenance_source, memory_read_injection_event]
   enriches: [observation_thought_reasoning_trace, memory_integrity_poisoning_signal]
-  catches: [TA-18, IR-02, AOC-10]
+  catches: [TA-18, IR-02, AOC-10, TA-32]
 - id: memory_beyond_limit
   former_id: CP-24
   name: Memory store beyond its limit
@@ -423,6 +423,7 @@
   - memory_provenance_source
   - retrieved_content_metadata_integrity_signal
   catches: [TA-18, IR-02, IR-05]
+  catches_analogical: [TA-32]
 - id: zero_click_to_new_egress
   former_id: CP-22
   name: Autonomous trigger, untrusted content, new egress
@@ -616,3 +617,15 @@
   - instrumentation_coverage_hook_attestation
   catches: []
   catches_analogical: [TA-17, AOC-01, AOC-10]
+- id: prefilled_prompt_to_remember
+  name: Pre-filled prompt telling the assistant to remember a source
+  indicates: Memory or recommendation poisoning through a link
+  stage: entry
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Input Source / Channel** records that the turn arrived pre-filled from a link or URL parameter, not typed.'
+  - The **Model Input** tells the assistant to remember, trust or prefer a named source.
+  requires: [input_source_channel, model_input]
+  enriches: [memory_write_event, memory_provenance_source]
+  baseline: Turns per channel; a pre-filled turn is unusual for most users.
+  catches: [TA-32]

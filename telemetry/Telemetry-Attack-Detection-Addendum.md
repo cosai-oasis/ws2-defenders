@@ -66,7 +66,7 @@ These fields establish what is running and where: the asset inventory of the AI 
 
 <a id="f-session-turn-step-ids"></a>**Session / Turn / Step IDs.** The three-level execution hierarchy *beneath* the run: `session_id` (the conversation/engagement), `turn_id` (one request→response cycle), `step_id` (one action within a turn). Lets a detection point at *which* turn behaviour changed, not just which run.
 
-*Tier:* MUST, on 5 documented instances. *Read by:* [Instructions followed from an external retrieved item](#p-retrieved-instructions-followed), [Privileged action authorized on a displayed identity](#p-privileged-action-on-displayed-identity), [Refusals, then a completion, in one session](#p-refusals-then-completion), [Repeated refusals](#p-repeated-refusals), [Untrusted content acted on in a later turn](#p-untrusted-content-acted-on-later), [Citation with no matching retrieval](#p-citation-without-retrieval), [Output link carrying session data](#p-output-link-carrying-data), [Response reproduces the system prompt](#p-system-prompt-reproduced), [Untrusted input, then a tool call, then egress to a new destination](#p-untrusted-input-to-new-egress), [Egress under accumulated session taint](#p-egress-under-session-taint), [Enforcement point unreached, operation proceeds](#p-enforcement-point-fail-open), [Self-asserted attribute contradicts the authority](#p-self-asserted-attribute-contradicted) and [Gap in the event sequence](#p-event-sequence-gap).
+*Tier:* MUST, on 5 documented instances. *Read by:* [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember), [Instructions followed from an external retrieved item](#p-retrieved-instructions-followed), [Privileged action authorized on a displayed identity](#p-privileged-action-on-displayed-identity), [Refusals, then a completion, in one session](#p-refusals-then-completion), [Repeated refusals](#p-repeated-refusals), [Untrusted content acted on in a later turn](#p-untrusted-content-acted-on-later), [Citation with no matching retrieval](#p-citation-without-retrieval), [Output link carrying session data](#p-output-link-carrying-data), [Response reproduces the system prompt](#p-system-prompt-reproduced), [Untrusted input, then a tool call, then egress to a new destination](#p-untrusted-input-to-new-egress), [Egress under accumulated session taint](#p-egress-under-session-taint), [Enforcement point unreached, operation proceeds](#p-enforcement-point-fail-open), [Self-asserted attribute contradicts the authority](#p-self-asserted-attribute-contradicted) and [Gap in the event sequence](#p-event-sequence-gap).
 
 <a id="f-trigger-type-source-event"></a>**Trigger Type & Source Event.** Whether this run was **user-initiated or autonomous**, and for autonomous runs the originating event (inbound email, chat message, webhook, schedule). Distinct from Surface/App, which records the *channel*, not who or what started the run.
 
@@ -146,12 +146,12 @@ This step also records whether the telemetry plane worked. Every other field ass
 <!-- BEGIN GENERATED: fields 6.2 -->
 | Field | Tier | Role | What it records | Emitted by | Grounding attacks |
 | :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |
-| **Model Input** | MUST | content | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` | `TA-01`,`TA-02`,`TA-03`,`TA-04`,`TA-05`,`TA-07`,`TA-09`,`TA-10`,`TA-19`,`TA-27`,`IR-01`,`IR-02`,`AOC-03`,`AOC-12` |
-| **Input Source / Channel** | MUST | provenance | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` | `TA-01`,`IR-01`,`IR-03`,`AOC-10`,`AOC-12` |
-| **Input Trust Classification** | MUST | label | Trusted or untrusted origin, crossed with the role assigned on entry: instruction or data. | `componentAgentInputHandling` | `TA-01`,`TA-12`,`TA-18`,`TA-19`,`TA-26`,`IR-01`,`AOC-02`,`AOC-08`,`AOC-12`,`AOC-16` |
+| **Model Input** | MUST | content | Every input to each model call, including tool output, retrieved context and messages. | `componentApplicationInputHandling`, `componentAgentInputHandling` | `TA-01`,`TA-02`,`TA-03`,`TA-04`,`TA-05`,`TA-07`,`TA-09`,`TA-10`,`TA-19`,`TA-27`,`TA-32`,`IR-01`,`IR-02`,`AOC-03`,`AOC-12` |
+| **Input Source / Channel** | MUST | provenance | Which surface, tool, agent or document each input segment came from. | `componentApplicationInputHandling`, `componentAgentInputHandling` | `TA-01`,`TA-32`,`IR-01`,`IR-03`,`AOC-10`,`AOC-12` |
+| **Input Trust Classification** | MUST | label | Trusted or untrusted origin, crossed with the role assigned on entry: instruction or data. | `componentAgentInputHandling` | `TA-01`,`TA-12`,`TA-18`,`TA-19`,`TA-26`,*`TA-32`*,`IR-01`,`AOC-02`,`AOC-08`,`AOC-12`,`AOC-16` |
 | **Source host / IP + request metadata** | MUST | provenance | Origin of the request, for geo, rate and credential-theft detection. | `componentApplicationInputHandling` | `TA-03`,`TA-10`,*`IR-04`*,*`AOC-08`*,`AOC-15` |
 | **Guardrail (Input) Verdict** | MUST | outcome | Input classifier result (pass, flag, block, modify) with detector and score. | `componentApplicationInputHandling`, `componentAgentInputHandling` | `TA-01`,`TA-05`,`TA-22`,`TA-26`,`IR-01`,`AOC-12` |
-| **Response / Model Output** | MUST | content | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-02`,`TA-03`,`TA-04`,`TA-07`,`TA-09`,`TA-10`,`AOC-03`,`AOC-11` |
+| **Response / Model Output** | MUST | content | Generated output at each step. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-02`,`TA-03`,`TA-04`,`TA-07`,`TA-09`,`TA-10`,*`TA-32`*,`AOC-03`,`AOC-11` |
 | **Output Egress Destination** | MUST | identifier | Where output goes: recipients, URLs, channels, files, broadcast scope. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-03`,`TA-12`,`TA-16`,`TA-17`,`TA-28`,`TA-29`,`AOC-03`,`AOC-05`,`AOC-11` |
 | **Citations / Source Attribution** **[AOS]** | MUST | outcome | Sources the agent claims, and whether each resolves to a logged retrieval. | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-02`,`IR-03` |
 | **Guardrail (Output) Verdict** | MUST | outcome | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-22`,`IR-01`,`AOC-03` |
@@ -169,11 +169,11 @@ This step also records whether the telemetry plane worked. Every other field ass
 
 <a id="f-model-input"></a>**Model Input.** Every input to each model call in the loop, user prompts, tool outputs, retrieved context, inter-agent messages. Not just the first user turn. Includes size/shape (large or repetitive inputs).
 
-*Tier:* MUST, on 14 documented instances. Must cover *all* inputs, not the first user turn: injection arrives via tool outputs (`IR-01`), retrieved content (`IR-03`, `TA-01`, `TA-02`), memory (`IR-02`), or another agent (`AOC-12`). *Read by:* [Same input across many identities](#p-same-input-many-identities), [Refusals, then a completion, in one session](#p-refusals-then-completion), [Input content re-emitted to another agent or store](#p-input-reemitted) and [Sensitive input to an off-inventory AI service](#p-sensitive-input-to-off-inventory-ai).
+*Tier:* MUST, on 15 documented instances. Must cover *all* inputs, not the first user turn: injection arrives via tool outputs (`IR-01`), retrieved content (`IR-03`, `TA-01`, `TA-02`), memory (`IR-02`), or another agent (`AOC-12`). *Read by:* [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember), [Same input across many identities](#p-same-input-many-identities), [Refusals, then a completion, in one session](#p-refusals-then-completion), [Input content re-emitted to another agent or store](#p-input-reemitted) and [Sensitive input to an off-inventory AI service](#p-sensitive-input-to-off-inventory-ai).
 
 <a id="f-input-source-channel"></a>**Input Source / Channel.** Provenance label for each input segment: which surface/tool/agent/document it came from.
 
-*Tier:* MUST, on 5 documented instances.
+*Tier:* MUST, on 6 documented instances. *Read by:* [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember).
 
 <a id="f-input-trust-classification"></a>**Input Trust Classification.** The origin authority of a segment crossed with how it was consumed: **trusted-instruction**, **trusted-data**, **untrusted-instruction**, **untrusted-data**. Owner command against environmental or third-party content, and instruction against data. **`untrusted-instruction` is the attack state**, the cell `TA-01` occupies.
 
@@ -362,13 +362,13 @@ Persistent memory is the one surface where an attack outlives the session that p
 <!-- BEGIN GENERATED: fields 6.4 -->
 | Field | Tier | Role | What it records | Emitted by | Grounding attacks |
 | :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |
-| **Memory Write Event** | MUST | content | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` | `TA-18`,`TA-27`,`IR-02`,`IR-05`,`AOC-07`,`AOC-10` |
-| **Memory Read / Injection Event** | MUST | content | Which memory items were pulled into context for a call. | `componentMemory` | `TA-11`,`TA-18`,`IR-02`,`IR-05`,`AOC-10` |
-| **Memory Provenance / Source** | MUST | provenance | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` | `TA-18`,`IR-02`,`AOC-10` |
+| **Memory Write Event** | MUST | content | Each create, update or delete of a persistent memory item, and by whom. | `componentMemory` | `TA-18`,`TA-27`,`TA-32`,`IR-02`,`IR-05`,`AOC-07`,`AOC-10` |
+| **Memory Read / Injection Event** | MUST | content | Which memory items were pulled into context for a call. | `componentMemory` | `TA-11`,`TA-18`,`TA-32`,`IR-02`,`IR-05`,`AOC-10` |
+| **Memory Provenance / Source** | MUST | provenance | Origin and mutability of a memory item, including externally editable sources. | `componentMemory` | `TA-18`,`TA-32`,`IR-02`,`AOC-10` |
 | **Memory Footprint / Growth** | MUST | measure | Size and growth of memory stores per user or session. | `componentMemory` | `TA-30`,*`AOC-04`*,`AOC-05` |
 | **Retrieval Event** | MUST | content | Query issued, items returned and their scores. | `componentRAGContent` | `TA-01`,`TA-02`,`TA-09`,`TA-11`,`TA-12`,`IR-03`,`IR-05`,`AOC-10` |
 | **Retrieved-Content Source / Provenance** | MUST | provenance | Origin, owner, trust level and freshness of each retrieved item. | `componentRAGContent` | `TA-01`,`TA-02`,`TA-09`,`TA-11`,`TA-27`,`IR-03` |
-| **Memory Integrity / Poisoning Signal** | SHOULD | measure | Integrity check or poisoning score; cross-session isolation flag. Provider-gated. | `componentMemory` | `TA-18`,`IR-02`,`IR-05` |
+| **Memory Integrity / Poisoning Signal** | SHOULD | measure | Integrity check or poisoning score; cross-session isolation flag. Provider-gated. | `componentMemory` | `TA-18`,*`TA-32`*,`IR-02`,`IR-05` |
 | **Memory Write Rationale** **[AOS]** | SHOULD | content | The agent's stated reason for persisting an item. Self-asserted. Provider-gated. | `componentMemory` | `IR-02`,*`AOC-07`*,*`AOC-10`* |
 | **Retrieved-Content / Metadata Integrity Signal** | SHOULD | measure | Tamper or poisoning indicators on content or its metadata. Provider-gated. | `componentRAGContent` | *`TA-02`*,*`TA-09`*,`IR-03`,`IR-05` |
 | **Declared Memory Configuration** **[AOS]** | MAY | descriptor | A memory store's declared identity, limits and retrieval settings. | `componentMemory` | `TA-30`,*`IR-02`*,*`AOC-05`*,*`AOC-07`* |
@@ -378,15 +378,15 @@ Persistent memory is the one surface where an attack outlives the session that p
 
 <a id="f-memory-write-event"></a>**Memory Write Event.** Every create/update/delete to persistent or long-term memory: what changed, by which turn/actor. Deletions include evictions made by the store itself under a size or token budget, recorded with the policy that evicted the item, so an item lost to eviction is distinguishable from one that was retrieved poorly.
 
-*Tier:* MUST, on 6 documented instances. MINJA (`IR-02`) poisons memory using only benign queries: the agent autonomously persists malicious reasoning. AGENTPOISON (`IR-05`) uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write and Read plus **Memory Provenance**. *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back).
+*Tier:* MUST, on 7 documented instances. MINJA (`IR-02`) poisons memory using only benign queries: the agent autonomously persists malicious reasoning. AGENTPOISON (`IR-05`) uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write and Read plus **Memory Provenance**. *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back).
 
 <a id="f-memory-read-injection-event"></a>**Memory Read / Injection Event.** Which memory items were pulled into context for a call.
 
-*Tier:* MUST, on 5 documented instances. See [Memory Write Event](#f-memory-write-event). *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back) and [Item flagged as poisoned, then read into context](#p-poisoned-item-read).
+*Tier:* MUST, on 6 documented instances. See [Memory Write Event](#f-memory-write-event). *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back) and [Item flagged as poisoned, then read into context](#p-poisoned-item-read).
 
 <a id="f-memory-provenance-source"></a>**Memory Provenance / Source.** Origin & mutability of a memory item, self-authored, owner, non-owner, or **externally editable resource**.
 
-*Tier:* MUST, on 3 documented instances. Exposes `AOC-10`: a "constitution" stored as an externally editable Gist, later edited to make the agent shut down peers and send unauthorized mail. The signal is *a context-shaping memory item resolving to a mutable, non-owner-controlled source.* *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back).
+*Tier:* MUST, on 4 documented instances. Exposes `AOC-10`: a "constitution" stored as an externally editable Gist, later edited to make the agent shut down peers and send unauthorized mail. The signal is *a context-shaping memory item resolving to a mutable, non-owner-controlled source.* *Read by:* [Externally sourced memory read back later](#p-external-memory-read-back).
 
 <a id="f-memory-footprint-growth"></a>**Memory Footprint / Growth.** Size/growth of memory stores (per user/session), resource-exhaustion signal.
 
@@ -610,6 +610,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 | :------------------------------- | :---------- | :---- | :-------------------- |
 | [MCP server version not the approved one](#p-mcp-server-version-unapproved) | entry | MUST | `TA-16` |
 | [Obfuscated content in the instruction configuration](#p-obfuscated-instruction-config) | entry | MUST | `TA-21` |
+| [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember) | entry | MUST | `TA-32` |
 | [Same identity from a new source](#p-identity-from-new-source) | entry | MUST | `AOC-15`; analogically `IR-04` |
 | [Same input across many identities](#p-same-input-many-identities) | entry | MUST | none in the corpus |
 | [Tool definition changed after approval](#p-tool-definition-changed) | entry | MUST | `TA-29` |
@@ -639,9 +640,9 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 | [Background task with no end condition](#p-background-task-without-end) | persistence | MUST | `TA-25`,`AOC-04`,`AOC-10` |
 | [Capability added soon after an inter-agent message](#p-capability-after-inter-agent-message) | persistence | MUST | `AOC-09` |
 | [Capability or configuration change with no approval](#p-unapproved-capability-change) | persistence | MUST | `TA-14`,`TA-23`,`TA-29` |
-| [Externally sourced memory read back later](#p-external-memory-read-back) | persistence | MUST | `TA-18`,`IR-02`,`AOC-10` |
+| [Externally sourced memory read back later](#p-external-memory-read-back) | persistence | MUST | `TA-18`,`IR-02`,`AOC-10`,`TA-32` |
 | [Memory store beyond its limit](#p-memory-beyond-limit) | persistence | MUST | `TA-30`,`AOC-05` |
-| [Item flagged as poisoned, then read into context](#p-poisoned-item-read) | persistence | SHOULD | `TA-18`,`IR-02`,`IR-05` |
+| [Item flagged as poisoned, then read into context](#p-poisoned-item-read) | persistence | SHOULD | `TA-18`,`IR-02`,`IR-05`; analogically `TA-32` |
 | [Autonomous trigger, untrusted content, new egress](#p-zero-click-to-new-egress) | egress | MUST | `TA-01` |
 | [Citation with no matching retrieval](#p-citation-without-retrieval) | egress | MUST | `TA-01`,`TA-02`,`IR-03` |
 | [Input content re-emitted to another agent or store](#p-input-reemitted) | egress | MUST | `TA-27` |
@@ -671,6 +672,13 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 1. The **System Prompt / Instruction Config** loaded for a run contains content flagged by **Encoded / Obfuscated Payload Indicator**.
 
 *Joins on* [Agent (Runtime) Instance ID](#f-agent-runtime-instance-id). *Reads* [System Prompt / Instruction Config](#f-system-prompt-instruction-config) and [Encoded / Obfuscated Payload Indicator](#f-encoded-obfuscated-payload-indicator). *Enriched by* [Repository / Code Path / Software Ref](#f-repository-code-path-software-ref) and [Attribute Source / Trusted-Provenance Marking](#f-attribute-source-trusted-provenance-marking). *Catches* `TA-21`.
+
+<a id="p-prefilled-prompt-to-remember"></a>**Pre-filled prompt telling the assistant to remember a source.** Memory or recommendation poisoning through a link. Minimum tier MUST. Fires when:
+
+1. **Input Source / Channel** records that the turn arrived pre-filled from a link or URL parameter, not typed.
+2. The **Model Input** tells the assistant to remember, trust or prefer a named source.
+
+*Joins on* [Session / Turn / Step IDs](#f-session-turn-step-ids). *Reads* [Input Source / Channel](#f-input-source-channel) and [Model Input](#f-model-input). *Enriched by* [Memory Write Event](#f-memory-write-event) and [Memory Provenance / Source](#f-memory-provenance-source). *Baseline:* Turns per channel; a pre-filled turn is unusual for most users. *Catches* `TA-32`.
 
 <a id="p-identity-from-new-source"></a>**Same identity from a new source.** Credential theft or session hijack. Minimum tier MUST. Fires when:
 
@@ -883,7 +891,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 2. The item is read back (**Memory Read / Injection Event**) in a later session.
 3. Behaviour in that session departs from the request.
 
-*Reads* [Memory Write Event](#f-memory-write-event), [Memory Provenance / Source](#f-memory-provenance-source) and [Memory Read / Injection Event](#f-memory-read-injection-event). *Enriched by* [Observation / Thought (reasoning trace)](#f-observation-thought-reasoning-trace) and [Memory Integrity / Poisoning Signal](#f-memory-integrity-poisoning-signal). *Catches* `TA-18`,`IR-02`,`AOC-10`.
+*Reads* [Memory Write Event](#f-memory-write-event), [Memory Provenance / Source](#f-memory-provenance-source) and [Memory Read / Injection Event](#f-memory-read-injection-event). *Enriched by* [Observation / Thought (reasoning trace)](#f-observation-thought-reasoning-trace) and [Memory Integrity / Poisoning Signal](#f-memory-integrity-poisoning-signal). *Catches* `TA-18`,`IR-02`,`AOC-10`,`TA-32`.
 
 <a id="p-memory-beyond-limit"></a>**Memory store beyond its limit.** Memory-store exhaustion or silent limit removal. Minimum tier MUST. Fires when:
 
@@ -896,7 +904,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 1. A **Memory Integrity / Poisoning Signal** flags an item.
 2. The item is later read into context (**Memory Read / Injection Event**).
 
-*Reads* [Memory Integrity / Poisoning Signal](#f-memory-integrity-poisoning-signal) and [Memory Read / Injection Event](#f-memory-read-injection-event). *Enriched by* [Memory Provenance / Source](#f-memory-provenance-source) and [Retrieved-Content / Metadata Integrity Signal](#f-retrieved-content-metadata-integrity-signal). *Catches* `TA-18`,`IR-02`,`IR-05`.
+*Reads* [Memory Integrity / Poisoning Signal](#f-memory-integrity-poisoning-signal) and [Memory Read / Injection Event](#f-memory-read-injection-event). *Enriched by* [Memory Provenance / Source](#f-memory-provenance-source) and [Retrieved-Content / Metadata Integrity Signal](#f-retrieved-content-metadata-integrity-signal). *Catches* `TA-18`,`IR-02`,`IR-05`; analogically `TA-32`.
 
 ### 2.5 Egress: data leaves
 
@@ -1042,6 +1050,7 @@ Every attack in §3, with the patterns that catch it; an attack no pattern catch
 | `TA-29` WhatsApp MCP sleeper rug pull | [Tool definition changed after approval](#p-tool-definition-changed), [High-impact action without a covering approval](#p-action-without-covering-approval), [Capability or configuration change with no approval](#p-unapproved-capability-change), [Tool arguments carry data the request did not supply](#p-unrequested-data-in-tool-arguments) |  |
 | `TA-30` OpenClaw memory index unbounded growth | [Memory store beyond its limit](#p-memory-beyond-limit) |  |
 | `TA-31` Agent name collision | [One agent name bound to two peers](#p-agent-name-collision) |  |
+| `TA-32` AI recommendation poisoning | [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember), [Externally sourced memory read back later](#p-external-memory-read-back) | [Item flagged as poisoned, then read into context](#p-poisoned-item-read) |
 | `IR-01` Breaking the Prompt Wall | [Refusals, then a completion, in one session](#p-refusals-then-completion), [Repeated refusals](#p-repeated-refusals) |  |
 | `IR-02` MINJA | [Externally sourced memory read back later](#p-external-memory-read-back), [Item flagged as poisoned, then read into context](#p-poisoned-item-read) |  |
 | `IR-03` Poison-RAG | [Citation with no matching retrieval](#p-citation-without-retrieval) |  |
@@ -1080,7 +1089,7 @@ Normalized catalogue of the attacks and incidents referenced above. Each row lis
 
 ### 3.1 Attack ID scheme
 
-- **`TA-01…31`**: real-world attack vectors, each with its own field-detection mapping. **`TA-01` is EchoLeak** (M365 Copilot, CVE-2025-32711), the document's lead public case study, and the first entry in the catalogue. **`TA-02…10`** are the authoritative catalogue: Slack AI, Bard markdown exfil, training-data extraction, Samsung leak, LangChain RCE, system-prompt extraction, tool-chaining escalation, RAG-KB poisoning, context-window DoS. **`TA-11…13`** are MCP-mediated incidents from CoSAI's **MCP Security** paper. **`TA-14…19`** are later additions: MCP tool poisoning and rug pulls, a cross-tenant trace-configuration hijack, persistent memory poisoning, and cross-turn deferred tool invocation. **`TA-20…28`** are drawn from the [MITRE ATLAS case-study corpus](#36-attack-inventory--mitre-atlas-technique-mapping), each cited to its own primary source: credential-funded model access, instruction-configuration poisoning, guardrail bypass at scale, an approval gate disabled as configuration, two autonomous multi-agent campaigns, a computer-use agent destroying data, a self-replicating GenAI worm, and a provider API used as command and control. **`TA-29`** to **`TA-31`** supply the second documented instance for three MUST fields: a tool definition changed after approval (Tool Definition Digest), a memory store growing without bound in production with no adversary (Memory Footprint), and one agent name bound to two peers in multi-agent hosts (Agent Name).
+- **`TA-01…32`**: real-world attack vectors, each with its own field-detection mapping. **`TA-01` is EchoLeak** (M365 Copilot, CVE-2025-32711), the document's lead public case study, and the first entry in the catalogue. **`TA-02…10`** are the authoritative catalogue: Slack AI, Bard markdown exfil, training-data extraction, Samsung leak, LangChain RCE, system-prompt extraction, tool-chaining escalation, RAG-KB poisoning, context-window DoS. **`TA-11…13`** are MCP-mediated incidents from CoSAI's **MCP Security** paper. **`TA-14…19`** are later additions: MCP tool poisoning and rug pulls, a cross-tenant trace-configuration hijack, persistent memory poisoning, and cross-turn deferred tool invocation. **`TA-20…28`** are drawn from the [MITRE ATLAS case-study corpus](#36-attack-inventory--mitre-atlas-technique-mapping), each cited to its own primary source: credential-funded model access, instruction-configuration poisoning, guardrail bypass at scale, an approval gate disabled as configuration, two autonomous multi-agent campaigns, a computer-use agent destroying data, a self-replicating GenAI worm, and a provider API used as command and control. **`TA-29`** to **`TA-31`** supply the second documented instance for three MUST fields: a tool definition changed after approval (Tool Definition Digest), a memory store growing without bound in production with no adversary (Memory Footprint), and one agent name bound to two peers in multi-agent hosts (Agent Name). **`TA-32`** is the first attack entered through intake: pre-filled prompts that tell an assistant to remember a company as a trusted source.
 - **`IR-01…05`**: CoSAI WS2 *AI Incident Response* case studies.
 - **`AOC-01…16`**: *Agents of Chaos* (arXiv:2602.20021) case studies.
 - Entries are **annotated where they are not executed attacks**: *(resisted)* for an attempt that was refused, *(emergent defense)* for `AOC-16`, and, in [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping), an explicit note where no adversary technique applies because the mechanism failed unaided. All are admissible evidence under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers); the annotation records what kind of instance an entry is, not how much it counts for.
@@ -1098,6 +1107,7 @@ The catalogue of documented real-world attacks, in ID order, each mapped to the 
 - **`TA-14…19`** add the configuration and implementation rug pulls (`TA-14`, detected by **Capability-Set Change Event**; `TA-16`, by **MCP Server Identity & Primitive**), tool-description poisoning (`TA-15`, detected by **Tool Definition Digest**), the first cross-tenant exposure with an adversary present and the first documented attack **on the telemetry plane** (`TA-17`), persistent memory poisoning against a production system (`TA-18`), and cross-turn deferred tool invocation (`TA-19`). Four are MITRE ATLAS case studies (`AML.CS0038`, `AML.CS0040`, `AML.CS0053`, `AML.CS0054`) and are cited to the primary sources ATLAS itself lists.
 - **`TA-20…28`** are MITRE ATLAS case studies, each cited to its own primary source.
 - **`TA-29…31`** each supply the second documented instance for a MUST field ([§3.1](#31-attack-id-scheme)).
+- **`TA-32`** is memory poisoning that enters as the user's own turn, through a link that pre-fills the prompt; Microsoft observed it in the wild across 31 companies.
 
 | ID | Name (date) | What happened | Detecting fields | Primary component(s) |
 | :---- | :---------------- | :------------------------------------------- | :-------------------------------- | :-------- |
@@ -1132,6 +1142,7 @@ The catalogue of documented real-world attacks, in ID order, each mapped to the 
 | **TA-29** | **WhatsApp MCP sleeper rug pull** (Invariant Labs, Apr 2025) [[65]](#real-world-attack-primary-sources) | A malicious MCP server advertised an innocuous tool on first launch and, after the user had approved it, returned a changed description on the second launch. The new description instructed the agent, whenever it called the separately installed `whatsapp-mcp` server's `send_message`, to redirect the message to an attacker's number and append the user's chat history, padded so the confirmation dialog hid the payload. The tool's name was unchanged; its definition was not. | Tool Definition Digest, Capability-Set Change Event, MCP Server Identity & Primitive, Tool Call I/O, Output Egress Destination, Human Approval / Elicitation Event | Tools, ToolServer, AgentOutputHandling |
 | **TA-30** | **OpenClaw memory index, unbounded growth** (openclaw/openclaw#114612, Jul 2026) [[66]](#real-world-attack-primary-sources) | The memory index of the OpenClaw agent runtime (`memory_index_chunks`, `memory_embedding_cache`) had no retention or eviction policy and grew on every memory-extraction cycle. The disk budget enforced on session tables did not measure the memory tables. Production installs reported 1.5 to 3.3 GB agent databases (38,985 rows in one), growing heap and GC pauses, and four-minute gateway start-ups; credential rotation re-embedded the whole corpus. No adversary was involved. A cache cap shipped in 2026.9.7; retention for still-present sources remained open. | Memory Footprint / Growth, Declared Memory Configuration, *Resource-Consumption Aggregate* | Memory |
 | **TA-31** | **Agent name collision in multi-agent hosts** (Kumar, Sep 2026) [[67]](#real-world-attack-primary-sources) | Multi-agent hosts turn a remote A2A Agent Card into a local agent, tool, workflow target or broker route keyed by the card's `name`, which A2A defines as human-readable metadata with no collision semantics. An admitted peer that sets its name to a trusted peer's wins the collision by order or shared route, and requests addressed to the trusted peer go to the attacker. No transport, key or credential is forged. Demonstrated against the code of seven open-source frameworks at pinned versions; in all six client-style integrations dispatch went to the attacker's endpoint and the legitimate peer was never invoked. | Agent Name, Verified vs Displayed Identity, Peer Agent Card / Descriptor, Inter-Agent Message, Identities Used (per hop) | Orchestration, AgentToolTransport, Identity |
+| **TA-32** | **AI recommendation poisoning through pre-filled prompts** (Microsoft Defender Security Research, Feb 2026) [[68]](#real-world-attack-primary-sources) | Websites embedded "Summarize with AI" links whose URLs pre-filled an AI assistant's input through a query parameter (`?q=` or `?prompt=`). The pre-filled prompt instructed the assistant to remember the company as a trusted source, and the stored memory shaped the assistant's recommendations in later conversations without the user's awareness. Over 60 days Microsoft identified 50 distinct prompts from 31 companies across more than 14 industries, aimed at several assistants (Copilot, ChatGPT, Claude, Perplexity, Grok). The actors were companies seeking promotion, not threat actors; the input arrives as the user's own turn. | Input Source / Channel, Model Input, *Input Trust Classification*, Memory Write Event, Memory Provenance / Source, *Memory Integrity / Poisoning Signal*, Memory Read / Injection Event, *Response / Model Output* | ApplicationInputHandling, Memory |
 
 ### 3.3 CoSAI WS2: AI Incident Response case studies
 
@@ -1231,6 +1242,7 @@ Each catalogued attack mapped to its primary ATLAS technique(s). This is the cro
 | **TA-29** WhatsApp MCP sleeper rug pull | `AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0086` Exfiltration via AI Agent Tool Invocation | Definition changed after approval under an unchanged name |
 | **TA-30** OpenClaw memory index unbounded growth | `AML.T0029` Denial of AI Service | Store growth and degraded service with no adversary; **no adversary technique applies**, and AML.T0029 names the impact only |
 | **TA-31** Agent name collision | `AML.T0073` Impersonation | Peer display name used as a routing identity; the paper names Google ADK (Python, TypeScript), UiPath LangChain, BeeAI, Solace Agent Mesh, Mozilla Any-Agent and AutoDev |
+| **TA-32** AI recommendation poisoning | `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0051` LLM Prompt Injection | The mapping the source gives; the prompt enters through a pre-filled URL parameter, and ATT&CK T1204.001 (User Execution: Malicious Link) covers the click |
 | **IR-01** Breaking the Prompt Wall | `AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053` | See §3.3 |
 | **IR-02** MINJA | `AML.T0051.000` Direct and `AML.T0051.002` Triggered; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067` | Memory injection/feedback: injected as a user, activated by a victim's query |
 | **IR-03** Poison-RAG | `AML.T0070` RAG Poisoning; `AML.T0059` Erode Dataset Integrity | Metadata-tag poisoning |
@@ -1326,6 +1338,7 @@ One source per real-world attack vector, each mapping to a `TA-` ID in [§3.2](#
 65. **[TA-29]** WhatsApp MCP exploited: exfiltrating chat history via a sleeper rug pull and tool shadowing. Invariant Labs, 7 April 2025 (updated 9 April). <https://invariantlabs.ai/blog/whatsapp-mcp-exploited> · reproduction: <https://github.com/invariantlabs-ai/mcp-injection-experiments>
 66. **[TA-30]** OpenClaw memory-core: SQLite unbounded growth, `memory_index_chunks` and `memory_embedding_cache` have no retention policy. GitHub issue openclaw/openclaw#114612, opened 27 July 2026, with independent field confirmations from further production installs. <https://github.com/openclaw/openclaw/issues/114612>
 67. **[TA-31]** Agent Name Collision Attacks in Multi-Agent Systems. A. Arun Kumar, arXiv:2609.27624, September 2026. <https://arxiv.org/abs/2609.27624>
+68. **[TA-32]** Manipulating AI memory for profit: the rise of AI Recommendation Poisoning. Microsoft Defender Security Research Team (Noam Kochavi), Microsoft Security Blog, 10 February 2026. <https://www.microsoft.com/en-us/security/blog/2026/02/10/ai-recommendation-poisoning/>
 
 ### Standards & frameworks
 

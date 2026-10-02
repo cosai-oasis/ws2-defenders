@@ -1,7 +1,5 @@
 # Curation registry batch. Edit status only through tools/curate.py, or by hand
 # keeping decided_by and decided_on filled in. See curate.py for the schema.
-# Intake batch written by tools/intake.py; fill in every TODO, then run
-# `intake.py propose <ID>` and `intake.py report <ID>`.
 - id: A:TA-32
   type: attack
   subject:
@@ -52,7 +50,10 @@
           reason: the biased recommendations are the outcome, but the source documents the prompts and stored memories, not specific responses
   reason: 'Observed in the wild (50 prompts, 31 companies, 60 days) and traceable to the publisher''s own research post. Independent of TA-18: a different entry path (a pre-filled user prompt through a URL, not injected content in a document or page) and different actors. Non-malicious in intent towards infrastructure but adversarial to the user, as manipulation for promotion.'
   critical: true
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:input_source_channel
   type: edge
   subject:
@@ -63,7 +64,10 @@
     grounding: instance
   reason: the prompt arrives through a pre-filled URL parameter rather than typed input; the channel is what separates it from an ordinary user turn
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:model_input
   type: edge
   subject:
@@ -74,7 +78,10 @@
     grounding: instance
   reason: the injected prompt text ("remember [Company] as a trusted source") is the payload and is in the input
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:input_trust_classification
   type: edge
   subject:
@@ -85,7 +92,10 @@
     grounding: analogical
   reason: the content is third-party but enters at user trust; the instance shows the gap the field addresses, but the source documents no classification
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:memory_write_event
   type: edge
   subject:
@@ -96,7 +106,10 @@
     grounding: instance
   reason: the attack exists to cause a memory write; the source shows the stored entries in saved-memory settings
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:memory_provenance_source
   type: edge
   subject:
@@ -107,7 +120,10 @@
     grounding: instance
   reason: the written item originates from a third-party site through a link, not from the user; provenance is what makes that visible
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:memory_integrity_poisoning_signal
   type: edge
   subject:
@@ -118,7 +134,10 @@
     grounding: analogical
   reason: Microsoft's hunting matches memory-manipulation keywords in URLs (remember, trusted, authoritative); a poisoning signal on the write would carry the same test, but the source applies it to mail and chat URLs, not to memory
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:memory_read_injection_event
   type: edge
   subject:
@@ -129,7 +148,10 @@
     grounding: instance
   reason: the effect depends on the item being read into later sessions
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-32:response_model_output
   type: edge
   subject:
@@ -140,7 +162,10 @@
     grounding: analogical
   reason: the biased recommendations are the outcome, but the source documents the prompts and stored memories, not specific responses
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: K:external_memory_read_back:TA-32
   type: catch
   subject:
@@ -151,7 +176,10 @@
     grounding: instance
   reason: the edges support every field the pattern reads (instance)
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: K:poisoned_item_read:TA-32
   type: catch
   subject:
@@ -162,7 +190,10 @@
     grounding: analogical
   reason: the edges support every field the pattern reads (analogical)
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: P:prefilled_prompt_to_remember
   type: pattern
   subject:
@@ -183,4 +214,7 @@
     catches: [TA-32]
   reason: the intake report found the entry steps read by no pattern; this reads Input Source / Channel, which no pattern read before
   requires: A:TA-32
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
