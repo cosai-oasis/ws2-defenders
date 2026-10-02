@@ -18,6 +18,7 @@ listed.
   pattern  writes the record to data/patterns.yaml, replacing the record with its id
            or its former_id; a candidate it `supersedes` is stamped applied
   coverage sets `no_pattern:` on the attack: why no correlation pattern catches it
+  catch    adds the attack to a pattern's `catches` (instance) or `catches_analogical`
 
 After the edges are applied, a field's evidence is derived from the attacks
 that name it (build.py), so `evidence:` is removed from fields.yaml.
@@ -114,7 +115,7 @@ def main():
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
     superseded = {c['supersedes'] for c in all_c.values() if c.get('supersedes') and c['status'] == 'accepted'}
-    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage')
+    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -161,6 +162,11 @@ def main():
                     patterns.append(rec)
                     if c.get('supersedes'):
                         all_c[c['supersedes']]['applied'] = TODAY
+                elif kind == 'catch':
+                    p = next(p for p in patterns if p['id'] == s['pattern'])
+                    key = 'catches' if c['proposal']['grounding'] == 'instance' else 'catches_analogical'
+                    if s['attack'] not in p.setdefault(key, []):
+                        p[key].append(s['attack'])
                 elif kind == 'coverage':
                     attacks[s['attack']]['no_pattern'] = c['proposal']['no_pattern']
                 elif kind == 'capture':

@@ -42,7 +42,7 @@ CACHE = os.path.expanduser('~/.cache/cosai-telemetry')
 FILES = {'RFC': 'CoSAI-AI-Telemetry-RFC.md', 'AD': 'Telemetry-Attack-Detection-Addendum.md',
          'XM': 'Telemetry-Cross-Mapping-Addendum.md'}
 RETIRED_REFS = {27, 28, 46, 48}  # deleted 2026-09-30 (cited and named nowhere); never reused
-APPLY_TYPES = {'attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage'}
+APPLY_TYPES = {'attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch'}
 ATLAS_ID = re.compile(r'\bAML\.(?:TA|T|CS|M)\d{4}(?:\.\d{3})?\b')
 RISKMAP_ID = re.compile(r'\b(?:risk|control|component)[A-Z][A-Za-z0-9]+\b')
 fails = []

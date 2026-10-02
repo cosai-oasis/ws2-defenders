@@ -43,8 +43,10 @@ def edges(attack):
 
 
 def instances(fid, attacks):
-    """Attacks with an instance edge to the field: the evidence the MUST test counts."""
-    return sorted(a for a, rec in attacks.items() if edges(rec).get(fid) == 'instance')
+    """Independent attacks with an instance edge to the field: the evidence the MUST test
+    counts. An attack recorded `same_incident_as` another counted one adds nothing."""
+    found = sorted(a for a, rec in attacks.items() if edges(rec).get(fid) == 'instance')
+    return [a for a in found if not set(attacks[a].get('same_incident_as', [])) & set(found)]
 
 
 def tier_problems(fields, attacks):
