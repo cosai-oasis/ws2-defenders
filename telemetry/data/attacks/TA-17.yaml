@@ -1,16 +1,17 @@
-# TA-17. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-17. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-17
 name: DifyTap
 label: '**DifyTap, cross-tenant trace-configuration hijack** (Dify; CVE-2026-41947, CVSS 9.1; Jun 2026)'
 ref: 20
 what_happened: 'An authenticated editor could set and enable **trace configurations for any application regardless of tenant ownership**, redirecting every message and response of a victim tenant''s application to an attacker-controlled trace provider: a persistent exfiltration channel built out of the observability plane itself. Three of the four disclosed flaws carried cross-tenant impact.'
-detecting_fields_text: Organization / Tenant ID, Instrumentation Coverage / Hook Attestation, Authorization Decision Record, Output Egress Destination, Identities Used
 fields:
 - organization_tenant_id
 - instrumentation_coverage_hook_attestation
 - authorization_decision_record
 - output_egress_destination
 - identities_used_per_hop
+- field: event_sequence_continuity
+  grounding: analogical
 components_text: Application, Identity
 atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0048` External Harms'
 atlas_notes: Observability plane repurposed as the exfiltration channel

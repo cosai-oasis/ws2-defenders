@@ -1,10 +1,9 @@
-# TA-08. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-08. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-08
 name: Tool-chaining escalation
 label: Agentic privilege escalation via tool chaining (2024 to 2025)
 ref: 11
 what_happened: A compromised agent chains individually-authorized calls (read email → find creds → authenticate → modify DB) into unauthorized escalation.
-detecting_fields_text: Tool Call I/O (creds passed between calls), Identities Used (identity change across chain), Action Type (long Tool-Call sequence), Observation/Thought, Tool Name (escalating sequence), Tool ACL/Scope (separation-of-duties), tool-call count
 fields:
 - field: tool_call_io
   note: creds passed between calls
@@ -18,6 +17,13 @@ fields:
 - field: tool_acl_required_scope
   note: separation-of-duties
 - loop_step_count_signal
+- session_turn_step_ids
+- trace_context_propagated
+- tool_execution_id
+- field: tool_selection_rationale
+  grounding: analogical
+- credential_minting_scope_narrowing_check
+- authorization_decision_record
 components_text: Tools, Identity, ReasoningCore
 atlas_text: '`AML.T0053` AI Agent Tool Invocation'
 atlas_notes: Chained authorized calls → escalation

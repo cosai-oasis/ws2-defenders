@@ -1,10 +1,9 @@
-# TA-28. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-28. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-28
 name: SesameOp
 label: '**SesameOp, provider API as command and control** (Microsoft DART, Jul 2025)'
 ref: 63
 what_happened: A backdoor used a **model provider's Assistants API as its C2 channel**, fetching commands and exfiltrating encrypted results through it for several months. The exfiltration destination is the same endpoint the application legitimately calls, so destination alone does not separate the two.
-detecting_fields_text: Output Egress Destination, Provider / Endpoint Identity, Tool Call I/O, Identities Used
 fields: [output_egress_destination, provider_endpoint_identity, tool_call_io, identities_used_per_hop]
 components_text: ModelServing, ApplicationOutputHandling
 atlas_text: '`AML.T0086` Exfiltration via AI Agent Tool Invocation; `AML.T0040` AI Model Inference API Access'

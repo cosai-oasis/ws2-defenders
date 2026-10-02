@@ -1,10 +1,21 @@
-# AOC-14. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-14. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-14
 name: Data Tampering
 label: Data Tampering *(resisted)*
 what_happened: Attempt to make agent **bypass the API and edit backend storage directly**.
-detecting_fields_text: Tool Type/Trust Boundary, Tool Call I/O, LLM Refusal
-fields: [tool_type_trust_boundary, tool_call_io, llm_refusal]
+fields:
+- tool_type_trust_boundary
+- tool_call_io
+- llm_refusal
+- field: tool_execution_id
+  grounding: analogical
+- field: execution_environment_sandbox
+  grounding: analogical
+- field: tool_error_exception
+  grounding: analogical
+- field: tool_description
+  grounding: analogical
+- mediation_coverage_bypass_path
 components_text: Tools
 atlas_text: '`AML.T0053` Tool Invocation; `AML.T0059` Erode Dataset Integrity'
 atlas_notes: Bypass API to edit storage *(resisted)*

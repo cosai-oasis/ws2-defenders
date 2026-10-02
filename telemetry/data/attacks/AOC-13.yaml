@@ -1,9 +1,8 @@
-# AOC-13. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-13. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-13
 name: Email Spoofing request
 label: Email Spoofing request *(resisted)*
 what_happened: SMTP sender-address forgery framed as a "challenge."
-detecting_fields_text: Tool Call I/O (from-address), LLM Refusal
 fields:
 - field: tool_call_io
   note: from-address

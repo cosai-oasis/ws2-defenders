@@ -1,10 +1,9 @@
-# TA-06. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-06. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-06
 name: LangChain RCE
 label: LangChain remote code execution (2023, multiple CVEs)
 ref: 9
 what_happened: Prompt injection makes the LLM emit malicious Python that LangChain executes unsandboxed (CVE-2023-36095/-29374/-34540) → server compromise.
-detecting_fields_text: Tool Call I/O, Tool Name (`code_interpreter`,`PALChain`,`PandasQueryEngine`), Tool Type, Tool Error/Exception, Observation/Thought, Action Type, Tool ACL/Scope
 fields:
 - tool_call_io
 - field: tool_name
@@ -14,6 +13,24 @@ fields:
 - observation_thought_reasoning_trace
 - action_type
 - tool_acl_required_scope
+- field: model_name_version
+  grounding: analogical
+- execution_environment_sandbox
+- field: runtime_credential_attestation
+  grounding: analogical
+- field: capability_set_change_event
+  grounding: analogical
+- tool_agent_version
+- field: repository_code_path_software_ref
+  grounding: analogical
+- agbom_inventory_snapshot
+- component_dependency_graph
+- field: inventory_attestation_signature
+  grounding: analogical
+- field: fleet_counts
+  grounding: analogical
+- field: mediation_coverage_bypass_path
+  grounding: analogical
 components_text: Tools, ModelFrameworksAndCode
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation; `AML.T0102` Generate Malicious Commands'
 atlas_notes: Injection → unsandboxed code exec

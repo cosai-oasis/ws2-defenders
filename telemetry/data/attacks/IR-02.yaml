@@ -1,11 +1,24 @@
-# IR-02. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# IR-02. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: IR-02
 name: MINJA
 label: MINJA (Memory Injection Attack)
 what_happened: Benign queries induce the agent to autonomously generate & persist malicious reasoning in memory.
 taxonomy_text: AT1070/AT1081/AT1050/AT1040/AT1080 → `AML.T0051`, `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`
-detecting_fields_text: Memory Write/Read, Memory Provenance, Loop Signal, Observation/Thought
-fields: [memory_write_event, memory_read_injection_event, memory_provenance_source, loop_step_count_signal, observation_thought_reasoning_trace]
+fields:
+- memory_write_event
+- memory_read_injection_event
+- memory_provenance_source
+- loop_step_count_signal
+- observation_thought_reasoning_trace
+- model_input
+- field: pre_forward_pass_state_digest_vector
+  grounding: analogical
+- field: token_malformation_context_corruption_indicator
+  grounding: analogical
+- memory_integrity_poisoning_signal
+- field: declared_memory_configuration
+  grounding: analogical
+- memory_write_rationale
 components_text: Memory
 atlas_text: '`AML.T0051.000` Direct and `AML.T0051.002` Triggered; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`'
 atlas_notes: 'Memory injection/feedback: injected as a user, activated by a victim''s query'

@@ -1,10 +1,9 @@
-# TA-01. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-01. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-01
 name: EchoLeak
 label: '**EchoLeak** (Microsoft 365 Copilot; CVE-2025-32711; disclosed Jun 2025)'
 ref: 4
 what_happened: 'Zero-click "LLM scope violation": a single crafted email, requiring no user interaction, is retrieved into Copilot''s context and treated as instruction, chaining bypasses of the XPIA injection classifier, link redaction, and CSP to exfiltrate internal SharePoint/OneDrive/Teams content through a trusted proxy domain.'
-detecting_fields_text: Model Input + Input Trust Class, Trigger Type (autonomous), Retrieval Event, Retrieved-Content Source, Tool Call I/O, Output Egress Destination, Guardrail (Input) Verdict, Enforcement-Point Availability
 fields:
 - model_input
 - input_trust_classification
@@ -16,6 +15,31 @@ fields:
 - output_egress_destination
 - guardrail_input_verdict
 - enforcement_point_availability_failure_mode
+- field: agent_name
+  grounding: analogical
+- field: trace_context_propagated
+  grounding: analogical
+- surface_app
+- input_source_channel
+- field: content_modality_attachment_identity
+  grounding: analogical
+- guardrail_modification_record
+- field: threat_classification_atlas_technique_tag
+  grounding: analogical
+- response_model_output
+- citations_source_attribution
+- guardrail_output_verdict
+- field: tool_type_trust_boundary
+  grounding: analogical
+- field: tool_error_exception
+  grounding: analogical
+- field: tool_privacy_classification
+  grounding: analogical
+- field: resource_indicators_constraints
+  grounding: analogical
+- field: policy_reason_code
+  grounding: analogical
+- session_taint_labels_information_flow_decisions
 components_text: AgentInputHandling, RAGContent, Tools, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0057` Data Leakage; `AML.T0070` RAG Poisoning; `AML.T0067` LLM Trusted Output Components Manipulation'
 atlas_notes: Zero-click chained exfil. ATLAS case study `AML.CS0059`

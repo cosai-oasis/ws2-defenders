@@ -1,10 +1,25 @@
-# AOC-05. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-05. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-05
 name: Denial-of-Service
 label: Denial-of-Service
 what_happened: Ever-growing per-non-owner memory file + repeated ~10 MB attachments → mail-server DoS.
-detecting_fields_text: Memory Footprint/Growth, Resource Aggregate, Output Egress
-fields: [memory_footprint_growth, resource_consumption_aggregate, output_egress_destination]
+fields:
+- memory_footprint_growth
+- resource_consumption_aggregate
+- output_egress_destination
+- field: agent_runtime_instance_id
+  grounding: analogical
+- field: execution_status
+  grounding: analogical
+- content_modality_attachment_identity
+- field: input_output_token_counts
+  grounding: analogical
+- field: declared_memory_configuration
+  grounding: analogical
+- field: resource_indicators_constraints
+  grounding: analogical
+- field: fleet_counts
+  grounding: analogical
 components_text: Memory, ModelServing
 atlas_text: '`AML.T0029` Denial of AI Service; `AML.T0034.000` Cost Harvesting: Excessive Queries; `AML.T0034.001` Resource-Intensive Queries'
 atlas_notes: Memory growth + attachment flooding

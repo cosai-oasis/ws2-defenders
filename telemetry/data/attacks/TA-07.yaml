@@ -1,10 +1,9 @@
-# TA-07. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-07. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-07
 name: System-prompt extraction
 label: System-prompt extraction (2023 to 2024)
 ref: 10
 what_happened: Role-play, encoding tricks, and multi-turn manipulation extract system prompts from GPT-4 / custom GPTs, revealing internal logic, tool config, and safety instructions.
-detecting_fields_text: System Prompt (vs Response similarity), Response, Model Input (known extraction patterns), LLM Refusal (refuse→success), Identities Used
 fields:
 - field: system_prompt_instruction_config
   note: vs Response similarity
@@ -14,6 +13,9 @@ fields:
 - field: llm_refusal
   note: refuse→success
 - identities_used_per_hop
+- session_turn_step_ids
+- field: threat_classification_atlas_technique_tag
+  grounding: analogical
 components_text: AgentSystemInstruction, ApplicationOutputHandling
 atlas_text: '`AML.T0056` Extract LLM System Prompt; `AML.T0069.002` Discover System Prompt'
 atlas_notes: n/a

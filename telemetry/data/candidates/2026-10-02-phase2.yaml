@@ -11,6 +11,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:autonomy_level
   type: edge
   subject:
@@ -22,6 +23,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -33,6 +35,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:tool_call_io
   type: edge
   subject:
@@ -44,6 +47,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:tool_execution_id
   type: edge
   subject:
@@ -57,6 +61,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:tool_selection_rationale
   type: edge
   subject:
@@ -65,7 +70,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-01:task_intent_declaration
   type: edge
   subject:
@@ -74,7 +83,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-01:identities_used_per_hop
   type: edge
   subject:
@@ -86,6 +99,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:originating_principal_on_behalf_of
   type: edge
   subject:
@@ -94,7 +108,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-01:instrumentation_coverage_hook_attestation
   type: edge
   subject:
@@ -108,6 +126,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-01:event_sequence_continuity
   type: edge
   subject:
@@ -117,7 +136,11 @@
   proposal:
     grounding: analogical
   reason: no instrumentation gap or suppression is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-01:attribute_source_trusted_provenance_marking
   type: edge
   subject:
@@ -126,7 +149,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-01:human_approval_elicitation_event
   type: edge
   subject:
@@ -135,7 +162,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:organization_tenant_id
   type: edge
   subject:
@@ -145,7 +176,11 @@
   proposal:
     grounding: reject
   reason: owner and non-owner act within one deployment; no tenant boundary is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:action_type
   type: edge
   subject:
@@ -154,7 +189,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:input_trust_classification
   type: edge
   subject:
@@ -166,6 +205,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-02:tool_call_io
   type: edge
   subject:
@@ -177,6 +217,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-02:tool_name
   type: edge
   subject:
@@ -188,6 +229,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-02:execution_environment_sandbox
   type: edge
   subject:
@@ -197,7 +239,11 @@
   proposal:
     grounding: analogical
   reason: shell commands ran, but isolation posture does not distinguish the attack
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:tool_acl_required_scope
   type: edge
   subject:
@@ -206,7 +252,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:tool_selection_rationale
   type: edge
   subject:
@@ -216,7 +266,11 @@
   proposal:
     grounding: analogical
   reason: no stated rationale is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:identities_used_per_hop
   type: edge
   subject:
@@ -228,6 +282,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-02:originating_principal_on_behalf_of
   type: edge
   subject:
@@ -236,7 +291,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:granted_authorizations_scope
   type: edge
   subject:
@@ -245,7 +304,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:credential_minting_scope_narrowing_check
   type: edge
   subject:
@@ -255,7 +318,11 @@
   proposal:
     grounding: analogical
   reason: no credential exchange is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:capability_set_change_event
   type: edge
   subject:
@@ -265,7 +332,11 @@
   proposal:
     grounding: reject
   reason: no capability was added or removed
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:tool_status
   type: edge
   subject:
@@ -275,7 +346,11 @@
   proposal:
     grounding: analogical
   reason: no tool that should have been unreachable was called
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:authorization_decision_record
   type: edge
   subject:
@@ -284,7 +359,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:human_approval_elicitation_event
   type: edge
   subject:
@@ -293,7 +372,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-02:mediation_coverage_bypass_path
   type: edge
   subject:
@@ -303,7 +386,11 @@
   proposal:
     grounding: analogical
   reason: no unmediated path is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:session_turn_step_ids
   type: edge
   subject:
@@ -312,7 +399,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:model_input
   type: edge
   subject:
@@ -321,7 +412,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:guardrail_modification_record
   type: edge
   subject:
@@ -335,6 +430,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-03:response_model_output
   type: edge
   subject:
@@ -346,6 +442,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-03:output_egress_destination
   type: edge
   subject:
@@ -357,6 +454,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-03:citations_source_attribution
   type: edge
   subject:
@@ -366,7 +464,11 @@
   proposal:
     grounding: reject
   reason: the disclosure is in the response, not in citations
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:guardrail_output_verdict
   type: edge
   subject:
@@ -375,7 +477,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:tool_call_io
   type: edge
   subject:
@@ -387,6 +493,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-03:tool_privacy_classification
   type: edge
   subject:
@@ -398,6 +505,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-03:resource_indicators_constraints
   type: edge
   subject:
@@ -407,7 +515,11 @@
   proposal:
     grounding: analogical
   reason: no classification constraint was in force
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-03:session_taint_labels_information_flow_decisions
   type: edge
   subject:
@@ -416,7 +528,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:agent_runtime_instance_id
   type: edge
   subject:
@@ -430,6 +546,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:workflow_run_id
   type: edge
   subject:
@@ -443,6 +560,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:trace_context_propagated
   type: edge
   subject:
@@ -451,7 +569,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:trigger_type_source_event
   type: edge
   subject:
@@ -460,7 +582,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:autonomy_level
   type: edge
   subject:
@@ -470,7 +596,11 @@
   proposal:
     grounding: analogical
   reason: no declared autonomy level is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:inference_parameters
   type: edge
   subject:
@@ -484,6 +614,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:input_output_token_counts
   type: edge
   subject:
@@ -495,6 +626,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:tool_execution_id
   type: edge
   subject:
@@ -508,6 +640,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:execution_environment_sandbox
   type: edge
   subject:
@@ -517,7 +650,11 @@
   proposal:
     grounding: analogical
   reason: isolation posture does not distinguish the loop
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:memory_footprint_growth
   type: edge
   subject:
@@ -531,6 +668,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:inter_agent_message
   type: edge
   subject:
@@ -542,6 +680,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:a2a_task_lifecycle_event
   type: edge
   subject:
@@ -551,7 +690,11 @@
   proposal:
     grounding: analogical
   reason: predates A2A (AD §4.8)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:background_scheduled_task_event
   type: edge
   subject:
@@ -563,6 +706,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:loop_step_count_signal
   type: edge
   subject:
@@ -574,6 +718,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:resource_consumption_aggregate
   type: edge
   subject:
@@ -585,6 +730,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-04:task_intent_declaration
   type: edge
   subject:
@@ -593,7 +739,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:delegation_chain
   type: edge
   subject:
@@ -603,7 +753,11 @@
   proposal:
     grounding: analogical
   reason: no delegated authority is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:trust_domain_crossing_delegation_depth
   type: edge
   subject:
@@ -613,7 +767,11 @@
   proposal:
     grounding: analogical
   reason: the relay stays inside one domain
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-04:fleet_counts
   type: edge
   subject:
@@ -623,7 +781,11 @@
   proposal:
     grounding: analogical
   reason: per-run signals, not fleet aggregates, distinguish the loop
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:agent_runtime_instance_id
   type: edge
   subject:
@@ -637,6 +799,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-05:organization_tenant_id
   type: edge
   subject:
@@ -646,7 +809,11 @@
   proposal:
     grounding: reject
   reason: no tenant boundary is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:execution_status
   type: edge
   subject:
@@ -656,7 +823,11 @@
   proposal:
     grounding: analogical
   reason: the outcome is server exhaustion, not an operation status
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:content_modality_attachment_identity
   type: edge
   subject:
@@ -665,7 +836,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:output_egress_destination
   type: edge
   subject:
@@ -677,6 +852,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-05:input_output_token_counts
   type: edge
   subject:
@@ -686,7 +862,11 @@
   proposal:
     grounding: analogical
   reason: the flood is attachments and memory, not tokens
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:memory_footprint_growth
   type: edge
   subject:
@@ -700,6 +880,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-05:declared_memory_configuration
   type: edge
   subject:
@@ -709,7 +890,11 @@
   proposal:
     grounding: analogical
   reason: no declared limit is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:resource_consumption_aggregate
   type: edge
   subject:
@@ -721,6 +906,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-05:resource_indicators_constraints
   type: edge
   subject:
@@ -730,7 +916,11 @@
   proposal:
     grounding: analogical
   reason: no constraint was in force
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:fleet_counts
   type: edge
   subject:
@@ -740,7 +930,11 @@
   proposal:
     grounding: analogical
   reason: one agent; no fleet aggregate is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-05:backend_route_restriction_decision
   type: edge
   subject:
@@ -750,7 +944,11 @@
   proposal:
     grounding: reject
   reason: no backend selection is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-06:execution_status
   type: edge
   subject:
@@ -759,7 +957,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-06:stop_reason
   type: edge
   subject:
@@ -771,6 +973,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-06:model_name_version
   type: edge
   subject:
@@ -779,7 +982,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-06:provider_endpoint_identity
   type: edge
   subject:
@@ -791,6 +998,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-06:inference_parameters
   type: edge
   subject:
@@ -804,6 +1012,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-06:llm_error_exception
   type: edge
   subject:
@@ -817,6 +1026,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-06:backend_route_restriction_decision
   type: edge
   subject:
@@ -826,7 +1036,11 @@
   proposal:
     grounding: analogical
   reason: no routing constraint is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-07:session_turn_step_ids
   type: edge
   subject:
@@ -835,7 +1049,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-07:autonomy_level
   type: edge
   subject:
@@ -847,6 +1065,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-07:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -858,6 +1077,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-07:memory_write_event
   type: edge
   subject:
@@ -869,6 +1089,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-07:declared_memory_configuration
   type: edge
   subject:
@@ -878,7 +1099,11 @@
   proposal:
     grounding: analogical
   reason: memory was wiped, not reconfigured
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-07:memory_write_rationale
   type: edge
   subject:
@@ -888,7 +1113,11 @@
   proposal:
     grounding: analogical
   reason: no stated rationale is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-07:lifecycle_state
   type: edge
   subject:
@@ -900,6 +1129,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-07:event_sequence_continuity
   type: edge
   subject:
@@ -909,7 +1139,11 @@
   proposal:
     grounding: reject
   reason: no gap or suppression in the record is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-07:human_approval_elicitation_event
   type: edge
   subject:
@@ -918,7 +1152,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:agent_name
   type: edge
   subject:
@@ -932,6 +1170,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:agent_runtime_instance_id
   type: edge
   subject:
@@ -945,6 +1184,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:surface_app
   type: edge
   subject:
@@ -956,6 +1196,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:system_prompt_instruction_config
   type: edge
   subject:
@@ -965,7 +1206,11 @@
   proposal:
     grounding: analogical
   reason: admin reassignment is documented, not an instruction change
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:input_trust_classification
   type: edge
   subject:
@@ -974,7 +1219,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:source_host_ip_request_metadata
   type: edge
   subject:
@@ -984,7 +1233,11 @@
   proposal:
     grounding: analogical
   reason: the channel, not the origin address, distinguished the spoof
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:tool_acl_required_scope
   type: edge
   subject:
@@ -993,7 +1246,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:peer_agent_card_descriptor
   type: edge
   subject:
@@ -1003,7 +1260,11 @@
   proposal:
     grounding: reject
   reason: no peer agent is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:identities_used_per_hop
   type: edge
   subject:
@@ -1015,6 +1276,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:verified_vs_displayed_identity
   type: edge
   subject:
@@ -1026,6 +1288,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:originating_principal_on_behalf_of
   type: edge
   subject:
@@ -1034,7 +1297,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:granted_authorizations_scope
   type: edge
   subject:
@@ -1046,6 +1313,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-08:credential_minting_scope_narrowing_check
   type: edge
   subject:
@@ -1055,7 +1323,11 @@
   proposal:
     grounding: analogical
   reason: no credential exchange is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:runtime_credential_attestation
   type: edge
   subject:
@@ -1065,7 +1337,11 @@
   proposal:
     grounding: analogical
   reason: no runtime attestation is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:surfaces_supported
   type: edge
   subject:
@@ -1075,7 +1351,11 @@
   proposal:
     grounding: analogical
   reason: cross-channel exposure motivates it; no per-tool exposure map is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:authorization_decision_record
   type: edge
   subject:
@@ -1084,7 +1364,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-08:attribute_source_trusted_provenance_marking
   type: edge
   subject:
@@ -1093,7 +1377,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:workflow_run_id
   type: edge
   subject:
@@ -1107,6 +1395,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-09:trace_context_propagated
   type: edge
   subject:
@@ -1115,7 +1404,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:tool_name
   type: edge
   subject:
@@ -1127,6 +1420,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-09:tool_definition_digest
   type: edge
   subject:
@@ -1140,6 +1434,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-09:mcp_server_identity_primitive
   type: edge
   subject:
@@ -1149,7 +1444,11 @@
   proposal:
     grounding: analogical
   reason: no MCP server is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:inter_agent_message
   type: edge
   subject:
@@ -1161,6 +1460,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-09:a2a_task_lifecycle_event
   type: edge
   subject:
@@ -1170,7 +1470,11 @@
   proposal:
     grounding: analogical
   reason: predates A2A (AD §4.8)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:peer_agent_card_descriptor
   type: edge
   subject:
@@ -1180,7 +1484,11 @@
   proposal:
     grounding: analogical
   reason: no descriptor is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:protocol_envelope_capture
   type: edge
   subject:
@@ -1190,7 +1498,11 @@
   proposal:
     grounding: analogical
   reason: no protocol envelope is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:delegation_chain
   type: edge
   subject:
@@ -1202,6 +1514,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-09:trust_domain_crossing_delegation_depth
   type: edge
   subject:
@@ -1211,7 +1524,11 @@
   proposal:
     grounding: analogical
   reason: no domain crossing is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:capability_set_change_event
   type: edge
   subject:
@@ -1220,7 +1537,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:agbom_inventory_snapshot
   type: edge
   subject:
@@ -1230,7 +1551,11 @@
   proposal:
     grounding: analogical
   reason: Capability-Set Change carries the acquisition
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-09:instrumentation_coverage_hook_attestation
   type: edge
   subject:
@@ -1244,6 +1569,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:agent_name
   type: edge
   subject:
@@ -1257,6 +1583,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:workflow_run_id
   type: edge
   subject:
@@ -1270,6 +1597,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:trigger_type_source_event
   type: edge
   subject:
@@ -1279,7 +1607,11 @@
   proposal:
     grounding: analogical
   reason: no autonomous trigger is documented as decisive
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:surface_app
   type: edge
   subject:
@@ -1289,7 +1621,11 @@
   proposal:
     grounding: analogical
   reason: the entry surface does not distinguish the attack
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:system_prompt_instruction_config
   type: edge
   subject:
@@ -1298,7 +1634,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:input_source_channel
   type: edge
   subject:
@@ -1307,7 +1647,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -1317,7 +1661,11 @@
   proposal:
     grounding: analogical
   reason: no reasoning trace is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:pre_forward_pass_state_digest_vector
   type: edge
   subject:
@@ -1327,7 +1675,11 @@
   proposal:
     grounding: analogical
   reason: research-grade; nothing documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_call_io
   type: edge
   subject:
@@ -1339,6 +1691,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_name
   type: edge
   subject:
@@ -1347,7 +1700,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_id
   type: edge
   subject:
@@ -1357,7 +1714,11 @@
   proposal:
     grounding: analogical
   reason: no attribution ambiguity is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_definition_digest
   type: edge
   subject:
@@ -1371,6 +1732,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:mcp_server_identity_primitive
   type: edge
   subject:
@@ -1380,7 +1742,11 @@
   proposal:
     grounding: reject
   reason: no MCP server is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_acl_required_scope
   type: edge
   subject:
@@ -1389,7 +1755,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:tool_selection_rationale
   type: edge
   subject:
@@ -1399,7 +1769,11 @@
   proposal:
     grounding: analogical
   reason: no stated rationale is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:memory_write_event
   type: edge
   subject:
@@ -1408,7 +1782,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:memory_read_injection_event
   type: edge
   subject:
@@ -1420,6 +1798,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:memory_provenance_source
   type: edge
   subject:
@@ -1431,6 +1810,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:memory_write_rationale
   type: edge
   subject:
@@ -1440,7 +1820,11 @@
   proposal:
     grounding: analogical
   reason: no stated rationale is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:retrieval_event
   type: edge
   subject:
@@ -1449,7 +1833,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:background_scheduled_task_event
   type: edge
   subject:
@@ -1461,6 +1849,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:task_intent_declaration
   type: edge
   subject:
@@ -1469,7 +1858,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:delegation_chain
   type: edge
   subject:
@@ -1479,7 +1872,11 @@
   proposal:
     grounding: analogical
   reason: no delegated authority is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:granted_authorizations_scope
   type: edge
   subject:
@@ -1489,7 +1886,11 @@
   proposal:
     grounding: analogical
   reason: no delegated scope is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:lifecycle_state
   type: edge
   subject:
@@ -1498,7 +1899,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:capability_set_change_event
   type: edge
   subject:
@@ -1508,7 +1913,11 @@
   proposal:
     grounding: analogical
   reason: no capability was added or removed
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:repository_code_path_software_ref
   type: edge
   subject:
@@ -1518,7 +1927,11 @@
   proposal:
     grounding: analogical
   reason: the Gist is memory content, not code
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:agbom_inventory_snapshot
   type: edge
   subject:
@@ -1528,7 +1941,11 @@
   proposal:
     grounding: analogical
   reason: no inventory change is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:inventory_attestation_signature
   type: edge
   subject:
@@ -1538,7 +1955,11 @@
   proposal:
     grounding: analogical
   reason: no inventory change is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:instrumentation_coverage_hook_attestation
   type: edge
   subject:
@@ -1552,6 +1973,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-10:event_sequence_continuity
   type: edge
   subject:
@@ -1561,7 +1983,11 @@
   proposal:
     grounding: analogical
   reason: no instrumentation gap or suppression is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:authorization_decision_record
   type: edge
   subject:
@@ -1570,7 +1996,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-10:attribute_source_trusted_provenance_marking
   type: edge
   subject:
@@ -1579,7 +2009,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:response_model_output
   type: edge
   subject:
@@ -1588,7 +2022,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:output_egress_destination
   type: edge
   subject:
@@ -1600,6 +2038,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-11:inter_agent_message
   type: edge
   subject:
@@ -1611,6 +2050,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-11:a2a_task_lifecycle_event
   type: edge
   subject:
@@ -1620,7 +2060,11 @@
   proposal:
     grounding: analogical
   reason: predates A2A (AD §4.8)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:peer_agent_card_descriptor
   type: edge
   subject:
@@ -1630,7 +2074,11 @@
   proposal:
     grounding: analogical
   reason: no descriptor is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:identities_used_per_hop
   type: edge
   subject:
@@ -1639,7 +2087,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:verified_vs_displayed_identity
   type: edge
   subject:
@@ -1651,6 +2103,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-11:trust_domain_crossing_delegation_depth
   type: edge
   subject:
@@ -1660,7 +2113,11 @@
   proposal:
     grounding: analogical
   reason: no domain crossing is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-11:human_approval_elicitation_event
   type: edge
   subject:
@@ -1669,7 +2126,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:trigger_type_source_event
   type: edge
   subject:
@@ -1679,7 +2140,11 @@
   proposal:
     grounding: analogical
   reason: the trigger does not distinguish the attempt
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:model_input
   type: edge
   subject:
@@ -1691,6 +2156,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:input_source_channel
   type: edge
   subject:
@@ -1699,7 +2165,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:input_trust_classification
   type: edge
   subject:
@@ -1708,7 +2178,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:guardrail_input_verdict
   type: edge
   subject:
@@ -1720,6 +2194,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:content_modality_attachment_identity
   type: edge
   subject:
@@ -1728,7 +2203,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:guardrail_modification_record
   type: edge
   subject:
@@ -1742,6 +2221,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:threat_classification_atlas_technique_tag
   type: edge
   subject:
@@ -1755,6 +2235,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:encoded_obfuscated_payload_indicator
   type: edge
   subject:
@@ -1766,6 +2247,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:llm_refusal
   type: edge
   subject:
@@ -1774,7 +2256,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:protocol_envelope_capture
   type: edge
   subject:
@@ -1784,7 +2270,11 @@
   proposal:
     grounding: analogical
   reason: no protocol envelope is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-12:enforcement_point_availability_failure_mode
   type: edge
   subject:
@@ -1798,6 +2288,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-12:policy_reason_code
   type: edge
   subject:
@@ -1807,7 +2298,11 @@
   proposal:
     grounding: analogical
   reason: no enforcement decision is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-13:llm_refusal
   type: edge
   subject:
@@ -1819,6 +2314,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-13:tool_call_io
   type: edge
   subject:
@@ -1830,6 +2326,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:llm_refusal
   type: edge
   subject:
@@ -1841,6 +2338,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_call_io
   type: edge
   subject:
@@ -1852,6 +2350,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_type_trust_boundary
   type: edge
   subject:
@@ -1865,6 +2364,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_execution_id
   type: edge
   subject:
@@ -1878,6 +2378,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_definition_digest
   type: edge
   subject:
@@ -1891,6 +2392,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:execution_environment_sandbox
   type: edge
   subject:
@@ -1900,7 +2402,11 @@
   proposal:
     grounding: analogical
   reason: isolation posture does not distinguish the attempt
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_error_exception
   type: edge
   subject:
@@ -1914,6 +2420,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-14:tool_description
   type: edge
   subject:
@@ -1923,7 +2430,11 @@
   proposal:
     grounding: analogical
   reason: no misdescribed tool is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-14:mediation_coverage_bypass_path
   type: edge
   subject:
@@ -1932,7 +2443,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-15:source_host_ip_request_metadata
   type: edge
   subject:
@@ -1944,6 +2459,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-15:identities_used_per_hop
   type: edge
   subject:
@@ -1955,6 +2471,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-15:verified_vs_displayed_identity
   type: edge
   subject:
@@ -1966,6 +2483,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-15:attribute_source_trusted_provenance_marking
   type: edge
   subject:
@@ -1974,7 +2492,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:AOC-16:input_trust_classification
   type: edge
   subject:
@@ -1986,6 +2508,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-16:inter_agent_message
   type: edge
   subject:
@@ -1997,6 +2520,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:AOC-16:peer_agent_card_descriptor
   type: edge
   subject:
@@ -2006,7 +2530,11 @@
   proposal:
     grounding: analogical
   reason: no descriptor is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-01:action_type
   type: edge
   subject:
@@ -2016,7 +2544,11 @@
   proposal:
     grounding: analogical
   reason: the case study documents injection templates and refusals, not this signal
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-01:stop_reason
   type: edge
   subject:
@@ -2026,7 +2558,11 @@
   proposal:
     grounding: analogical
   reason: the case study documents injection templates and refusals, not this signal
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-01:model_input
   type: edge
   subject:
@@ -2038,6 +2574,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:input_source_channel
   type: edge
   subject:
@@ -2049,6 +2586,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:input_trust_classification
   type: edge
   subject:
@@ -2060,6 +2598,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:guardrail_input_verdict
   type: edge
   subject:
@@ -2071,6 +2610,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:guardrail_modification_record
   type: edge
   subject:
@@ -2084,6 +2624,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:threat_classification_atlas_technique_tag
   type: edge
   subject:
@@ -2097,6 +2638,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:guardrail_output_verdict
   type: edge
   subject:
@@ -2108,6 +2650,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:llm_refusal
   type: edge
   subject:
@@ -2119,6 +2662,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:llm_error_exception
   type: edge
   subject:
@@ -2132,6 +2676,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:tool_name
   type: edge
   subject:
@@ -2141,7 +2686,11 @@
   proposal:
     grounding: analogical
   reason: the case study documents injection templates and refusals, not this signal
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-01:tool_error_exception
   type: edge
   subject:
@@ -2155,6 +2704,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:enforcement_point_availability_failure_mode
   type: edge
   subject:
@@ -2168,6 +2718,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-01:policy_reason_code
   type: edge
   subject:
@@ -2177,7 +2728,11 @@
   proposal:
     grounding: analogical
   reason: the case study documents injection templates and refusals, not this signal
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:model_input
   type: edge
   subject:
@@ -2186,7 +2741,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -2198,6 +2757,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-02:pre_forward_pass_state_digest_vector
   type: edge
   subject:
@@ -2207,7 +2767,11 @@
   proposal:
     grounding: analogical
   reason: research-grade; nothing documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:token_malformation_context_corruption_indicator
   type: edge
   subject:
@@ -2217,7 +2781,11 @@
   proposal:
     grounding: analogical
   reason: research-grade; nothing documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:memory_write_event
   type: edge
   subject:
@@ -2229,6 +2797,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-02:memory_read_injection_event
   type: edge
   subject:
@@ -2240,6 +2809,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-02:memory_provenance_source
   type: edge
   subject:
@@ -2251,6 +2821,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-02:memory_integrity_poisoning_signal
   type: edge
   subject:
@@ -2259,7 +2830,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:declared_memory_configuration
   type: edge
   subject:
@@ -2269,7 +2844,11 @@
   proposal:
     grounding: analogical
   reason: no configuration change is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:memory_write_rationale
   type: edge
   subject:
@@ -2278,7 +2857,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-02:loop_step_count_signal
   type: edge
   subject:
@@ -2290,6 +2873,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-03:input_source_channel
   type: edge
   subject:
@@ -2298,7 +2882,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-03:citations_source_attribution
   type: edge
   subject:
@@ -2307,7 +2895,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-03:retrieval_event
   type: edge
   subject:
@@ -2319,6 +2911,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-03:retrieved_content_source_provenance
   type: edge
   subject:
@@ -2330,6 +2923,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-03:retrieved_content_metadata_integrity_signal
   type: edge
   subject:
@@ -2341,6 +2935,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-03:declared_knowledge_source_configuration
   type: edge
   subject:
@@ -2350,7 +2945,11 @@
   proposal:
     grounding: analogical
   reason: IR-03 poisons metadata, not search configuration (AD §4.7)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:execution_status
   type: edge
   subject:
@@ -2360,7 +2959,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:source_host_ip_request_metadata
   type: edge
   subject:
@@ -2373,6 +2976,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-04:model_name_version
   type: edge
   subject:
@@ -2382,7 +2986,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:model_provenance_signing_hash
   type: edge
   subject:
@@ -2392,7 +3000,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:tool_call_io
   type: edge
   subject:
@@ -2405,6 +3017,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-04:identities_used_per_hop
   type: edge
   subject:
@@ -2417,6 +3030,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-04:credential_minting_scope_narrowing_check
   type: edge
   subject:
@@ -2426,7 +3040,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:tool_agent_version
   type: edge
   subject:
@@ -2439,6 +3057,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-04:agbom_inventory_snapshot
   type: edge
   subject:
@@ -2448,7 +3067,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:component_dependency_graph
   type: edge
   subject:
@@ -2458,7 +3081,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:inventory_attestation_signature
   type: edge
   subject:
@@ -2468,7 +3095,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-04:creator_id_oncall_creation_update_dates
   type: edge
   subject:
@@ -2478,7 +3109,11 @@
   proposal:
     grounding: analogical
   reason: non-AI incident, carried for field overlap (AD §3.3)
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:IR-05:memory_write_event
   type: edge
   subject:
@@ -2490,6 +3125,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-05:memory_read_injection_event
   type: edge
   subject:
@@ -2501,6 +3137,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-05:memory_integrity_poisoning_signal
   type: edge
   subject:
@@ -2512,6 +3149,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-05:retrieval_event
   type: edge
   subject:
@@ -2523,6 +3161,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:IR-05:retrieved_content_metadata_integrity_signal
   type: edge
   subject:
@@ -2534,6 +3173,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:agent_name
   type: edge
   subject:
@@ -2547,6 +3187,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:trace_context_propagated
   type: edge
   subject:
@@ -2556,7 +3197,11 @@
   proposal:
     grounding: analogical
   reason: one agent; no cross-hop reassembly is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:organization_tenant_id
   type: edge
   subject:
@@ -2566,7 +3211,11 @@
   proposal:
     grounding: reject
   reason: the attack stays inside one tenant
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:trigger_type_source_event
   type: edge
   subject:
@@ -2578,6 +3227,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:surface_app
   type: edge
   subject:
@@ -2586,7 +3236,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:model_input
   type: edge
   subject:
@@ -2598,6 +3252,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:input_source_channel
   type: edge
   subject:
@@ -2606,7 +3261,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:input_trust_classification
   type: edge
   subject:
@@ -2618,6 +3277,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:guardrail_input_verdict
   type: edge
   subject:
@@ -2629,6 +3289,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:content_modality_attachment_identity
   type: edge
   subject:
@@ -2638,7 +3299,11 @@
   proposal:
     grounding: analogical
   reason: the payload is email text
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:guardrail_modification_record
   type: edge
   subject:
@@ -2652,6 +3317,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:threat_classification_atlas_technique_tag
   type: edge
   subject:
@@ -2665,6 +3331,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:response_model_output
   type: edge
   subject:
@@ -2673,7 +3340,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:output_egress_destination
   type: edge
   subject:
@@ -2685,6 +3356,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:citations_source_attribution
   type: edge
   subject:
@@ -2693,7 +3365,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:guardrail_output_verdict
   type: edge
   subject:
@@ -2702,7 +3378,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:tool_call_io
   type: edge
   subject:
@@ -2714,6 +3394,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:tool_type_trust_boundary
   type: edge
   subject:
@@ -2727,6 +3408,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:mcp_server_identity_primitive
   type: edge
   subject:
@@ -2736,7 +3418,11 @@
   proposal:
     grounding: reject
   reason: no MCP server is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:tool_error_exception
   type: edge
   subject:
@@ -2750,6 +3436,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:tool_privacy_classification
   type: edge
   subject:
@@ -2759,7 +3446,11 @@
   proposal:
     grounding: analogical
   reason: governance metadata; nothing documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:retrieval_event
   type: edge
   subject:
@@ -2771,6 +3462,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:retrieved_content_source_provenance
   type: edge
   subject:
@@ -2782,6 +3474,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:a2a_task_lifecycle_event
   type: edge
   subject:
@@ -2791,7 +3484,11 @@
   proposal:
     grounding: reject
   reason: no A2A is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:resource_indicators_constraints
   type: edge
   subject:
@@ -2801,7 +3498,11 @@
   proposal:
     grounding: analogical
   reason: no constraint was in force
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:enforcement_point_availability_failure_mode
   type: edge
   subject:
@@ -2815,6 +3516,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-01:policy_reason_code
   type: edge
   subject:
@@ -2824,7 +3526,11 @@
   proposal:
     grounding: analogical
   reason: no enforcement decision is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:session_taint_labels_information_flow_decisions
   type: edge
   subject:
@@ -2833,7 +3539,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-01:backend_route_restriction_decision
   type: edge
   subject:
@@ -2843,7 +3553,11 @@
   proposal:
     grounding: reject
   reason: no backend selection is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:action_type
   type: edge
   subject:
@@ -2855,6 +3569,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:model_input
   type: edge
   subject:
@@ -2866,6 +3581,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:response_model_output
   type: edge
   subject:
@@ -2877,6 +3593,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:citations_source_attribution
   type: edge
   subject:
@@ -2885,7 +3602,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:tool_call_io
   type: edge
   subject:
@@ -2897,6 +3618,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:tool_error_exception
   type: edge
   subject:
@@ -2910,6 +3632,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:retrieval_event
   type: edge
   subject:
@@ -2918,7 +3641,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:retrieved_content_source_provenance
   type: edge
   subject:
@@ -2927,7 +3654,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:retrieved_content_metadata_integrity_signal
   type: edge
   subject:
@@ -2937,7 +3668,11 @@
   proposal:
     grounding: analogical
   reason: no integrity signal is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:declared_knowledge_source_configuration
   type: edge
   subject:
@@ -2947,7 +3682,11 @@
   proposal:
     grounding: analogical
   reason: no configuration change is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-02:identities_used_per_hop
   type: edge
   subject:
@@ -2959,6 +3698,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-02:session_taint_labels_information_flow_decisions
   type: edge
   subject:
@@ -2967,7 +3707,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-03:execution_status
   type: edge
   subject:
@@ -2979,6 +3723,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-03:model_input
   type: edge
   subject:
@@ -2990,6 +3735,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-03:source_host_ip_request_metadata
   type: edge
   subject:
@@ -3001,6 +3747,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-03:encoded_obfuscated_payload_indicator
   type: edge
   subject:
@@ -3010,7 +3757,11 @@
   proposal:
     grounding: analogical
   reason: the encoding is in the output URL; the indicator is input-side
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-03:response_model_output
   type: edge
   subject:
@@ -3022,6 +3773,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-03:output_egress_destination
   type: edge
   subject:
@@ -3030,7 +3782,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-03:llm_refusal
   type: edge
   subject:
@@ -3042,6 +3798,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:execution_status
   type: edge
   subject:
@@ -3053,6 +3810,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:stop_reason
   type: edge
   subject:
@@ -3061,7 +3819,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-04:model_input
   type: edge
   subject:
@@ -3073,6 +3835,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:response_model_output
   type: edge
   subject:
@@ -3084,6 +3847,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:llm_refusal
   type: edge
   subject:
@@ -3095,6 +3859,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:model_name_version
   type: edge
   subject:
@@ -3106,6 +3871,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:inference_parameters
   type: edge
   subject:
@@ -3119,6 +3885,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-04:input_output_token_counts
   type: edge
   subject:
@@ -3127,7 +3894,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-05:agent_name
   type: edge
   subject:
@@ -3141,6 +3912,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-05:organization_tenant_id
   type: edge
   subject:
@@ -3150,7 +3922,11 @@
   proposal:
     grounding: analogical
   reason: data left the organization; no tenant boundary within the deployment
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-05:surface_app
   type: edge
   subject:
@@ -3162,6 +3938,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-05:model_input
   type: edge
   subject:
@@ -3173,6 +3950,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-05:guardrail_input_verdict
   type: edge
   subject:
@@ -3181,7 +3959,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-05:content_modality_attachment_identity
   type: edge
   subject:
@@ -3191,7 +3973,11 @@
   proposal:
     grounding: analogical
   reason: the payload is pasted text
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-05:tool_privacy_classification
   type: edge
   subject:
@@ -3203,6 +3989,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-05:identities_used_per_hop
   type: edge
   subject:
@@ -3214,6 +4001,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-05:session_taint_labels_information_flow_decisions
   type: edge
   subject:
@@ -3223,7 +4011,11 @@
   proposal:
     grounding: analogical
   reason: no information-flow decision is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:action_type
   type: edge
   subject:
@@ -3235,6 +4027,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -3246,6 +4039,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:model_name_version
   type: edge
   subject:
@@ -3255,7 +4049,11 @@
   proposal:
     grounding: analogical
   reason: the vulnerability is in the framework, not the model
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:model_provenance_signing_hash
   type: edge
   subject:
@@ -3265,7 +4063,11 @@
   proposal:
     grounding: reject
   reason: no model artefact is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:tool_call_io
   type: edge
   subject:
@@ -3277,6 +4079,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:tool_name
   type: edge
   subject:
@@ -3288,6 +4091,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:tool_type_trust_boundary
   type: edge
   subject:
@@ -3301,6 +4105,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:tool_definition_digest
   type: edge
   subject:
@@ -3314,6 +4119,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:execution_environment_sandbox
   type: edge
   subject:
@@ -3322,7 +4128,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:mcp_server_identity_primitive
   type: edge
   subject:
@@ -3332,7 +4142,11 @@
   proposal:
     grounding: reject
   reason: predates MCP; the tools are framework chains
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:tool_error_exception
   type: edge
   subject:
@@ -3346,6 +4160,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:tool_acl_required_scope
   type: edge
   subject:
@@ -3357,6 +4172,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-06:protocol_envelope_capture
   type: edge
   subject:
@@ -3366,7 +4182,11 @@
   proposal:
     grounding: reject
   reason: no MCP or A2A envelope is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:runtime_credential_attestation
   type: edge
   subject:
@@ -3376,7 +4196,11 @@
   proposal:
     grounding: analogical
   reason: no runtime attestation is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:capability_set_change_event
   type: edge
   subject:
@@ -3386,7 +4210,11 @@
   proposal:
     grounding: analogical
   reason: no capability was added or removed
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:tool_agent_version
   type: edge
   subject:
@@ -3395,7 +4223,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:repository_code_path_software_ref
   type: edge
   subject:
@@ -3405,7 +4237,11 @@
   proposal:
     grounding: analogical
   reason: version, not source path, scopes the CVE
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:agbom_inventory_snapshot
   type: edge
   subject:
@@ -3414,7 +4250,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:component_dependency_graph
   type: edge
   subject:
@@ -3423,7 +4263,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:inventory_attestation_signature
   type: edge
   subject:
@@ -3433,7 +4277,11 @@
   proposal:
     grounding: analogical
   reason: no inventory tampering is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:fleet_counts
   type: edge
   subject:
@@ -3443,7 +4291,11 @@
   proposal:
     grounding: analogical
   reason: CVE exposure motivates it; nothing documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-06:mediation_coverage_bypass_path
   type: edge
   subject:
@@ -3453,7 +4305,11 @@
   proposal:
     grounding: analogical
   reason: no mediation layer is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-07:session_turn_step_ids
   type: edge
   subject:
@@ -3462,7 +4318,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-07:system_prompt_instruction_config
   type: edge
   subject:
@@ -3474,6 +4334,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-07:model_input
   type: edge
   subject:
@@ -3485,6 +4346,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-07:threat_classification_atlas_technique_tag
   type: edge
   subject:
@@ -3498,6 +4360,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-07:response_model_output
   type: edge
   subject:
@@ -3509,6 +4372,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-07:llm_refusal
   type: edge
   subject:
@@ -3520,6 +4384,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-07:identities_used_per_hop
   type: edge
   subject:
@@ -3531,6 +4396,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:session_turn_step_ids
   type: edge
   subject:
@@ -3539,7 +4405,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-08:trace_context_propagated
   type: edge
   subject:
@@ -3548,7 +4418,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-08:action_type
   type: edge
   subject:
@@ -3560,6 +4434,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -3571,6 +4446,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:tool_call_io
   type: edge
   subject:
@@ -3582,6 +4458,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:tool_name
   type: edge
   subject:
@@ -3593,6 +4470,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:tool_execution_id
   type: edge
   subject:
@@ -3606,6 +4484,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:tool_acl_required_scope
   type: edge
   subject:
@@ -3617,6 +4496,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:tool_selection_rationale
   type: edge
   subject:
@@ -3626,7 +4506,11 @@
   proposal:
     grounding: analogical
   reason: no stated rationale is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-08:loop_step_count_signal
   type: edge
   subject:
@@ -3638,6 +4522,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:identities_used_per_hop
   type: edge
   subject:
@@ -3649,6 +4534,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-08:credential_minting_scope_narrowing_check
   type: edge
   subject:
@@ -3657,7 +4543,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-08:authorization_decision_record
   type: edge
   subject:
@@ -3666,7 +4556,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-09:model_input
   type: edge
   subject:
@@ -3678,6 +4572,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:response_model_output
   type: edge
   subject:
@@ -3689,6 +4584,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:observation_thought_reasoning_trace
   type: edge
   subject:
@@ -3700,6 +4596,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:tool_call_io
   type: edge
   subject:
@@ -3711,6 +4608,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:tool_name
   type: edge
   subject:
@@ -3722,6 +4620,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:retrieval_event
   type: edge
   subject:
@@ -3730,7 +4629,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-09:retrieved_content_source_provenance
   type: edge
   subject:
@@ -3742,6 +4645,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-09:retrieved_content_metadata_integrity_signal
   type: edge
   subject:
@@ -3751,7 +4655,11 @@
   proposal:
     grounding: analogical
   reason: no integrity signal is documented
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-09:declared_knowledge_source_configuration
   type: edge
   subject:
@@ -3761,7 +4669,11 @@
   proposal:
     grounding: analogical
   reason: no configuration change is involved
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-09:creator_id_oncall_creation_update_dates
   type: edge
   subject:
@@ -3771,7 +4683,11 @@
   proposal:
     grounding: analogical
   reason: document freshness is recorded by Retrieved-Content Source / Provenance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-10:execution_status
   type: edge
   subject:
@@ -3783,6 +4699,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:stop_reason
   type: edge
   subject:
@@ -3791,7 +4708,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-10:model_input
   type: edge
   subject:
@@ -3803,6 +4724,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:source_host_ip_request_metadata
   type: edge
   subject:
@@ -3814,6 +4736,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:response_model_output
   type: edge
   subject:
@@ -3825,6 +4748,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:inference_parameters
   type: edge
   subject:
@@ -3838,6 +4762,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:input_output_token_counts
   type: edge
   subject:
@@ -3846,7 +4771,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-10:llm_error_exception
   type: edge
   subject:
@@ -3860,6 +4789,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:resource_consumption_aggregate
   type: edge
   subject:
@@ -3868,7 +4798,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-10:fleet_counts
   type: edge
   subject:
@@ -3881,6 +4815,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-10:enforcement_point_availability_failure_mode
   type: edge
   subject:
@@ -3894,6 +4829,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:organization_tenant_id
   type: edge
   subject:
@@ -3905,6 +4841,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:memory_read_injection_event
   type: edge
   subject:
@@ -3916,6 +4853,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:retrieval_event
   type: edge
   subject:
@@ -3927,6 +4865,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:retrieved_content_source_provenance
   type: edge
   subject:
@@ -3938,6 +4877,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:identities_used_per_hop
   type: edge
   subject:
@@ -3949,6 +4889,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-11:trust_domain_crossing_delegation_depth
   type: edge
   subject:
@@ -3957,7 +4898,11 @@
   source: field
   proposal:
     grounding: instance
-  status: proposed
+  status: accepted
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-11:authorization_decision_record
   type: edge
   subject:
@@ -3969,6 +4914,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:input_trust_classification
   type: edge
   subject:
@@ -3980,6 +4926,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:output_egress_destination
   type: edge
   subject:
@@ -3991,6 +4938,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:tool_call_io
   type: edge
   subject:
@@ -4002,6 +4950,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:mcp_server_identity_primitive
   type: edge
   subject:
@@ -4013,6 +4962,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:tool_acl_required_scope
   type: edge
   subject:
@@ -4024,6 +4974,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:retrieval_event
   type: edge
   subject:
@@ -4035,6 +4986,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-12:authorization_decision_record
   type: edge
   subject:
@@ -4046,6 +4998,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-13:mcp_server_identity_primitive
   type: edge
   subject:
@@ -4057,6 +5010,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-13:tool_error_exception
   type: edge
   subject:
@@ -4070,6 +5024,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-13:identities_used_per_hop
   type: edge
   subject:
@@ -4081,6 +5036,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-13:granted_authorizations_scope
   type: edge
   subject:
@@ -4092,6 +5048,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-13:authorization_decision_record
   type: edge
   subject:
@@ -4103,6 +5060,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-14:execution_environment_sandbox
   type: edge
   subject:
@@ -4114,6 +5072,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-14:capability_set_change_event
   type: edge
   subject:
@@ -4125,6 +5084,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-15:tool_call_io
   type: edge
   subject:
@@ -4136,6 +5096,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-15:tool_definition_digest
   type: edge
   subject:
@@ -4149,6 +5110,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-15:mcp_server_identity_primitive
   type: edge
   subject:
@@ -4160,6 +5122,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-15:human_approval_elicitation_event
   type: edge
   subject:
@@ -4171,6 +5134,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:output_egress_destination
   type: edge
   subject:
@@ -4182,6 +5146,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:tool_call_io
   type: edge
   subject:
@@ -4193,6 +5158,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:mcp_server_identity_primitive
   type: edge
   subject:
@@ -4204,6 +5170,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:tool_agent_version
   type: edge
   subject:
@@ -4215,6 +5182,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:repository_code_path_software_ref
   type: edge
   subject:
@@ -4226,6 +5194,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-16:agbom_inventory_snapshot
   type: edge
   subject:
@@ -4237,6 +5206,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-17:organization_tenant_id
   type: edge
   subject:
@@ -4248,6 +5218,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-17:output_egress_destination
   type: edge
   subject:
@@ -4259,6 +5230,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-17:identities_used_per_hop
   type: edge
   subject:
@@ -4270,6 +5242,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-17:instrumentation_coverage_hook_attestation
   type: edge
   subject:
@@ -4283,6 +5256,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-17:event_sequence_continuity
   type: edge
   subject:
@@ -4290,8 +5264,19 @@
     field: event_sequence_continuity
   source: field
   proposal:
-    grounding: instance
-  status: proposed
+    grounding: analogical
+  status: accepted
+  amended:
+  - proposal:
+      grounding: instance
+    reason: null
+    by: claude
+    'on': '2026-10-02'
+  reason: a redirect that adds an exporter leaves the legitimate stream continuous; the source does not say events were diverted rather than copied. Instrumentation Coverage (where each hook reports) records the redirect. AD §1.11 claims continuity is the only form that detects TA-17; reword it
+  decided_by: claude, delegated by jo5iah
+  decided_on: '2026-10-02'
+  note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
+  applied: '2026-10-02'
 - id: E:TA-17:authorization_decision_record
   type: edge
   subject:
@@ -4303,6 +5288,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-18:input_trust_classification
   type: edge
   subject:
@@ -4314,6 +5300,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-18:memory_write_event
   type: edge
   subject:
@@ -4325,6 +5312,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-18:memory_read_injection_event
   type: edge
   subject:
@@ -4336,6 +5324,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-18:memory_provenance_source
   type: edge
   subject:
@@ -4347,6 +5336,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-18:memory_integrity_poisoning_signal
   type: edge
   subject:
@@ -4358,6 +5348,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-19:session_turn_step_ids
   type: edge
   subject:
@@ -4369,6 +5360,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-19:model_input
   type: edge
   subject:
@@ -4380,6 +5372,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-19:input_trust_classification
   type: edge
   subject:
@@ -4391,6 +5384,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-19:tool_call_io
   type: edge
   subject:
@@ -4402,6 +5396,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-20:model_name_version
   type: edge
   subject:
@@ -4413,6 +5408,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-20:provider_endpoint_identity
   type: edge
   subject:
@@ -4424,6 +5420,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-20:input_output_token_counts
   type: edge
   subject:
@@ -4435,6 +5432,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-20:resource_consumption_aggregate
   type: edge
   subject:
@@ -4446,6 +5444,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-20:identities_used_per_hop
   type: edge
   subject:
@@ -4457,6 +5456,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-21:system_prompt_instruction_config
   type: edge
   subject:
@@ -4468,6 +5468,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-21:encoded_obfuscated_payload_indicator
   type: edge
   subject:
@@ -4479,6 +5480,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-21:repository_code_path_software_ref
   type: edge
   subject:
@@ -4490,6 +5492,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-21:attribute_source_trusted_provenance_marking
   type: edge
   subject:
@@ -4501,6 +5504,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-22:organization_tenant_id
   type: edge
   subject:
@@ -4512,6 +5516,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-22:guardrail_input_verdict
   type: edge
   subject:
@@ -4523,6 +5528,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-22:guardrail_output_verdict
   type: edge
   subject:
@@ -4534,6 +5540,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-22:llm_refusal
   type: edge
   subject:
@@ -4545,6 +5552,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-22:identities_used_per_hop
   type: edge
   subject:
@@ -4556,6 +5564,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-23:execution_environment_sandbox
   type: edge
   subject:
@@ -4567,6 +5576,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-23:identities_used_per_hop
   type: edge
   subject:
@@ -4578,6 +5588,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-23:capability_set_change_event
   type: edge
   subject:
@@ -4589,6 +5600,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-23:authorization_decision_record
   type: edge
   subject:
@@ -4600,6 +5612,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-23:human_approval_elicitation_event
   type: edge
   subject:
@@ -4611,6 +5624,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:trigger_type_source_event
   type: edge
   subject:
@@ -4622,6 +5636,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:llm_refusal
   type: edge
   subject:
@@ -4633,6 +5648,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:tool_call_io
   type: edge
   subject:
@@ -4644,6 +5660,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:loop_step_count_signal
   type: edge
   subject:
@@ -4655,6 +5672,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:task_intent_declaration
   type: edge
   subject:
@@ -4666,6 +5684,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-24:identities_used_per_hop
   type: edge
   subject:
@@ -4677,6 +5696,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-25:trigger_type_source_event
   type: edge
   subject:
@@ -4688,6 +5708,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-25:inter_agent_message
   type: edge
   subject:
@@ -4699,6 +5720,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-25:background_scheduled_task_event
   type: edge
   subject:
@@ -4710,6 +5732,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-25:loop_step_count_signal
   type: edge
   subject:
@@ -4721,6 +5744,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-25:delegation_chain
   type: edge
   subject:
@@ -4732,6 +5756,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-26:action_type
   type: edge
   subject:
@@ -4743,6 +5768,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-26:input_trust_classification
   type: edge
   subject:
@@ -4754,6 +5780,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-26:guardrail_input_verdict
   type: edge
   subject:
@@ -4765,6 +5792,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-26:content_modality_attachment_identity
   type: edge
   subject:
@@ -4776,6 +5804,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-26:tool_call_io
   type: edge
   subject:
@@ -4787,6 +5816,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-27:trigger_type_source_event
   type: edge
   subject:
@@ -4798,6 +5828,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-27:model_input
   type: edge
   subject:
@@ -4809,6 +5840,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-27:memory_write_event
   type: edge
   subject:
@@ -4820,6 +5852,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-27:retrieved_content_source_provenance
   type: edge
   subject:
@@ -4831,6 +5864,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-27:inter_agent_message
   type: edge
   subject:
@@ -4842,6 +5876,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-28:output_egress_destination
   type: edge
   subject:
@@ -4853,6 +5888,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-28:provider_endpoint_identity
   type: edge
   subject:
@@ -4864,6 +5900,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-28:tool_call_io
   type: edge
   subject:
@@ -4875,6 +5912,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-28:identities_used_per_hop
   type: edge
   subject:
@@ -4886,6 +5924,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:AOC-06:finish reason
   type: alias
   subject:
@@ -4897,6 +5936,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:IR-01:Guardrail Verdict
   type: alias
   subject:
@@ -4908,6 +5948,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:IR-05:Integrity/Poisoning Signal
   type: alias
   subject:
@@ -4921,6 +5962,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:TA-08:tool-call count
   type: alias
   subject:
@@ -4932,6 +5974,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:TA-09:last_update_date
   type: alias
   subject:
@@ -4943,6 +5986,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:TA-09:creation_date
   type: alias
   subject:
@@ -4954,6 +5998,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:TA-10:sessions-per-agent
   type: alias
   subject:
@@ -4965,6 +6010,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:TA-10:execution-status breakdowns
   type: alias
   subject:
@@ -4976,6 +6022,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:CP-08:tool-call count
   type: alias
   subject:
@@ -4984,7 +6031,10 @@
   source: pattern
   proposal:
     fields: [loop_step_count_signal]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: N:CP-16:Guardrail Verdict
   type: alias
   subject:
@@ -4993,7 +6043,10 @@
   source: pattern
   proposal:
     fields: [guardrail_input_verdict, guardrail_output_verdict]
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:threat_classification_atlas_technique_tag
   type: basis
   subject:
@@ -5007,6 +6060,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:agent_name
   type: basis
   subject:
@@ -5045,6 +6099,7 @@
     'on': '2026-10-02'
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:workflow_run_id
   type: basis
   subject:
@@ -5065,6 +6120,7 @@
     'on': '2026-10-02'
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:guardrail_modification_record
   type: basis
   subject:
@@ -5078,6 +6134,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:enforcement_point_availability_failure_mode
   type: basis
   subject:
@@ -5091,6 +6148,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:instrumentation_coverage_hook_attestation
   type: basis
   subject:
@@ -5111,6 +6169,7 @@
     'on': '2026-10-02'
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:tool_definition_digest
   type: basis
   subject:
@@ -5131,6 +6190,7 @@
     'on': '2026-10-02'
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: B:memory_footprint_growth
   type: basis
   subject:
@@ -5151,3 +6211,4 @@
     'on': '2026-10-02'
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'

@@ -1,10 +1,9 @@
-# TA-13. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-13. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-13
 name: WordPress AI Engine
 label: '**AI Engine (WordPress), MCP privilege escalation** (CVE-2025-5071, patched Jun 2025)'
 ref: 16
 what_happened: A subscriber-level authenticated caller could take full control of the plugin's MCP module and invoke privileged commands including `wp_update_user`, on a plugin installed on 100,000+ sites. Authorization was not enforced at the MCP tool boundary. A second flaw on the same surface (CVE-2025-11749, CVSS 9.8) later allowed **unauthenticated** retrieval of the MCP bearer token, yielding full administrative access.
-detecting_fields_text: MCP Server Identity & Primitive, Authorization Decision Record, Identities Used, Granted Authorizations / Scope, Tool Error
 fields: [mcp_server_identity_primitive, authorization_decision_record, identities_used_per_hop, granted_authorizations_scope, tool_error_exception]
 components_text: Tools, Identity
 atlas_text: '`AML.T0053` AI Agent Tool Invocation; MITRE **ATT&CK** privilege escalation'

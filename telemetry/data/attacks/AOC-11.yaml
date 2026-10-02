@@ -1,14 +1,22 @@
-# AOC-11. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-11. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-11
 name: Libelous within Community
 label: Libelous within Agents' Community
 what_happened: Impersonated owner + fabricated emergency with defamatory claims → **mass email broadcast** + attempted public post.
-detecting_fields_text: Verified-vs-Displayed Identity, Output Egress (broadcast scope), Inter-Agent Message
 fields:
 - verified_vs_displayed_identity
 - field: output_egress_destination
   note: broadcast scope
 - inter_agent_message
+- response_model_output
+- field: a2a_task_lifecycle_event
+  grounding: analogical
+- field: peer_agent_card_descriptor
+  grounding: analogical
+- identities_used_per_hop
+- field: trust_domain_crossing_delegation_depth
+  grounding: analogical
+- human_approval_elicitation_event
 components_text: Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0061` Self-Replication; `AML.T0052.000` Spearphishing via LLM'
 atlas_notes: Impersonation → mass defamatory broadcast

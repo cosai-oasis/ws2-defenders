@@ -1,10 +1,21 @@
-# AOC-03. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-03. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-03
 name: Disclosure of Sensitive Info
 label: Disclosure of Sensitive Information
 what_happened: Indirect/escalating framing (metadata→body→secrets) extracted **unredacted SSN, bank, medical** data from stored emails.
-detecting_fields_text: Tool Call I/O, Response, Output Egress, Tool Privacy Class
-fields: [tool_call_io, response_model_output, output_egress_destination, tool_privacy_classification]
+fields:
+- tool_call_io
+- response_model_output
+- output_egress_destination
+- tool_privacy_classification
+- session_turn_step_ids
+- model_input
+- field: guardrail_modification_record
+  grounding: analogical
+- guardrail_output_verdict
+- field: resource_indicators_constraints
+  grounding: analogical
+- session_taint_labels_information_flow_decisions
 components_text: Tools, AgentOutputHandling
 atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0051.001` Indirect Injection'
 atlas_notes: Escalating indirect extraction

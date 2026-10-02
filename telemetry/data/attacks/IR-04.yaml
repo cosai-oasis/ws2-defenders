@@ -1,11 +1,34 @@
-# IR-04. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# IR-04. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: IR-04
 name: Capital One
 label: Capital One Data Breach *(non-AI incident)*
 what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
 taxonomy_text: non-AI infra/exfil → maps to MITRE **ATT&CK**, not ATLAS
-detecting_fields_text: Source IP, Identities Used, Tool Call I/O, Version
-fields: [source_host_ip_request_metadata, identities_used_per_hop, tool_call_io, tool_agent_version]
+fields:
+- field: source_host_ip_request_metadata
+  grounding: analogical
+- field: identities_used_per_hop
+  grounding: analogical
+- field: tool_call_io
+  grounding: analogical
+- field: tool_agent_version
+  grounding: analogical
+- field: execution_status
+  grounding: analogical
+- field: model_name_version
+  grounding: analogical
+- field: model_provenance_signing_hash
+  grounding: analogical
+- field: credential_minting_scope_narrowing_check
+  grounding: analogical
+- field: agbom_inventory_snapshot
+  grounding: analogical
+- field: component_dependency_graph
+  grounding: analogical
+- field: inventory_attestation_signature
+  grounding: analogical
+- field: creator_id_oncall_creation_update_dates
+  grounding: analogical
 components_text: ModelServing, Identity
 atlas_text: MITRE **ATT&CK** (non-AI)
 atlas_notes: SSRF/cloud exfil

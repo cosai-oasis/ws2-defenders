@@ -1,10 +1,9 @@
-# TA-20. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-20. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-20
 name: LLMjacking
 label: '**LLMjacking, stolen cloud credentials reselling model access** (Sysdig, May 2024)'
 ref: 55
 what_happened: Stolen cloud credentials were used to reach cloud-hosted models, enumerate which models a victim account had enabled, and stand up a **reverse proxy reselling that access** to third parties. Cost lands on the victim; the activity is legitimate inference traffic under a valid identity.
-detecting_fields_text: Resource-Consumption Aggregate, Input / Output Token Counts, Identities Used, Provider / Endpoint Identity, Model Name + Version (enumeration)
 fields:
 - resource_consumption_aggregate
 - input_output_token_counts

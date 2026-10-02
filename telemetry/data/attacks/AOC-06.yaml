@@ -1,10 +1,18 @@
-# AOC-06. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-06. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-06
 name: Agents Reflect Provider Values
 label: Agents Reflect Provider Values
 what_happened: Provider API silently **truncated** responses with "unknown error" on politically sensitive topics.
-detecting_fields_text: Provider/Endpoint Identity, LLM Error, finish reason
-fields: [provider_endpoint_identity, llm_error_exception, stop_reason]
+fields:
+- provider_endpoint_identity
+- llm_error_exception
+- stop_reason
+- execution_status
+- model_name_version
+- field: inference_parameters
+  grounding: analogical
+- field: backend_route_restriction_decision
+  grounding: analogical
 components_text: ModelServing, TheModel
 atlas_text: '`AML.T0048`* External Harms / provider policy'
 atlas_notes: Provider-side silent truncation (governance signal)

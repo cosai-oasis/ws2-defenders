@@ -38,6 +38,24 @@ layout = load('sections.yaml')
 # The AD subsection that defines each field: the target of every RFC link.
 home = {fid: c for c in layout['ad_field_tables'] for fid in c['fields']}
 
+PREFIX = {'TA': 0, 'IR': 1, 'AOC': 2}
+corpus_order = sorted(attacks, key=lambda a: (PREFIX[a.split('-')[0]], int(a.split('-')[1])))
+
+
+def edge(e):
+    """(field id, grounding, note) for one `fields:` entry of an attack."""
+    if isinstance(e, str):
+        return e, 'instance', None
+    return e['field'], e.get('grounding', 'instance'), e.get('note')
+
+
+# Grounding attacks per field, derived from the attacks' edges.
+grounds = {fid: [] for fid in fields}
+for aid in corpus_order:
+    for e in attacks[aid].get('fields', []):
+        fid, g, _ = edge(e)
+        grounds[fid].append((aid, g))
+
 
 def ticks(ids):
     return ','.join(f'`{i}`' for i in ids)
@@ -49,7 +67,7 @@ def ad_field_row(f):
     if 'name_note' in f:
         name += ' ' + f['name_note']
     tier = f['tier'] + (' ' + f['tier_mark'] if 'tier_mark' in f else '')
-    ev = (' ' if f.get('evidence_pad') else '') + ticks(f['evidence'])
+    ev = ','.join(f'`{a}`' if g == 'instance' else f'*`{a}`*' for a, g in grounds[f['id']])
     return row([name, tier, f['capture'], ev])
 
 
@@ -65,15 +83,24 @@ def pattern_row(p):
     return row([p['pattern'], p['indicates'], p['fields_text'], ticks(p['evidence'])])
 
 
+def detecting(a):
+    out = []
+    for e in a.get('fields', []):
+        fid, g, note = edge(e)
+        text = fields[fid]['name'] + (f' ({note})' if note else '')
+        out.append(text if g == 'instance' else f'*{text}*')
+    return ', '.join(out)
+
+
 def inventory_row(section, a):
     aid = f"**{a['id']}**"
     if section == '3.2':
         label = f"{a['label']} [[{a['ref']}]](#real-world-attack-primary-sources)"
-        return row([aid, label, a['what_happened'], a['detecting_fields_text'], a['components_text']])
+        return row([aid, label, a['what_happened'], detecting(a), a['components_text']])
     if section == '3.3':
         return row([aid, a['label'], a['what_happened'], a['taxonomy_text'],
-                    a['detecting_fields_text'], a['components_text']])
-    return row([aid, a['label'], a['what_happened'], a['detecting_fields_text'], a['components_text']])
+                    detecting(a), a['components_text']])
+    return row([aid, a['label'], a['what_happened'], detecting(a), a['components_text']])
 
 
 def atlas_row(a):

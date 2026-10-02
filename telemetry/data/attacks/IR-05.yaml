@@ -1,10 +1,9 @@
-# IR-05. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# IR-05. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: IR-05
 name: AGENTPOISON
 label: AGENTPOISON
 what_happened: Optimized trigger-based adversarial queries poison agent memory/RAG.
 taxonomy_text: memory/RAG poisoning → `AML.T0070`, `AML.T0020`, `AML.T0043`
-detecting_fields_text: Memory Write/Read, Retrieval Event, Integrity/Poisoning Signal
 fields:
 - memory_write_event
 - memory_read_injection_event

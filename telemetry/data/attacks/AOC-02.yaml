@@ -1,10 +1,29 @@
-# AOC-02. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# AOC-02. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: AOC-02
 name: Compliance w/ Non-Owner
 label: Compliance with Non-Owner Instructions
 what_happened: Agent ran shell cmds (`ls -la`,`pwd`), transferred files, and disclosed 124 email records for a **non-owner**; only refused overtly suspicious asks.
-detecting_fields_text: Input Trust Class, Identities Used, Tool Call I/O, Tool Name
-fields: [input_trust_classification, identities_used_per_hop, tool_call_io, tool_name]
+fields:
+- input_trust_classification
+- identities_used_per_hop
+- tool_call_io
+- tool_name
+- action_type
+- field: execution_environment_sandbox
+  grounding: analogical
+- tool_acl_required_scope
+- field: tool_selection_rationale
+  grounding: analogical
+- originating_principal_on_behalf_of
+- granted_authorizations_scope
+- field: credential_minting_scope_narrowing_check
+  grounding: analogical
+- field: tool_status
+  grounding: analogical
+- authorization_decision_record
+- human_approval_elicitation_event
+- field: mediation_coverage_bypass_path
+  grounding: analogical
 components_text: AgentInputHandling, Tools, Identity
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation'
 atlas_notes: Non-owner authority → shell/file/data actions

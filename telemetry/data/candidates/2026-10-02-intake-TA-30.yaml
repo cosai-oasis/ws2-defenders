@@ -21,6 +21,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-30:memory_footprint_growth
   type: edge
   subject:
@@ -35,6 +36,7 @@
   critical: true
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-30:declared_memory_configuration
   type: edge
   subject:
@@ -48,6 +50,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-30:resource_consumption_aggregate
   type: edge
   subject:
@@ -61,3 +64,4 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'

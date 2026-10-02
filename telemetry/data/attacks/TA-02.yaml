@@ -1,10 +1,9 @@
-# TA-02. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-02. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-02
 name: Slack AI exfiltration
 label: Slack AI private-channel exfiltration (Aug 2024)
 ref: 5
 what_happened: 'Indirect prompt injection: hidden instructions posted in a public channel are retrieved when users query Slack AI, which then exfiltrates private-channel data via phishing links.'
-detecting_fields_text: Model Input, Response, Tool Call I/O (retrieval), Identities Used, Tool Error (absence), Action Type (LLM→retrieval→LLM)
 fields:
 - model_input
 - response_model_output
@@ -13,8 +12,17 @@ fields:
 - identities_used_per_hop
 - field: tool_error_exception
   note: absence
+  grounding: analogical
 - field: action_type
   note: LLM→retrieval→LLM
+- citations_source_attribution
+- retrieval_event
+- retrieved_content_source_provenance
+- field: retrieved_content_metadata_integrity_signal
+  grounding: analogical
+- field: declared_knowledge_source_configuration
+  grounding: analogical
+- session_taint_labels_information_flow_decisions
 components_text: RAGContent, Tools, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0057` Data Leakage; `AML.T0070` RAG Poisoning'
 atlas_notes: Retrieval-mediated exfil

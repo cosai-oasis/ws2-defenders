@@ -1,10 +1,9 @@
-# TA-12. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-12. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-12
 name: Supabase MCP
 label: '**Supabase MCP, private-table exposure via stored prompt injection** (Jul 2025)'
 ref: 15
 what_happened: Instructions planted in a customer support ticket were read by an agent operating the database through an MCP server under the `service_role` credential, which **bypasses row-level security**, causing it to execute attacker-supplied SQL and expose private tables. The published analysis names the precondition set, private-data access, untrusted content, and an external channel, as the *lethal trifecta*.
-detecting_fields_text: Input Trust Classification, Retrieval Event, MCP Server Identity & Primitive, Tool Call I/O, Tool ACL / Required Scope, Authorization Decision Record, Output Egress Destination
 fields: [input_trust_classification, retrieval_event, mcp_server_identity_primitive, tool_call_io, tool_acl_required_scope, authorization_decision_record, output_egress_destination]
 components_text: AgentInputHandling, Tools, Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0053` AI Agent Tool Invocation; `AML.T0057` Data Leakage'

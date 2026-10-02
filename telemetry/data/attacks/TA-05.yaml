@@ -1,10 +1,9 @@
-# TA-05. Extracted verbatim from AD §3 (phase 1); *_text cells are unreconciled.
+# TA-05. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-05
 name: Samsung leak
 label: Samsung source-code leak (Mar 2023)
 ref: 8
 what_happened: Engineers pasted proprietary code / notes / specs into ChatGPT; data was retained externally.
-detecting_fields_text: Model Input (large code payload), Identities Used, Surface/App (external service), Tool Privacy Classification, Agent Name (off-inventory)
 fields:
 - field: model_input
   note: large code payload
@@ -14,6 +13,13 @@ fields:
 - tool_privacy_classification
 - field: agent_name
   note: off-inventory
+- field: organization_tenant_id
+  grounding: analogical
+- guardrail_input_verdict
+- field: content_modality_attachment_identity
+  grounding: analogical
+- field: session_taint_labels_information_flow_decisions
+  grounding: analogical
 components_text: ApplicationInputHandling, Identity
 atlas_text: '`AML.T0057` Data Leakage (self-inflicted)'
 atlas_notes: Sensitive data pasted to external service

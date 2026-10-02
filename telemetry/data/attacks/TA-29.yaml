@@ -1,0 +1,13 @@
+# TA-29. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-29
+name: WhatsApp MCP sleeper rug pull
+label: '**WhatsApp MCP sleeper rug pull** (Invariant Labs, Apr 2025)'
+ref: 65
+instance: executed
+what_happened: A malicious MCP server advertised an innocuous tool on first launch and, after the user had approved it, returned a changed description on the second launch. The new description instructed the agent, whenever it called the separately installed `whatsapp-mcp` server's `send_message`, to redirect the message to an attacker's number and append the user's chat history, padded so the confirmation dialog hid the payload. The tool's name was unchanged; its definition was not.
+atlas: [AML.T0109, AML.T0110.000, AML.T0086]
+reference: 'WhatsApp MCP exploited: exfiltrating chat history via a sleeper rug pull and tool shadowing. Invariant Labs, 7 April 2025 (updated 9 April). <https://invariantlabs.ai/blog/whatsapp-mcp-exploited> · reproduction: <https://github.com/invariantlabs-ai/mcp-injection-experiments>'
+components_text: Tools, ToolServer, AgentOutputHandling
+atlas_text: '`AML.T0109` AI Supply Chain Rug Pull; `AML.T0110.000` AI Agent Tool Poisoning: Definition and Instructions; `AML.T0086` Exfiltration via AI Agent Tool Invocation'
+atlas_notes: Definition changed after approval under an unchanged name
+fields: [tool_definition_digest, capability_set_change_event, mcp_server_identity_primitive, tool_call_io, output_egress_destination, human_approval_elicitation_event]

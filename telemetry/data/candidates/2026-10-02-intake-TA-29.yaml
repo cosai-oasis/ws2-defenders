@@ -20,6 +20,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:tool_definition_digest
   type: edge
   subject:
@@ -34,6 +35,7 @@
   critical: true
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:capability_set_change_event
   type: edge
   subject:
@@ -47,6 +49,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:mcp_server_identity_primitive
   type: edge
   subject:
@@ -60,6 +63,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:tool_call_io
   type: edge
   subject:
@@ -73,6 +77,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:output_egress_destination
   type: edge
   subject:
@@ -86,6 +91,7 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: E:TA-29:human_approval_elicitation_event
   type: edge
   subject:
@@ -99,3 +105,4 @@
   status: accepted
   decided_by: jo5iah
   decided_on: '2026-10-02'
+  applied: '2026-10-02'
