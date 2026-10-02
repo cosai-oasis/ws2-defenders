@@ -109,10 +109,14 @@ publications:
     name: CPEX
     reference: 44
     repository: https://github.com/contextforge-org/cpex
-    commit: 035012f8674215d407c90269b4f80e790c815d6f
-    committed: '2026-08-18'
+    release: v0.2.3
+    commit: e3a2b30bbaf14682808f4e1de4e3e5fa5be9f481
+    released: '2026-10-02'
+    xm: false
     verified: true
-    note: XM §6 states it was checked at this commit; re-check in the XM pass.
+    verified_on: '2026-10-02'
+    verified_how: documentation identical to commit 035012f, where XM v0.6 verified the names it cited, except docs/apl/pdp.md (one CEL note)
+    note: Cited by the RFC and AD for its threat model; XM has no CPEX section since 2026-10-02, so it is left out of XM's pins table.
   mcp:
     name: Model Context Protocol
     reference: 39

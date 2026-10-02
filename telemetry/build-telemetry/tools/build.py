@@ -356,6 +356,8 @@ def xm_pins():
     out = ['| Publication | Pinned at | Reference | Mapping checked against the pin |',
            '| :------------------ | :------------------ | :--- | :------------------ |']
     for key, p in publications.items():
+        if p.get('xm') is False:
+            continue
         checked = f"yes, {p['verified_on']}" if p.get('verified_on') else ('yes' if p.get('verified') else 'not yet')
         out.append(row([p['name'], pin_text(key), f"[[{p['reference']}]](#standards--frameworks)", checked]))
     return out
