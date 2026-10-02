@@ -204,13 +204,11 @@
   capture: '**Cross-cutting.** When an enforcement point **rewrites rather than blocks**: masking, redacting, stripping, or rewriting a payload; record that a modification occurred, which enforcement point made it, and a before/after digest (plus a redaction map where policy permits). Applies on both the input and the output side.'
 - id: threat_classification_atlas_technique_tag
   name: Threat Classification / ATLAS Technique Tag
-  tier: MUST
+  tier: MAY
   tier_mark: †
   role: label
   record: event
   origin: derived
-  basis:
-    conditional: when a detection fires
   records: MITRE ATLAS technique IDs on any event where a detection fires.
   emitted_by_text: any detector
   capture: '**Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.'

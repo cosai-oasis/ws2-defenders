@@ -115,13 +115,13 @@ This step also records whether the telemetry plane worked. Every other field ass
 | **Guardrail (Output) Verdict** | MUST | outcome | Output filter result (pass, flag, block, modify). | `componentApplicationOutputHandling`, `componentAgentOutputHandling` | `TA-01`,`TA-22`,`IR-01`,`AOC-03` |
 | **LLM Refusal** | MUST | outcome | Refusal status and reason. | `componentAgentOutputHandling` | `TA-03`,`TA-04`,`TA-07`,`TA-22`,`TA-24`,`IR-01`,`AOC-12`,`AOC-13`,`AOC-14` |
 | **Content Modality & Attachment Identity** **[AOS]** | MUST ‡ | label | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field | *`TA-01`*,*`TA-05`*,`TA-26`,`AOC-05`,`AOC-12` |
-| **Threat Classification / ATLAS Technique Tag** | MUST † | label | MITRE ATLAS technique IDs on any event where a detection fires. | any detector | *`TA-01`*,*`TA-07`*,*`IR-01`*,*`AOC-12`* |
 | **Attribute Source / Trusted-Provenance Marking** **[CPEX]** | MUST ‡ | provenance | The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier. | every security-relevant attribute | `TA-21`,`AOC-01`,`AOC-08`,`AOC-10`,`AOC-15` |
 | **Instrumentation Coverage / Hook Attestation** | MUST | descriptor | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer | `TA-17`,*`AOC-01`*,*`AOC-09`*,*`AOC-10`* |
 | **Enforcement-Point Availability & Failure Mode** | MUST | outcome | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points | `TA-01`,*`TA-10`*,*`IR-01`*,*`AOC-12`* |
 | **Guardrail Modification Record** **[AOS]** | MUST ‡ | outcome | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point | `TA-01`,*`IR-01`*,*`AOC-03`*,*`AOC-12`* |
 | **Observation / Thought (reasoning trace)** | SHOULD | content | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` | `TA-06`,`TA-08`,`TA-09`,`IR-02`,`AOC-01`,`AOC-07`,*`AOC-10`* |
 | **Encoded / Obfuscated Payload Indicator** | MAY | label | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
+| **Threat Classification / ATLAS Technique Tag** | MAY † | label | MITRE ATLAS technique IDs on any event where a detection fires. | any detector | *`TA-01`*,*`TA-07`*,*`IR-01`*,*`AOC-12`* |
 
 **What it captures.**
 
@@ -147,8 +147,6 @@ This step also records whether the telemetry plane worked. Every other field ass
 
 <a id="f-content-modality-attachment-identity"></a>**Content Modality & Attachment Identity.** **Cross-cutting.** For every content-bearing field: the part type (text / file / structured data), MIME type, and for files the name, size, and content hash. Instructions that arrive as an image, PDF, or structured blob are invisible to text-only inspection and text-only logging.
 
-<a id="f-threat-classification-atlas-technique-tag"></a>**Threat Classification / ATLAS Technique Tag.** **Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.
-
 <a id="f-attribute-source-trusted-provenance-marking"></a>**Attribute Source / Trusted-Provenance Marking.** **Cross-cutting.** For every security-relevant attribute, the **authority that supplied it**: verified IdP token, policy decision point, enforcement-owned session store, platform/runtime, versus **self-asserted by the agent or model**. Under assume-breach, an unmarked value is an unverified value.
 
 <a id="f-instrumentation-coverage-hook-attestation"></a>**Instrumentation Coverage / Hook Attestation.** Which lifecycle hooks are instrumented and active for this agent/run, the instrumentation version, and **where each hook reports**, the difference between "no events", "not observed", and "observed by someone else."
@@ -160,9 +158,11 @@ This step also records whether the telemetry plane worked. Every other field ass
 <a id="f-observation-thought-reasoning-trace"></a>**Observation / Thought (reasoning trace).** Chain-of-thought/observations *when the provider exposes it*. Reveals whether a harmful act was injected, misauthorized, or self-initiated.
 
 <a id="f-encoded-obfuscated-payload-indicator"></a>**Encoded / Obfuscated Payload Indicator.** Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags.
+
+<a id="f-threat-classification-atlas-technique-tag"></a>**Threat Classification / ATLAS Technique Tag.** **Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.
 <!-- END GENERATED: fields 6.2 -->
 
-† **MUST when a detection fires** (not on every benign event). The tag is a derived classification, not raw telemetry: detection logic sets it using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) attack→ATLAS mapping so downstream SIEM/XDR correlation and compliance reporting can pivot on `AML.Txxxx`.
+† **Applies when a detection fires** (not on every benign event). MAY under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers): no documented instance requires it and no MUST field depends on it. This document still recommends it for every fired detection. The tag is a derived classification, not raw telemetry: detection logic sets it using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) attack→ATLAS mapping so downstream SIEM/XDR correlation and compliance reporting can pivot on `AML.Txxxx`.
 
 ‡ **Cross-cutting fields**, listed here but applying across components. **Guardrail Modification Record** applies **whenever an enforcement point rewrites rather than blocks**. **Attribute Source / Trusted-Provenance Marking** applies to the attributes a hostile agent could plausibly fabricate: identity, authorization outcome, taint state, approval status, autonomy level, task declaration, and instruction configuration.
 
@@ -673,7 +673,7 @@ All **D-primary**: these are the fields an injection or jailbreak detection actu
 - **Input Trust Classification** operationalizes the risk map's core agentic control. `AOC-02` disclosed 124 email records because it did not distinguish an owner instruction from a non-owner's; `TA-01` is untrusted email content promoted to instruction.
 - **Guardrail (Input) Verdict** is MUST because `TA-01` *defeated* a prompt-injection classifier. A classifier bypass is undetectable if verdicts are never logged.
 - **Content Modality & Attachment Identity** is MUST because the corpus's obfuscation attacks are modality attacks, instructions in OCR'd images and base64 blobs (`AOC-12`), ~10 MB attachment floods (`AOC-05`). Text-only capture misses both.
-- **ATLAS Technique Tag** is MUST *when a detection fires*. It is derived, not raw; its value is D-portability into ATT&CK-aligned tooling plus A-rollup.
+- **ATLAS Technique Tag is MAY**, applying *when a detection fires*. Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
 - **Guardrail Modification Record is MUST, applying whenever an enforcement point or redaction pipeline rewrites rather than blocks.** It meets the dependency test of the [rubric](CoSAI-AI-Telemetry-RFC.md#47-tiers): without it, **Model Input**, **Response** and a guardrail verdict of `modify` record content that was not what the model or the recipient saw, so the record is *actively wrong*. Its value is R first and D second. `TA-01`, whose chain bypassed link redaction, is an instance, but the tier rests on the dependency.
 
 #### Output handling, egress and refusals

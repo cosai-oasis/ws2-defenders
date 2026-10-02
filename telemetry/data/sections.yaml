@@ -46,13 +46,13 @@ field_steps:
   - guardrail_output_verdict
   - llm_refusal
   - content_modality_attachment_identity
-  - threat_classification_atlas_technique_tag
   - attribute_source_trusted_provenance_marking
   - instrumentation_coverage_hook_attestation
   - enforcement_point_availability_failure_mode
   - guardrail_modification_record
   - observation_thought_reasoning_trace
   - encoded_obfuscated_payload_indicator
+  - threat_classification_atlas_technique_tag
 - number: '6.3'
   ad_number: '1.3'
   title: Tool calls and policy decisions
