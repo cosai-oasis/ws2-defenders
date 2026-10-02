@@ -6,8 +6,15 @@ Writes data/candidates/2026-10-02-phase5-patterns.yaml:
   V:<id>    type coverage  why an attack has no pattern
 
 A pattern record:
+  id                  <Stage>-<n>, numbered within its stage: MUST-only patterns
+                      first, then by former ID. New patterns append to their
+                      stage; IDs are never reused or renumbered
+  former_id           the provisional CP-nn of phase 1, for traceability
   name, indicates     as in AD §2
-  stage               entry | decision | action | egress | persistence | plane
+  stage               entry | decision | action | persistence | egress | plane, in
+                      that reading order: the stage at which the pattern can first
+                      fire, that is, where its last condition is observed
+  match               all (default; conditions in order) or any (alternatives)
   join                fields the condition correlates on (identifiers are not
                       checked against attack edges: a pattern needs them to join,
                       the attack does not evidence them)
@@ -24,6 +31,7 @@ A pattern record:
 The checks below refuse to write a batch whose catches the edges do not support.
 """
 import glob
+import re
 import os
 import sys
 
@@ -32,13 +40,16 @@ from yamlio import dump, load
 DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 DATA = os.path.join(DIR, 'data')
 OUT = os.path.join(DATA, 'candidates', '2026-10-02-phase5-patterns.yaml')
-STAGES = ('entry', 'decision', 'action', 'egress', 'persistence', 'plane')
+STAGES = ('entry', 'decision', 'action', 'persistence', 'egress', 'plane')
 
 
 def P(id, name, indicates, stage, join, conditions, requires, enriches=(), baseline=None,
-      catches=(), analogical=(), motivation=None, reason=''):
-    rec = {'id': id, 'name': name, 'indicates': indicates, 'stage': stage, 'join': list(join),
-           'conditions': list(conditions), 'requires': list(requires), 'enriches': list(enriches)}
+      catches=(), analogical=(), motivation=None, reason='', match='all'):
+    rec = {'id': id, 'name': name, 'indicates': indicates, 'stage': stage}
+    if match != 'all':
+        rec['match'] = match
+    rec |= {'join': list(join), 'conditions': list(conditions), 'requires': list(requires),
+            'enriches': list(enriches)}
     if baseline:
         rec['baseline'] = baseline
     rec['catches'] = list(catches)
@@ -91,7 +102,7 @@ PATTERNS = [
       ['observation_thought_reasoning_trace', 'memory_integrity_poisoning_signal'],
       catches=['TA-18', 'IR-02', 'AOC-10'],
       reason='joins on the memory item; Observation / Thought (SHOULD) moves to enriching, so the minimum tier is MUST; adds TA-18'),
-    P('CP-06', 'Instructions followed from an external retrieved item', 'RAG injection or knowledge-base poisoning', 'entry',
+    P('CP-06', 'Instructions followed from an external retrieved item', 'RAG injection or knowledge-base poisoning', 'decision',
       ['session_turn_step_ids'],
       ['A **Retrieval Event** returns an item whose **Retrieved-Content Source / Provenance** is external or recently modified.',
        'The **Response / Model Output** in the same turn follows instructions from that item.'],
@@ -114,7 +125,7 @@ PATTERNS = [
       ['tool_acl_required_scope', 'loop_step_count_signal'],
       catches=['TA-08'],
       reason='reads the Authorization Decision Record instead of Tool ACL (SHOULD), so the minimum tier is MUST'),
-    P('CP-09', 'Input near the context limit ending on a limit or error', 'Context-window abuse: denial of service, cost blow-up or divergence', 'entry',
+    P('CP-09', 'Input near the context limit ending on a limit or error', 'Context-window abuse: denial of service, cost blow-up or divergence', 'decision',
       ['identities_used_per_hop'],
       ['**Input / Output Token Counts** approach the context window or `max_tokens` in **Inference Parameters**.',
        'The completion ends on a limit (**Stop Reason**) or an **LLM Error / Exception**.',
@@ -148,12 +159,12 @@ PATTERNS = [
       reason='reads the Authorization Decision Record instead of Granted Authorizations (SHOULD), so the minimum tier is MUST; a new channel (Surface / App) moves to enriching'),
     P('CP-13', 'Model change, or error and stop-reason spike, for one provider', 'Model substitution or provider-side interference', 'decision',
       [],
-      ['**Model Name + Version** changes for a deployment with no recorded change,',
-       'or **LLM Error / Exception** and abnormal **Stop Reason** rates rise for one provider.'],
+      ['**Model Name + Version** changes for a deployment with no recorded change.',
+       '**LLM Error / Exception** and abnormal **Stop Reason** rates rise for one provider.'],
       ['model_name_version', 'llm_error_exception', 'stop_reason'], ['provider_endpoint_identity'],
       baseline='Model and error-rate history per deployment.',
       catches=['AOC-06'],
-      reason='drops TA-06 (analogical Model Name edge only); Provider / Endpoint Identity (MAY) moves to enriching, so the minimum tier is MUST'),
+      reason='drops TA-06 (analogical Model Name edge only); Provider / Endpoint Identity (MAY) moves to enriching, so the minimum tier is MUST. The conditions are alternatives', match='any'),
     P('CP-14', 'Same identity from a new source', 'Credential theft or session hijack', 'entry',
       ['identities_used_per_hop'],
       ['An identity appears from a **Source host / IP** outside its history.',
@@ -164,12 +175,12 @@ PATTERNS = [
       reason='IR-04 is non-AI and its edges are analogical, so it moves to catches_analogical. TA-20 and TA-22 used stolen credentials but have no Source host / IP edge; the session note already holds that lead pending the primary sources'),
     P('CP-15', 'Citation with no matching retrieval', 'Fabricated or attacker-planted citation', 'egress',
       ['session_turn_step_ids'],
-      ['A **Citations / Source Attribution** entry resolves to no item a **Retrieval Event** returned in the session,',
-       'or to an item whose provenance is external or recently modified.'],
+      ['A **Citations / Source Attribution** entry resolves to no item a **Retrieval Event** returned in the session.',
+       'A citation resolves to an item whose provenance is external or recently modified.'],
       ['citations_source_attribution', 'retrieval_event'],
       ['retrieved_content_source_provenance', 'output_egress_destination'],
       catches=['TA-01', 'TA-02', 'IR-03'],
-      reason='unchanged evidence; provenance and egress move to enriching'),
+      reason='unchanged evidence; provenance and egress move to enriching. The conditions are alternatives', match='any'),
     P('CP-16', 'Enforcement point unreached, operation proceeds', 'Control-plane starvation or guardrail bypass by failing open', 'plane',
       ['session_turn_step_ids'],
       ['**Enforcement-Point Availability & Failure Mode** records a callout unreached or timed out.',
@@ -235,12 +246,12 @@ PATTERNS = [
       reason='adds TA-30; drops AOC-07 (no footprint edge); Declared Memory Configuration (MAY) moves to enriching, so the minimum tier is MUST'),
     P('CP-25', 'Data or access across a tenant boundary', 'Cross-tenant bleed', 'decision',
       ['organization_tenant_id'],
-      ["A response, retrieval or memory read served to one **Organization / Tenant ID** carries another tenant's data,",
-       "or an **Authorization Decision Record** allows an operation on another tenant's resource."],
+      ["A response, retrieval or memory read served to one **Organization / Tenant ID** carries another tenant's data.",
+       "An **Authorization Decision Record** allows an operation on another tenant's resource."],
       ['organization_tenant_id', 'authorization_decision_record'],
       ['identities_used_per_hop', 'retrieval_event', 'memory_read_injection_event'],
       catches=['TA-11', 'TA-17'],
-      reason='stated evidence AOC-02 and AOC-05 has no tenant edge; TA-11 and TA-17 are the cross-tenant instances'),
+      reason='stated evidence AOC-02 and AOC-05 has no tenant edge; TA-11 and TA-17 are the cross-tenant instances. The conditions are alternatives', match='any'),
     P('CP-26', 'Egress under accumulated session taint', 'Write-down attempt or injection-driven exfiltration', 'egress',
       ['session_turn_step_ids'],
       ['**Session Taint Labels & Information-Flow Decisions** show the session tainted by untrusted or sensitive content.',
@@ -294,7 +305,7 @@ PATTERNS = [
       analogical=['AOC-06'],
       reason='drops TA-01 (no route edge); AOC-06 is analogical'),
     # ---- new: coverage for attacks no pattern caught
-    P('CP-33', 'One agent name bound to two peers', 'Agent name collision; wrong-peer dispatch', 'entry',
+    P('CP-33', 'One agent name bound to two peers', 'Agent name collision; wrong-peer dispatch', 'action',
       ['agent_name'],
       ['Within one host, an **Agent Name** resolves to more than one **Peer Agent Card / Descriptor**, endpoint or enrolled identity.',
        '**Verified vs Displayed Identity** shows the requests addressed to the name reach a different peer.'],
@@ -441,8 +452,24 @@ def main():
                             ('instance' if isinstance(e, str) else e.get('grounding', 'instance'))
                             for e in a.get('fields', [])}
     rank = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
-    errors, out = [], []
+    tier = lambda r: max((fields[f]['tier'] for f in r['requires'] + r['join']), key=rank.get)
+    new_id = {}
+    for st in STAGES:
+        group = sorted((r for r, _ in PATTERNS if r['stage'] == st), key=lambda r: (rank[tier(r)], r['id']))
+        for n, r in enumerate(group, 1):
+            new_id[r['id']] = f'{st.capitalize()}-{n}'
+    relabel = lambda s: re.sub(r'CP-\d\d', lambda m: new_id[m[0]], s)
+    renamed = []
     for rec, reason in PATTERNS:
+        rec = {'id': new_id[rec['id']], 'former_id': rec['id']} | {k: v for k, v in rec.items() if k != 'id'}
+        if 'motivation' in rec:
+            rec['motivation'] = relabel(rec['motivation'])
+        renamed.append((rec, relabel(reason)))
+    renamed.sort(key=lambda p: (STAGES.index(p[0]['stage']), int(p[0]['id'].split('-')[1])))
+    for a in NO_PATTERN:
+        NO_PATTERN[a] = relabel(NO_PATTERN[a])
+    errors, out = [], []
+    for rec, reason in renamed:
         pid = rec['id']
         for f in rec['join'] + rec['requires'] + rec['enriches']:
             if f not in fields:
@@ -462,10 +489,10 @@ def main():
             errors.append(f'{pid}: catches nothing and has no motivation')
         c = {'id': f'P:{pid}', 'type': 'pattern', 'subject': {'pattern': pid}, 'source': 'phase5',
              'proposal': rec, 'reason': reason, 'status': 'proposed'}
-        if pid == 'CP-33':
+        if rec['former_id'] == 'CP-33':
             c['supersedes'] = 'P:agent-name-collision'
         out.append(c)
-    caught = {a for rec, _ in PATTERNS for a in rec['catches'] + rec.get('catches_analogical', [])}
+    caught = {a for rec, _ in renamed for a in rec['catches'] + rec.get('catches_analogical', [])}
     for a in sorted(attacks):
         if a not in caught and a not in NO_PATTERN:
             errors.append(f'{a}: no pattern and no recorded reason')
@@ -474,17 +501,16 @@ def main():
                     'proposal': {'no_pattern': why}, 'reason': 'no pattern proposed', 'status': 'proposed'})
     if errors:
         sys.exit('\n'.join(errors))
-    read = {f for rec, _ in PATTERNS for f in rec['requires'] + rec['join']}
+    read = {f for rec, _ in renamed for f in rec['requires'] + rec['join']}
     unread = [fields[f]['name'] for f in fields if fields[f]['tier'] == 'MUST' and f not in read]
     tiers = {}
-    for rec, _ in PATTERNS:
-        t = max((fields[f]['tier'] for f in rec['requires'] + rec['join']), key=rank.get)
-        tiers.setdefault(t, []).append(rec['id'])
+    for rec, _ in renamed:
+        tiers.setdefault(tier(rec), []).append(rec['id'])
     header = ('# Curation registry batch. Edit status only through tools/curate.py, or by hand\n'
               '# keeping decided_by and decided_on filled in. See curate.py for the schema.\n'
               '# Phase 5: structured correlation patterns (tools/phase5_propose.py documents the record).\n')
     dump(out, OUT, header)
-    instance = {a for rec, _ in PATTERNS for a in rec['catches']}
+    instance = {a for rec, _ in renamed for a in rec['catches']}
     print(f'{len(PATTERNS)} patterns, {len(NO_PATTERN)} no-pattern reasons -> {os.path.relpath(OUT, DIR)}')
     print(f'attacks caught as an instance: {len(instance)} of {len(attacks)}')
     print('minimum tier:', {t: len(v) for t, v in tiers.items()}, 'non-MUST:', tiers.get('SHOULD', []) + tiers.get('MAY', []))
