@@ -603,7 +603,7 @@
   requires:
   - attribute_source_trusted_provenance_marking
   enriches: [verified_vs_displayed_identity, authorization_decision_record]
-  catches: [AOC-01, AOC-08, AOC-10, AOC-15]
+  catches: [AOC-01, AOC-08, AOC-10, AOC-15, AOC-07]
 - id: event_sequence_gap
   former_id: CP-37
   name: Gap in the event sequence

@@ -165,9 +165,10 @@ def rfc_field_row(f):
 
 
 def catches(p):
-    out = ticks(p['catches'])
+    order = lambda ids: sorted(ids, key=corpus_order.index)
+    out = ticks(order(p['catches']))
     if p.get('catches_analogical'):
-        out += ('; ' if out else '') + 'analogically ' + ticks(p['catches_analogical'])
+        out += ('; ' if out else '') + 'analogically ' + ticks(order(p['catches_analogical']))
     return out or 'none in the corpus'
 
 

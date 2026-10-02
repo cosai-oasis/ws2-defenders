@@ -14,6 +14,7 @@ fields:
 - field: memory_write_rationale
   grounding: analogical
 - human_approval_elicitation_event
+- attribute_source_trusted_provenance_marking
 components_text: Memory, ReasoningCore
 atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0051.000` LLM Prompt Injection: Direct'
 atlas_notes: Guilt/gaslighting → escalating self-destruction
