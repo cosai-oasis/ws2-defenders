@@ -371,6 +371,47 @@ OCSF.update(OCSF_ASSESSED)
 OTEL.update(OTEL_ASSESSED)
 
 
+# ---------------------------------------------------------------- asks for MUST gaps, 2026-10-02
+# XM's own rule makes a field a standardization ask once two or more independent
+# instances require it. These close the MUST gaps the assessment left without one;
+# where AITF already defines the field, the ask names AITF's attributes so the
+# bridge and the upstream proposal carry the same names.
+ASKS += [
+    ('ocsf_entry_point', 'ocsf', 'Add an entry point to ai_operation: the surface an operation arrived through (CLI, web, IDE, email, chat, scheduler) and whether it is internal or external.', [], [], 'proposed'),
+    ('ocsf_input_segment_source', 'ocsf', 'Add a per-segment source to message_context: the surface, tool, agent or document each input segment came from, beside the proposed trust_level.', [], [], 'proposed'),
+    ('ocsf_obfuscation', 'ocsf', 'Add an obfuscation finding (detected, encodings, decoded form or its hash) to ai_guardrail or Detection Finding, aligned with AITF security.obfuscation.*.', [], [], 'proposed'),
+    ('ocsf_citations', 'ocsf', 'Add citations to message_context, each with its source and whether it resolves to an item an ai_retrieval record returned, aligned with AITF rag.citation.*.', [], [], 'proposed'),
+    ('ocsf_inference_parameters', 'ocsf', 'Add the decoding parameters in force for a call (temperature, top_p, max_tokens, stop sequences, seed) and the declared context window to ai_model or message_context.', [], [], 'proposed'),
+    ('ocsf_ai_error', 'ocsf', 'Add an AI error type to ai_operation beside status_id: provider error, context overflow, rate limit, content filter, silent truncation.', [], [], 'proposed'),
+    ('ocsf_tool_execution_environment', 'ocsf', 'Add the execution environment of a tool call to ai_tool: isolation mode, runtime, timeout and egress policy, aligned with AITF supply_chain.runtime.*.', [], ['ocsf-schema#1729'], 'proposed'),
+    ('ocsf_identity_verification', 'ocsf', 'Record which identity authorized an operation (a verified identifier or a display name) and the verification outcome, on actor or ai_authorization.', [], [], 'proposed'),
+    ('otel_run_id', 'otel_genai', 'Add gen_ai.run.id, as AITF defines it; gen_ai.workflow.name names the workflow, not the run.', ['gen_ai.run.id'], [], 'proposed'),
+    ('otel_entry_point', 'otel_genai', 'Add an entry-point attribute: the surface a request arrived through and whether it is internal or external.', [], [], 'proposed'),
+    ('otel_input_part_source', 'otel_genai', 'Add a per-part source on input messages (the surface, tool, agent or document it came from), beside the proposed gen_ai.input.trust_level.', [], [], 'proposed'),
+    ('otel_obfuscation', 'otel_genai', 'Add obfuscation indicators on input (detected, encodings, decoded hash), aligned with AITF security.obfuscation.*.', [], [], 'proposed'),
+    ('otel_refusal', 'otel_genai', 'Add a refusal status and reason distinct from finish reasons, so a refusal that ends normally is still visible.', [], [], 'proposed'),
+    ('otel_tool_trust_boundary', 'otel_genai', 'Extend gen_ai.tool.type, or add a trust-boundary attribute, to distinguish MCP, internal, direct-storage and code-execution tools.', [], [], 'proposed'),
+]
+MUST_GAP_ASKS = {
+    'ocsf': {'surface_app': 'ocsf_entry_point', 'input_source_channel': 'ocsf_input_segment_source',
+             'encoded_obfuscated_payload_indicator': 'ocsf_obfuscation', 'citations_source_attribution': 'ocsf_citations',
+             'inference_parameters': 'ocsf_inference_parameters', 'llm_error_exception': 'ocsf_ai_error',
+             'execution_environment_sandbox': 'ocsf_tool_execution_environment',
+             'verified_vs_displayed_identity': 'ocsf_identity_verification'},
+    'otel': {'workflow_run_id': 'otel_run_id', 'surface_app': 'otel_entry_point', 'input_source_channel': 'otel_input_part_source',
+             'encoded_obfuscated_payload_indicator': 'otel_obfuscation', 'llm_refusal': 'otel_refusal',
+             'tool_type_trust_boundary': 'otel_tool_trust_boundary'},
+}
+for pub, table in (('ocsf', OCSF), ('otel', OTEL)):
+    for fid, ask in MUST_GAP_ASKS[pub].items():
+        e = table[fid]
+        e['asks'] = e.get('asks', []) + [ask]
+        if e.get('note', '').startswith('No ask proposed'):
+            del e['note']
+# AITF entries that cite only a namespace, with no attribute behind it, are gaps in AITF too.
+AITF_NAMESPACE_ONLY = {'surface_app', 'input_source_channel', 'llm_error_exception', 'llm_refusal', 'tool_type_trust_boundary'}
+
+
 # ---------------------------------------------------------------- AITF and ODIS (XM §4, per field)
 def xm_section(text, start, stop):
     a = text.index(start)
@@ -494,11 +535,21 @@ def main():
             return any(n.startswith(c[:-1]) for n in names[pub])
         return c in names[pub]
 
+    closes = {}
+    for pub, table in (('ocsf', OCSF), ('otel', OTEL)):
+        for fid, e in table.items():
+            for a in e.get('asks', []):
+                closes.setdefault(a, []).append(fid)
     for aid, pub, summary, prop, tracking, status in ASKS:
+        ev = '; '.join(f"{fields[f]['name']} ({fields[f]['tier']}, {len(rules.instances(f, attacks))} instances)"
+                       for f in closes.get(aid, []))
         out.append({'id': f'Q:{aid}', 'type': 'ask', 'subject': {'ask': aid}, 'source': 'xm-pass',
                     'proposal': {'id': aid, 'publication': pub, 'summary': summary, 'proposes': prop,
                                  'tracking': tracking, 'status': status},
-                    'reason': 'from XM §2.3' if pub.startswith('otel') else 'from XM §3.1 and §3.2', 'status': 'proposed'})
+                    'reason': ('drafted for a MUST gap XM left without an ask'
+                               if aid in MUST_GAP_ASKS['ocsf'].values() or aid in MUST_GAP_ASKS['otel'].values()
+                               else 'from XM §2.3' if pub.startswith('otel') else 'from XM §3.1 and §3.2')
+                              + (f'. Closes: {ev}' if ev else '. Closes no field gap yet'), 'status': 'proposed'})
     ask_ids = {a[0] for a in ASKS}
     rows = aitf_odis_rows(fields)
     gaps = aitf_gap_namespaces(fields)
@@ -515,6 +566,10 @@ def main():
         if fid == 'loop_step_count_signal':
             per['aitf'] = m('covered', ['gen_ai.agent.session.turn_count', 'gen_ai.agent.step.index', 'agent.steps_per_session'],
                             note='XM §4 names gen_ai.agent.turn_count; AITF defines gen_ai.agent.session.turn_count.')
+        if fid in AITF_NAMESPACE_ONLY:
+            e = per['aitf']
+            e['coverage'] = 'partial'
+            e['gap'] = 'XM §4 cites a namespace only; AITF defines no attribute for this field at the pin'
         if fid in gaps:   # closed in AITF v0.4: the namespace AITF_gaps.md records supersedes XM §4
             e = per['aitf']
             e['constructs'] = list(dict.fromkeys(gaps[fid] + e.get('constructs', [])))

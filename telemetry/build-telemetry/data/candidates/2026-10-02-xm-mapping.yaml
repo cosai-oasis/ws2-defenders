@@ -14,7 +14,7 @@
     proposes: ['class:9001']
     tracking: [ocsf-schema#1640]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Inter-Agent Message (MUST, 7 instances); Background / Scheduled Task Event (MUST, 3 instances); Loop / Step-Count Signal (MUST, 5 instances); Resource-Consumption Aggregate (MUST, 4 instances); Capability-Set Change Event (MUST, 4 instances)'
   status: proposed
 - id: Q:ocsf_ai_delegation_activity
   type: ask
@@ -28,7 +28,7 @@
     proposes: ['class:9002']
     tracking: [ocsf-schema#1640]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: A2A Task Lifecycle Event (SHOULD, 0 instances); Delegation Chain (SHOULD, 2 instances)'
   status: proposed
 - id: Q:ocsf_ai_operation_identifiers
   type: ask
@@ -42,7 +42,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Workflow / Run ID (MUST, 1 instances); Session / Turn / Step IDs (MUST, 5 instances); Trigger Type & Source Event (MUST, 5 instances); Action Type (MUST, 6 instances)'
   status: proposed
 - id: Q:ocsf_stop_reason
   type: ask
@@ -56,7 +56,7 @@
     proposes: ['attribute:ai_stop_reason_id']
     tracking: [ocsf-schema#1704]
     status: approved
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Stop Reason (MUST, 3 instances); LLM Refusal (MUST, 9 instances)'
   status: proposed
 - id: Q:ocsf_message_context_content
   type: ask
@@ -70,7 +70,7 @@
     proposes: ['attribute:prompt_hash', 'attribute:response_hash', 'attribute:is_redacted', 'attribute:system_prompt']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: System Prompt / Instruction Config (MUST, 3 instances); Model Input (MUST, 15 instances); Content Modality & Attachment Identity (MUST, 3 instances); Guardrail Modification Record (MUST, 1 instances); Response / Model Output (MUST, 9 instances)'
   status: proposed
 - id: Q:ocsf_trust_level
   type: ask
@@ -84,7 +84,7 @@
     proposes: ['attribute:trust_level']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Input Trust Classification (MUST, 10 instances)'
   status: proposed
 - id: Q:ocsf_autonomy_level
   type: ask
@@ -98,7 +98,7 @@
     proposes: ['attribute:autonomy_level']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Autonomy Level (SHOULD, 2 instances)'
   status: proposed
 - id: Q:ocsf_ai_guardrail
   type: ask
@@ -112,7 +112,7 @@
     proposes: ['object:ai_guardrail']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Guardrail (Input) Verdict (MUST, 6 instances); Guardrail Modification Record (MUST, 1 instances); Guardrail (Output) Verdict (MUST, 4 instances); Enforcement-Point Availability & Failure Mode (MUST, 1 instances)'
   status: proposed
 - id: Q:ocsf_egress_correlation
   type: ask
@@ -126,7 +126,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Output Egress Destination (MUST, 10 instances)'
   status: proposed
 - id: Q:ocsf_model_provenance
   type: ask
@@ -140,7 +140,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Model Provenance / Signing / Hash (SHOULD, 0 instances)'
   status: proposed
 - id: Q:ocsf_ai_tool
   type: ask
@@ -154,7 +154,7 @@
     proposes: ['object:ai_tool', 'attribute:tool_trust_boundary', 'attribute:transaction_uid']
     tracking: [ocsf-schema#1729]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Tool Call I/O (MUST, 19 instances); Tool Name (MUST, 6 instances); Tool Type / Trust Boundary (MUST, 2 instances); Tool ID (MAY, 0 instances); Tool Execution ID (MUST, 2 instances); Tool Definition Digest (MUST, 2 instances); MCP Server Identity & Primitive (MUST, 5 instances); Tool Error / Exception (MUST, 2 instances); Tool ACL / Required Scope (SHOULD, 6 instances)'
   status: proposed
 - id: Q:ocsf_ai_memory
   type: ask
@@ -168,7 +168,7 @@
     proposes: ['object:ai_memory']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Memory Write Event (MUST, 7 instances); Memory Read / Injection Event (MUST, 6 instances); Memory Provenance / Source (MUST, 4 instances); Memory Integrity / Poisoning Signal (SHOULD, 3 instances); Memory Footprint / Growth (MUST, 2 instances)'
   status: proposed
 - id: Q:ocsf_ai_retrieval
   type: ask
@@ -182,7 +182,7 @@
     proposes: ['object:ai_retrieval']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Retrieval Event (MUST, 8 instances); Retrieved-Content Source / Provenance (MUST, 6 instances); Retrieved-Content / Metadata Integrity Signal (SHOULD, 2 instances)'
   status: proposed
 - id: Q:ocsf_delegation_lineage
   type: ask
@@ -196,7 +196,7 @@
     proposes: []
     tracking: [ocsf-schema#1739]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Identities Used (per hop) (MUST, 18 instances); Originating Principal (on-behalf-of) (SHOULD, 3 instances); Delegation Chain (SHOULD, 2 instances); Granted Authorizations / Scope (SHOULD, 3 instances); Resource Indicators + Constraints (SHOULD, 0 instances); Credential Minting & Scope-Narrowing Check (SHOULD, 1 instances); Trust-Domain Crossing & Delegation Depth (SHOULD, 1 instances); Lifecycle State (SHOULD, 2 instances)'
   status: proposed
 - id: Q:ocsf_runtime_attestation
   type: ask
@@ -210,7 +210,7 @@
     proposes: ['object:runtime_attestation']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Runtime Credential / Attestation (SHOULD, 0 instances)'
   status: proposed
 - id: Q:ocsf_ai_asset
   type: ask
@@ -224,7 +224,7 @@
     proposes: ['object:ai_asset']
     tracking: [ocsf-schema#1724]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Tool/Agent Version (SHOULD, 2 instances); Repository / Code Path / Software Ref (SHOULD, 2 instances); Description (MAY, 0 instances); Status (active/disabled) (MAY, 0 instances); Creator ID / Oncall / Creation & Update dates (MAY, 0 instances); Instrumentation Coverage / Hook Attestation (MUST, 1 instances)'
   status: proposed
 - id: Q:ocsf_ai_bom
   type: ask
@@ -238,7 +238,7 @@
     proposes: ['object:ai_bom']
     tracking: [ocsf-schema#1724]
     status: open
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Capability-Set Change Event (MUST, 4 instances); AgBOM / Inventory Snapshot (SHOULD, 2 instances); Component Dependency Graph (SHOULD, 1 instances); Inventory Attestation Signature (SHOULD, 0 instances)'
   status: proposed
 - id: Q:ocsf_ai_authorization
   type: ask
@@ -252,7 +252,7 @@
     proposes: ['object:ai_authorization']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Resource-Consumption Aggregate (MUST, 4 instances); Policy Reason Code (MAY, 0 instances); Authorization Decision Record (MUST, 9 instances)'
   status: proposed
 - id: Q:ocsf_ai_taint
   type: ask
@@ -266,7 +266,7 @@
     proposes: ['object:ai_taint']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Session Taint Labels & Information-Flow Decisions (SHOULD, 3 instances)'
   status: proposed
 - id: Q:ocsf_ai_approval
   type: ask
@@ -280,7 +280,7 @@
     proposes: ['object:ai_approval']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Human Approval / Elicitation Event (SHOULD, 7 instances)'
   status: proposed
 - id: Q:ocsf_attribute_source
   type: ask
@@ -294,7 +294,7 @@
     proposes: ['attribute:attribute_source']
     tracking: []
     status: proposed
-  reason: from XM §3.1 and §3.2
+  reason: 'from XM §3.1 and §3.2. Closes: Attribute Source / Trusted-Provenance Marking (MUST, 6 instances)'
   status: proposed
 - id: Q:otel_trust_level
   type: ask
@@ -308,7 +308,7 @@
     proposes: [gen_ai.input.trust_level]
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Input Trust Classification (MUST, 10 instances)'
   status: proposed
 - id: Q:otel_security_guardrail
   type: ask
@@ -322,7 +322,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Guardrail (Input) Verdict (MUST, 6 instances); Guardrail Modification Record (MUST, 1 instances); Threat Classification / ATLAS Technique Tag (MAY, 0 instances); Guardrail (Output) Verdict (MUST, 4 instances)'
   status: proposed
 - id: Q:otel_memory_provenance_footprint
   type: ask
@@ -336,7 +336,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Memory Provenance / Source (MUST, 4 instances); Memory Footprint / Growth (MUST, 2 instances)'
   status: proposed
 - id: Q:otel_retrieval_provenance
   type: ask
@@ -350,7 +350,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Retrieved-Content Source / Provenance (MUST, 6 instances); Retrieved-Content / Metadata Integrity Signal (SHOULD, 2 instances)'
   status: proposed
 - id: Q:otel_turn_step_ids
   type: ask
@@ -364,7 +364,7 @@
     proposes: [gen_ai.turn.id, gen_ai.step.id]
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Session / Turn / Step IDs (MUST, 5 instances)'
   status: proposed
 - id: Q:otel_trigger
   type: ask
@@ -378,7 +378,7 @@
     proposes: [gen_ai.trigger.type, gen_ai.trigger.event]
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Trigger Type & Source Event (MUST, 5 instances); Background / Scheduled Task Event (MUST, 3 instances)'
   status: proposed
 - id: Q:otel_tool_digest_mcp_primitive
   type: ask
@@ -392,7 +392,7 @@
     proposes: [gen_ai.tool.definitions.hash, mcp.primitive]
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Tool Definition Digest (MUST, 2 instances); MCP Server Identity & Primitive (MUST, 5 instances)'
   status: proposed
 - id: Q:otel_attachment_identity
   type: ask
@@ -406,7 +406,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Content Modality & Attachment Identity (MUST, 3 instances)'
   status: proposed
 - id: Q:otel_model_provenance
   type: ask
@@ -420,7 +420,7 @@
     proposes: [gen_ai.model.hash, gen_ai.model.signature, gen_ai.model.source]
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Model Provenance / Signing / Hash (SHOULD, 0 instances)'
   status: proposed
 - id: Q:otel_hash_only_capture
   type: ask
@@ -434,7 +434,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: System Prompt / Instruction Config (MUST, 3 instances); Model Input (MUST, 15 instances); Response / Model Output (MUST, 9 instances)'
   status: proposed
 - id: Q:otel_citations
   type: ask
@@ -448,7 +448,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Citations / Source Attribution (MUST, 3 instances)'
   status: proposed
 - id: Q:otel_execution_environment
   type: ask
@@ -462,7 +462,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Execution Environment / Sandbox (MUST, 3 instances)'
   status: proposed
 - id: Q:otel_inter_agent_messaging
   type: ask
@@ -476,7 +476,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Action Type (MUST, 6 instances); Inter-Agent Message (MUST, 7 instances)'
   status: proposed
 - id: Q:otel_run_budget
   type: ask
@@ -490,7 +490,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Loop / Step-Count Signal (MUST, 5 instances); Resource-Consumption Aggregate (MUST, 4 instances)'
   status: proposed
 - id: Q:otel_capability_change
   type: ask
@@ -504,7 +504,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Capability-Set Change Event (MUST, 4 instances); AgBOM / Inventory Snapshot (SHOULD, 2 instances); Component Dependency Graph (SHOULD, 1 instances); Inventory Attestation Signature (SHOULD, 0 instances)'
   status: proposed
 - id: Q:otel_hook_coverage
   type: ask
@@ -518,7 +518,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Instrumentation Coverage / Hook Attestation (MUST, 1 instances)'
   status: proposed
 - id: Q:otel_egress_pattern
   type: ask
@@ -532,7 +532,7 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Output Egress Destination (MUST, 10 instances)'
   status: proposed
 - id: Q:otel_authorization_reference
   type: ask
@@ -546,7 +546,203 @@
     proposes: []
     tracking: []
     status: proposed
-  reason: from XM §2.3
+  reason: 'from XM §2.3. Closes: Authorization Decision Record (MUST, 9 instances)'
+  status: proposed
+- id: Q:ocsf_entry_point
+  type: ask
+  subject:
+    ask: ocsf_entry_point
+  source: xm-pass
+  proposal:
+    id: ocsf_entry_point
+    publication: ocsf
+    summary: 'Add an entry point to ai_operation: the surface an operation arrived through (CLI, web, IDE, email, chat, scheduler) and whether it is internal or external.'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Surface / App (MUST, 3 instances)'
+  status: proposed
+- id: Q:ocsf_input_segment_source
+  type: ask
+  subject:
+    ask: ocsf_input_segment_source
+  source: xm-pass
+  proposal:
+    id: ocsf_input_segment_source
+    publication: ocsf
+    summary: 'Add a per-segment source to message_context: the surface, tool, agent or document each input segment came from, beside the proposed trust_level.'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Input Source / Channel (MUST, 6 instances)'
+  status: proposed
+- id: Q:ocsf_obfuscation
+  type: ask
+  subject:
+    ask: ocsf_obfuscation
+  source: xm-pass
+  proposal:
+    id: ocsf_obfuscation
+    publication: ocsf
+    summary: Add an obfuscation finding (detected, encodings, decoded form or its hash) to ai_guardrail or Detection Finding, aligned with AITF security.obfuscation.*.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Encoded / Obfuscated Payload Indicator (MUST, 2 instances)'
+  status: proposed
+- id: Q:ocsf_citations
+  type: ask
+  subject:
+    ask: ocsf_citations
+  source: xm-pass
+  proposal:
+    id: ocsf_citations
+    publication: ocsf
+    summary: Add citations to message_context, each with its source and whether it resolves to an item an ai_retrieval record returned, aligned with AITF rag.citation.*.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Citations / Source Attribution (MUST, 3 instances)'
+  status: proposed
+- id: Q:ocsf_inference_parameters
+  type: ask
+  subject:
+    ask: ocsf_inference_parameters
+  source: xm-pass
+  proposal:
+    id: ocsf_inference_parameters
+    publication: ocsf
+    summary: Add the decoding parameters in force for a call (temperature, top_p, max_tokens, stop sequences, seed) and the declared context window to ai_model or message_context.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Inference Parameters (MUST, 2 instances)'
+  status: proposed
+- id: Q:ocsf_ai_error
+  type: ask
+  subject:
+    ask: ocsf_ai_error
+  source: xm-pass
+  proposal:
+    id: ocsf_ai_error
+    publication: ocsf
+    summary: 'Add an AI error type to ai_operation beside status_id: provider error, context overflow, rate limit, content filter, silent truncation.'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: LLM Error / Exception (MUST, 2 instances)'
+  status: proposed
+- id: Q:ocsf_tool_execution_environment
+  type: ask
+  subject:
+    ask: ocsf_tool_execution_environment
+  source: xm-pass
+  proposal:
+    id: ocsf_tool_execution_environment
+    publication: ocsf
+    summary: 'Add the execution environment of a tool call to ai_tool: isolation mode, runtime, timeout and egress policy, aligned with AITF supply_chain.runtime.*.'
+    proposes: []
+    tracking: [ocsf-schema#1729]
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Execution Environment / Sandbox (MUST, 3 instances)'
+  status: proposed
+- id: Q:ocsf_identity_verification
+  type: ask
+  subject:
+    ask: ocsf_identity_verification
+  source: xm-pass
+  proposal:
+    id: ocsf_identity_verification
+    publication: ocsf
+    summary: Record which identity authorized an operation (a verified identifier or a display name) and the verification outcome, on actor or ai_authorization.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Verified vs Displayed Identity (MUST, 4 instances)'
+  status: proposed
+- id: Q:otel_run_id
+  type: ask
+  subject:
+    ask: otel_run_id
+  source: xm-pass
+  proposal:
+    id: otel_run_id
+    publication: otel_genai
+    summary: Add gen_ai.run.id, as AITF defines it; gen_ai.workflow.name names the workflow, not the run.
+    proposes: [gen_ai.run.id]
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Workflow / Run ID (MUST, 1 instances)'
+  status: proposed
+- id: Q:otel_entry_point
+  type: ask
+  subject:
+    ask: otel_entry_point
+  source: xm-pass
+  proposal:
+    id: otel_entry_point
+    publication: otel_genai
+    summary: 'Add an entry-point attribute: the surface a request arrived through and whether it is internal or external.'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Surface / App (MUST, 3 instances)'
+  status: proposed
+- id: Q:otel_input_part_source
+  type: ask
+  subject:
+    ask: otel_input_part_source
+  source: xm-pass
+  proposal:
+    id: otel_input_part_source
+    publication: otel_genai
+    summary: Add a per-part source on input messages (the surface, tool, agent or document it came from), beside the proposed gen_ai.input.trust_level.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Input Source / Channel (MUST, 6 instances)'
+  status: proposed
+- id: Q:otel_obfuscation
+  type: ask
+  subject:
+    ask: otel_obfuscation
+  source: xm-pass
+  proposal:
+    id: otel_obfuscation
+    publication: otel_genai
+    summary: Add obfuscation indicators on input (detected, encodings, decoded hash), aligned with AITF security.obfuscation.*.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Encoded / Obfuscated Payload Indicator (MUST, 2 instances)'
+  status: proposed
+- id: Q:otel_refusal
+  type: ask
+  subject:
+    ask: otel_refusal
+  source: xm-pass
+  proposal:
+    id: otel_refusal
+    publication: otel_genai
+    summary: Add a refusal status and reason distinct from finish reasons, so a refusal that ends normally is still visible.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: LLM Refusal (MUST, 9 instances)'
+  status: proposed
+- id: Q:otel_tool_trust_boundary
+  type: ask
+  subject:
+    ask: otel_tool_trust_boundary
+  source: xm-pass
+  proposal:
+    id: otel_tool_trust_boundary
+    publication: otel_genai
+    summary: Extend gen_ai.tool.type, or add a trust-boundary attribute, to distinguish MCP, internal, direct-storage and code-execution tools.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'drafted for a MUST gap XM left without an ask. Closes: Tool Type / Trust Boundary (MUST, 2 instances)'
   status: proposed
 - id: M:agent_name:ocsf
   type: mapping
@@ -680,6 +876,7 @@
     coverage: partial
     constructs: [gen_ai.workflow.name]
     gap: A workflow name, not a run identifier; the run maps to the trace ID
+    asks: [otel_run_id]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:workflow_run_id:aitf
@@ -1119,7 +1316,7 @@
     coverage: partial
     constructs: ['object:actor', 'attribute:app_name']
     gap: An application name; no entry-point type and no internal or external flag
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_entry_point]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:surface_app:otel
@@ -1132,6 +1329,7 @@
     coverage: none
     gap: No surface attribute
     note: XM names the gap and proposes no change; decide an ask or record why none.
+    asks: [otel_entry_point]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:surface_app:aitf
@@ -1141,9 +1339,10 @@
     publication: aitf
   source: xm-pass
   proposal:
-    coverage: covered
+    coverage: partial
     constructs: [gen_ai.*]
     note: '`gen_ai.*` (surface attr)'
+    gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
   status: proposed
 - id: M:surface_app:odis
@@ -1346,7 +1545,7 @@
   proposal:
     coverage: none
     gap: No per-segment input source on message_context
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_input_segment_source]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:input_source_channel:otel
@@ -1358,7 +1557,7 @@
   proposal:
     coverage: none
     gap: No per-part input source
-    note: No ask proposed; decide one or record why none.
+    asks: [otel_input_part_source]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:input_source_channel:aitf
@@ -1368,9 +1567,10 @@
     publication: aitf
   source: xm-pass
   proposal:
-    coverage: covered
+    coverage: partial
     constructs: [gen_ai.*, rag.*, mcp.*]
     note: '`gen_ai.*` / `rag.*` / `mcp.*` source'
+    gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
   status: proposed
 - id: M:input_source_channel:odis
@@ -1737,7 +1937,7 @@
   proposal:
     coverage: none
     gap: No obfuscation flag or decoded form
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_obfuscation]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:encoded_obfuscated_payload_indicator:otel
@@ -1749,7 +1949,7 @@
   proposal:
     coverage: none
     gap: No obfuscation flag or decoded form
-    note: No ask proposed; decide one or record why none.
+    asks: [otel_obfuscation]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:encoded_obfuscated_payload_indicator:aitf
@@ -1906,7 +2106,7 @@
   proposal:
     coverage: none
     gap: No citation, and no resolution of a citation against retrieval
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_citations]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:citations_source_attribution:otel
@@ -2089,7 +2289,7 @@
     coverage: partial
     constructs: [gen_ai.response.finish_reasons]
     gap: A content-filter finish reason where the provider returns one; no refusal status or reason
-    note: No ask proposed; decide one or record why none.
+    asks: [otel_refusal]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:llm_refusal:aitf
@@ -2099,8 +2299,9 @@
     publication: aitf
   source: xm-pass
   proposal:
-    coverage: covered
+    coverage: partial
     constructs: [gen_ai.response.finish_reasons, security.*]
+    gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
   status: proposed
 - id: M:llm_refusal:odis
@@ -2238,7 +2439,7 @@
   proposal:
     coverage: none
     gap: No decoding parameters or context window on ai_model or message_context
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_inference_parameters]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:inference_parameters:otel
@@ -2344,7 +2545,7 @@
     coverage: partial
     constructs: ['attribute:status_id', 'attribute:status_detail']
     gap: A generic outcome; no AI-specific error type
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_ai_error]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:llm_error_exception:otel
@@ -2365,9 +2566,10 @@
     publication: aitf
   source: xm-pass
   proposal:
-    coverage: covered
+    coverage: partial
     constructs: [gen_ai.*, security.*]
     note: '`gen_ai.*` error + `security.*`'
+    gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
   status: proposed
 - id: M:llm_error_exception:odis
@@ -2692,7 +2894,7 @@
     coverage: partial
     constructs: [gen_ai.tool.type]
     gap: function, extension or datastore; no MCP, direct-storage or code-execution boundary
-    note: No ask proposed; decide one or record why none.
+    asks: [otel_tool_trust_boundary]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_type_trust_boundary:aitf
@@ -2702,9 +2904,10 @@
     publication: aitf
   source: xm-pass
   proposal:
-    coverage: covered
+    coverage: partial
     constructs: [mcp.*]
     note: '`mcp.*` vs internal'
+    gap: XM §4 cites a namespace only; AITF defines no attribute for this field at the pin
   reason: XM §4
   status: proposed
 - id: M:tool_type_trust_boundary:odis
@@ -2913,7 +3116,7 @@
     coverage: partial
     constructs: ['object:process', 'attribute:sandbox', 'object:container']
     gap: A sandbox name on a process, and container identity; no isolation mode, timeout or egress policy for a tool execution
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_tool_execution_environment]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:execution_environment_sandbox:otel
@@ -4411,7 +4614,7 @@
     coverage: partial
     constructs: ['object:actor', 'object:user']
     gap: A user identifier and name both exist; no record of which one authorized
-    note: No ask proposed; decide one or record why none.
+    asks: [ocsf_identity_verification]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:verified_vs_displayed_identity:otel
