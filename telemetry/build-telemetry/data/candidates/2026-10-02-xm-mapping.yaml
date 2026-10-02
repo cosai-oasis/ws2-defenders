@@ -750,9 +750,8 @@
   proposal:
     coverage: covered
     constructs: [gen_ai.turn.*, gen_ai.conversation.id, gen_ai.agent.step.index]
-    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index`'
-  reason: XM §4; XM names ['span_id'], which do not exist at the pin
-  critical: true
+    note: 'Closed in AITF v0.4 (AITF_gaps.md). XM §4: `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).'
+  reason: XM §4
   status: proposed
 - id: M:session_turn_step_ids:odis
   type: mapping
@@ -780,7 +779,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: covered
+    constructs: ['profile:trace', 'object:trace']
+    note: The trace profile carries the trace and span identifiers.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:trace_context_propagated:otel
@@ -802,9 +803,9 @@
   source: xm-pass
   proposal:
     coverage: covered
-    note: OTel `trace_id`/`span_id`, W3C `traceparent`
-  reason: XM §4; XM names ['trace_id', 'span_id', 'traceparent'], which do not exist at the pin
-  critical: true
+    constructs: []
+    note: OTel `trace_id`/`span_id`, W3C `traceparent` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).
+  reason: XM §4
   status: proposed
 - id: M:trace_context_propagated:odis
   type: mapping
@@ -835,7 +836,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:metadata', 'attribute:tenant_uid']
+    gap: One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:organization_tenant_id:otel
@@ -958,7 +962,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.operation.name]
+    gap: Operations include chat, execute_tool, invoke_agent and the memory operations; no inter-agent message send
+    asks: [otel_inter_agent_messaging]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:action_type:aitf
@@ -1001,7 +1008,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: covered
+    constructs: ['attribute:status_id', 'attribute:duration']
+    note: Outcome and duration on the base event.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:execution_status:otel
@@ -1107,7 +1116,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:actor', 'attribute:app_name']
+    gap: An application name; no entry-point type and no internal or external flag
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:surface_app:otel
@@ -1230,7 +1242,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No autonomy level
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:autonomy_level:aitf
@@ -1330,7 +1344,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No per-segment input source on message_context
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:input_source_channel:otel
@@ -1340,7 +1356,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No per-part input source
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:input_source_channel:aitf
@@ -1443,7 +1461,8 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: covered
+    constructs: ['attribute:src_endpoint']
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:source_host_ip_request_metadata:otel
@@ -1453,7 +1472,8 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: covered
+    constructs: [client.address, network.peer.address, user_agent.original]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:source_host_ip_request_metadata:aitf
@@ -1618,7 +1638,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No record that an enforcement point rewrote a payload
+    asks: [otel_security_guardrail]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:guardrail_modification_record:aitf
@@ -1713,7 +1735,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No obfuscation flag or decoded form
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:encoded_obfuscated_payload_indicator:otel
@@ -1723,7 +1747,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No obfuscation flag or decoded form
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:encoded_obfuscated_payload_indicator:aitf
@@ -1878,7 +1904,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No citation, and no resolution of a citation against retrieval
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:citations_source_attribution:otel
@@ -1932,7 +1960,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No reasoning trace
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:observation_thought_reasoning_trace:otel
@@ -1942,7 +1972,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.usage.reasoning.output_tokens]
+    gap: A count of reasoning tokens, not the trace
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:observation_thought_reasoning_trace:aitf
@@ -2041,7 +2074,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No refusal status or reason; a content-filter stop reason (#1704) records one cause only
+    asks: [ocsf_stop_reason]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:llm_refusal:otel
@@ -2051,7 +2086,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.response.finish_reasons]
+    gap: A content-filter finish reason where the provider returns one; no refusal status or reason
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:llm_refusal:aitf
@@ -2146,10 +2184,8 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: partial
-    constructs: ['object:ai_model']
-    gap: Provider not standardized in the profile
-    asks: [ocsf_model_provenance]
+    coverage: covered
+    constructs: ['object:ai_model', 'attribute:ai_provider']
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:provider_endpoint_identity:otel
@@ -2200,7 +2236,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No decoding parameters or context window on ai_model or message_context
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:inference_parameters:otel
@@ -2303,7 +2341,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['attribute:status_id', 'attribute:status_detail']
+    gap: A generic outcome; no AI-specific error type
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:llm_error_exception:otel
@@ -2412,7 +2453,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No forward-pass digest
+    note: A MAY research-grade signal; no ask.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:pre_forward_pass_state_digest_vector:otel
@@ -2422,7 +2465,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No forward-pass digest
+    note: A MAY research-grade signal; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:pre_forward_pass_state_digest_vector:aitf
@@ -2462,7 +2507,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No token-entropy signal
+    note: A MAY research-grade signal; no ask.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:token_malformation_context_corruption_indicator:otel
@@ -2472,7 +2519,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No token-entropy signal
+    note: A MAY research-grade signal; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:token_malformation_context_corruption_indicator:aitf
@@ -2640,7 +2689,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.tool.type]
+    gap: function, extension or datastore; no MCP, direct-storage or code-execution boundary
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_type_trust_boundary:aitf
@@ -2698,7 +2750,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: Tool name and call ID only; no implementation ID across servers
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_id:aitf
@@ -2856,7 +2910,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:process', 'attribute:sandbox', 'object:container']
+    gap: A sandbox name on a process, and container identity; no isolation mode, timeout or egress policy for a tool execution
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:execution_environment_sandbox:otel
@@ -2968,7 +3025,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['attribute:status_id', 'attribute:status_detail']
+    gap: An outcome on API Activity, not tied to a tool call
+    asks: [ocsf_ai_tool]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:tool_error_exception:otel
@@ -3080,7 +3140,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['profile:data_classification', 'object:data_classification', 'attribute:confidentiality']
+    gap: Classification attaches to data, not to the tool that touches it
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:tool_privacy_classification:otel
@@ -3090,7 +3153,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No data classification for a tool
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_privacy_classification:aitf
@@ -3138,7 +3203,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No self-asserted rationale
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:tool_selection_rationale:otel
@@ -3148,7 +3215,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No self-asserted rationale
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_selection_rationale:aitf
@@ -3372,7 +3441,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No integrity or poisoning signal
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:memory_integrity_poisoning_signal:aitf
@@ -3472,7 +3543,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No memory-store declaration
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:declared_memory_configuration:otel
@@ -3482,7 +3555,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.memory.store.id]
+    gap: Store identity only; no limits or retrieval settings
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:declared_memory_configuration:aitf
@@ -3526,7 +3602,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No self-asserted rationale
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:memory_write_rationale:otel
@@ -3536,7 +3614,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No self-asserted rationale
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:memory_write_rationale:aitf
@@ -3749,7 +3829,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No knowledge-source declaration
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:declared_knowledge_source_configuration:otel
@@ -3759,7 +3841,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.data_source.id]
+    gap: Data-source identity only; no schema or search parameters
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:declared_knowledge_source_configuration:aitf
@@ -3871,7 +3956,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No A2A conventions
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:a2a_task_lifecycle_event:aitf
@@ -3915,7 +4002,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:ai_agent']
+    gap: ai_agent can describe a counterparty; no descriptor change or verification outcome
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:peer_agent_card_descriptor:otel
@@ -3925,7 +4015,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.agent.name, gen_ai.agent.id, gen_ai.agent.description, gen_ai.agent.version]
+    gap: Describes the agent a span is about; no counterparty descriptor, change or verification
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:peer_agent_card_descriptor:aitf
@@ -4049,8 +4142,9 @@
   source: xm-pass
   proposal:
     coverage: covered
-  reason: XM §4; XM names ['gen_ai.agent.turn_count'], which do not exist at the pin
-  critical: true
+    constructs: [gen_ai.agent.session.turn_count, gen_ai.agent.step.index, agent.steps_per_session]
+    note: XM §4 names gen_ai.agent.turn_count; AITF defines gen_ai.agent.session.turn_count.
+  reason: XM §4
   status: proposed
 - id: M:loop_step_count_signal:odis
   type: mapping
@@ -4136,7 +4230,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:ai_agent', 'attribute:charter']
+    gap: A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:task_intent_declaration:otel
@@ -4146,7 +4243,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No declared purpose for the run
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:task_intent_declaration:aitf
@@ -4189,7 +4288,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['attribute:raw_data']
+    gap: raw_data holds the source record before normalization, not the envelope of each MCP or A2A message
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:protocol_envelope_capture:otel
@@ -4199,7 +4301,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No raw protocol envelope
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:protocol_envelope_capture:aitf
@@ -4304,7 +4408,10 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: ['object:actor', 'object:user']
+    gap: A user identifier and name both exist; no record of which one authorized
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:verified_vs_displayed_identity:otel
@@ -4364,7 +4471,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: delegation records its issuer and lineage, not the originating principal
+    asks: [ocsf_delegation_lineage]
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:originating_principal_on_behalf_of:otel
@@ -4912,7 +5021,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [gen_ai.agent.version]
+    gap: Agent version only; no tool or framework version
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_agent_version:aitf
@@ -4969,7 +5081,10 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: partial
+    constructs: [vcs.repository.url.full, vcs.ref.head.revision]
+    gap: Version-control attributes exist for CI/CD telemetry, not for tool and agent code
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:repository_code_path_software_ref:aitf
@@ -5083,7 +5198,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No dependency graph
+    asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:component_dependency_graph:aitf
@@ -5137,7 +5254,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No inventory signature
+    asks: [otel_capability_change]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:inventory_attestation_signature:aitf
@@ -5195,7 +5314,8 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: covered
+    constructs: [gen_ai.tool.description]
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_description:aitf
@@ -5252,7 +5372,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No reachability status for a tool
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:tool_status:aitf
@@ -5309,7 +5431,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No ownership or change dates
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:creator_id_oncall_creation_update_dates:aitf
@@ -5353,7 +5477,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No per-tool exposure map
+    note: A MAY field; no ask.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:surfaces_supported:otel
@@ -5363,7 +5489,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No per-tool exposure map
+    note: A MAY field; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:surfaces_supported:aitf
@@ -5419,7 +5547,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: Fleet aggregates are derived
+    note: Derived from per-event records; no ask.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:fleet_counts:aitf
@@ -5580,7 +5710,9 @@
     publication: otel
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No per-session sequence number or hash chain
+    note: No ask proposed; decide one or record why none.
   reason: XM §2.2 cluster row, per field
   status: proposed
 - id: M:event_sequence_continuity:aitf
@@ -5908,7 +6040,9 @@
     publication: ocsf
   source: xm-pass
   proposal:
-    coverage: unassessed
+    coverage: none
+    gap: No routing constraint or candidate backends
+    note: No ask proposed; decide one or record why none.
   reason: XM §3.1 cluster row, per field
   status: proposed
 - id: M:backend_route_restriction_decision:otel

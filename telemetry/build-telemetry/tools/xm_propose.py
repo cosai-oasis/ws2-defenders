@@ -296,6 +296,81 @@ OTEL = {
 }
 
 
+# ---------------------------------------------------------------- assessed against the pins, 2026-10-02
+# The entries XM's cluster rows left unassessed, judged from each pinned schema's own
+# definitions (OCSF 1.9.0 dictionary and objects; OpenTelemetry GenAI and core registries).
+NOASK = 'No ask proposed; decide one or record why none.'
+MAYR = 'A MAY research-grade signal; no ask.'
+OCSF_ASSESSED = {
+    'trace_context_propagated': m('covered', ['profile:trace', 'object:trace'], note='The trace profile carries the trace and span identifiers.'),
+    'organization_tenant_id': m('partial', ['object:metadata', 'attribute:tenant_uid'], 'One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately', note=NOASK),
+    'execution_status': m('covered', ['attribute:status_id', 'attribute:duration'], note='Outcome and duration on the base event.'),
+    'surface_app': m('partial', ['object:actor', 'attribute:app_name'], 'An application name; no entry-point type and no internal or external flag', note=NOASK),
+    'input_source_channel': m('none', gap='No per-segment input source on message_context', note=NOASK),
+    'source_host_ip_request_metadata': m('covered', ['attribute:src_endpoint']),
+    'encoded_obfuscated_payload_indicator': m('none', gap='No obfuscation flag or decoded form', note=NOASK),
+    'citations_source_attribution': m('none', gap='No citation, and no resolution of a citation against retrieval', note=NOASK),
+    'observation_thought_reasoning_trace': m('none', gap='No reasoning trace', note=NOASK),
+    'llm_refusal': m('none', gap='No refusal status or reason; a content-filter stop reason (#1704) records one cause only', asks=['ocsf_stop_reason']),
+    'inference_parameters': m('none', gap='No decoding parameters or context window on ai_model or message_context', note=NOASK),
+    'llm_error_exception': m('partial', ['attribute:status_id', 'attribute:status_detail'], 'A generic outcome; no AI-specific error type', note=NOASK),
+    'pre_forward_pass_state_digest_vector': m('none', gap='No forward-pass digest', note=MAYR),
+    'token_malformation_context_corruption_indicator': m('none', gap='No token-entropy signal', note=MAYR),
+    'execution_environment_sandbox': m('partial', ['object:process', 'attribute:sandbox', 'object:container'], 'A sandbox name on a process, and container identity; no isolation mode, timeout or egress policy for a tool execution', note=NOASK),
+    'tool_error_exception': m('partial', ['attribute:status_id', 'attribute:status_detail'], 'An outcome on API Activity, not tied to a tool call', ['ocsf_ai_tool']),
+    'tool_privacy_classification': m('partial', ['profile:data_classification', 'object:data_classification', 'attribute:confidentiality'], 'Classification attaches to data, not to the tool that touches it', note=NOASK),
+    'tool_selection_rationale': m('none', gap='No self-asserted rationale', note=NOASK),
+    'memory_write_rationale': m('none', gap='No self-asserted rationale', note=NOASK),
+    'declared_memory_configuration': m('none', gap='No memory-store declaration', note=NOASK),
+    'declared_knowledge_source_configuration': m('none', gap='No knowledge-source declaration', note=NOASK),
+    'peer_agent_card_descriptor': m('partial', ['object:ai_agent'], 'ai_agent can describe a counterparty; no descriptor change or verification outcome', note=NOASK),
+    'task_intent_declaration': m('partial', ['object:ai_agent', 'attribute:charter'], "A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run", note=NOASK),
+    'protocol_envelope_capture': m('partial', ['attribute:raw_data'], 'raw_data holds the source record before normalization, not the envelope of each MCP or A2A message', note=NOASK),
+    'verified_vs_displayed_identity': m('partial', ['object:actor', 'object:user'], 'A user identifier and name both exist; no record of which one authorized', note=NOASK),
+    'originating_principal_on_behalf_of': m('none', gap='delegation records its issuer and lineage, not the originating principal', asks=['ocsf_delegation_lineage']),
+    'surfaces_supported': m('none', gap='No per-tool exposure map', note='A MAY field; no ask.'),
+    'backend_route_restriction_decision': m('none', gap='No routing constraint or candidate backends', note=NOASK),
+    # corrected: ai_model carries the provider at 1.9.0
+    'provider_endpoint_identity': m('covered', ['object:ai_model', 'attribute:ai_provider']),
+}
+OTEL_ASSESSED = {
+    'action_type': m('partial', ['gen_ai.operation.name'], 'Operations include chat, execute_tool, invoke_agent and the memory operations; no inter-agent message send', ['otel_inter_agent_messaging']),
+    'autonomy_level': m('none', gap='No autonomy level', note=NOASK),
+    'input_source_channel': m('none', gap='No per-part input source', note=NOASK),
+    'source_host_ip_request_metadata': m('covered', ['client.address', 'network.peer.address', 'user_agent.original']),
+    'guardrail_modification_record': m('none', gap='No record that an enforcement point rewrote a payload', asks=['otel_security_guardrail']),
+    'encoded_obfuscated_payload_indicator': m('none', gap='No obfuscation flag or decoded form', note=NOASK),
+    'observation_thought_reasoning_trace': m('partial', ['gen_ai.usage.reasoning.output_tokens'], 'A count of reasoning tokens, not the trace', note=NOASK),
+    'llm_refusal': m('partial', ['gen_ai.response.finish_reasons'], 'A content-filter finish reason where the provider returns one; no refusal status or reason', note=NOASK),
+    'pre_forward_pass_state_digest_vector': m('none', gap='No forward-pass digest', note=MAYR),
+    'token_malformation_context_corruption_indicator': m('none', gap='No token-entropy signal', note=MAYR),
+    'tool_type_trust_boundary': m('partial', ['gen_ai.tool.type'], 'function, extension or datastore; no MCP, direct-storage or code-execution boundary', note=NOASK),
+    'tool_id': m('none', gap='Tool name and call ID only; no implementation ID across servers', note='A MAY field; no ask.'),
+    'tool_privacy_classification': m('none', gap='No data classification for a tool', note='A MAY field; no ask.'),
+    'tool_selection_rationale': m('none', gap='No self-asserted rationale', note=NOASK),
+    'memory_integrity_poisoning_signal': m('none', gap='No integrity or poisoning signal', note=NOASK),
+    'declared_memory_configuration': m('partial', ['gen_ai.memory.store.id'], 'Store identity only; no limits or retrieval settings', note=NOASK),
+    'memory_write_rationale': m('none', gap='No self-asserted rationale', note=NOASK),
+    'declared_knowledge_source_configuration': m('partial', ['gen_ai.data_source.id'], 'Data-source identity only; no schema or search parameters', note=NOASK),
+    'a2a_task_lifecycle_event': m('none', gap='No A2A conventions', note=NOASK),
+    'peer_agent_card_descriptor': m('partial', ['gen_ai.agent.name', 'gen_ai.agent.id', 'gen_ai.agent.description', 'gen_ai.agent.version'], 'Describes the agent a span is about; no counterparty descriptor, change or verification', note=NOASK),
+    'task_intent_declaration': m('none', gap='No declared purpose for the run', note=NOASK),
+    'protocol_envelope_capture': m('none', gap='No raw protocol envelope', note='A MAY field; no ask.'),
+    'tool_agent_version': m('partial', ['gen_ai.agent.version'], 'Agent version only; no tool or framework version', note=NOASK),
+    'repository_code_path_software_ref': m('partial', ['vcs.repository.url.full', 'vcs.ref.head.revision'], 'Version-control attributes exist for CI/CD telemetry, not for tool and agent code', note=NOASK),
+    'component_dependency_graph': m('none', gap='No dependency graph', asks=['otel_capability_change']),
+    'inventory_attestation_signature': m('none', gap='No inventory signature', asks=['otel_capability_change']),
+    'tool_description': m('covered', ['gen_ai.tool.description']),
+    'tool_status': m('none', gap='No reachability status for a tool', note='A MAY field; no ask.'),
+    'creator_id_oncall_creation_update_dates': m('none', gap='No ownership or change dates', note='A MAY field; no ask.'),
+    'surfaces_supported': m('none', gap='No per-tool exposure map', note='A MAY field; no ask.'),
+    'fleet_counts': m('none', gap='Fleet aggregates are derived', note='Derived from per-event records; no ask.'),
+    'event_sequence_continuity': m('none', gap='No per-session sequence number or hash chain', note=NOASK),
+}
+OCSF.update(OCSF_ASSESSED)
+OTEL.update(OTEL_ASSESSED)
+
+
 # ---------------------------------------------------------------- AITF and ODIS (XM §4, per field)
 def xm_section(text, start, stop):
     a = text.index(start)
@@ -432,6 +507,14 @@ def main():
         per = {'ocsf': OCSF.get(fid), 'otel': OTEL.get(fid)}
         aitf_cell, odis_cell = rows.get(fid, ('n/a', 'n/a'))
         per['aitf'] = entry_from_cell(aitf_cell, 'aitf')
+        if fid in ('session_turn_step_ids', 'trace_context_propagated'):
+            # span and trace identifiers are OpenTelemetry trace context, not attributes
+            e = per['aitf']
+            e['constructs'] = [c for c in e.get('constructs', []) if c not in ('span_id', 'trace_id', 'traceparent')]
+            e['note'] = (e.get('note', '') + ' Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).').strip()
+        if fid == 'loop_step_count_signal':
+            per['aitf'] = m('covered', ['gen_ai.agent.session.turn_count', 'gen_ai.agent.step.index', 'agent.steps_per_session'],
+                            note='XM §4 names gen_ai.agent.turn_count; AITF defines gen_ai.agent.session.turn_count.')
         if fid in gaps:   # closed in AITF v0.4: the namespace AITF_gaps.md records supersedes XM §4
             e = per['aitf']
             e['constructs'] = list(dict.fromkeys(gaps[fid] + e.get('constructs', [])))
