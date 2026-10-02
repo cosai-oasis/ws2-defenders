@@ -6,9 +6,10 @@ Writes data/candidates/2026-10-02-phase5-patterns.yaml:
   V:<id>    type coverage  why an attack has no pattern
 
 A pattern record:
-  id                  <Stage>-<n>, numbered within its stage: MUST-only patterns
-                      first, then by former ID. New patterns append to their
-                      stage; IDs are never reused or renumbered
+  id                  a descriptive slug, as field IDs are (`tool_definition_changed`);
+                      fixed once accepted and never reused. It carries no order:
+                      AD §2 sorts by stage, then minimum tier, then name. The AD
+                      anchor is `#p-` plus the slug with hyphens
   former_id           the provisional CP-nn of phase 1, for traceability
   name, indicates     as in AD §2
   stage               entry | decision | action | persistence | egress | plane, in
@@ -436,6 +437,34 @@ PATTERNS = [
       reason='covers TA-13'),
 ]
 
+SLUG = {
+    'CP-01': 'same_input_many_identities', 'CP-02': 'refusals_then_completion',
+    'CP-03': 'new_tool_with_call_spike', 'CP-04': 'untrusted_input_to_new_egress',
+    'CP-05': 'external_memory_read_back', 'CP-06': 'retrieved_instructions_followed',
+    'CP-07': 'system_prompt_reproduced', 'CP-08': 'authorized_calls_chained_across_identities',
+    'CP-09': 'context_limit_abuse', 'CP-10': 'inter_agent_relay_loop',
+    'CP-11': 'background_task_without_end', 'CP-12': 'privileged_action_on_displayed_identity',
+    'CP-13': 'model_or_provider_anomaly', 'CP-14': 'identity_from_new_source',
+    'CP-15': 'citation_without_retrieval', 'CP-16': 'enforcement_point_fail_open',
+    'CP-17': 'tool_definition_changed', 'CP-18': 'capability_after_inter_agent_message',
+    'CP-19': 'unsandboxed_code_execution', 'CP-20': 'callback_to_undeclared_destination',
+    'CP-21': 'inference_parameters_off_baseline', 'CP-22': 'zero_click_to_new_egress',
+    'CP-23': 'hook_coverage_changed', 'CP-24': 'memory_beyond_limit',
+    'CP-25': 'cross_tenant_access', 'CP-26': 'egress_under_session_taint',
+    'CP-27': 'self_asserted_attribute_contradicted', 'CP-28': 'action_without_covering_approval',
+    'CP-29': 'denials_then_allow', 'CP-30': 'credential_wider_than_requested',
+    'CP-31': 'unmediated_capability', 'CP-32': 'route_outside_restriction',
+    'CP-33': 'agent_name_collision', 'CP-34': 'repeated_refusals',
+    'CP-35': 'poisoned_item_read', 'CP-36': 'unrequested_data_in_tool_arguments',
+    'CP-37': 'event_sequence_gap', 'CP-38': 'mcp_server_version_unapproved',
+    'CP-39': 'unapproved_capability_change', 'CP-40': 'consumption_spike_with_model_enumeration',
+    'CP-41': 'guardrail_blocks_stop', 'CP-42': 'untrusted_content_acted_on_later',
+    'CP-43': 'untrusted_attachment_to_destructive_tool', 'CP-44': 'input_reemitted',
+    'CP-45': 'obfuscated_instruction_config', 'CP-46': 'output_link_carrying_data',
+    'CP-47': 'autonomous_run_against_external_targets', 'CP-48': 'sensitive_input_to_off_inventory_ai',
+    'CP-49': 'privileged_mcp_tool_low_privilege_identity',
+}
+
 NO_PATTERN = {
     'TA-28': 'Outside the deployment: the backdoor ran on a compromised host and used the provider API from there, so no instrumented AI system carries the activity. Detection belongs to endpoint and network monitoring of provider API use; within a deployment, Output Egress Destination records what its own calls send.',
     'AOC-16': 'An emergent defence, not an attack: agents shared risk signals about a probing researcher. A pattern would detect the defence. Its Inter-Agent Message edge supports reading such signals.',
@@ -453,19 +482,17 @@ def main():
                             for e in a.get('fields', [])}
     rank = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
     tier = lambda r: max((fields[f]['tier'] for f in r['requires'] + r['join']), key=rank.get)
-    new_id = {}
-    for st in STAGES:
-        group = sorted((r for r, _ in PATTERNS if r['stage'] == st), key=lambda r: (rank[tier(r)], r['id']))
-        for n, r in enumerate(group, 1):
-            new_id[r['id']] = f'{st.capitalize()}-{n}'
-    relabel = lambda s: re.sub(r'CP-\d\d', lambda m: new_id[m[0]], s)
+    assert sorted(SLUG) == sorted(r['id'] for r, _ in PATTERNS), 'every pattern needs exactly one slug'
+    assert len(set(SLUG.values())) == len(SLUG) and all(re.fullmatch(r'[a-z0-9_]+', s) for s in SLUG.values())
+    new_id = SLUG
+    relabel = lambda s: re.sub(r'CP-\d\d', lambda m: f'`{new_id[m[0]]}`', s)
     renamed = []
     for rec, reason in PATTERNS:
         rec = {'id': new_id[rec['id']], 'former_id': rec['id']} | {k: v for k, v in rec.items() if k != 'id'}
         if 'motivation' in rec:
             rec['motivation'] = relabel(rec['motivation'])
         renamed.append((rec, relabel(reason)))
-    renamed.sort(key=lambda p: (STAGES.index(p[0]['stage']), int(p[0]['id'].split('-')[1])))
+    renamed.sort(key=lambda p: (STAGES.index(p[0]['stage']), rank[tier(p[0])], p[0]['name'].casefold()))
     for a in NO_PATTERN:
         NO_PATTERN[a] = relabel(NO_PATTERN[a])
     errors, out = [], []
