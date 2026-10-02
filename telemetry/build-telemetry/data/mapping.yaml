@@ -149,7 +149,7 @@ asks:
   proposes: []
   tracking: []
   status: proposed
-  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-the-genai-conventions-cover-today)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
+  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-it-is-and-the-version-mapped)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
 - id: otel_retrieval_provenance
   publication: otel_genai
   summary: Add per-document source, owner, trust level and last-modified attributes to retrieval documents.
