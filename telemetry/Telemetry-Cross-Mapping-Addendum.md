@@ -714,7 +714,7 @@ The OWASP Agent Observability Standard (AOS) [[38]](#standards--frameworks) defi
 
 **Trace.** AOS step events carry the identifiers of RFC §6.1 and the content, tool, memory and retrieval fields of RFC §§6.2 to 6.4. Their `reasoning` attributes correspond to [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) and [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale). The MCP and A2A protocol events correspond to [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive), [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) and [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture). Span naming is left to the OpenTelemetry binding ([§2](#2-opentelemetry)).
 
-**Inspect.** The AgBOM corresponds to [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot), and its refresh on change to [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event). CycloneDX `dependencies` and `signatures` correspond to [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) and [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature). Only the CycloneDX binding exists, as one worked example that uses CycloneDX's generic `properties` bag. The SPDX and SWID bindings are placeholders ([#20](https://github.com/OWASP/www-project-agent-observability-standard/issues/20), [#21](https://github.com/OWASP/www-project-agent-observability-standard/issues/21)).
+**Inspect.** The AgBOM corresponds to [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot), and its refresh on change to [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event). CycloneDX [[41]](#standards--frameworks) `dependencies` and `signatures` correspond to [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) and [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature). Only the CycloneDX binding exists, as one worked example that uses CycloneDX's generic `properties` bag. The SPDX [[42]](#standards--frameworks) and SWID [[43]](#standards--frameworks) bindings are placeholders ([#20](https://github.com/OWASP/www-project-agent-observability-standard/issues/20), [#21](https://github.com/OWASP/www-project-agent-observability-standard/issues/21)).
 
 ### 4.3 Gaps
 
@@ -917,14 +917,11 @@ ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.
 
 ### Standards & frameworks
 
-23. **CoSAI Risk Map**: Coalition for Secure AI, fine-grained AI system components taxonomy. <https://github.com/cosai-oasis/secure-ai-tooling/tree/main/risk-map>. Identifiers are resolved against `develop` at commit `37e7bed` (30 September 2026). Those not yet on `develop` are proposals: most come from PR [#507](https://github.com/cosai-oasis/secure-ai-tooling/pull/507), open and in draft; `riskAgentMemoryPoisoning`, `riskDeceptiveAgentReporting`, `riskCrossAgentReputationPoisoning`, `riskErroneousAgentAction` and `controlMemoryReferentRevalidation` come from issues [#524](https://github.com/cosai-oasis/secure-ai-tooling/issues/524) to [#527](https://github.com/cosai-oasis/secure-ai-tooling/issues/527), proposed on a branch stacked on #507 (commit `0e9601d`).
-24. **CoSAI MCP Security**: Coalition for Secure AI, Workstream 4 (Secure Design Patterns for Agentic Systems): *Model Context Protocol (MCP) Security*, approved 8 January 2026. Twelve threat categories (MCP-T1…T12), ~40 threats. <https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf>
 25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
 26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in ODIS §6: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [XM §5](Telemetry-Cross-Mapping-Addendum.md#5-odis) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
 
 <!-- list break: reference numbers are not contiguous -->
 
-29. **MITRE ATT&CK**: adversary tactics & techniques knowledge base (ATLAS-aligned). MITRE. <https://attack.mitre.org/>
 30. **NIST AI Risk Management Framework (AI RMF 1.0)**: NIST, January 2023; **currently under revision**. GOVERN / MAP / MEASURE / MANAGE. <https://www.nist.gov/itl/ai-risk-management-framework> · companion **NIST AI 600-1, Generative AI Profile** (July 2024). Mapped in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-nist-csf-ai-rmf-and-isoiec-42001).
 31. **NIST Cybersecurity Framework (CSF) 2.0**: GV / ID / PR / DE / RS / RC; 6 functions, 22 categories, 106 subcategories. <https://www.nist.gov/cyberframework>
 32. **NIST Cyber AI Profile**: *Cybersecurity Framework Profile for Artificial Intelligence: NIST Community Profile*, **NIST IR 8596**, *initial preliminary draft* published 16 December 2025; CSF 2.0 community profile overlaying the **Secure / Defend / Thwart** AI focus areas. Comment period closed 30 January 2026; working sessions held April and May 2026; **no Initial Public Draft as of 2 October 2026**. <https://csrc.nist.gov/pubs/ir/8596/iprd> · project: <https://www.nccoe.nist.gov/projects/cyber-ai-profile>
@@ -943,16 +940,3 @@ ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.
 42. **SPDX**: Linux Foundation software bill-of-materials standard. <https://spdx.dev/>
 43. **SWID**: ISO/IEC 19770-2 software identification tags. <https://csrc.nist.gov/projects/Software-Identification-SWID>
 44. **CPEX**: policy-enforcement runtime and reference monitor for AI agents. <https://contextforge-org.github.io/cpex/> · threat model: <https://contextforge-org.github.io/cpex/docs/threat-model/>. Cited at release `v0.2.3` (2 October 2026), the first release to contain the threat-model document. <https://github.com/contextforge-org/cpex>
-
-<!-- list break: reference numbers are not contiguous -->
-
-47. **SPIFFE / SVID**: Secure Production Identity Framework for Everyone (workload identity). <https://spiffe.io/>
-
-<!-- list break: reference numbers are not contiguous -->
-
-49. **Cedar**: authorization policy language. <https://www.cedarpolicy.com/> · **Open Policy Agent (Rego)**. <https://www.openpolicyagent.org/>
-
-<!-- list break: reference numbers are not contiguous -->
-
-53. **RFC 9943**: *An Architecture for Trustworthy and Transparent Digital Supply Chains* (SCITT). Standards Track. <https://www.rfc-editor.org/rfc/rfc9943.html>
-54. **RFC 9942**: *CBOR Object Signing and Encryption (COSE) Receipts.* Standards Track, June 2026. <https://www.rfc-editor.org/rfc/rfc9942.html>
