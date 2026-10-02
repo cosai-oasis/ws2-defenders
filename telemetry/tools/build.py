@@ -160,7 +160,7 @@ def build_ad(text):
                                [inventory_row(m[1], attacks[i]) for i in inv[m[1]]['attacks']]))
     assert n == len(inv), n
     at = layout['ad_atlas_table']
-    n = splice(lines, r'^### 3\.6 ', r'^### 3\.7',
+    n = splice(lines, r'^### 3\.6 ', r'^## 4\.',
                lambda m: table(at['header'], [atlas_row(attacks[i]) for i in at['attacks']]))
     assert n == 1, n
     return attack_references('\n'.join(lines))
