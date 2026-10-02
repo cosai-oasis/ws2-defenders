@@ -175,7 +175,7 @@ This step also records whether the telemetry plane worked. Every other field ass
 
 *Tier:* MUST, on 6 documented instances. *Read by:* [Pre-filled prompt telling the assistant to remember a source](#p-prefilled-prompt-to-remember).
 
-<a id="f-input-trust-classification"></a>**Input Trust Classification.** The origin authority of a segment crossed with how it was consumed: **trusted-instruction**, **trusted-data**, **untrusted-instruction**, **untrusted-data**. Owner command against environmental or third-party content, and instruction against data. **`untrusted-instruction` is the attack state**, the cell `TA-01` occupies.
+<a id="f-input-trust-classification"></a>**Input Trust Classification.** The origin authority of a segment crossed with the role the deployment assigned it on entry: **trusted-instruction**, **trusted-data**, **untrusted-instruction**, **untrusted-data**. Owner command against environmental or third-party content, and instruction against data. **`untrusted-instruction` is the attack state**, the cell `TA-01` occupies.
 
 *Tier:* MUST, on 10 documented instances. Operationalizes the risk map's core agentic control. `AOC-02` disclosed 124 email records because it did not distinguish an owner instruction from a non-owner's; `TA-01` is untrusted email content promoted to instruction. *Read by:* [Untrusted attachment, then a destructive tool call](#p-untrusted-attachment-to-destructive-tool), [Untrusted content acted on in a later turn](#p-untrusted-content-acted-on-later), [Autonomous trigger, untrusted content, new egress](#p-zero-click-to-new-egress) and [Untrusted input, then a tool call, then egress to a new destination](#p-untrusted-input-to-new-egress).
 

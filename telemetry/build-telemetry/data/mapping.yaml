@@ -135,7 +135,7 @@ asks:
   proposes: [gen_ai.input.trust_level]
   tracking: []
   status: proposed
-  rationale: '`gen_ai.input.trust_level` (trusted-instruction / trusted-data / untrusted-instruction / untrusted-data), crossing origin authority with whether the segment was consumed as instruction or as data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). This is the single highest-value addition and the one with no current analogue anywhere in the conventions. It is cheap (an enum on an existing structure) and it is the field the CoSAI Risk Map treats as the core agentic control (AD §1.2).'
+  rationale: '`gen_ai.input.trust_level` (trusted-instruction / trusted-data / untrusted-instruction / untrusted-data), crossing origin authority with the role the deployment assigned the segment on entry, instruction or data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.'
 - id: otel_security_guardrail
   publication: otel_genai
   summary: Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*.
