@@ -2,8 +2,8 @@
 """Regenerate the data-driven regions of the RFC and the Attack Detection
 Addendum (AD) from data/.
 
-Regions: AD §1 field tables and their "What it captures" entries (between
-GENERATED markers, one per step), §2 pattern table, §3.2 to §3.4 inventory
+Regions: AD §1 field tables and their field entries (capture definition, tier
+basis, rationale; between GENERATED markers, one per step), §2 pattern table, §3.2 to §3.4 inventory
 tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
 tables, which link to each field's AD entry.
 Everything else in both documents is hand-written and left untouched.
@@ -72,21 +72,57 @@ def emitted(f):
     return (', '.join(f'`{e}`' for e in f['emitted_by']) if 'emitted_by' in f else f['emitted_by_text'])
 
 
+def records(f):
+    """The one-line definition, with the SHOULD modality appended as RFC §6 shows it."""
+    if 'modality' in f:
+        return f"{f['records']} Modality: {f['modality']}."
+    return f"{f['records']} Provider-gated." if f.get('provider_gated') else f['records']
+
+
+def link(fid):
+    return f"[{fields[fid]['name']}](#{anchor(fid)})"
+
+
+def series(items):
+    return items[0] if len(items) == 1 else ', '.join(items[:-1]) + ' and ' + items[-1]
+
+
+def tier_basis(f):
+    """The basis of a field's tier under RFC §4.7, checked against the data."""
+    b = f.get('basis', {})
+    inst = [a for a, g in grounds[f['id']] if g == 'instance']
+    if f['tier'] == 'MUST':
+        assert set(b.get('evidence', [])) <= set(inst), f['id']
+        if 'required_to_read' in b:
+            return 'MUST, needed to read ' + series([link(x) for x in b['required_to_read']])
+        assert len(inst) >= 2, f"{f['id']}: MUST with {len(inst)} instance(s) and no dependency"
+        return f'MUST, on {len(inst)} documented instances'
+    if f['tier'] == 'SHOULD':
+        assert 'modality' in f or f.get('provider_gated'), f"{f['id']}: SHOULD with no modality"
+        return f"SHOULD, modality: {f['modality']}" if 'modality' in f else 'SHOULD, provider-gated'
+    return 'MAY'
+
+
 def ad_field_row(f):
     name = f"**{f['name']}**" + ''.join(f' **[{t}]**' for t in f.get('tags', []))
     tier = f['tier'] + (' ' + f['tier_mark'] if 'tier_mark' in f else '')
     ev = ','.join(f'`{a}`' if g == 'instance' else f'*`{a}`*' for a, g in grounds[f['id']])
-    return row([name, tier, f['role'], f['records'], emitted(f), ev])
+    return row([name, tier, f['role'], records(f), emitted(f), ev])
 
 
 def capture_entry(f):
     name = (f"**{f['name']}** {f['name_note']}." if 'name_note' in f else f"**{f['name']}.**")
-    return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}'
+    tier = f'*Tier:* {tier_basis(f)}.'
+    if 'rationale' in f:
+        tier += ' ' + f['rationale']
+    elif 'rationale_see' in f:
+        tier += f" See {link(f['rationale_see'])}."
+    return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}\n\n{tier}'
 
 
 def ad_step(st):
     out = list(layout['ad_field_header']) + [ad_field_row(fields[i]) for i in st['fields']]
-    out += ['', '**What it captures.**']
+    out += ['', '**Field entries.**']
     for i in st['fields']:
         out += ['', capture_entry(fields[i])]
     return out
@@ -94,7 +130,7 @@ def ad_step(st):
 
 def rfc_field_row(f):
     link = f"[{f['name']}]({AD}#{anchor(f['id'])})"
-    return row([link, f['tier'], f['records'], emitted(f)])
+    return row([link, f['tier'], records(f), emitted(f)])
 
 
 def pattern_row(p):

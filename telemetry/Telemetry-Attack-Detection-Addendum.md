@@ -19,7 +19,7 @@ One table per implementation step of [RFC §6](CoSAI-AI-Telemetry-RFC.md#6-field
 - **Emitted by**: the CoSAI Risk Map component that produces the field.
 - **Grounding attacks**: attack IDs that establish the need (see [§3](#3-attack--incident-inventory)). An ID in italics grounds the field analogically: the attack motivates it, but the documented instance does not contain what the field records ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)).
 
-After each table, **What it captures** defines each field generally enough to bind to any framework. The field links in RFC §6 point at these entries.
+After each table, an entry per field defines what to capture, generally enough to bind to any framework, then gives the basis of its tier: the number of documented instances, the MUST fields it is needed to read, or the modality it serves. Where the tier is not self-evident the entry gives the reasoning; [§4](#4-tiering-rationale) holds what applies across fields. The field links in RFC §6 point at these entries.
 
 ### 1.1 Identifiers, trace context and model identity
 
@@ -50,49 +50,91 @@ These fields establish what is running and where: the asset inventory of the AI 
 | **Pre-Forward-Pass State Digest/Vector** | MAY | content | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` | *`IR-02`*,*`AOC-10`* |
 | **Token Malformation / Context-Corruption Indicator** | MAY | label | Token-entropy anomalies correlated with confabulation. | `componentTheModel` | *`IR-02`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-agent-name"></a>**Agent Name.** Logical name/type of the agent (e.g. "Deep Research agent"). Detects off-inventory / "shadow" agents.
 
+*Tier:* MUST, on 2 documented instances. Rests on `TA-05` (an agent nobody inventoried) and `TA-31` (one name bound to two peers, so requests reach the wrong one); both are found by comparing a name against what it should resolve to.
+
 <a id="f-agent-runtime-instance-id"></a>**Agent (Runtime) Instance ID.** UUID pinning an event to one running instance, not just the type. Enables per-instance kill/quarantine.
+
+*Tier:* MUST, needed to read [Identities Used (per hop)](#f-identities-used-per-hop), [Source host / IP + request metadata](#f-source-host-ip-request-metadata), [Capability-Set Change Event](#f-capability-set-change-event) and [Instrumentation Coverage / Hook Attestation](#f-instrumentation-coverage-hook-attestation). One identity across a fleet is otherwise ambiguous between sibling instances and a stolen credential, and capability sets and hook state are per process.
 
 <a id="f-workflow-run-id"></a>**Workflow / Run ID.** Groups all activity of one multi-step run or sub-agent tree into a single traceable execution.
 
+*Tier:* MUST, needed to read [Loop / Step-Count Signal](#f-loop-step-count-signal) and [Resource-Consumption Aggregate](#f-resource-consumption-aggregate). Loop / Step-Count Signal and Resource-Consumption Aggregate are both defined per run.
+
 <a id="f-session-turn-step-ids"></a>**Session / Turn / Step IDs.** The three-level execution hierarchy *beneath* the run: `session_id` (the conversation/engagement), `turn_id` (one request→response cycle), `step_id` (one action within a turn). Lets a detection point at *which* turn behaviour changed, not just which run.
+
+*Tier:* MUST, on 5 documented instances.
 
 <a id="f-trigger-type-source-event"></a>**Trigger Type & Source Event.** Whether this run was **user-initiated or autonomous**, and for autonomous runs the originating event (inbound email, chat message, webhook, schedule). Distinct from Surface/App, which records the *channel*, not who or what started the run.
 
+*Tier:* MUST, on 5 documented instances. Zero-click is a telemetry category. `TA-01` starts an entire run from one inbound email with no human in the loop. Surface/App would record "email" for both that and an ordinary request; the autonomous flag is what separates them.
+
 <a id="f-action-type"></a>**Action Type.** Distinguishes LLM-call vs tool-call vs memory-op vs message-send, the "think → act" boundary.
+
+*Tier:* MUST, on 6 documented instances. Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage.
 
 <a id="f-execution-status"></a>**Execution Status.** Outcome of the operation or turn (complete / error / exit / aborted) + duration. Spikes/timeouts reveal probing, DoS, or mass failure. Distinct from **Stop Reason** below, which records why a *completion* ended.
 
+*Tier:* MUST, on 4 documented instances.
+
 <a id="f-surface-app"></a>**Surface / App.** Entry point (CLI, web, IDE, email, chat channel, cron/heartbeat; internal vs external service). Detects access from unexpected surfaces.
+
+*Tier:* MUST, on 3 documented instances.
 
 <a id="f-system-prompt-instruction-config"></a>**System Prompt / Instruction Config.** The system/instruction configuration in force for the call. Detects unauthorized weakening and, by comparison against the response, system-prompt leakage/extraction.
 
+*Tier:* MUST, on 3 documented instances. Both a config-integrity baseline and the reference against which extraction is detected: `TA-07` succeeds when the response reproduces it.
+
 <a id="f-model-name-version"></a>**Model Name + Version.** Model and version processing the request. "Which agents used the compromised model?"; pins a model-specific vulnerability for patching.
+
+*Tier:* MUST, on 3 documented instances. The supply-chain pivot (*which agents used the compromised model*), and R-critical for scoping.
 
 <a id="f-inference-parameters"></a>**Inference Parameters.** The decoding/config parameters in force for the call: `temperature`, `top_p`/`top_k`, `max_tokens`, `stop` sequences, `seed`, and the **declared context-window size**. The runtime half of the configuration-integrity baseline that **System Prompt** (§1.1) covers for instructions.
 
+*Tier:* MUST, on 2 documented instances. Rests on a *denominator* argument rather than a tampering attack: "max-length output" (`TA-04`) and "anomalously large input" (`TA-10`) are the documented detection signatures, and neither is computable without `max_tokens` and the declared context window. It also gives decoding configuration the integrity baseline the system prompt has. Capture it per call: per-request overrides are the attack.
+
 <a id="f-input-output-token-counts"></a>**Input / Output Token Counts.** Per-call token usage, the primary resource-abuse and runaway-loop signal; max-length outputs flag extraction/DoS.
+
+*Tier:* MUST, on 4 documented instances. The cheapest DoS and runaway-loop detector in the document (`AOC-04`'s ~60 k-token relay, `AOC-05`, `TA-10`), and it costs nothing to emit.
 
 <a id="f-llm-error-exception"></a>**LLM Error / Exception.** Errors that occur under adversarial conditions (overflow, malformed encoding, context exhaustion); provider-side silent failures.
 
+*Tier:* MUST, on 2 documented instances. Fires precisely under adversarial conditions.
+
 <a id="f-trace-context-propagated"></a>**Trace Context (propagated).** W3C `traceparent` / `trace_id` + `span_id` **propagated across every agent→tool→agent hop**, including MCP and A2A calls. Without propagation, multi-agent activity cannot be reassembled into one trace.
+
+*Tier:* MUST, on 3 documented instances.
 
 <a id="f-stop-reason"></a>**Stop Reason.** Normalized reason a model completion ended: end of turn, token limit, tool use pending, session stop (caller cancelled or disconnected), content filter. Separates a truncation from a clean stop and a guardrail kill from a crash; a `content_filter` stop is the completion-side view of a guardrail block (§1.2).
 
+*Tier:* MUST, on 3 documented instances. Without it a **Response / Model Output** cut short by a provider content filter or a token limit reads the same as one that finished, so it also passes the dependency test of [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers). A deployment's own guardrail verdict does not record the provider's filter, and token counts cannot infer it. Every major provider API returns a completion's stop reason, so it is implementable wherever a model is called.
+
 <a id="f-autonomy-level"></a>**Autonomy Level.** Declared independence level (e.g. L1 to L5) the run is authorized to operate at; sets oversight/delegation limits.
+
+*Tier:* SHOULD, modality: autonomous action. The oversight dial for delegated action. The corpus repeatedly shows agents operating *above* their intended autonomy (`AOC-04`, `AOC-01`, `AOC-07`); logging the claimed level is what makes that detectable.
 
 <a id="f-model-provenance-signing-hash"></a>**Model Provenance / Signing / Hash.** Signed digest / provenance of the served model artifact (supply-chain attestation).
 
+*Tier:* SHOULD, modality: supply-chain attestation. A supply-chain primitive; ties to model-signing work and ODIS `software_hash`.
+
 <a id="f-organization-tenant-id"></a>**Organization / Tenant ID.** The tenant/organization owning the agent, the session, and the invoking user, recorded on each. The primitive for detecting cross-tenant leakage and credential propagation.
+
+*Tier:* SHOULD, modality: multi-tenancy. Held by the modality gate, not the evidence gate. Its instances (`TA-11`, `TA-17`, `TA-22`) clear the evidence bar; what holds it below MUST is that multi-tenant hosting is a deployment modality, and a single-tenant deployment has nothing for the field to describe. **MUST for any multi-tenant deployment.** The two cross-tenant entries differ in a way worth recording: `TA-11` involved **no attacker**, the boundary failed unaided, which under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) is a documented instance of the failure mode and not a lesser kind of evidence, since the field detects the boundary failure whatever caused it. `TA-17` supplies the adversarial instance, an authenticated caller reaching another tenant's application deliberately. Evidence is therefore settled twice over, and only the modality gate remains.
 
 <a id="f-provider-endpoint-identity"></a>**Provider / Endpoint Identity.** Which provider/endpoint served the call. The reason the completion ended is **Stop Reason** (§1.1).
 
+*Tier:* MAY. `TA-28` is the case that tests the tier. `AOC-06` is a governance and availability signal rather than a discrete adversary technique, which makes the field Q- and A-dominant, and the D concern it is usually asked to carry, model substitution, belongs to Model Name + Version. `TA-28` is different: a backdoor using a provider's own API as its command-and-control channel, where the exfiltration destination is an endpoint the application legitimately calls. That is a detection argument rather than a governance one, and it is carried by **Output Egress Destination** (§1.2, MUST) recording the destination together with what left, not by provider identity alone, because a legitimate call and a C2 beacon share the provider. The field stays MAY because knowing *which* provider was called does not separate them; knowing what was sent does.
+
 <a id="f-pre-forward-pass-state-digest-vector"></a>**Pre-Forward-Pass State Digest/Vector.** Content-addressed digest (+ pooled vector) of the exact inputs to a forward pass, captured pre-inference for replay/drift detection.
 
+*Tier:* MAY. A research-grade signal.
+
 <a id="f-token-malformation-context-corruption-indicator"></a>**Token Malformation / Context-Corruption Indicator.** Signal of context-induced token-entropy anomalies correlated with confabulation.
+
+*Tier:* MAY. A research-grade signal.
 <!-- END GENERATED: fields 6.1 -->
 
 ### 1.2 Content, trust, verdicts and their availability
@@ -123,43 +165,79 @@ This step also records whether the telemetry plane worked. Every other field ass
 | **Encoded / Obfuscated Payload Indicator** | MAY | label | Flag and decoded form of base64, image-embedded or markup-authority input. | `componentAgentInputHandling` | *`TA-03`*,`TA-21`,`AOC-12` |
 | **Threat Classification / ATLAS Technique Tag** | MAY † | label | MITRE ATLAS technique IDs on any event where a detection fires. | any detector | *`TA-01`*,*`TA-07`*,*`IR-01`*,*`AOC-12`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-model-input"></a>**Model Input.** Every input to each model call in the loop, user prompts, tool outputs, retrieved context, inter-agent messages. Not just the first user turn. Includes size/shape (large or repetitive inputs).
 
+*Tier:* MUST, on 14 documented instances. Must cover *all* inputs, not the first user turn: injection arrives via tool outputs (`IR-01`), retrieved content (`IR-03`, `TA-01`, `TA-02`), memory (`IR-02`), or another agent (`AOC-12`).
+
 <a id="f-input-source-channel"></a>**Input Source / Channel.** Provenance label for each input segment: which surface/tool/agent/document it came from.
+
+*Tier:* MUST, on 5 documented instances.
 
 <a id="f-input-trust-classification"></a>**Input Trust Classification.** The origin authority of a segment crossed with how it was consumed: **trusted-instruction**, **trusted-data**, **untrusted-instruction**, **untrusted-data**. Owner command against environmental or third-party content, and instruction against data. **`untrusted-instruction` is the attack state**, the cell `TA-01` occupies.
 
+*Tier:* MUST, on 10 documented instances. Operationalizes the risk map's core agentic control. `AOC-02` disclosed 124 email records because it did not distinguish an owner instruction from a non-owner's; `TA-01` is untrusted email content promoted to instruction.
+
 <a id="f-source-host-ip-request-metadata"></a>**Source host / IP + request metadata.** Origin of the request; supports geo/impossible-travel, rate-limit, and credential-theft detection.
+
+*Tier:* MUST, on 3 documented instances.
 
 <a id="f-guardrail-input-verdict"></a>**Guardrail (Input) Verdict.** Result of any input-side injection/jailbreak/PII/secret classifier: **pass / flag / block / modify**, with detector + score.
 
+*Tier:* MUST, on 6 documented instances. `TA-01` *defeated* a prompt-injection classifier. A classifier bypass is undetectable if verdicts are never logged.
+
 <a id="f-response-model-output"></a>**Response / Model Output.** The generated output at each step. Where leakage, disclosure, verbatim training data, and embedded exfil URLs appear.
+
+*Tier:* MUST, on 9 documented instances.
 
 <a id="f-output-egress-destination"></a>**Output Egress Destination.** Where output goes: recipient addresses, outbound URLs/domains, channels, file targets, broadcast scope.
 
+*Tier:* MUST, on 10 documented instances. Converts a detection from *"something bad was generated"* into *"and here is where it went"*: the difference between blocking and reporting. It would have caught `TA-01` and `TA-03` *before data left*: both smuggle data into an outbound URL on a trusted-looking domain. It also renders `AOC-03`, `AOC-11`, and `AOC-05` visible.
+
 <a id="f-citations-source-attribution"></a>**Citations / Source Attribution.** The sources the agent *claims* it drew on, per output: file ID/name/URL or site URL for each citation, **plus whether each resolves to an item actually returned by a logged Retrieval Event (§1.4)**. Unresolvable, fabricated, or attacker-supplied citations are the signal.
+
+*Tier:* MUST, on 3 documented instances. Applies to deployments that emit citations, which is now the common RAG configuration. A citation is a *trusted* output component (`AML.T0067.000`), so three detections depend on it and none is reachable from response text alone: fabricated citations matching no retrieval, attacker-planted links (`TA-02`, `TA-01`), and suppression visible by comparing retrieved against cited (`IR-03`).
 
 <a id="f-guardrail-output-verdict"></a>**Guardrail (Output) Verdict.** Output-side filter result (PII/DLP, harmful content, exfil pattern): **pass / flag / block / modify**. Modifications are recorded via the **Guardrail Modification Record** (§1.2). Fired detections carry the **ATLAS Technique Tag** (see §1.2).
 
+*Tier:* MUST, on 4 documented instances.
+
 <a id="f-llm-refusal"></a>**LLM Refusal.** Status + reason when the model refuses. A refusal-then-success streak signals a jailbreak in progress; an *absent* refusal on clearly policy-violating output flags a guardrail gap.
+
+*Tier:* MUST, on 9 documented instances. An early-warning tripwire. `IR-01` is iterated reframing until a refusal flips; `AOC-12/13/14` are the mirror image, successful refusals whose telemetry documents attempted attacks even when blocked.
 
 <a id="f-content-modality-attachment-identity"></a>**Content Modality & Attachment Identity.** **Cross-cutting.** For every content-bearing field: the part type (text / file / structured data), MIME type, and for files the name, size, and content hash. Instructions that arrive as an image, PDF, or structured blob are invisible to text-only inspection and text-only logging.
 
+*Tier:* MUST, on 3 documented instances. The corpus's obfuscation attacks are modality attacks: instructions in OCR'd images and base64 blobs (`AOC-12`), ~10 MB attachment floods (`AOC-05`). Text-only capture misses both.
+
 <a id="f-attribute-source-trusted-provenance-marking"></a>**Attribute Source / Trusted-Provenance Marking.** **Cross-cutting.** For every security-relevant attribute, the **authority that supplied it**: verified IdP token, policy decision point, enforcement-owned session store, platform/runtime, versus **self-asserted by the agent or model**. Under assume-breach, an unmarked value is an unverified value.
+
+*Tier:* MUST, on 5 documented instances. The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity (§1.6)) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task Declaration, System Prompt, and every reasoning field are agent-supplied, and `AOC-01` is the corpus's proof that agents *do* report falsely: it declared a secret deleted while the data remained recoverable. Cost is an enum per attribute group, not per event.
 
 <a id="f-instrumentation-coverage-hook-attestation"></a>**Instrumentation Coverage / Hook Attestation.** Which lifecycle hooks are instrumented and active for this agent/run, the instrumentation version, and **where each hook reports**, the difference between "no events", "not observed", and "observed by someone else."
 
+*Tier:* MUST, needed to read [LLM Refusal](#f-llm-refusal), [Tool Execution ID](#f-tool-execution-id) and [Guardrail (Input) Verdict](#f-guardrail-input-verdict). Grounded by `TA-17`, where the telemetry plane was redirected ([§4.2](#42-the-telemetry-plane)). Under sampling, an absent refusal, tool result or verdict cannot be read without the coverage and sampling record ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)). More generally it resolves the ambiguity undermining every absence-based detection in the document: no refusal, no termination condition, no matching request are each only interpretable if the relevant hook was instrumented. It is D-dominant, it is not modality-gated (every deployment has an instrumentation configuration), and recording *where each hook reports* is what separates a hijacked plane from a healthy one.
+
 <a id="f-enforcement-point-availability-failure-mode"></a>**Enforcement-Point Availability & Failure Mode.** For each enforcement callout (guardrail, policy engine, external guardian): whether it was reached, its latency, and on failure whether the system **failed open or failed closed**, plus the action that was taken anyway.
+
+*Tier:* MUST, needed to read [Guardrail (Input) Verdict](#f-guardrail-input-verdict), [Guardrail (Output) Verdict](#f-guardrail-output-verdict) and [Authorization Decision Record](#f-authorization-decision-record). A verdict that never arrived and a verdict of `allow` are indistinguishable in the log, so without it the guardrail verdicts and the **Authorization Decision Record** cannot be read, and the control plane is a single point of silent failure. Deployments choose fail-open or fail-closed for availability reasons; **this document requires that the choice and the outcome be recorded**, and does not recommend either posture.
 
 <a id="f-guardrail-modification-record"></a>**Guardrail Modification Record.** **Cross-cutting.** When an enforcement point **rewrites rather than blocks**: masking, redacting, stripping, or rewriting a payload; record that a modification occurred, which enforcement point made it, and a before/after digest (plus a redaction map where policy permits). Applies on both the input and the output side.
 
+*Tier:* MUST, needed to read [Model Input](#f-model-input), [Response / Model Output](#f-response-model-output), [Guardrail (Input) Verdict](#f-guardrail-input-verdict) and [Guardrail (Output) Verdict](#f-guardrail-output-verdict). Applies whenever an enforcement point or redaction pipeline rewrites rather than blocks. Without it, **Model Input**, **Response** and a guardrail verdict of `modify` record content that was not what the model or the recipient saw, so the record is *actively wrong*. Its value is R first and D second. `TA-01`, whose chain bypassed link redaction, is an instance, but the tier rests on the dependency.
+
 <a id="f-observation-thought-reasoning-trace"></a>**Observation / Thought (reasoning trace).** Chain-of-thought/observations *when the provider exposes it*. Reveals whether a harmful act was injected, misauthorized, or self-initiated.
+
+*Tier:* SHOULD, provider-gated. High-value forensics for separating a compromised agent from a misconfigured one (`AOC-01`, `AOC-07`), but frequently unavailable from provider APIs and privacy-sensitive.
 
 <a id="f-encoded-obfuscated-payload-indicator"></a>**Encoded / Obfuscated Payload Indicator.** Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags.
 
+*Tier:* MAY.
+
 <a id="f-threat-classification-atlas-technique-tag"></a>**Threat Classification / ATLAS Technique Tag.** **Cross-cutting enrichment.** On any flagged or security-relevant event, the classified technique(s) as **MITRE ATLAS `AML.Txxxx`** IDs (plus a free-text threat type). Emitted by input/output guardrails and by tool/memory/retrieval detectors alike, so every alert carries a portable, ATT&CK-aligned technique reference.
+
+*Tier:* MAY. Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
 <!-- END GENERATED: fields 6.2 -->
 
 † **Applies when a detection fires** (not on every benign event). MAY under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers): no documented instance requires it and no MUST field depends on it. This document still recommends it for every fired detection. The tag is a derived classification, not raw telemetry: detection logic sets it using the [§3.6](#36-attack-inventory--mitre-atlas-technique-mapping) attack→ATLAS mapping so downstream SIEM/XDR correlation and compliance reporting can pivot on `AML.Txxxx`.
@@ -196,43 +274,79 @@ A tool call is where an agent crosses from reasoning to acting: the perimeter be
 | **Tool Privacy Classification** | MAY | label | Sensitivity class of the data a tool touches. | `componentTools` | *`TA-01`*,`TA-05`,`AOC-03` |
 | **Policy Reason Code** | MAY | label | Machine-readable reason code for an enforcement decision. | enforcement points | *`TA-01`*,*`IR-01`*,*`AOC-12`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-execution-environment-sandbox"></a>**Execution Environment / Sandbox.** The isolation posture of the execution: sandbox mode (none / container / VM / WASM), language runtime and version, OS/architecture, timeout, and network-egress policy.
 
+*Tier:* MUST, on 3 documented instances. `TA-06` is characterized as model-emitted Python executed **unsandboxed**: the isolation posture *is* the finding. Two calls to the same code-execution tool, one containerized and one not, are otherwise the same event.
+
 <a id="f-tool-call-io"></a>**Tool Call I/O.** Full input params **and** output for every tool/MCP call; what the agent actually *did* vs what it was asked. Reveals credentials passed between chained calls.
+
+*Tier:* MUST, on 19 documented instances. Without it and **Tool Name** a compromised agent's actions are invisible, and every destructive case in the corpus is reconstructed from them.
 
 <a id="f-tool-name"></a>**Tool Name.** Which capability was invoked. Detects off-manifest / sensitive-tool invocation, escalating tool sequences, and enumeration.
 
+*Tier:* MUST, on 6 documented instances. See [Tool Call I/O](#f-tool-call-io).
+
 <a id="f-tool-type-trust-boundary"></a>**Tool Type / Trust Boundary.** MCP (cross-network) vs internal vs direct-storage vs code-execution, different trust models & policies.
+
+*Tier:* MUST, on 2 documented instances. Earned via `AOC-14`, which tried to make the agent bypass the tool API and write to backend storage directly. "API-mediated only" is unenforceable unless telemetry distinguishes the two.
 
 <a id="f-tool-execution-id"></a>**Tool Execution ID.** Correlation ID minted at invocation and echoed on the result, pairing every request with its outcome.
 
+*Tier:* MUST, on 2 documented instances. Makes *a result with no matching request* a queryable condition, and is the only way to correlate asynchronous tool calls. `AOC-01`'s false completion report is precisely a request/result mismatch.
+
 <a id="f-tool-definition-digest"></a>**Tool Definition Digest.** Hash of the tool's **declared contract as presented at invocation time**: name, description, argument schema, output schema, plus a comparison against the approved baseline. Detects a tool whose definition mutated after approval.
+
+*Tier:* MUST, on 2 documented instances. `TA-15` and `TA-29` are the grounding instances. In `TA-15` the definition is malicious as published, the injection carried in the tool's own description, which is why the digest is taken **at invocation** rather than at registration and must cover the description, not only the argument and output schemas. In `TA-29` the description changed after approval under an unchanged name, which the comparison against the approved baseline detects. The adjacent rug pulls fall outside the digest: `TA-14` mutates an approved configuration's launch command and `TA-16` ships a malicious implementation under an adopted name; in both of those the *declared contract* is itself unchanged, so the detecting fields there are Capability-Set Change Event and MCP Server Identity & Primitive respectively. The modality gate then fell with MCP itself: the gate is third-party or dynamically-discovered tools, and an MCP `tools/list` exchange is dynamic discovery by construction.
 
 <a id="f-mcp-server-identity-primitive"></a>**MCP Server Identity & Primitive.** For MCP calls: server name, version, transport, and endpoint; **and which MCP primitive was exercised**: `tool`, `resource`, `prompt`, `sampling`, `elicitation`, or `roots`.
 
+*Tier:* MUST, on 5 documented instances. Decided by prevalence rather than by evidence. The corpus's MCP incidents (`TA-11` to `TA-16`, `TA-29`) cleared the evidence gate several times over; `TA-16` is the sharpest, because the server's declared contract never changed and only its published **version** did, so name alone would not have distinguished the safe release from the malicious one. What held the field at SHOULD was the modality gate, and that gate turns on MCP being at the **edge of current agentic practice** ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)). It is not. The corpus's MCP-mediated entries all date from 2025 onward, and their share understates the point, because the remaining agentic entries are incidents of other kinds rather than counter-examples to MCP's prevalence; CoSAI's Workstream 4 devoted a paper to MCP security; OWASP publishes an MCP Top 10; and MITRE ATLAS has added `AML.T0109` AI Supply Chain Rug Pull and `AML.T0110` AI Agent Tool Poisoning, the latter with three sub-techniques (`.000` Definition and Instructions, `.001` Implementation, `.002` Runtime Response). A protocol acquires a dedicated top-ten list and a dedicated technique family once it is typical. **Server name and version are as cheap as Tool Name and should be adopted first.**
+
 <a id="f-tool-error-exception"></a>**Tool Error / Exception.** Failed/blocked tool calls: rejected injection args, SSRF blocks, authz boundary hits, and the probing errors that precede successful exploitation.
+
+*Tier:* MUST, on 2 documented instances.
 
 <a id="f-authorization-decision-record"></a>**Authorization Decision Record.** Per mediated operation: the terminal decision (**allow / deny**, with **allow-after-modification** flagged), the deny **reason and machine-readable code** (a fail-closed enforcement failure arrives as a deny with its own code), the per-step actions that produced it including any **suppressed deny** (a plugin denied and was overridden by pipeline role) and any **abort**, the **deciding authority** (inline policy rule vs external PDP, and which; Cedar / CEL / OPA / custom), the **rule or policy identifier** that produced it, and any obligations attached. Distinct from a content-guardrail verdict: this is the *authorization* outcome, not a classifier score.
 
+*Tier:* MUST, on 9 documented instances. Fills a structural hole the rest of the field set has by construction. The document logged what a *content classifier* concluded (Guardrail Verdict, §1.2) and what authority a tool *requires* (Tool ACL/Scope, §1.3), but never what the authorization layer **decided**, on which rule, or why, so a denied operation and a never-attempted one were indistinguishable. Among the attacks that turn on that record are `AOC-02` (non-owner compliance), `AOC-08` (privileged action after spoof), `AOC-10` (injected authority), and `TA-08` (individually-authorized calls escalating in aggregate; visible only if each link's decision and rule are recorded). Universal rather than modality-gated; D and R jointly.
+
 <a id="f-tool-selection-rationale"></a>**Tool Selection Rationale.** The agent's stated reason for choosing *this* tool with *these* arguments, captured at the request step. Distinct from the §1.2 output-side reasoning trace: it is attached to the action, not the answer.
+
+*Tier:* SHOULD, provider-gated.
 
 <a id="f-human-approval-elicitation-event"></a>**Human Approval / Elicitation Event.** Out-of-band approval lifecycle for high-impact actions: correlation ID, status (pending / resolved / expired), outcome, **approver identity as verified by the identity provider** (not as reported by the agent), channel, and the **scope-binding validation result**: whether the approval still covers the arguments actually presented at execution time.
 
+*Tier:* SHOULD, modality: out-of-band human approval. Covers the control the corpus most often shows *missing*: `AOC-01`, `AOC-07`, and `AOC-11` are all irreversible actions taken without human authorization. `TA-23` is the sharper case, because the gate was present and was **switched off as configuration** rather than argued past: the record that matters is not only the approval but the change to whether approval was required at all, which is why **Capability-Set Change Event** (§1.6, MUST) and this field are read together. **MUST wherever irreversible or high-impact actions are reachable.** Two sub-signals matter: approver identity must come from the identity provider, not the agent's claim; and approval scope must be re-validated against the arguments actually presented, or one sign-off can be replayed against a larger action.
+
 <a id="f-tool-acl-required-scope"></a>**Tool ACL / Required Scope.** The authority a tool requires and who may invoke it (the tool's security policy); individually-authorized calls that violate separation-of-duties as a chain.
+
+*Tier:* SHOULD, modality: delegated authority. Every attack that cites it presupposes meaningful delegation.
 
 <a id="f-session-taint-labels-information-flow-decisions"></a>**Session Taint Labels & Information-Flow Decisions.** Information-flow labels in force for the session or message: which labels are set, **scope** (session vs message), what operation applied each, and (critically) when an operation is **denied because of accumulated taint rather than anything in its own payload**. The write-down record.
 
+*Tier:* SHOULD, modality: information-flow control. A genuinely different mechanism from Input Trust Classification (§1.2): that classifies a segment of one payload, while taint is **state accumulating across a session** that survives into operations whose own content is clean. That distinction is the whole attack in `TA-01` and `TA-02`, where the exfiltrating request is innocuous in isolation. Of everything in SHOULD this has the highest D value per unit of effort.
+
 <a id="f-backend-route-restriction-decision"></a>**Backend / Route Restriction Decision.** Where an operation was allowed to execute: the candidate backend/model set, the constraint that narrowed it (region, model, site, cost tier, custom label), the selection made, and the behaviour when **no candidate qualified**.
+
+*Tier:* SHOULD, modality: policy-driven backend selection. Paired with taint it is a D signal; standing alone it is closer to A (data-residency evidence) and Q.
 
 <a id="f-mediation-coverage-bypass-path"></a>**Mediation Coverage & Bypass Path.** Whether this operation traversed a reference monitor at all, at which **placement** (inbound gateway / egress sidecar / in-process framework), and whether **unmediated paths to the same capability exist**.
 
+*Tier:* SHOULD, modality: reference monitor in the request path. The enforcement counterpart to Instrumentation Coverage (§1.2). That field asks *is the telemetry complete?*; this one asks *is the enforcement unbypassable?* `AOC-14` is precisely this attack. A control that can be routed around is not a control.
+
 <a id="f-tool-id"></a>**Tool ID.** Unique tool-implementation ID for unambiguous attribution across many MCP servers.
+
+*Tier:* MAY.
 
 <a id="f-tool-privacy-classification"></a>**Tool Privacy Classification.** Sensitivity class of data the tool touches, feeds DLP / data-flow governance.
 
+*Tier:* MAY. DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
+
 <a id="f-policy-reason-code"></a>**Policy Reason Code.** Machine-readable reason code(s) for an enforcement decision, alongside the existing free-text detector name and score.
+
+*Tier:* MAY. A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by Guardrail Verdict and classified by the ATLAS tag.
 <!-- END GENERATED: fields 6.3 -->
 
 ### 1.4 Memory and retrieval
@@ -260,29 +374,51 @@ Persistent memory is the one surface where an attack outlives the session that p
 | **Declared Memory Configuration** **[AOS]** | MAY | descriptor | A memory store's declared identity, limits and retrieval settings. | `componentMemory` | `TA-30`,*`IR-02`*,*`AOC-05`*,*`AOC-07`* |
 | **Declared Knowledge-Source Configuration** **[AOS]** | MAY | descriptor | A knowledge source's declared identity, schema and search parameters. | `componentRAGContent` | *`TA-02`*,*`TA-09`*,*`IR-03`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-memory-write-event"></a>**Memory Write Event.** Every create/update/delete to persistent or long-term memory: what changed, by which turn/actor. Deletions include evictions made by the store itself under a size or token budget, recorded with the policy that evicted the item, so an item lost to eviction is distinguishable from one that was retrieved poorly.
 
+*Tier:* MUST, on 6 documented instances. MINJA (`IR-02`) poisons memory using only benign queries: the agent autonomously persists malicious reasoning. AGENTPOISON (`IR-05`) uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write and Read plus **Memory Provenance**.
+
 <a id="f-memory-read-injection-event"></a>**Memory Read / Injection Event.** Which memory items were pulled into context for a call.
+
+*Tier:* MUST, on 5 documented instances. See [Memory Write Event](#f-memory-write-event).
 
 <a id="f-memory-provenance-source"></a>**Memory Provenance / Source.** Origin & mutability of a memory item, self-authored, owner, non-owner, or **externally editable resource**.
 
+*Tier:* MUST, on 3 documented instances. Exposes `AOC-10`: a "constitution" stored as an externally editable Gist, later edited to make the agent shut down peers and send unauthorized mail. The signal is *a context-shaping memory item resolving to a mutable, non-owner-controlled source.*
+
 <a id="f-memory-footprint-growth"></a>**Memory Footprint / Growth.** Size/growth of memory stores (per user/session), resource-exhaustion signal.
+
+*Tier:* MUST, on 2 documented instances. Catches `AOC-05` (ever-growing per-non-owner file → mail-server DoS) and `TA-30`, a production memory index that grew without bound because the disk budget measured other tables. `TA-30` involved no adversary, which [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) admits: the field detects the growth whatever caused it.
 
 <a id="f-retrieval-event"></a>**Retrieval Event.** Query issued + documents/chunks returned + retrieval scores.
 
+*Tier:* MUST, on 8 documented instances. RAG is the document's most-cited injection channel (`TA-01`, `TA-02`, `TA-09`, `IR-03`, `AOC-10` are all retrieval-mediated). This field and **Retrieved-Content Source / Provenance** answer the halves a detection needs: *what came back*, and *where it came from and when it changed*. Together they connect "what was retrieved" to "what the model then did"; neither is sufficient alone.
+
 <a id="f-retrieved-content-source-provenance"></a>**Retrieved-Content Source / Provenance.** Origin, owner, trust level, and freshness (create/update time) of each retrieved item (internal doc, web, third-party, user upload).
+
+*Tier:* MUST, on 6 documented instances. See [Retrieval Event](#f-retrieval-event).
 
 <a id="f-memory-integrity-poisoning-signal"></a>**Memory Integrity / Poisoning Signal.** Integrity check / poisoning-likelihood score, cross-session isolation flag.
 
+*Tier:* SHOULD, provider-gated.
+
 <a id="f-memory-write-rationale"></a>**Memory Write Rationale.** The agent's stated reason for persisting *this* item, captured at the write step.
+
+*Tier:* SHOULD, provider-gated. The analogue of Tool Selection Rationale, and `IR-02` is the case demanding it: the content looks innocuous and the write unremarkable; the tell is the justification the agent gives itself.
 
 <a id="f-retrieved-content-metadata-integrity-signal"></a>**Retrieved-Content / Metadata Integrity Signal.** Tamper/poisoning indicators on content **or its metadata/tags**.
 
+*Tier:* SHOULD, provider-gated. Poison-RAG (`IR-03`) manipulates item *metadata tags* rather than content bodies, which is why the integrity signal must cover metadata. `TA-09` plants hidden instructions in wikis and tickets, and recently-modified retrievable documents deserve scrutiny, hence freshness folds into provenance.
+
 <a id="f-declared-memory-configuration"></a>**Declared Memory Configuration.** The memory store's declared identity and limits: name, type, backend, size cap, retention, and retrieval spec (top-k, scoring). The baseline that **Memory Footprint** is measured against.
 
+*Tier:* MAY. `TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field's job (a baseline for Memory Footprint) can be met by hard-coding known limits.
+
 <a id="f-declared-knowledge-source-configuration"></a>**Declared Knowledge-Source Configuration.** Each knowledge source's declared identity and contract: name, description, index/collection identity, schema, and search parameters (top-k, filters, scoring, reranker).
+
+*Tier:* MAY. On the same reasoning as Declared Memory Configuration: a silently altered retrieval config or repointed index is not in the corpus, and `IR-03` poisons metadata, not search configuration.
 <!-- END GENERATED: fields 6.4 -->
 
 ### 1.5 Orchestration
@@ -301,23 +437,39 @@ Multi-agent and autonomous execution, where the corpus shows agentic risk compou
 | **Peer Agent Card / Descriptor** **[AOS]** | SHOULD | descriptor | A counterparty agent's descriptor at contact, with change and verification outcome. Modality: A2A. | `componentReasoningCore` | `TA-31`,*`AOC-09`*,*`AOC-11`*,*`AOC-16`* |
 | **Protocol Envelope Capture** **[AOS]** | MAY | content | Raw MCP or A2A JSON-RPC envelope alongside the interpreted fields. | `componentAgentToolTransport` | *`AOC-09`*,*`AOC-12`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-inter-agent-message"></a>**Inter-Agent Message.** Agent→agent messages: sender, receiver, content, channel, including capability/skill transfer.
 
+*Tier:* MUST, on 7 documented instances. The substrate of cross-agent propagation: `AOC-04` (nine-day mutual-relay loop), `AOC-09` (capability transfer), `AOC-11` (mass broadcast), and `AOC-16`: the positive case, agents sharing risk signals.
+
 <a id="f-background-scheduled-task-event"></a>**Background / Scheduled Task Event.** Creation/modification of cron jobs, heartbeats, daemons, or self-scheduled loops, incl. presence/absence of a termination condition.
+
+*Tier:* MUST, on 3 documented instances. Captures the corpus's most striking finding: agents spawning infinite shell loops and cron jobs with **no termination condition**, converting short-lived tasks into permanent infrastructure (`AOC-04`, `AOC-10`). With **Loop / Step-Count Signal** it clears the bar on D value rather than attack count.
 
 <a id="f-loop-step-count-signal"></a>**Loop / Step-Count Signal.** Steps or iterations per run vs baseline; circular agent-to-agent exchange detection.
 
+*Tier:* MUST, on 5 documented instances. See [Background / Scheduled Task Event](#f-background-scheduled-task-event).
+
 <a id="f-resource-consumption-aggregate"></a>**Resource-Consumption Aggregate.** Per-run/agent token, compute, storage, and outbound-volume totals against a budget, and, where authority is delegated, **accounted across the delegation subtree rather than per run**: individually modest runs can exhaust a principal's budget in aggregate. Where a budget is enforced, the **consumed and remaining figures ride the record of the action that consumed them** and not only the metric series, because a total cannot be recomputed after the fact from records that never carried it. That is what separates a budget denial from a budget overrun discovered later.
+
+*Tier:* MUST, on 4 documented instances.
 
 <a id="f-task-intent-declaration"></a>**Task / Intent Declaration.** The declared purpose/task the run is authorized to pursue (for goal-drift detection).
 
+*Tier:* SHOULD, modality: autonomous action. The goal-drift anchor; `AOC-04` shows agents inventing new goals beyond the requested task.
+
 <a id="f-a2a-task-lifecycle-event"></a>**A2A Task Lifecycle Event.** Delegated-task state transitions across the A2A surface: task submitted, streamed, polled, **cancelled**, resubscribed, and **push-notification config set or changed**, which registers an outbound callback destination.
+
+*Tier:* SHOULD, modality: A2A. Held by the modality gate. Its evidence is generic multi-agent incidents, not A2A-protocol incidents: `AOC-04/09/11` predate A2A entirely. **MUST the moment A2A is in play**; push-notification configuration in particular registers an attacker-settable egress channel.
 
 <a id="f-peer-agent-card-descriptor"></a>**Peer Agent Card / Descriptor.** The counterparty agent's declared descriptor as presented at contact: name, URL, version, provider, and advertised skills/capabilities, with change detection against prior contacts **and the outcome of any verification attempted against it** (signature checked, inspection request answered or refused, or unverified).
 
+*Tier:* SHOULD, modality: A2A. Held by the modality gate. Its one A2A instance is `TA-31`, where hosts keyed routing on a card's `name`; the rest of its grounding is generic multi-agent incidents. **MUST the moment agent cards are in play.**
+
 <a id="f-protocol-envelope-capture"></a>**Protocol Envelope Capture.** The raw MCP / A2A JSON-RPC envelope (method, id, params) alongside the interpreted fields, preserving protocol-level detail that framework-level abstraction discards.
+
+*Tier:* MAY. Q-dominant, duplicates interpreted fields, carries raw-content privacy weight, and is not modality-gated.
 <!-- END GENERATED: fields 6.5 -->
 
 ### 1.6 Identity, provenance and inventory
@@ -352,51 +504,95 @@ The inventory fields describe posture rather than per-request activity, and most
 | **Surfaces Supported** | MAY | descriptor | Exposure map per tool. | `componentToolRegistry` | *`AOC-08`* |
 | **Fleet counts** | MAY | measure | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level | *`TA-06`*,*`TA-10`*,*`AOC-04`*,*`AOC-05`* |
 
-**What it captures.**
+**Field entries.**
 
 <a id="f-capability-set-change-event"></a>**Capability-Set Change Event.** An event emitted whenever the agent's usable capability set changes at runtime, a tool, MCP server, model, knowledge source, or memory store **discovered, added, removed, or modified**: with before/after identity and what triggered the change.
 
+*Tier:* MUST, on 4 documented instances. Every other inventory field describes a **state**; this one describes a **transition**, and transitions are where attacks are visible. Grounded directly in `AOC-09`, where one agent teaches another to acquire a browser/download capability. The security event is the *acquisition*; the previous inference path ("tool-call spike + new Tool Name") fires only once the capability is exercised, and never at all for one acquired and held in reserve. Removal matters symmetrically: a guardrail tool or logging sink quietly dropped is a defence-evasion signal. It is also cheap where least expected to fire: a static capability set emits nothing.
+
 <a id="f-identities-used-per-hop"></a>**Identities Used (per hop).** Attribute every agent→user, agent→agent, agent→tool, tool→infra action to an identity + metadata; detect identity changes across a tool chain.
+
+*Tier:* MUST, on 18 documented instances. The accountability primitive: when an agent resets its own mail server (`AOC-01`), dumps 124 records (`AOC-02`), or mass-mails defamation (`AOC-11`), *which principal, which agent, which tool, which credential* is the first question of any response. It applies to every deployment, including the simplest single-agent one.
 
 <a id="f-verified-vs-displayed-identity"></a>**Verified vs Displayed Identity.** Distinguish an immutable/verified identifier from a spoofable display identity; record which was used to authorize.
 
+*Tier:* MUST, on 4 documented instances. MUST on a precise D argument rather than volume. `AOC-08` shows same-channel spoofing *detected* (the agent checked an immutable user ID) and cross-channel spoofing *succeeding* where only a display name was available. The difference between those outcomes is entirely a telemetry difference.
+
 <a id="f-originating-principal-on-behalf-of"></a>**Originating Principal (on-behalf-of).** The human/service sponsor at the root of the delegation chain.
+
+*Tier:* SHOULD, modality: delegated authority.
 
 <a id="f-delegation-chain"></a>**Delegation Chain.** Ordered lineage of prior agent hops carried across the call. Each hop carries an **integrity-protected reference to its parent** (issuer, delegation identifier, and a digest of the parent record), so lineage is verifiable from the records rather than asserted; a digest that does not match the resolved parent fails chain validation closed.
 
+*Tier:* SHOULD, modality: delegated authority.
+
 <a id="f-granted-authorizations-scope"></a>**Granted Authorizations / Scope.** Delegated authority in effect at this hop, with monotonic-narrowing check. Record the **rules the check ran against** (ODIS `attenuation_profile_ref`: a versioned identifier and content digest for the normalization and comparison rules), since "narrower" is a semantic comparison and two profiles can disagree on the same pair of scopes.
+
+*Tier:* SHOULD, modality: delegated authority.
 
 <a id="f-resource-indicators-constraints"></a>**Resource Indicators + Constraints.** Target resource audience + time/purpose/rate/locality/`data_classification` narrowing.
 
+*Tier:* SHOULD, modality: delegated authority.
+
 <a id="f-credential-minting-scope-narrowing-check"></a>**Credential Minting & Scope-Narrowing Check.** The credential-exchange event at each hop: grant type (token exchange / client assertion / client credentials), whose identity the minted token represents (**end user / client application / calling workload / the enforcement point itself**), target **audience**, issuer, lifetime, and the **requested-vs-granted scope delta** verified after minting. Detects both over-broad credentials and forwarded inbound tokens that were never narrowed.
+
+*Tier:* SHOULD, modality: token exchange. Adds the *event* the surrounding fields only describe the state of. Forwarding a caller's inbound token is usually wrong (it is scoped for the agent, not the backend) so the **requested-vs-granted delta** is what makes a silently over-broad grant visible (`TA-08`).
 
 <a id="f-trust-domain-crossing-delegation-depth"></a>**Trust-Domain Crossing & Delegation Depth.** The counterparty's **trust domain** and the **depth of the delegation chain** at this hop, plus whether either crossed a configured limit. Records that authority left the domain that issued it, and how many hops from the originating principal the acting agent now sits. Depth is **derived** from the chain (the OCSF `delegation.parent_uid` lineage or the RFC 8693 `act` chain), not transmitted as a counter; a transmitted copy can disagree with the chain it was derived from. The derivation holds only while every hop carries its parent link: a hop that does not is a **break in the chain**, to be recorded as such rather than read as a shorter chain ([XM §3.1](Telemetry-Cross-Mapping-Addendum.md#31-ocsf-coverage--gaps-by-field-cluster)).
 
+*Tier:* SHOULD, modality: delegated authority. Makes an **externally-operated** counterparty legible. ODIS treats `trust_domain` and `max_depth` as policy-engine inputs rather than telemetry, which is right only while a chain stays inside one domain. Once authority crosses out of the domain that issued it, or the acting agent sits several hops from the originating principal, both become detection-grade: `AOC-04`'s nine-day relay and `AOC-09`'s capability transfer are both depth phenomena, and `TA-11` is a domain-boundary failure. See [RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals).
+
 <a id="f-runtime-credential-attestation"></a>**Runtime Credential / Attestation.** Runtime-instance credential: `software_hash`, `attestation_evidence`, issuer, expiry, holder-key binding. Evidence is recorded **per source, each with its own issuer, validity and verification outcome**: software-provenance and runtime/workload evidence come from independent issuers, and a single collapsed value loses the independence that makes the attestation worth verifying (see **Attribute Source / Trusted-Provenance Marking**, [§1.2](#12-content-trust-verdicts-and-their-availability)).
+
+*Tier:* SHOULD, modality: cryptographic agent identity.
 
 <a id="f-lifecycle-state"></a>**Lifecycle State.** active / suspended / revoked, supports kill-switch & revocation-fanout.
 
+*Tier:* SHOULD, modality: cryptographic agent identity.
+
 <a id="f-tool-agent-version"></a>**Tool/Agent Version.** Version of each tool/agent/framework; instant CVE blast-radius answer; downgrade detection.
+
+*Tier:* SHOULD, modality: dynamic third-party capability composition. A supply-chain response primitive, with Repository / Code Path / Software Ref. The closest call among the inventory fields: documented instances and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM fields. The WG may reasonably promote it.
 
 <a id="f-repository-code-path-software-ref"></a>**Repository / Code Path / Software Ref.** Source provenance of tool/agent code (ties to signing & ODIS `approved_software_refs`).
 
+*Tier:* SHOULD, modality: dynamic third-party capability composition. See [Tool/Agent Version](#f-tool-agent-version).
+
 <a id="f-agbom-inventory-snapshot"></a>**AgBOM / Inventory Snapshot.** A structured, machine-readable inventory of the agent's composition (packages, models, capabilities (agent cards, discovered peers, MCP servers), knowledge sources, memory stores, tools) emitted on change and **on demand**. Bound to an existing BOM format rather than a bespoke one. The three carry different amounts of it: **CycloneDX** is the only one for which an agent-runtime binding has been written (sandbox, tool scopes and endpoints, memory backend, agent-card URL, carried in its generic property bag); **SPDX 3.0** carries dependency, integrity and, through its AI profile, model governance; **SWID** carries identity, version, dependency and signing. Emit in whichever format the deployment already uses, and record which one ([XM §5.3](Telemetry-Cross-Mapping-Addendum.md#53-pillar-3-inspect)).
+
+*Tier:* SHOULD, modality: supply-chain attestation. Requires an inventory-emission capability most deployments lack; so do Component Dependency Graph and Inventory Attestation Signature.
 
 <a id="f-component-dependency-graph"></a>**Component Dependency Graph.** Dependency edges between inventoried components, including transitive ones; which agent depends on which tool, which tool on which package or MCP server.
 
+*Tier:* SHOULD, modality: supply-chain attestation. The complete answer to CVE blast radius: `TA-06` is a vulnerability in a *framework* beneath the agent, and reaching it requires transitive edges.
+
 <a id="f-inventory-attestation-signature"></a>**Inventory Attestation Signature.** Cryptographic signature over the emitted inventory (signature value + key identifier), binding the declared composition to a signer.
+
+*Tier:* SHOULD, modality: supply-chain attestation. An inventory a compromised agent can rewrite is worth little. The limit: a signature proves who asserted the inventory, not that the assertion is true, which is the subject of Attribute Source / Trusted-Provenance Marking (§1.2).
 
 <a id="f-event-sequence-continuity"></a>**Event Sequence Continuity.** Per-session monotonic sequence number enabling gap and reordering detection. The stream **SHOULD be hash-chained**, and where chained the **chain head SHOULD be periodically signed and published outside the emitter's trust domain**. That is the minimum that lets a verifier distinguish a gap from a suppression.
 
+*Tier:* SHOULD, modality: self-attesting instrumentation. The minimum defence against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence. Grounded analogically ([§4.2](#42-the-telemetry-plane)).
+
 <a id="f-tool-description"></a>**Description.** Declared purpose: detects misleadingly-described ("read-only" but writes) tools.
+
+*Tier:* MAY.
 
 <a id="f-tool-status"></a>**Status (active/disabled).** Detects calls to tools that should be unreachable.
 
+*Tier:* MAY.
+
 <a id="f-creator-id-oncall-creation-update-dates"></a>**Creator ID / Oncall / Creation & Update dates.** Ownership, age-based risk, change-correlation for IR speed; recently-changed assets/content correlate with attack timelines.
+
+*Tier:* MAY.
 
 <a id="f-surfaces-supported"></a>**Surfaces Supported.** Exposure map per tool.
 
+*Tier:* MAY.
+
 <a id="f-fleet-counts"></a>**Fleet counts** (agents by framework/type; sessions L1/L7/L28; users MAU/power-user; tool-call volume & agent↔tool map; surface & status breakdowns). Aggregate anomaly, shadow-AI, and CVE-exposure signals.
+
+*Tier:* MAY.
 <!-- END GENERATED: fields 6.6 -->
 
 ## 2. Correlation Patterns
@@ -634,142 +830,29 @@ Each catalogued attack mapped to its primary ATLAS technique(s). This is the cro
 
 ## 4. Tiering Rationale
 
-Why each step's **MUST** fields earn that tier, and where the tier boundaries are closest. Ordered by RFC step, as §1 is; the attacks behind each field are in its Grounding attacks column.
+Each field's entry in §1 gives the basis of its tier (the documented instances, the MUST fields it is needed to read, or the modality it serves) and, where the tier is not self-evident, the reasoning. This section holds what applies across fields.
 
-The rubric is in [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers). Two rules recur below. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
+The rubric is in [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers). Two rules recur in the field entries. **Attack count alone does not set the tier**: a field cited by five attacks stays SHOULD if all five presuppose an edge modality such as delegation. And **the highest-priority use case governs**: a field whose dominant value is Q or A does not reach MUST however useful it is.
 
 **Availability and provider-policy signals are in scope, and this order is what places them.** A signal that makes a *silent failure distinguishable from a clean result* is detection material, not governance reporting: `AOC-06` is a provider API truncating responses and returning "unknown error", which is the model-serving instance of the problem [§1.2](#12-content-trust-verdicts-and-their-availability) is built around, where a verdict that never arrived and a verdict of `allow` read identically in the log. Where such a signal instead evidences a policy or an SLA, its value is Q or A and it lands at MAY, as **Provider / Endpoint Identity** (§1.1) does. The boundary is drawn by what the signal lets a defender distinguish, not by whether an adversary was involved.
 
 - **The evidence gate admits resisted attempts and non-adversarial failures ([§3](#3-attack--incident-inventory)); the [priority gate](CoSAI-AI-Telemetry-RFC.md#41-detection-first) is what keeps reliability-only signals out of MUST.** The two are independent, and it has always been the second one doing that work. `AOC-06` is the proof: non-adversarial, a documented instance for four MUST fields (Model Name + Version, LLM Error / Exception, Stop Reason, Execution Status), and yet **Provider / Endpoint Identity** (§1.1) still sits at MAY, because its dominant value is Q and A and the D > R > Q > A order governs. A reliability incident can therefore ground a field without lifting a reliability-dominant field to MUST.
 - **Closing an evidence gap does not promote a modality-gated field.** The two gates are sequential and independent, so supplying a documented instance retires the evidence argument without moving the tier. That is still worth doing, because it removes the weaker of the two reasons a field sits below MUST, but a field held by its modality stays SHOULD however much evidence accumulates. Only a judgement that the modality has become typical moves it.
 
-### 4.1 Identifiers, trace context and model identity (§1.1)
+### 4.1 By step
 
-#### Execution context and agent identity
+- **Identifiers, trace context and model identity ([§1.1](#11-identifiers-trace-context-and-model-identity)).** Every MUST here is an identifier or execution-context anchor that later steps' detections resolve *through*, with no modality precondition, **D and R jointly**. They answer *what ran and where* (Agent Name, Instance ID, Surface), *what else belongs to this incident* (Workflow / Run ID, Session / Turn / Step IDs, Trace Context), *what it did and how it ended* (Action Type, Execution Status), *what it was configured to do* (System Prompt) and *who started it* (Trigger Type). The identifiers are a hierarchy, not a bag: Instance → Run → Session → Turn → Step, threaded by Trace Context. `TA-08` (tool-chaining escalation) and `IR-01` (iterated reframing until a refusal flips) are *within-session, across-turn* patterns invisible at run granularity. The model and serving MUSTs are each D-primary.
+- **Content, trust, verdicts and their availability ([§1.2](#12-content-trust-verdicts-and-their-availability)).** The input fields are the ones an injection or jailbreak detection fires on: **D-primary** with strong secondary R value, and none presupposes an unusual modality. Output is where damage becomes irreversible, so the output fields are **D-primary with the shortest time-to-value**.
+- **Tool calls and policy decisions ([§1.3](#13-tool-calls-and-policy-decisions)).** The highest-value **R** fields in the document, and strong D besides.
+- **Memory and retrieval ([§1.4](#14-memory-and-retrieval)).** Persistent memory is the one component where an attack **outlives the session that planted it**, which is what earns MUST at comparatively low attack counts: a poisoned item silently shapes every future run, so the detection window is unbounded.
+- **Orchestration ([§1.5](#15-orchestration)).** The sharpest tiering judgment in the document, because multi-agent orchestration sits close to the SHOULD boundary by definition. Its MUST fields are the ones whose signal is **protocol-independent**: emittable by any orchestrator, with no A2A stack, delegation model, or agent registry.
+- **Identity, provenance and inventory ([§1.6](#16-identity-provenance-and-inventory)).** The archetype for the MUST/SHOULD split. Identities Used and Verified vs Displayed Identity are MUST because they apply to **every** deployment, including the simplest single-agent one. The delegation fields are **SHOULD by construction, not by weak evidence**: several have two or more documented instances, which on count alone would qualify. Each presupposes **delegated authority**: an originating principal distinct from the caller, a chain of prior hops, monotonically narrowing scopes, cryptographic attestation, or a revocation lifecycle. A deployment without cascaded delegation has nothing for them to describe. The corollary matters as much: a deployment that *does* run cascaded delegation should treat these fields as mandatory on day one. SHOULD means "not universal," never "defer."
 
-Every MUST here is an identifier or execution-context anchor that later sections' detections resolve *through*: each has two documented instances or is needed to read another MUST field, no modality precondition, **D and R jointly**. *What ran and where*: Agent Name, Instance ID, Surface. Agent Name rests on `TA-05` (an agent nobody inventoried) and `TA-31` (one name bound to two peers, so requests reach the wrong one); both are found by comparing a name against what it should resolve to. Instance ID is needed to read Identities Used, Source host / IP, Capability-Set Change Event and Instrumentation Coverage: one identity across a fleet is otherwise ambiguous between sibling instances and a stolen credential, and capability sets and hook state are per process. Workflow / Run ID is needed to read Loop / Step-Count Signal and Resource-Consumption Aggregate, both defined per run. *What else belongs to this incident*: Workflow/Run ID, Session/Turn/Step IDs, Trace Context. *What it did and how it ended*: Action Type (the think→act boundary where `AOC-01` and `AOC-02` did their damage) and Execution Status. *What it was configured to do*: System Prompt, both a config-integrity baseline and the reference against which extraction is detected (`TA-07` succeeds when the response reproduces it). *Who started it*: Trigger Type.
+### 4.2 The telemetry plane
 
-- **The identifiers are a hierarchy, not a bag.** Instance → Run → Session → Turn → Step, threaded by Trace Context. `TA-08` (tool-chaining escalation) and `IR-01` (iterated reframing until a refusal flips) are *within-session, across-turn* patterns invisible at run granularity.
-- **Trigger Type is MUST because zero-click is a telemetry category.** `TA-01` starts an entire run from one inbound email with no human in the loop. Surface/App would record "email" for both that and an ordinary request; the autonomous flag is what separates them.
-- **Stop Reason is MUST** on evidence (`TA-04`, `TA-10`, `AOC-06`) and on the dependency test of the [rubric](CoSAI-AI-Telemetry-RFC.md#47-tiers). Without it a **Response / Model Output** cut short by a provider content filter or a token limit reads the same as one that finished; a deployment's own guardrail verdict does not record the provider's filter, and token counts cannot infer it. Every major provider API returns a completion's stop reason, so it is implementable wherever a model is called.
-- **Autonomy Level is SHOULD**: the oversight dial for delegated action. The corpus repeatedly shows agents operating *above* their intended autonomy (`AOC-04`, `AOC-01`, `AOC-07`); logging the claimed level is what makes that detectable.
-- **Organization / Tenant ID is SHOULD on the modality gate, not the evidence gate.** Three documented instances ground it (`TA-11`, `TA-17`, `TA-22`), which clears the evidence bar; what holds it below MUST is that multi-tenant hosting is a deployment modality, and a single-tenant deployment has nothing for the field to describe. **MUST for any multi-tenant deployment.** The two cross-tenant entries differ in a way worth recording: `TA-11` involved **no attacker**, the boundary failed unaided, which under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) is a documented instance of the failure mode and not a lesser kind of evidence, since the field detects the boundary failure whatever caused it. `TA-17` supplies the adversarial instance, an authenticated caller reaching another tenant's application deliberately. Evidence is therefore settled twice over, and only the modality gate remains.
+`TA-17` is the corpus's only instance of an attack on the telemetry plane, and it is a mode the field set did not anticipate: not starvation, disablement, or suppression, but **redirection**. An authenticated caller enabled trace configuration on another tenant's application and pointed it at infrastructure they controlled, turning the telemetry path itself into the exfiltration channel. **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** are MUST on a dependency (§1.2). The plane's SHOULD fields, such as **Event Sequence Continuity** (§1.6), are grounded *analogically*: the corpus establishes the capability exists (`TA-10` proves resource pressure against AI infrastructure is achievable; `TA-01` proves the payoff of defeating a classifier) without containing an instance.
 
-#### Model and serving
-
-Each MUST here is D-primary. Model Name + Version is the supply-chain pivot (*which agents used the compromised model*) and is R-critical for scoping. Token Counts is the cheapest DoS and runaway-loop detector in the document (`AOC-04`'s ~60 k-token relay, `AOC-05`, `TA-10`) and costs nothing to emit. LLM Error fires precisely under adversarial conditions.
-
-- **Inference Parameters** rest on a *denominator* argument rather than a tampering attack: "max-length output" (`TA-04`) and "anomalously large input" (`TA-10`) are the documented detection signatures, and neither is computable without `max_tokens` and the declared context window. They also give decoding configuration the integrity baseline the system prompt has. Capture them per call: per-request overrides are the attack.
-- **Model Provenance / Signing is SHOULD** (supply-chain, ties to model-signing work and ODIS `software_hash`). **Pre-Forward-Pass State** and **Token Malformation** are MAY research-grade signals.
-- **Provider / Endpoint Identity is MAY, and `TA-28` is the case that tests it.** `AOC-06` is a governance and availability signal rather than a discrete adversary technique, which makes the field Q- and A-dominant, and the D concern it is usually asked to carry, model substitution, belongs to Model Name + Version. `TA-28` is different: a backdoor using a provider's own API as its command-and-control channel, where the exfiltration destination is an endpoint the application legitimately calls. That is a detection argument rather than a governance one, and it is carried by **Output Egress Destination** (§1.2, MUST) recording the destination together with what left, not by provider identity alone, because a legitimate call and a C2 beacon share the provider. The field stays MAY because knowing *which* provider was called does not separate them; knowing what was sent does.
-
-### 4.2 Content, trust, verdicts and their availability (§1.2)
-
-#### Input handling and trust provenance
-
-All **D-primary**: these are the fields an injection or jailbreak detection actually fires on, with strong secondary R value. None presupposes an unusual modality.
-
-- **Model Input** must cover *all* inputs, not the first user turn: injection arrives via tool outputs (`IR-01`), retrieved content (`IR-03`, `TA-01`, `TA-02`), memory (`IR-02`), or another agent (`AOC-12`).
-- **Input Trust Classification** operationalizes the risk map's core agentic control. `AOC-02` disclosed 124 email records because it did not distinguish an owner instruction from a non-owner's; `TA-01` is untrusted email content promoted to instruction.
-- **Guardrail (Input) Verdict** is MUST because `TA-01` *defeated* a prompt-injection classifier. A classifier bypass is undetectable if verdicts are never logged.
-- **Content Modality & Attachment Identity** is MUST because the corpus's obfuscation attacks are modality attacks, instructions in OCR'd images and base64 blobs (`AOC-12`), ~10 MB attachment floods (`AOC-05`). Text-only capture misses both.
-- **ATLAS Technique Tag is MAY**, applying *when a detection fires*. Its value is D-portability into ATT&CK-aligned tooling plus A-rollup, but no documented instance turns on its absence and no MUST field depends on it, so it fails both MUST tests. This document still recommends stamping every fired detection with it.
-- **Guardrail Modification Record is MUST, applying whenever an enforcement point or redaction pipeline rewrites rather than blocks.** It meets the dependency test of the [rubric](CoSAI-AI-Telemetry-RFC.md#47-tiers): without it, **Model Input**, **Response** and a guardrail verdict of `modify` record content that was not what the model or the recipient saw, so the record is *actively wrong*. Its value is R first and D second. `TA-01`, whose chain bypassed link redaction, is an instance, but the tier rests on the dependency.
-
-#### Output handling, egress and refusals
-
-Output is where damage becomes irreversible, so these are **D-primary with the shortest time-to-value**. Output Egress Destination converts a detection from *"something bad was generated"* into *"and here is where it went"*: the difference between blocking and reporting.
-
-- **Output Egress Destination** would have caught `TA-01` and `TA-03` *before data left*: both smuggle data into an outbound URL on a trusted-looking domain. It also renders `AOC-03`, `AOC-11`, and `AOC-05` visible.
-- **LLM Refusal** is an early-warning tripwire. `IR-01` is iterated reframing until a refusal flips; `AOC-12/13/14` are the mirror image, successful refusals whose telemetry documents attempted attacks even when blocked.
-- **Citations** is MUST only for deployments that emit them, which is now the common RAG configuration. A citation is a *trusted* output component (`AML.T0067.000`), so three detections depend on it and none is reachable from response text alone: fabricated citations matching no retrieval, attacker-planted links (`TA-02`, `TA-01`), and suppression visible by comparing retrieved against cited (`IR-03`).
-- **Observation / Thought is SHOULD**: high-value forensics for separating a compromised agent from a misconfigured one (`AOC-01`, `AOC-07`), but frequently unavailable from provider APIs and privacy-sensitive.
-
-#### Telemetry-plane integrity
-
-**Instrumentation Coverage and Enforcement-Point Availability are MUST on a dependency; the plane's SHOULD fields are grounded analogically.** `TA-17` is the corpus's only instance of an attack on the telemetry plane, and it is a mode this section did not anticipate: not starvation, disablement, or suppression, but **redirection**. An authenticated caller enabled trace configuration on another tenant's application and pointed it at infrastructure they controlled, turning the telemetry path itself into the exfiltration channel. **Instrumentation Coverage / Hook Attestation** is grounded by that instance and is MUST on a dependency under the [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) test: under sampling, an absent refusal, tool result or verdict cannot be read without the coverage and sampling record ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)). It is D-dominant, it is not modality-gated (every deployment has an instrumentation configuration), and recording *where each hook reports* is what separates a hijacked plane from a healthy one. **Enforcement-Point Availability & Failure Mode** is MUST on a dependency too (below). The SHOULD fields are grounded *analogically*: the corpus establishes the capability exists (`TA-10` proves resource pressure against AI infrastructure is achievable; `TA-01` proves the payoff of defeating a classifier) without containing an instance.
-
-That absence is itself a finding, and probably a **collection artifact**: attacks on telemetry are under-reported precisely because the telemetry that would reveal them is what was attacked. `TA-17` narrows that absence without dissolving it: starvation, disablement and suppression remain uncatalogued, and a survey of all **72** MITRE ATLAS case studies at `v2026.08` returns no instance of any of the three. Two entries come closest and neither closes the gap. `AML.CS0050` is an adversary modifying an agent's configuration to **disable the user-confirmation step** before escaping its container, which is disablement of an *enforcement* control rather than of telemetry, and bears on §1.3's **Human Approval / Elicitation Event** more than on this section. `AML.CS0067` records CI **logs** as an exfiltration channel, a second instance of the redirection mode `TA-17` supplies rather than a new one. Two further developments establish recognition without supplying evidence: CoSAI's MCP Security paper names **Invisible Agent Activity** (agents operating covertly while mimicking valid workflows) as an MCP threat class, and the CoSAI Risk Map carries `riskAuditTrailTampering` with an ATT&CK anchor (*Disable or Modify Tools*, T1685). Neither is a catalogued incident, so neither satisfies the evidence rule. This is the section most likely to be re-tiered upward, and [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) is what determines how: the instance that closes this gap need not be adversarial. A collector documented to have silently dropped events, or an enforcement point documented to have failed open unnoticed, is a documented instance of the same failure mode, and it is a far likelier thing to find in the literature than an adversary whose first act destroyed the record of it.
-
-- **Enforcement-Point Availability & Failure Mode is MUST** on a dependency: a verdict that never arrived and a verdict of `allow` are indistinguishable in the log, so without it the guardrail verdicts and the **Authorization Decision Record** cannot be read, and the control plane is a single point of silent failure. Deployments choose fail-open or fail-closed for availability reasons; **this document requires that the choice and the outcome be recorded**, and does not recommend either posture.
-- **Instrumentation Coverage** resolves the ambiguity undermining every absence-based detection in the document; no refusal, no termination condition, no matching request are each only interpretable if the relevant hook was instrumented.
-- **Event Sequence Continuity** (§1.6, SHOULD) is the minimum defence against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence.
-- **Attribute Source / Trusted-Provenance Marking** is the zero-trust principle applied to telemetry itself, and it earns MUST because it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity (§1.6)) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task Declaration, System Prompt, and every reasoning field are agent-supplied, and `AOC-01` is the corpus's proof that agents *do* report falsely: it declared a secret deleted while the data remained recoverable. Cost is an enum per attribute group, not per event.
-
-### 4.3 Tool calls and policy decisions (§1.3)
-
-#### Tools and external services
-
-The highest-value **R** fields in the document and strong D besides. Without Tool Call I/O and Tool Name a compromised agent's actions are invisible, and every destructive case in the corpus is reconstructed from them.
-
-- **Tool Type / Trust Boundary** earns MUST via `AOC-14`, which tried to make the agent bypass the tool API and write to backend storage directly. "API-mediated only" is unenforceable unless telemetry distinguishes the two.
-- **Execution Environment / Sandbox** is MUST because `TA-06` is characterized as model-emitted Python executed **unsandboxed**: the isolation posture *is* the finding. Two calls to the same code-execution tool, one containerized and one not, are otherwise the same event.
-- **Tool Execution ID** makes *a result with no matching request* a queryable condition, and is the only way to correlate asynchronous tool calls. `AOC-01`'s false completion report is precisely a request/result mismatch.
-- **Tool ACL / Required Scope stays SHOULD**: every attack that cites it presupposes meaningful delegation.
-- **Tool Definition Digest is MUST.** `TA-15` and `TA-29` are the grounding instances. In `TA-15` the definition is malicious as published, the injection carried in the tool's own description, which is why the digest is taken **at invocation** rather than at registration and must cover the description, not only the argument and output schemas. In `TA-29` the description changed after approval under an unchanged name, which the comparison against the approved baseline detects. The adjacent rug pulls fall outside the digest: `TA-14` mutates an approved configuration's launch command and `TA-16` ships a malicious implementation under an adopted name; in both of those the *declared contract* is itself unchanged, so the detecting fields there are Capability-Set Change Event and MCP Server Identity & Primitive respectively. The modality gate then fell with MCP itself: the gate is third-party or dynamically-discovered tools, and an MCP `tools/list` exchange is dynamic discovery by construction.
-- **MCP Server Identity & Primitive is MUST, on prevalence rather than on evidence.** The corpus's MCP incidents (`TA-11` to `TA-16`, `TA-29`) cleared the evidence gate several times over; `TA-16` is the sharpest, because the server's declared contract never changed and only its published **version** did, so name alone would not have distinguished the safe release from the malicious one. What held the field at SHOULD was the modality gate, and that gate turns on MCP being at the **edge of current agentic practice** ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)). It is not. The corpus's MCP-mediated entries all date from 2025 onward, and their share understates the point, because the remaining agentic entries are incidents of other kinds rather than counter-examples to MCP's prevalence; CoSAI's Workstream 4 devoted a paper to MCP security; OWASP publishes an MCP Top 10; and MITRE ATLAS has added `AML.T0109` AI Supply Chain Rug Pull and `AML.T0110` AI Agent Tool Poisoning, the latter with three sub-techniques (`.000` Definition and Instructions, `.001` Implementation, `.002` Runtime Response). A protocol acquires a dedicated top-ten list and a dedicated technique family once it is typical. **Server name and version are as cheap as Tool Name and should be adopted first.**
-- **Tool Privacy Classification is MAY**: DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
-
-#### Policy enforcement and mediation
-
-**Authorization Decision Record** is the MUST here, and it is universal rather than modality-gated.
-
-- **Authorization Decision Record** fills a structural hole the rest of the field set has by construction. The document logged what a *content classifier* concluded (Guardrail Verdict, §1.2) and what authority a tool *requires* (Tool ACL/Scope, §1.3), but never what the authorization layer **decided**, on which rule, or why, so a denied operation and a never-attempted one were indistinguishable. Among the attacks that turn on that record are `AOC-02` (non-owner compliance), `AOC-08` (privileged action after spoof), `AOC-10` (injected authority), and `TA-08` (individually-authorized calls escalating in aggregate; visible only if each link's decision and rule are recorded). D and R jointly.
-- **Session Taint Labels is SHOULD**, and is a genuinely different mechanism from §1.2's Input Trust Classification: that classifies a segment of one payload, while taint is **state accumulating across a session** that survives into operations whose own content is clean. That distinction is the whole attack in `TA-01` and `TA-02`, where the exfiltrating request is innocuous in isolation. Of everything in SHOULD this has the highest D value per unit of effort.
-- **Human Approval / Elicitation is SHOULD** and covers the control the corpus most often shows *missing*: `AOC-01`, `AOC-07`, and `AOC-11` are all irreversible actions taken without human authorization. `TA-23` is the sharper case, because the gate was present and was **switched off as configuration** rather than argued past: the record that matters is not only the approval but the change to whether approval was required at all, which is why **Capability-Set Change Event** (§1.6, MUST) and this field are read together. **MUST wherever irreversible or high-impact actions are reachable.** Two sub-signals matter: approver identity must come from the identity provider, not the agent's claim; and approval scope must be re-validated against the arguments actually presented, or one sign-off can be replayed against a larger action.
-- **Mediation Coverage & Bypass Path is SHOULD**: the enforcement counterpart to §1.2's Instrumentation Coverage. §1.2 asks *is the telemetry complete?*; this asks *is the enforcement unbypassable?* `AOC-14` is precisely this attack. A control that can be routed around is not a control.
-- **Backend / Route Restriction is SHOULD.** Paired with taint it is a D signal; standing alone it is closer to A (data-residency evidence) and Q.
-- **Policy Reason Code is MAY**: A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by Guardrail Verdict and classified by the ATLAS tag.
-
-### 4.4 Memory and retrieval (§1.4)
-
-#### Memory
-
-Persistent memory is the one component where an attack **outlives the session that planted it**, which is what earns MUST at comparatively low attack counts: a poisoned item silently shapes every future run, so the detection window is unbounded.
-
-- **MINJA (`IR-02`)** poisons memory using only benign queries, the agent autonomously persists malicious reasoning. **AGENTPOISON (`IR-05`)** uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write/Read plus **Provenance**.
-- **Memory Provenance** is the field that exposes `AOC-10`: a "constitution" stored as an externally editable Gist, later edited to make the agent shut down peers and send unauthorized mail. The signal is *a context-shaping memory item resolving to a mutable, non-owner-controlled source.*
-- **Memory Footprint** catches `AOC-05` (ever-growing per-non-owner file → mail-server DoS) and `TA-30`, a production memory index that grew without bound because the disk budget measured other tables. `TA-30` involved no adversary, which [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) admits: the field detects the growth whatever caused it.
-- **Memory Write Rationale is SHOULD**: the analogue of Tool Selection Rationale, and `IR-02` is the case demanding it: the content looks innocuous and the write unremarkable; the tell is the justification the agent gives itself.
-- **Declared Memory Configuration is MAY.** `TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field's job (a baseline for Memory Footprint) can be met by hard-coding known limits.
-
-#### Retrieval and content (RAG)
-
-Two MUSTs, both D-primary. RAG is the document's most-cited injection channel (`TA-01`, `TA-02`, `TA-09`, `IR-03`, `AOC-10` are all retrieval-mediated) and the two answer the halves a detection needs: *what came back*, and *where it came from and when it changed*.
-
-- **Retrieval Event + Source/Provenance** connect "what was retrieved" to "what the model then did." Neither is sufficient alone.
-- **Poison-RAG (`IR-03`)** manipulates item *metadata tags* rather than content bodies, which is why the integrity signal must cover metadata. **`TA-09`** plants hidden instructions in wikis and tickets, and recently-modified retrievable documents deserve scrutiny, hence freshness folds into provenance.
-- **Declared Knowledge-Source Configuration is MAY**, on the same reasoning as its memory counterpart: a silently altered retrieval config or repointed index is not in the corpus, and `IR-03` poisons metadata, not search configuration.
-
-### 4.5 Orchestration (§1.5)
-
-The sharpest tiering judgment in the document, because multi-agent orchestration sits close to the SHOULD boundary by definition. The four MUSTs are the ones whose signal is **protocol-independent**: emittable by any orchestrator, with no A2A stack, delegation model, or agent registry.
-
-- **Inter-Agent Message** is the substrate of cross-agent propagation: `AOC-04` (nine-day mutual-relay loop), `AOC-09` (capability transfer), `AOC-11` (mass broadcast), and `AOC-16`: the positive case, agents sharing risk signals.
-- **Background / Scheduled Task** captures the corpus's most striking finding: agents spawning infinite shell loops and cron jobs with **no termination condition**, converting short-lived tasks into permanent infrastructure (`AOC-04`, `AOC-10`). With **Loop / Step-Count** it clears the bar on D value rather than attack count.
-- **Task / Intent Declaration is SHOULD**: the goal-drift anchor; `AOC-04` shows agents inventing new goals beyond the requested task.
-- **A2A Task Lifecycle and Peer Agent Card are SHOULD, on the modality gate.** A2A Task Lifecycle's evidence is generic multi-agent incidents, not A2A-protocol incidents: `AOC-04/09/11` predate A2A entirely. Peer Agent Card has one A2A instance, `TA-31`, where hosts keyed routing on a card's `name`. Both are **MUST the moment A2A or agent cards are in play**; push-notification configuration in particular registers an attacker-settable egress channel.
-- **Protocol Envelope Capture is MAY**: Q-dominant, duplicates interpreted fields, carries raw-content privacy weight, and is not modality-gated.
-
-### 4.6 Identity, provenance and inventory (§1.6)
-
-#### Identity, delegation and attribution
-
-The archetype for the MUST/SHOULD split, and it survived the audit unchanged. Two fields are MUST because they apply to **every** deployment, including the simplest single-agent one.
-
-- **Identities Used** is the accountability primitive: when an agent resets its own mail server (`AOC-01`), dumps 124 records (`AOC-02`), or mass-mails defamation (`AOC-11`), *which principal, which agent, which tool, which credential* is the first question of any response.
-- **Verified vs Displayed Identity** is MUST on a precise D argument rather than volume. `AOC-08` shows same-channel spoofing *detected* (the agent checked an immutable user ID) and cross-channel spoofing *succeeding* where only a display name was available. The difference between those outcomes is entirely a telemetry difference.
-- **Everything below is SHOULD by construction, not by weak evidence**: several have two or more documented instances, which on count alone would qualify. Each presupposes **delegated authority**: an originating principal distinct from the caller, a chain of prior hops, monotonically narrowing scopes, cryptographic attestation, or a revocation lifecycle. A deployment without cascaded delegation has nothing for them to describe. The corollary matters as much: a deployment that *does* run cascaded delegation should treat these fields as mandatory on day one. SHOULD means "not universal," never "defer."
-- **Trust-Domain Crossing & Delegation Depth** is the field that makes an **externally-operated** counterparty legible. ODIS treats `trust_domain` and `max_depth` as policy-engine inputs rather than telemetry, which is right only while a chain stays inside one domain. Once authority crosses out of the domain that issued it, or the acting agent sits several hops from the originating principal, both become detection-grade: `AOC-04`'s nine-day relay and `AOC-09`'s capability transfer are both depth phenomena, and `TA-11` is a domain-boundary failure. See [RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals).
-- **Credential Minting & Scope-Narrowing** adds the *event* the surrounding fields only describe the state of. Forwarding a caller's inbound token is usually wrong (it is scoped for the agent, not the backend) so the **requested-vs-granted delta** is what makes a silently over-broad grant visible (`TA-08`).
-
-#### Asset inventory and fleet aggregates
-
-One MUST among inventory fields otherwise SHOULD and MAY, and the reason is categorical: every other field here describes a **state**, while **Capability-Set Change Event** describes a **transition**, and transitions are where attacks are visible.
-
-- Grounded directly in `AOC-09`, where one agent teaches another to acquire a browser/download capability. The security event is the *acquisition*; the previous inference path ("tool-call spike + new Tool Name") fires only once the capability is exercised, and never at all for one acquired and held in reserve. Removal matters symmetrically: a guardrail tool or logging sink quietly dropped is a defence-evasion signal. It is also cheap where least expected to fire: a static capability set emits nothing.
-- **Version and Repository / Software Ref are SHOULD** as supply-chain response primitives. **Version is the closest call here**: documented instances and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM cluster. The WG may reasonably promote it.
-- **The AgBOM cluster is SHOULD**: it requires an inventory-emission capability most deployments lack. Within it: **Component Dependency Graph** is the complete answer to CVE blast radius, since `TA-06` is a vulnerability in a *framework* beneath the agent and reaching it requires transitive edges; **Inventory Attestation Signature** matters because an inventory a compromised agent can rewrite is worth little, with the limit that a signature proves who asserted the inventory, not that the assertion is true, which is §1.2's subject.
+That absence is itself a finding, and probably a **collection artifact**: attacks on telemetry are under-reported precisely because the telemetry that would reveal them is what was attacked. `TA-17` narrows that absence without dissolving it: starvation, disablement and suppression remain uncatalogued, and a survey of all **72** MITRE ATLAS case studies at `v2026.08` returns no instance of any of the three. Two entries come closest and neither closes the gap. `AML.CS0050` is an adversary modifying an agent's configuration to **disable the user-confirmation step** before escaping its container, which is disablement of an *enforcement* control rather than of telemetry, and bears on **Human Approval / Elicitation Event** (§1.3) more than on the telemetry plane. `AML.CS0067` records CI **logs** as an exfiltration channel, a second instance of the redirection mode `TA-17` supplies rather than a new one. Two further developments establish recognition without supplying evidence: CoSAI's MCP Security paper names **Invisible Agent Activity** (agents operating covertly while mimicking valid workflows) as an MCP threat class, and the CoSAI Risk Map carries `riskAuditTrailTampering` with an ATT&CK anchor (*Disable or Modify Tools*, T1685). Neither is a catalogued incident, so neither satisfies the evidence rule. The telemetry-plane fields are the most likely to be re-tiered upward, and [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers) is what determines how: the instance that closes this gap need not be adversarial. A collector documented to have silently dropped events, or an enforcement point documented to have failed open unnoticed, is a documented instance of the same failure mode, and it is a far likelier thing to find in the literature than an adversary whose first act destroyed the record of it.
 
 ---
 
