@@ -1,6 +1,5 @@
-# Phase 3 batch: role (shown in the AD Role column), record and origin for each field.
-# role: identifier | content | outcome | label | descriptor | measure | provenance
-# record: event | state | aggregate      origin: observed | declared | asserted | derived
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
 - id: R:agent_name
   type: facets
   subject:
@@ -10,7 +9,10 @@
     role: identifier
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:agent_runtime_instance_id
   type: facets
   subject:
@@ -20,7 +22,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:workflow_run_id
   type: facets
   subject:
@@ -30,7 +35,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:session_turn_step_ids
   type: facets
   subject:
@@ -40,7 +48,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:trace_context_propagated
   type: facets
   subject:
@@ -50,7 +61,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:organization_tenant_id
   type: facets
   subject:
@@ -60,7 +74,10 @@
     role: identifier
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:trigger_type_source_event
   type: facets
   subject:
@@ -71,8 +88,11 @@
     record: event
     origin: observed
     compound: label plus identifier of the originating event
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:action_type
   type: facets
   subject:
@@ -82,7 +102,10 @@
     role: label
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:execution_status
   type: facets
   subject:
@@ -93,8 +116,11 @@
     record: event
     origin: observed
     compound: outcome plus duration (measure)
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:stop_reason
   type: facets
   subject:
@@ -104,7 +130,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:surface_app
   type: facets
   subject:
@@ -114,7 +143,10 @@
     role: label
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:system_prompt_instruction_config
   type: facets
   subject:
@@ -124,7 +156,10 @@
     role: content
     record: state
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:autonomy_level
   type: facets
   subject:
@@ -134,7 +169,10 @@
     role: label
     record: state
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:model_input
   type: facets
   subject:
@@ -144,7 +182,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:input_source_channel
   type: facets
   subject:
@@ -154,7 +195,10 @@
     role: provenance
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:input_trust_classification
   type: facets
   subject:
@@ -164,7 +208,10 @@
     role: label
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:source_host_ip_request_metadata
   type: facets
   subject:
@@ -174,7 +221,10 @@
     role: provenance
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:guardrail_input_verdict
   type: facets
   subject:
@@ -184,7 +234,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:content_modality_attachment_identity
   type: facets
   subject:
@@ -195,8 +248,11 @@
     record: event
     origin: observed
     compound: label plus content hash
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:guardrail_modification_record
   type: facets
   subject:
@@ -206,7 +262,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:threat_classification_atlas_technique_tag
   type: facets
   subject:
@@ -216,7 +275,10 @@
     role: label
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:encoded_obfuscated_payload_indicator
   type: facets
   subject:
@@ -226,7 +288,10 @@
     role: label
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:response_model_output
   type: facets
   subject:
@@ -236,7 +301,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:output_egress_destination
   type: facets
   subject:
@@ -246,7 +314,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:citations_source_attribution
   type: facets
   subject:
@@ -257,8 +328,11 @@
     record: event
     origin: derived
     compound: asserted claim plus derived resolution outcome
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:observation_thought_reasoning_trace
   type: facets
   subject:
@@ -268,7 +342,10 @@
     role: content
     record: event
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:guardrail_output_verdict
   type: facets
   subject:
@@ -278,7 +355,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:llm_refusal
   type: facets
   subject:
@@ -288,7 +368,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:model_name_version
   type: facets
   subject:
@@ -298,7 +381,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:provider_endpoint_identity
   type: facets
   subject:
@@ -308,7 +394,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:inference_parameters
   type: facets
   subject:
@@ -318,7 +407,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:input_output_token_counts
   type: facets
   subject:
@@ -328,7 +420,10 @@
     role: measure
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:llm_error_exception
   type: facets
   subject:
@@ -338,7 +433,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:model_provenance_signing_hash
   type: facets
   subject:
@@ -348,7 +446,10 @@
     role: provenance
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:pre_forward_pass_state_digest_vector
   type: facets
   subject:
@@ -358,7 +459,10 @@
     role: content
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:token_malformation_context_corruption_indicator
   type: facets
   subject:
@@ -368,7 +472,10 @@
     role: label
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_call_io
   type: facets
   subject:
@@ -378,7 +485,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_name
   type: facets
   subject:
@@ -388,7 +498,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_type_trust_boundary
   type: facets
   subject:
@@ -398,7 +511,10 @@
     role: label
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_id
   type: facets
   subject:
@@ -408,7 +524,10 @@
     role: identifier
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_execution_id
   type: facets
   subject:
@@ -418,7 +537,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_definition_digest
   type: facets
   subject:
@@ -429,8 +551,11 @@
     record: event
     origin: derived
     compound: derived digest plus comparison outcome against the baseline
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:execution_environment_sandbox
   type: facets
   subject:
@@ -440,7 +565,10 @@
     role: descriptor
     record: state
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:mcp_server_identity_primitive
   type: facets
   subject:
@@ -451,8 +579,11 @@
     record: event
     origin: asserted
     compound: asserted server identity plus observed primitive (label)
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_error_exception
   type: facets
   subject:
@@ -462,7 +593,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_acl_required_scope
   type: facets
   subject:
@@ -472,7 +606,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_privacy_classification
   type: facets
   subject:
@@ -482,7 +619,10 @@
     role: label
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_selection_rationale
   type: facets
   subject:
@@ -492,7 +632,10 @@
     role: content
     record: event
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_write_event
   type: facets
   subject:
@@ -502,7 +645,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_read_injection_event
   type: facets
   subject:
@@ -512,7 +658,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_provenance_source
   type: facets
   subject:
@@ -522,7 +671,10 @@
     role: provenance
     record: state
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_integrity_poisoning_signal
   type: facets
   subject:
@@ -532,7 +684,10 @@
     role: measure
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_footprint_growth
   type: facets
   subject:
@@ -542,7 +697,10 @@
     role: measure
     record: aggregate
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:declared_memory_configuration
   type: facets
   subject:
@@ -552,7 +710,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:memory_write_rationale
   type: facets
   subject:
@@ -562,7 +723,10 @@
     role: content
     record: event
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:retrieval_event
   type: facets
   subject:
@@ -572,7 +736,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:retrieved_content_source_provenance
   type: facets
   subject:
@@ -582,7 +749,10 @@
     role: provenance
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:retrieved_content_metadata_integrity_signal
   type: facets
   subject:
@@ -592,7 +762,10 @@
     role: measure
     record: event
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:declared_knowledge_source_configuration
   type: facets
   subject:
@@ -602,7 +775,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:inter_agent_message
   type: facets
   subject:
@@ -612,7 +788,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:a2a_task_lifecycle_event
   type: facets
   subject:
@@ -622,7 +801,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:peer_agent_card_descriptor
   type: facets
   subject:
@@ -633,8 +815,11 @@
     record: state
     origin: asserted
     compound: asserted descriptor plus verification outcome
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:background_scheduled_task_event
   type: facets
   subject:
@@ -644,7 +829,10 @@
     role: descriptor
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:loop_step_count_signal
   type: facets
   subject:
@@ -654,7 +842,10 @@
     role: measure
     record: aggregate
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:resource_consumption_aggregate
   type: facets
   subject:
@@ -664,7 +855,10 @@
     role: measure
     record: aggregate
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:task_intent_declaration
   type: facets
   subject:
@@ -674,7 +868,10 @@
     role: descriptor
     record: state
     origin: asserted
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:protocol_envelope_capture
   type: facets
   subject:
@@ -684,7 +881,10 @@
     role: content
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:identities_used_per_hop
   type: facets
   subject:
@@ -694,7 +894,10 @@
     role: identifier
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:verified_vs_displayed_identity
   type: facets
   subject:
@@ -705,8 +908,11 @@
     record: event
     origin: observed
     compound: two identifiers plus which one authorized (outcome)
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:originating_principal_on_behalf_of
   type: facets
   subject:
@@ -716,7 +922,10 @@
     role: identifier
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:delegation_chain
   type: facets
   subject:
@@ -726,7 +935,10 @@
     role: provenance
     record: event
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:granted_authorizations_scope
   type: facets
   subject:
@@ -737,8 +949,11 @@
     record: state
     origin: declared
     compound: declared scope plus narrowing-check outcome
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:resource_indicators_constraints
   type: facets
   subject:
@@ -748,7 +963,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:credential_minting_scope_narrowing_check
   type: facets
   subject:
@@ -758,7 +976,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:trust_domain_crossing_delegation_depth
   type: facets
   subject:
@@ -769,8 +990,11 @@
     record: event
     origin: derived
     compound: derived depth (measure) plus limit-crossed flag (outcome)
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:runtime_credential_attestation
   type: facets
   subject:
@@ -780,7 +1004,10 @@
     role: provenance
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:lifecycle_state
   type: facets
   subject:
@@ -790,7 +1017,10 @@
     role: label
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:capability_set_change_event
   type: facets
   subject:
@@ -800,7 +1030,10 @@
     role: descriptor
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_agent_version
   type: facets
   subject:
@@ -810,7 +1043,10 @@
     role: identifier
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:repository_code_path_software_ref
   type: facets
   subject:
@@ -820,7 +1056,10 @@
     role: provenance
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:agbom_inventory_snapshot
   type: facets
   subject:
@@ -830,7 +1069,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:component_dependency_graph
   type: facets
   subject:
@@ -840,7 +1082,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:inventory_attestation_signature
   type: facets
   subject:
@@ -850,7 +1095,10 @@
     role: provenance
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_description
   type: facets
   subject:
@@ -860,7 +1108,10 @@
     role: content
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:tool_status
   type: facets
   subject:
@@ -870,7 +1121,10 @@
     role: label
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:creator_id_oncall_creation_update_dates
   type: facets
   subject:
@@ -880,7 +1134,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:surfaces_supported
   type: facets
   subject:
@@ -890,7 +1147,10 @@
     role: descriptor
     record: state
     origin: declared
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:fleet_counts
   type: facets
   subject:
@@ -900,7 +1160,10 @@
     role: measure
     record: aggregate
     origin: derived
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:enforcement_point_availability_failure_mode
   type: facets
   subject:
@@ -910,7 +1173,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:instrumentation_coverage_hook_attestation
   type: facets
   subject:
@@ -920,7 +1186,10 @@
     role: descriptor
     record: state
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:event_sequence_continuity
   type: facets
   subject:
@@ -930,7 +1199,10 @@
     role: identifier
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:policy_reason_code
   type: facets
   subject:
@@ -940,7 +1212,10 @@
     role: label
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:authorization_decision_record
   type: facets
   subject:
@@ -950,7 +1225,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:attribute_source_trusted_provenance_marking
   type: facets
   subject:
@@ -960,7 +1238,10 @@
     role: provenance
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:session_taint_labels_information_flow_decisions
   type: facets
   subject:
@@ -971,8 +1252,11 @@
     record: state
     origin: observed
     compound: label state plus taint-caused denials (events, outcome)
-  status: proposed
+  status: accepted
   reason: bundles values with different facets; assigned by the field obligation (RFC §5 content hashing, rule 3)
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:human_approval_elicitation_event
   type: facets
   subject:
@@ -982,7 +1266,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:backend_route_restriction_decision
   type: facets
   subject:
@@ -992,7 +1279,10 @@
     role: outcome
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
 - id: R:mediation_coverage_bypass_path
   type: facets
   subject:
@@ -1002,4 +1292,7 @@
     role: label
     record: event
     origin: observed
-  status: proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
