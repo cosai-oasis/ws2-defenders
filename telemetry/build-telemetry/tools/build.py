@@ -150,6 +150,9 @@ def capture_entry(f):
         tier += f" See {link(f['rationale_see'])}."
     if read_by[f['id']]:
         tier += ' *Read by:* ' + series([plink(p) for p in read_by[f['id']]]) + '.'
+    controls = (mapping or {}).get('fields', {}).get(f['id'], {}).get('controls', [])
+    if controls:
+        tier += ' *Risk Map controls:* ' + ', '.join(f'`{c}`' for c in controls) + '.'
     return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}\n\n{tier}'
 
 
