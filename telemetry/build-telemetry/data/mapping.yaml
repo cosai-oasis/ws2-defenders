@@ -184,14 +184,14 @@ asks:
   proposes: []
   tracking: []
   status: proposed
-  rationale: ': name, size, and hash. `AOC-12` is an image/OCR injection; `AOC-05` is attachment flooding.'
+  rationale: '`AOC-12` is an image/OCR injection; `AOC-05` is attachment flooding.'
 - id: otel_model_provenance
   publication: otel_genai
   summary: Add gen_ai.model.hash, gen_ai.model.signature and gen_ai.model.source.
   proposes: [gen_ai.model.hash, gen_ai.model.signature, gen_ai.model.source]
   tracking: []
   status: proposed
-  rationale: ': hash, signature, source, completing the supply-chain story that `gen_ai.request.model` starts.'
+  rationale: Together they complete the supply-chain record that `gen_ai.request.model` starts.
 - id: otel_hash_only_capture
   publication: otel_genai
   summary: Ensure a hash-only content-capture mode exists for message content.
@@ -411,7 +411,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.trigger.*, gen_ai.agent.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.agent.*` trigger attrs'
     odis:
       coverage: out_of_scope
     controls: [controlAgentInventoryManagement, controlAgentObservability]
@@ -463,8 +462,7 @@ fields:
     aitf:
       coverage: partial
       constructs: [gen_ai.*]
-      note: '`gen_ai.*` (surface attr)'
-      gap: The v0.5 mapping cited a namespace only; AITF defines no attribute for this field at the pin
+      gap: AITF names a namespace but defines no attribute for this field at the pin
     odis:
       coverage: out_of_scope
       note: n/a (policy input)
@@ -542,8 +540,7 @@ fields:
     aitf:
       coverage: partial
       constructs: [gen_ai.*, security.*]
-      note: '`gen_ai.*` error + `security.*`'
-      gap: The v0.5 mapping cited a namespace only; AITF defines no attribute for this field at the pin
+      gap: AITF names a namespace but defines no attribute for this field at the pin
     odis:
       coverage: out_of_scope
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
@@ -558,7 +555,7 @@ fields:
     aitf:
       coverage: covered
       constructs: []
-      note: OTel `trace_id`/`span_id`, W3C `traceparent` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent).
+      note: OTel `trace_id` and `span_id`, propagated as W3C `traceparent`.
     odis:
       coverage: covered
       constructs: [request_trace_id]
@@ -625,7 +622,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [asset.tenant.*, security.tenant.*, asset.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `asset.*` / resource attrs'
     odis:
       coverage: covered
       constructs: [trust_domain]
@@ -708,8 +704,7 @@ fields:
     aitf:
       coverage: partial
       constructs: [gen_ai.*, rag.*, mcp.*]
-      note: '`gen_ai.*` / `rag.*` / `mcp.*` source'
-      gap: The v0.5 mapping cited a namespace only; AITF defines no attribute for this field at the pin
+      gap: AITF names a namespace but defines no attribute for this field at the pin
     odis:
       coverage: covered
       constructs: [delegation_chain]
@@ -817,7 +812,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [rag.citation.*, rag.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `rag.*` (source) + output citation attrs'
     odis:
       coverage: out_of_scope
     controls: [controlOutputValidationAndSanitization]
@@ -854,7 +848,7 @@ fields:
     aitf:
       coverage: partial
       constructs: [gen_ai.response.finish_reasons, security.*]
-      gap: The v0.5 mapping cited a namespace only; AITF defines no attribute for this field at the pin
+      gap: AITF names a namespace but defines no attribute for this field at the pin
     odis:
       coverage: out_of_scope
     controls: [controlOutputValidationAndSanitization]
@@ -870,7 +864,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.content.*, gen_ai.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.*` content-part attrs'
     odis:
       coverage: out_of_scope
     controls: []
@@ -885,7 +878,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.attribute_source.*]
-      note: Closed in AITF v0.4 (AITF_gaps.md).
     odis:
       coverage: partial
       constructs: [attestation_evidence]
@@ -904,7 +896,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [asset.instrumentation.*, asset.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `asset.*` / instrumentation attrs'
     odis:
       coverage: out_of_scope
     controls: [controlAuditTrailCompleteness]
@@ -919,7 +910,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.enforcement.*, security.guardrail.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `security.guardrail.*` availability/latency'
     odis:
       coverage: out_of_scope
     controls: []
@@ -935,7 +925,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.guardrail.modification.*, security.guardrail.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `security.guardrail.*` + modified/redacted flags'
     odis:
       coverage: out_of_scope
     controls: []
@@ -951,7 +940,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.obfuscation.*, security.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `security.*` obfuscation / decoded-form attrs'
     odis:
       coverage: out_of_scope
     controls: [controlInputValidationAndSanitization]
@@ -999,7 +987,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [supply_chain.runtime.*, supply_chain.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `supply_chain.*` + runtime/sandbox attrs'
     odis:
       coverage: partial
       constructs: [binding_profile]
@@ -1057,8 +1044,7 @@ fields:
     aitf:
       coverage: partial
       constructs: [mcp.*]
-      note: '`mcp.*` vs internal'
-      gap: The v0.5 mapping cited a namespace only; AITF defines no attribute for this field at the pin
+      gap: AITF names a namespace but defines no attribute for this field at the pin
     odis:
       coverage: out_of_scope
     controls:
@@ -1094,7 +1080,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [mcp.tool.definition.*, mcp.tool.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `mcp.tool.*` schema/description hash'
     odis:
       coverage: covered
       constructs: [approved_software_refs]
@@ -1114,7 +1099,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [mcp.primitive, mcp.server.name, mcp.server.version]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `mcp.server.name/version`, primitive attr'
     odis:
       coverage: out_of_scope
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
@@ -1131,7 +1115,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.authorization.*, security.*, compliance.control_id]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `security.*` decision + `compliance.control_id`'
     odis:
       coverage: out_of_scope
       note: n/a (see note)
@@ -1166,7 +1149,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [identity.approval.*, identity.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `identity.*` approver + approval attrs'
     odis:
       coverage: partial
       constructs: [originating_principal]
@@ -1201,7 +1183,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.taint.*, security.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `security.*` labels'
     odis:
       coverage: covered
       constructs: [constraints]
@@ -1219,7 +1200,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.route.*, gen_ai.provider.name]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.provider.name` + routing constraint attrs'
     odis:
       coverage: covered
       constructs: [resource_indicators, constraints]
@@ -1237,7 +1217,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [security.mediation.*]
-      note: Closed in AITF v0.4 (AITF_gaps.md).
     odis:
       coverage: out_of_scope
     controls: []
@@ -1494,7 +1473,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [memory.config.*, memory.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `memory.*` config attrs'
     odis:
       coverage: out_of_scope
     controls:
@@ -1514,7 +1492,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [rag.source.*, rag.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `rag.*` config/index attrs'
     odis:
       coverage: out_of_scope
     controls:
@@ -1566,7 +1543,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.agent.session.turn_count, gen_ai.agent.step.index, agent.steps_per_session]
-      note: The v0.5 mapping named gen_ai.agent.turn_count; AITF defines gen_ai.agent.session.turn_count.
     odis:
       coverage: out_of_scope
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
@@ -1619,7 +1595,6 @@ fields:
       note: No ask proposed.
     aitf:
       coverage: covered
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: delegation activity (OCSF 9002); a2a attrs'
       constructs: [a2a.task.lifecycle.*, a2a.push.config.*]
     odis:
       coverage: covered
@@ -1641,7 +1616,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.agent.peer.*, gen_ai.agent.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.agent.*` peer attrs'
     odis:
       coverage: covered
       constructs: [agent_id, approved_software_refs]
@@ -1661,7 +1635,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [mcp.envelope.*, mcp.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `mcp.*` / a2a raw payload'
     odis:
       coverage: out_of_scope
     controls: []
@@ -1677,7 +1650,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [asset.capability.*, asset.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `asset.*` change events'
     odis:
       coverage: covered
       constructs: [approved_software_refs]
@@ -1821,7 +1793,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [identity.credential.mint.*, identity.auth.scope_granted]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `identity.auth.scope_granted` + token-exchange attrs'
     odis:
       coverage: covered
       constructs: [granted_authorizations, binding_profile]
@@ -1846,7 +1817,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [identity.boundary.*, identity.*]
-      note: 'Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `identity.*` domain/depth attrs'
     odis:
       coverage: covered
       constructs: [trust_domain, max_depth]
@@ -2010,7 +1980,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [observability.sequence.*]
-      note: Closed in AITF v0.4 (AITF_gaps.md).
     odis:
       coverage: out_of_scope
     controls:

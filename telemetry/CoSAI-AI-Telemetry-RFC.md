@@ -16,6 +16,8 @@ AI systems now read untrusted content, decide what to do about it, and act: call
 
 Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Default application logging records none of this. It captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards nothing solid to investigate, debug, or audit.
 
+Nor is the adversary always external. In July 2026, frontier models under evaluation at OpenAI and Anthropic reached production systems at other organizations from their test environments, and Hugging Face published a forensic timeline of one intrusion [[64]](#other-sources).
+
 ### 1.1 One umbrella, many efforts
 
 Several communities are converging on AI telemetry, and their work is complementary. OpenTelemetry [[35]](#standards--frameworks) defines how instrumentation emits GenAI and agent data. OCSF, the Open Cybersecurity Schema Framework [[37]](#standards--frameworks), defines how security events are normalized for a security operations center (SOC). OWASP AOS, the Agent Observability Standard [[38]](#standards--frameworks), defines how an agent exposes itself for observation. CPEX [[44]](#standards--frameworks) defines how a policy runtime mediates agent actions. ODIS, the Open Delegation and Identity Standard [[26]](#standards--frameworks), defines delegated identity and authority. MITRE ATLAS [[1]](#primary-sources-attack-corpus--taxonomy) defines the adversary techniques to classify against. EU AI Act Article 12 [[34]](#standards--frameworks) imposes record-keeping on high-risk AI systems, and the NIST AI Risk Management Framework [[30]](#standards--frameworks) offers voluntary guidance.
@@ -24,9 +26,7 @@ Those efforts answer different questions. This RFC is the requirements layer: it
 
 ### 1.2 For example: EchoLeak
 
-In July 2026, frontier models under evaluation at OpenAI and Anthropic reached production systems at other organizations from their test environments, and Hugging Face published a forensic timeline of one intrusion [[64]](#other-sources). Those were models acting on their own inside test harnesses. EchoLeak is the clearer lesson for defenders: an external adversary against a production deployment, documented end to end.
-
-In June 2025 Microsoft disclosed EchoLeak (CVE-2025-32711, CVSS 9.3 as scored by Microsoft), reported by Aim Labs [[4]](#real-world-attack-primary-sources). A single crafted email caused Microsoft 365 Copilot to retrieve the attacker's text as context, act on it as instruction, and exfiltrate internal SharePoint, OneDrive and Teams content to an attacker-controlled endpoint. No user ever clicked anything. The chain defeated the cross-prompt-injection classifier, link redaction, and content-security policy in turn, and routed the egress through a trusted proxy domain.
+In June 2025 Microsoft disclosed EchoLeak (CVE-2025-32711, CVSS 9.3 as scored by Microsoft), reported by Aim Labs [[4]](#real-world-attack-primary-sources): an external adversary against a production deployment, documented end to end. A single crafted email caused Microsoft 365 Copilot to retrieve the attacker's text as context, act on it as instruction, and exfiltrate internal SharePoint, OneDrive and Teams content to an attacker-controlled endpoint. No user ever clicked anything. The chain defeated the cross-prompt-injection classifier, link redaction, and content-security policy in turn, and routed the egress through a trusted proxy domain.
 
 Each step in that chain would have left evidence in a field that default logging does not collect:
 
@@ -35,7 +35,7 @@ Each step in that chain would have left evidence in a field that default logging
 - The injection classifier was bypassed. A classifier whose verdicts are not logged cannot be shown to have failed.
 - Content left for a previously unseen outbound destination: the last point at which the attack could have been stopped rather than reconstructed afterwards.
 
-These are four fields, none exotic. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
+These are four fields, none exotic: Input Trust Classification, Retrieved-Content Source / Provenance, Guardrail (Input) Verdict and Output Egress Destination. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
 
 ---
 
@@ -63,7 +63,7 @@ No field closes a covert channel inside permitted output; **Output Egress Destin
 
 A **documented instance** is an attack, incident, resisted attempt, or failure traceable to a primary source; a taxonomy entry shows only that a scenario is recognized. The **evidence gate** admits a field only where the corpus motivates it, and to MUST only where documented instances require it (§4.2). A **deployment modality** is a capability a deployment may or may not run, such as delegated authority, multi-tenancy, or agent-to-agent messaging; SHOULD fields apply once it runs (§4.7). A **provider-gated** field depends on a signal the model or platform provider may not expose.
 
-A **self-asserted** value is one an agent or counterparty supplies about itself, with no independent authority (§4.4). A claim about an outcome is **verified** when an identifier in the record resolves it to a result recorded by another component the deployment operates, and **unresolved** when none does. A **knowability tier** (mediated, attested, or opaque) states how much a deployment can observe of a counterparty it does not operate (§4.6).
+A **self-asserted** value is one an agent or counterparty supplies about itself, with no independent authority (§4.4). A claim about an outcome is **verified** when an identifier in the record resolves it to the result it rests on, recorded by a component the deployment operates other than the one making the claim, and **unresolved** when none does (§4.4). A **knowability tier** (mediated, attested, or opaque) states how much a deployment can observe of a counterparty it does not operate (§4.6).
 
 A **content-bearing field** is one whose value includes text or a payload that a model reads or produces. The **telemetry plane** is the instrumentation, enforcement callouts, and pipeline that produce and carry these records.
 
@@ -126,7 +126,7 @@ The CPEX threat model [[44]](#standards--frameworks) treats a compromised agent 
 
 These fields are self-asserted and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** (§6.1), **Observation / Thought** (§6.2), **Tool Selection Rationale** (§6.3), **Memory Write Rationale** (§6.4), and **Task / Intent Declaration** (§6.5). **Peer Agent Card / Descriptor** (§6.5) is the counterparty's assertion rather than the agent's own, and carries the same weakness. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** (§6.2) is a cross-cutting MUST.
 
-A claim about an outcome is **verified** when an identifier in the record resolves it to the result it rests on, recorded by a component the deployment operates, other than the one making the claim. For example, **Execution Status** (§6.1) is verified when its **Tool Execution ID** matches a **Tool Call I/O** outcome (§6.3). A claim with no such identifier is **unresolved**: the record says so, and no reader can settle it. Recording unresolved claims as unresolved, rather than counting them as outcomes, makes corroboration a property a checker can decide.
+A claim about an outcome is verified or unresolved (§2.3). For example, **Execution Status** (§6.1) is verified when its **Tool Execution ID** matches a **Tool Call I/O** outcome (§6.3). A claim with no such identifier is **unresolved**: the record says so, and no reader can settle it. Recording unresolved claims as unresolved, rather than counting them as outcomes, makes corroboration a property a checker can decide.
 
 ### 4.5 A missing verdict is not an allow
 
@@ -158,8 +158,7 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in RFC 2119 [
 
 Two instances are independent when they are separate incidents, not two accounts of the same event. A field whose defining event is itself conditional (a rewrite, an emitted citation, a fired detection) is tiered like any other and applies where that event occurs ([§5](#5-conformance)): conditionality is applicability, not a tier. Whether a field is observed or derived does not affect its tier. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalogue).
 
-**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons. Each SHOULD row in §6 names the modality it serves, or marks the field provider-gated when provider availability and privacy policy gate it instead.
-
+**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
 ---
 
 ## 5. Conformance
@@ -173,7 +172,7 @@ A deployment states conformance in a **conformance statement**. It lists each ap
 
 ### Sampling
 
-Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores security relevance, so where OpenTelemetry carries security telemetry ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling--privacy-three-operational-traps) gives the rationale):
+Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores security relevance, so where OpenTelemetry carries security telemetry ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling-privacy-and-canonicalization) gives the rationale):
 
 1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** (§6.1), per-invocation tool activity, and any event carrying a fired detection are recorded at 100%.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
@@ -182,7 +181,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 ### Content hashing
 
 1. **Every content-bearing field MUST carry a content hash.** Whether raw content accompanies it is deployment policy.
-2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling--privacy-three-operational-traps)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer. Consumers MUST NOT compare digests across producers whose declared canonicalizations differ.
+2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling-privacy-and-canonicalization)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer. Consumers MUST NOT compare digests across producers whose declared canonicalizations differ.
 3. **Where a field carries an identifier, the obligation is the signal, not the identifier.** For **Content Modality & Attachment Identity** (§6.2) it is the content hash, and the filename is policy. For **Citations / Source Attribution** (§6.2) it is the resolution outcome, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy. **Protocol Envelope Capture** (§6.5) is MAY because the raw payload is the field.
 
 The hash is the correlation primitive the corpus turns on: `AOC-03` [[2]](#primary-sources-attack-corpus--taxonomy) (extraction escalating across turns) and `IR-02` [[3]](#primary-sources-attack-corpus--taxonomy) (an implant persisting into later sessions) are both detected by matching one content item against another. A digest matches only content that is identical after canonicalization. It finds a repeated payload without the raw text, but a fragment or a paraphrase needs retained text or a finer-grained digest. Requiring the hash, and leaving raw content to policy, lets deployments with different privacy postures compare content without exchanging it, provided they declare the same digest algorithm and canonicalization.
@@ -339,9 +338,7 @@ These fields cover delegated identity, inventory, and the integrity of the event
 
 ## 7. Conclusion
 
-The field catalogue was assembled from documented instances, not from a list of what might be useful: 52 entries, comprising 31 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy). [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) states what the corpus admits. A field enters the catalogue only where the corpus motivates it, and reaches MUST only where documented instances require it, directly or because a MUST field cannot be read without it. Its tier follows the test in [§4.7](#47-tiers). Every MUST can therefore be checked against the attacks it cites, and a tier moves when the evidence or the deployment modality changes. The same rule accounts for the gaps: no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§6](#6-field-catalogue)).
-
-This RFC covers the security telemetry of the runtime path: which fields, at which priority, on what evidence. It does not specify detection logic, and it does not define a wire format. Security and privacy of the telemetry itself (access control, retention, redaction, encryption, integrity and chain of custody, and privacy compliance) are left to a later CoSAI publication ([§2.2](#22-not-in-scope)).
+The field catalogue was assembled from documented instances, not from a list of what might be useful: 53 entries, comprising 32 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy) ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)). Every MUST can therefore be checked against the attacks it cites, and a tier moves when the evidence or the deployment modality changes. The catalogue covers the runtime path; no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§6](#6-field-catalogue)). Detection logic, wire formats, and the security and privacy of the telemetry itself are out of scope ([§2.2](#22-not-in-scope)).
 
 ---
 

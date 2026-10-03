@@ -368,7 +368,8 @@ def evidence(fid):
     f = fields[fid]
     if 'required_to_read' in f.get('basis', {}):
         return f"{f['tier']}, on a dependency"
-    return f"{f['tier']}, {len(rules.instances(fid, attacks))} instances"
+    n = len(rules.instances(fid, attacks))
+    return f"{f['tier']}, {n} instance{'' if n == 1 else 's'}"
 
 
 def xm_pins():
