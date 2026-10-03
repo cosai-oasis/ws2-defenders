@@ -194,7 +194,7 @@
   stage: decision
   join: [identities_used_per_hop]
   conditions:
-  - A **Credential Minting & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
+  - A **Token Exchange & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
   requires:
   - credential_minting_scope_narrowing_check
   enriches: [granted_authorizations_scope]
@@ -588,7 +588,7 @@
   stage: plane
   join: [agent_runtime_instance_id]
   conditions:
-  - '**Instrumentation Coverage / Hook Attestation** records a hook disabled, or reporting to a new destination, during a run.'
+  - '**Instrumentation Coverage / Hook Status** records a hook disabled, or reporting to a new destination, during a run.'
   requires:
   - instrumentation_coverage_hook_attestation
   enriches: [event_sequence_continuity, action_type]

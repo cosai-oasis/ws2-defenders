@@ -6,6 +6,8 @@
 
 **Companion documents:** [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) (cited as AD) and [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) (cited as XM).
 
+**Normative status:** §§2, 4.7, 5 and 6 are normative, together with the capture definitions in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables) that §6 links to. All other sections are informative.
+
 **Disclosure:** This document was prepared for open publication under CoSAI, with no commercial sponsorship; the standards positions taken favor open specifications and open-source projects (OpenTelemetry, OCSF, OWASP AOS, CPEX) over proprietary implementations. Drafting, cross-referencing, and consistency checking were performed with AI assistance.
 
 ---
@@ -35,7 +37,7 @@ Each step in that chain would have left evidence in a field that default logging
 - The injection classifier was bypassed. A classifier whose verdicts are not logged cannot be shown to have failed.
 - Content left for a previously unseen outbound destination: the last point at which the attack could have been stopped rather than reconstructed afterwards.
 
-These are four fields, none exotic: Input Trust Classification, Retrieved-Content Source / Provenance, Guardrail (Input) Verdict and Output Egress Destination. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
+These are four fields, none exotic: Input Trust Classification, Retrieved-Content Provenance, Input Guardrail Verdict and Output Egress Destination. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
 
 ---
 
@@ -47,7 +49,7 @@ In scope is the security telemetry an AI system needs to produce. For each field
 
 Telemetry for agents the deployment does not operate is in scope, within the limits set in [§4.6](#46-record-your-boundary-not-their-internals).
 
-The catalog covers the runtime path and, as an independent track, training data and training infrastructure ([§6.7](#67-training-data-and-training-infrastructure)). It covers the security slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
+The catalog covers AI systems generally, not only agents: a model behind an API, a retrieval-augmented assistant and an autonomous agent each emit the fields for the components they run, and the tool, memory, orchestration and delegation fields apply only where those components exist ([§5.1](#51-applicability-and-emission)). It covers the runtime path and, as an independent track, training data and training infrastructure ([§6.7](#67-training-data-and-training-infrastructure)). It covers the security slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
 
 ### 2.2 Not in scope
 
@@ -63,13 +65,15 @@ No field closes a covert channel inside permitted output; **Output Egress Destin
 
 A **documented instance** is an attack, incident, resisted attempt, or failure traceable to a primary source; a taxonomy entry shows only that a scenario is recognized. The **evidence gate** admits a field only where the corpus motivates it, and to MUST only where documented instances require it ([§4.2](#42-evidence-sets-the-tier)). A **deployment modality** is a capability a deployment may or may not run, such as delegated authority, multi-tenancy, or agent-to-agent messaging; SHOULD fields apply once it runs ([§4.7](#47-tiers)). A **provider-gated** field depends on a signal the model or platform provider may not expose.
 
-A **self-asserted** value is one an agent or counterparty supplies about itself, with no independent authority ([§4.4](#44-the-agent-might-be-lying)). A claim about an outcome is **verified** when an identifier in the record resolves it to the result it rests on, recorded by a component the deployment operates other than the one making the claim, and **unresolved** when none does ([§4.4](#44-the-agent-might-be-lying)). A **knowability tier** (mediated, attested, or opaque) states how much a deployment can observe of a counterparty it does not operate ([§4.6](#46-record-your-boundary-not-their-internals)).
+A **self-asserted** value is one an agent or counterparty supplies about itself, with no independent authority ([§4.4](#44-the-agent-might-be-lying)). A claim about an outcome is **verified** when an identifier in the record resolves it to the result it rests on, recorded by a component the deployment operates other than the one making the claim, and **unresolved** when none does ([§4.4](#44-the-agent-might-be-lying)). A claim is **attested** when a verifier has appraised its evidence against reference values and policy, as in the RATS architecture [[85]](#standards--frameworks); a signature or a status record alone is not an attestation. A **knowability tier** (mediated, attested, or opaque) states how much a deployment can observe of a counterparty it does not operate ([§4.6](#46-record-your-boundary-not-their-internals)).
 
 A **content-bearing field** is one whose value includes text or a payload that a model reads or produces. The **telemetry plane** is the instrumentation, enforcement callouts, and pipeline that produce and carry these records.
 
 ---
 
 ## 3. How To Use This Doc
+
+The primary implementer is the organization that operates the AI deployment: it configures instrumentation and enforcement points to emit the fields, and it issues the conformance statement ([§5](#5-conformance)). Framework, platform and model providers implement the fields their components emit (the "Emitted by" column of [§6](#6-field-catalog)), and provider-gated fields depend on them.
 
 ### 3.1 For CISOs
 
@@ -123,13 +127,13 @@ Prompt injection succeeds when content from an untrusted origin is consumed as i
 
 The CPEX threat model [[44]](#standards--frameworks) treats a compromised agent as a potential source of false statements, not only as a victim. The corpus shows that agents do misreport [[2]](#primary-sources-attack-corpus--taxonomy). In `AOC-07` the agent declared "I'm done responding" more than a dozen times and kept replying; in `AOC-01` it claimed a secret had been deleted while the data remained recoverable.
 
-These fields are self-asserted and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** ([§6.1](#61-identifiers-trace-context-and-model-identity)), **Observation / Thought** ([§6.2](#62-content-trust-verdicts-and-their-availability)), **Tool Selection Rationale** ([§6.3](#63-tool-calls-and-policy-decisions)), **Memory Write Rationale** ([§6.4](#64-memory-and-retrieval)), and **Task / Intent Declaration** ([§6.5](#65-orchestration)). **Peer Agent Card / Descriptor** ([§6.5](#65-orchestration)) is the counterparty's assertion rather than the agent's own, and carries the same weakness. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** ([§6.2](#62-content-trust-verdicts-and-their-availability)) is a cross-cutting MUST.
+These fields are self-asserted and carry no independent authority: **Autonomy Level** and **System Prompt / Instruction Config** ([§6.1](#61-identifiers-trace-context-and-model-identity)), **Observation / Thought** ([§6.2](#62-content-trust-verdicts-and-their-availability)), **Tool Selection Rationale** ([§6.3](#63-tool-calls-and-policy-decisions)), **Memory Write Rationale** ([§6.4](#64-memory-and-retrieval)), and **Task / Intent Declaration** ([§6.5](#65-orchestration)). **Peer Agent Card / Descriptor** ([§6.5](#65-orchestration)) and the server name and version in **MCP Server Identity & Primitive** ([§6.3](#63-tool-calls-and-policy-decisions)) are the counterparty's assertion rather than the agent's own, and carry the same weakness. A detection resting on any of these inherits whatever the agent chose to say, which is why **Attribute Source / Trusted-Provenance Marking** ([§6.2](#62-content-trust-verdicts-and-their-availability)) is a cross-cutting MUST.
 
 A claim about an outcome is verified or unresolved ([§2.3](#23-terms)). For example, **Execution Status** ([§6.1](#61-identifiers-trace-context-and-model-identity)) is verified when its **Tool Execution ID** matches a **Tool Call I/O** outcome ([§6.3](#63-tool-calls-and-policy-decisions)). A claim with no such identifier is **unresolved**: the record says so, and no reader can settle it. Recording unresolved claims as unresolved, rather than counting them as outcomes, makes corroboration a property a checker can decide.
 
 ### 4.5 A missing verdict is not an allow
 
-Every detection assumes the telemetry plane worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. Provider and availability signals belong here for the same reason: a provider that silently truncates a response is a failure the record has to distinguish from a clean result ([AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)). The field catalog therefore records the plane's own failures: **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). A missing verdict is found by comparison: the model calls recorded in **Action Type** for a turn, against the verdicts and callouts recorded for it. The same reasoning makes the sampling rules normative ([§5.2](#52-sampling)): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope ([§2.2](#22-not-in-scope)).
+Every detection assumes the telemetry plane worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. Provider and availability signals belong here for the same reason: a provider that silently truncates a response is a failure the record has to distinguish from a clean result ([AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)). The field catalog therefore records the plane's own failures: **Instrumentation Coverage / Hook Status** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). A missing verdict is found by comparison: the model calls recorded in **Action Type** for a turn, against the verdicts and callouts recorded for it. The same reasoning makes the sampling rules normative ([§5.2](#52-sampling)): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope ([§2.2](#22-not-in-scope)).
 
 ### 4.6 Record your boundary, not their internals
 
@@ -140,7 +144,7 @@ Read every field in [§6](#6-field-catalog) against one of these **knowability**
 | Tier | What you have | How the field catalog applies |
 | :------- | :------------------------- | :------------------------------------------------ |
 | **Mediated** | You own the boundary the interaction crosses | Full boundary telemetry: the input, output, tool, and policy-enforcement fields apply as written. The counterparty's internals are absent, and their absence is expected rather than a gap |
-| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed agent bill of materials (AgBOM), agent card) | Record the claim and its verification outcome. an unverified claim is `self-asserted`, whatever it asserts |
+| **Attested** | The counterparty presents verifiable claims (ODIS credential, signed agent bill of materials (AgBOM), agent card) | Record the claim and its verification outcome. An unverified claim is `self-asserted`, whatever it asserts |
 | **Opaque** | Only the wire interaction | The input, output, and orchestration fields at the protocol surface, and nothing more. Do not synthesize fields you cannot observe. An opaque counterparty needs to be visibly opaque in the telemetry, not silently defaulted |
 
 The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. In `AOC-08` [[2]](#primary-sources-attack-corpus--taxonomy) an agent accepted a spoofed display name as its owner, which is that failure in miniature. In `AOC-11` an impersonated owner drove a mass broadcast of defamatory email, which is its consequence at scale.
@@ -175,7 +179,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 
 1. **Security-relevant events MUST NOT be head-sampled.** Guardrail verdicts, refusals, tool errors, authorization denials, capability changes, session and turn stop events carrying a **Stop Reason** ([§6.1](#61-identifiers-trace-context-and-model-identity)), per-invocation tool activity, and any event carrying a fired detection are recorded at 100%.
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
-3. **The sampling configuration in force MUST itself be recorded as telemetry**, in **Instrumentation Coverage / Hook Attestation** ([§6.2](#62-content-trust-verdicts-and-their-availability)), for the reason in [§4.5](#45-a-missing-verdict-is-not-an-allow).
+3. **The sampling configuration in force MUST itself be recorded as telemetry**, in **Instrumentation Coverage / Hook Status** ([§6.2](#62-content-trust-verdicts-and-their-availability)), for the reason in [§4.5](#45-a-missing-verdict-is-not-an-allow).
 
 ### 5.3 Content hashing
 
@@ -213,7 +217,7 @@ Every later detection resolves through these identifiers; the model and serving 
 | [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#f-trace-context-propagated) | MUST | W3C trace context carried across every agent and tool hop. | every hop |
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#f-stop-reason) | MUST | Why a completion ended: end of turn, token limit, tool use, cancellation, content filter. | `componentReasoningCore` |
 | [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | Declared independence level the run is authorized for. Self-asserted. Modality: autonomous action. | `componentReasoningCore` |
-| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | Signed digest or provenance of the served model artifact. Modality: supply-chain attestation. | `componentModelServing`, `componentModelRegistry` |
+| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | Signed digest or provenance of the served model artifact. Modality: supply-chain provenance. | `componentModelServing`, `componentModelRegistry` |
 | [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | Owning tenant of the agent, the session and the invoking user. Modality: multi-tenancy. | agent, session and user records |
 | [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#f-provider-endpoint-identity) | MAY | Which provider or endpoint served the call. | `componentModelServing` |
 | [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#f-pre-forward-pass-state-digest-vector) | MAY | Digest of the exact inputs to a forward pass, for replay and drift detection. | `componentTheModel` |
@@ -237,7 +241,7 @@ This is the densest detection step. With [§6.1](#61-identifiers-trace-context-a
 | [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#f-llm-refusal) | MUST | Refusal status and reason. | `componentAgentOutputHandling` |
 | [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#f-content-modality-attachment-identity) | MUST | Part type, MIME type, and for files name, size and hash, on every content-bearing field. | every content-bearing field |
 | [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#f-attribute-source-trusted-provenance-marking) | MUST | The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier. | every security-relevant attribute |
-| [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
+| [Instrumentation Coverage / Hook Status](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) | MUST | Which hooks are active, their version, where each reports, and the sampling configuration in force. | instrumentation layer |
 | [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#f-enforcement-point-availability-failure-mode) | MUST | Whether each enforcement callout was reached, its latency, and fail-open or fail-closed. | enforcement points |
 | [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) | MUST | That an enforcement point rewrote a payload, which one, with before and after digests. | any rewriting enforcement point |
 | [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#f-encoded-obfuscated-payload-indicator) | MUST | Flag and decoded form of base64, image-embedded, invisible-Unicode or markup-authority input. | `componentAgentInputHandling` |
@@ -317,16 +321,16 @@ These fields cover delegated identity, inventory, and the integrity of the event
 | [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#f-delegation-chain) | SHOULD | Ordered agent hops, each integrity-bound to its parent. Modality: delegated authority. | `componentFederationProxy` |
 | [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#f-granted-authorizations-scope) | SHOULD | Authority in effect at this hop, with the narrowing check and its rules. Modality: delegated authority. | `componentFederationProxy` |
 | [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#f-resource-indicators-constraints) | SHOULD | Target audience and time, purpose, rate, locality and classification limits. Modality: delegated authority. | `componentFederationProxy` |
-| [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#f-credential-minting-scope-narrowing-check) | SHOULD | Each credential exchange: grant type, whose identity, and whether scope narrowed. Modality: token exchange. | `componentFederationProxy`, `componentIdentityProvider` |
+| [Token Exchange & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#f-credential-minting-scope-narrowing-check) | SHOULD | Each token exchange: grant type, whose identity, and whether scope narrowed. Modality: token exchange. | `componentFederationProxy`, `componentIdentityProvider` |
 | [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#f-trust-domain-crossing-delegation-depth) | SHOULD | Counterparty trust domain and delegation depth, and whether a limit was crossed. Modality: delegated authority. | `componentFederationProxy` |
 | [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#f-runtime-credential-attestation) | SHOULD | Runtime-instance credential and attestation evidence, each source verified separately. Modality: cryptographic agent identity. | `componentIdentityProvider` |
 | [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#f-lifecycle-state) | SHOULD | Active, suspended or revoked, for kill-switch and revocation fan-out. Modality: cryptographic agent identity. | `componentIdentityProvider` |
 | [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | Version of each tool, agent and framework. Modality: dynamic third-party capability composition. | `componentToolRegistry`, `componentModelRegistry` |
 | [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | Source provenance of tool and agent code. Modality: dynamic third-party capability composition. | `componentToolRegistry` |
-| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
-| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: self-attesting instrumentation. | `componentAuditRecordRepository` |
+| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | Machine-readable inventory of the agent's composition, on change and on demand. Modality: supply-chain provenance. | `componentApplication`, `componentToolRegistry` |
+| [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain provenance. | `componentApplication`, `componentToolRegistry` |
+| [Inventory Integrity Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain provenance. | `componentApplication`, `componentToolRegistry` |
+| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: hash-chained event streams. | `componentAuditRecordRepository` |
 | [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | Declared purpose of a tool, against which behavior is compared. | `componentToolRegistry` |
 | [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
@@ -405,6 +409,10 @@ References 4 and 14 to 16 are cited in this document. The primary source for eve
 
 51. **RFC 2119**: Bradner, S. *Key words for use in RFCs to Indicate Requirement Levels.* BCP 14, RFC 2119 (1997). <https://www.rfc-editor.org/rfc/rfc2119>
 52. **RFC 8174**: Leiba, B. *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words.* BCP 14, RFC 8174 (2017). <https://www.rfc-editor.org/rfc/rfc8174>
+
+<!-- list break: reference numbers are not contiguous -->
+
+85. **RFC 9334**: Birkholz, H., Thaler, D., Richardson, M., Smith, N. & Pan, W. *Remote ATtestation procedureS (RATS) Architecture.* RFC 9334 (2023). <https://www.rfc-editor.org/rfc/rfc9334>
 
 ### Other sources
 
