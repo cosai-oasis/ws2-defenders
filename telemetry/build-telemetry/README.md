@@ -5,7 +5,7 @@
 >
 > This is a proposal for discussion and feedback — not a final standard.
 
-The Attack Detection Addendum (AD) and the field catalogue in RFC §6 are built from `data/`. Edit the data, not the generated regions of the documents; `tools/build.py` regenerates them and `tools/validate.py` checks the result. The documents live one level up, in `telemetry/`. Run the commands below from this directory; the tools find the data and the documents from their own location, so they also work from anywhere else.
+The Attack Detection Addendum (AD) and the field catalog in RFC §6 are built from `data/`. Edit the data, not the generated regions of the documents; `tools/build.py` regenerates them and `tools/validate.py` checks the result. The documents live one level up, in `telemetry/`. Run the commands below from this directory; the tools find the data and the documents from their own location, so they also work from anywhere else.
 
 ## Files
 
@@ -33,7 +33,7 @@ Tiers are stored, never computed. A field that comes to meet a test is reported,
 
 ## Changing the data
 
-Tools propose, people decide. A change of judgement (an edge and its grounding class, a tier basis, a pattern) enters as a candidate in `data/candidates/`, is decided with `tools/curate.py`, and is applied with `tools/apply.py`. Editorial corrections the owner asks for may be made in the data directly, and are said so in the commit.
+Tools propose, people decide. A change of judgment (an edge and its grounding class, a tier basis, a pattern) enters as a candidate in `data/candidates/`, is decided with `tools/curate.py`, and is applied with `tools/apply.py`. Editorial corrections the owner asks for may be made in the data directly, and are said so in the commit.
 
 ```
 python3 tools/curate.py list --status proposed

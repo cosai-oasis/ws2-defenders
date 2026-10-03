@@ -174,7 +174,7 @@ def document_checks(T, n_attacks, tiers):
     for line_head, block in re.findall(r'(?m)^### (\d+\.\d+) [^\n]*\n(.*?)(?=^#{2,3} |\Z)', T['RFC'], re.S):
         for name in re.findall(r'(?m)^\| \[([^\]]+)\]\(', block):
             rfc_cat[re.sub(r'[^a-z0-9]', '', name.lower())] = line_head
-    check('RFC catalogue lists every field once', set(rfc_cat) >= set(sub) or
+    check('RFC catalog lists every field once', set(rfc_cat) >= set(sub) or
           all(any(r.startswith(s) or s.startswith(r) for r in rfc_cat) for s in sub))
     check(f'AD tier totals match the data ({"/".join(map(str, tiers))})',
           (rows['MUST'], rows['SHOULD'], rows['MAY']) == tiers or [dict(rows)])

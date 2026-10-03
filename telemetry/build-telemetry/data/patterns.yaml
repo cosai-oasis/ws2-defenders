@@ -393,7 +393,7 @@
   conditions:
   - A **Memory Write Event** has a **Memory Provenance / Source** that is a non-owner or external source.
   - The item is read back (**Memory Read / Injection Event**) in a later session.
-  - Behaviour in that session departs from the request.
+  - Behavior in that session departs from the request.
   requires: [memory_write_event, memory_provenance_source, memory_read_injection_event]
   enriches: [observation_thought_reasoning_trace, memory_integrity_poisoning_signal]
   catches: [TA-18, IR-02, AOC-10, TA-32]

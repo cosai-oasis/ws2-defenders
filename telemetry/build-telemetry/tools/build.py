@@ -315,7 +315,7 @@ def attack_references(text):
 TOTALS = [  # (pattern, rendering): the RFC's hand-written sentences that state the tier totals
     (r'\d+ in all: \d+ MUST, \d+ SHOULD and \d+ MAY',
      lambda n: f"{sum(n.values())} in all: {n['MUST']} MUST, {n['SHOULD']} SHOULD and {n['MAY']} MAY"),
-    (r'The catalogue contains \d+ MUST fields', lambda n: f"The catalogue contains {n['MUST']} MUST fields"),
+    (r'The catalog contains \d+ MUST fields', lambda n: f"The catalog contains {n['MUST']} MUST fields"),
 ]
 
 

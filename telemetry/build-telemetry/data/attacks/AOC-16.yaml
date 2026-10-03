@@ -14,4 +14,4 @@ components_text: Orchestration
 atlas_text: '*(defensive)*: `AML.T0118.001` Direct Agent Communication carrying detection of `AML.T0051`/`AML.T0053` patterns'
 atlas_notes: Emergent cross-agent defense
 risks: []
-no_pattern: 'An emergent defence, not an attack: agents shared risk signals about a probing researcher. A pattern would detect the defence. Its Inter-Agent Message edge supports reading such signals.'
+no_pattern: 'An emergent defense, not an attack: agents shared risk signals about a probing researcher. A pattern would detect the defense. Its Inter-Agent Message edge supports reading such signals.'

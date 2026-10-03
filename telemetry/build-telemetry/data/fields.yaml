@@ -46,9 +46,9 @@
   role: identifier
   record: event
   origin: observed
-  records: The session, turn and step beneath a run, locating where behaviour changed.
+  records: The session, turn and step beneath a run, locating where behavior changed.
   emitted_by: [componentApplication, componentReasoningCore]
-  capture: 'The three-level execution hierarchy *beneath* the run: `session_id` (the conversation/engagement), `turn_id` (one request→response cycle), `step_id` (one action within a turn). Lets a detection point at *which* turn behaviour changed, not just which run.'
+  capture: 'The three-level execution hierarchy *beneath* the run: `session_id` (the conversation/engagement), `turn_id` (one request→response cycle), `step_id` (one action within a turn). Lets a detection point at *which* turn behavior changed, not just which run.'
 - id: trace_context_propagated
   name: Trace Context (propagated)
   tags: [AOS]
@@ -111,7 +111,7 @@
   origin: observed
   records: 'Why a completion ended: end of turn, token limit, tool use, cancellation, content filter.'
   emitted_by: [componentReasoningCore]
-  capture: 'Normalized reason a model completion ended: end of turn, token limit, tool use pending, session stop (caller cancelled or disconnected), content filter. Separates a truncation from a clean stop and a guardrail kill from a crash; a `content_filter` stop is the completion-side view of a guardrail block (§1.2).'
+  capture: 'Normalized reason a model completion ended: end of turn, token limit, tool use pending, session stop (caller canceled or disconnected), content filter. Separates a truncation from a clean stop and a guardrail kill from a crash; a `content_filter` stop is the completion-side view of a guardrail block (§1.2).'
   rationale: Without it a **Response / Model Output** cut short by a provider content filter or a token limit reads the same as one that finished, so it also passes the dependency test of [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers). A deployment's own guardrail verdict does not record the provider's filter, and token counts cannot infer it. Every major provider API returns a completion's stop reason, so it is implementable wherever a model is called.
 - id: surface_app
   name: Surface / App
@@ -670,7 +670,7 @@
   records: Delegated-task state changes across A2A, including callback registration.
   modality: A2A
   emitted_by: [componentReasoningCore, componentAgentToolTransport]
-  capture: 'Delegated-task state transitions across the A2A surface: task submitted, streamed, polled, **cancelled**, resubscribed, and **push-notification config set or changed**, which registers an outbound callback destination.'
+  capture: 'Delegated-task state transitions across the A2A surface: task submitted, streamed, polled, **canceled**, resubscribed, and **push-notification config set or changed**, which registers an outbound callback destination.'
   rationale: 'Held by the modality gate. Its evidence is generic multi-agent incidents, not A2A-protocol incidents: `AOC-04`, `AOC-09` and `AOC-11` did not use A2A. **MUST the moment A2A is in play**; push-notification configuration in particular registers an attacker-settable egress channel.'
 - id: peer_agent_card_descriptor
   name: Peer Agent Card / Descriptor
@@ -854,7 +854,7 @@
   records: A tool, server, model, knowledge source or memory store added, removed or modified at runtime.
   emitted_by: [componentReasoningCore]
   capture: 'An event emitted whenever the agent''s usable capability set changes at runtime, a tool, MCP server, model, knowledge source, or memory store **discovered, added, removed, or modified**: with before/after identity and what triggered the change.'
-  rationale: 'Every other inventory field describes a **state**; this one describes a **transition**, and transitions are where attacks are visible. Grounded directly in `AOC-09`, where one agent teaches another to acquire a browser/download capability. The security event is the *acquisition*; the previous inference path ("tool-call spike + new Tool Name") fires only once the capability is exercised, and never at all for one acquired and held in reserve. Removal matters symmetrically: a guardrail tool or logging sink quietly dropped is a defence-evasion signal. It is also cheap where least expected to fire: a static capability set emits nothing.'
+  rationale: 'Every other inventory field describes a **state**; this one describes a **transition**, and transitions are where attacks are visible. Grounded directly in `AOC-09`, where one agent teaches another to acquire a browser/download capability. The security event is the *acquisition*; the previous inference path ("tool-call spike + new Tool Name") fires only once the capability is exercised, and never at all for one acquired and held in reserve. Removal matters symmetrically: a guardrail tool or logging sink quietly dropped is a defense-evasion signal. It is also cheap where least expected to fire: a static capability set emits nothing.'
 - id: tool_agent_version
   name: Tool/Agent Version
   tier: SHOULD
@@ -921,10 +921,10 @@
   origin: declared
   basis:
     may: [thin]
-  records: Declared purpose of a tool, against which behaviour is compared.
+  records: Declared purpose of a tool, against which behavior is compared.
   emitted_by: [componentToolRegistry]
   capture: 'Declared purpose: detects misleadingly-described ("read-only" but writes) tools.'
-  rationale: No documented instance turns on a tool whose declared purpose misdescribes its behaviour; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
+  rationale: No documented instance turns on a tool whose declared purpose misdescribes its behavior; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
 - id: tool_status
   name: Status (active/disabled)
   tier: MAY
@@ -1008,7 +1008,7 @@
   modality: self-attesting instrumentation
   emitted_by: [componentAuditRecordRepository]
   capture: Per-session monotonic sequence number enabling gap and reordering detection. The stream **SHOULD be hash-chained**, and where chained the **chain head SHOULD be periodically signed and published outside the emitter's trust domain**. That is the minimum that lets a verifier distinguish a gap from a suppression.
-  rationale: 'The minimum defence against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence. Grounded analogically ([§4.2](#42-the-telemetry-plane)).'
+  rationale: 'The minimum defense against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence. Grounded analogically ([§4.2](#42-the-telemetry-plane)).'
 - id: policy_reason_code
   name: Policy Reason Code
   tier: MAY
@@ -1081,7 +1081,7 @@
   records: Candidate backends, the constraint applied, the choice made.
   modality: policy-driven backend selection
   emitted_by_text: enforcement points
-  capture: 'Where an operation was allowed to execute: the candidate backend/model set, the constraint that narrowed it (region, model, site, cost tier, custom label), the selection made, and the behaviour when **no candidate qualified**.'
+  capture: 'Where an operation was allowed to execute: the candidate backend/model set, the constraint that narrowed it (region, model, site, cost tier, custom label), the selection made, and the behavior when **no candidate qualified**.'
   rationale: Paired with taint it is a D signal; standing alone it is closer to A (data-residency evidence) and Q.
 - id: mediation_coverage_bypass_path
   name: Mediation Coverage & Bypass Path
