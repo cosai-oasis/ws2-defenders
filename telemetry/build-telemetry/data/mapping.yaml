@@ -149,7 +149,7 @@ asks:
   proposes: []
   tracking: []
   status: proposed
-  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-it-is-and-the-version-mapped)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains a MUST cluster here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
+  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-it-is-and-the-version-mapped)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains MUST here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
 - id: otel_retrieval_provenance
   publication: otel_genai
   summary: Add per-document source, owner, trust level and last-modified attributes to retrieval documents.
@@ -874,7 +874,7 @@ fields:
       asks: [ocsf_attribute_source]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.attribute_source.*]
@@ -906,7 +906,7 @@ fields:
       asks: [ocsf_ai_guardrail]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.enforcement.*, security.guardrail.*]
@@ -1111,7 +1111,7 @@ fields:
     otel:
       coverage: out_of_scope
       asks: [otel_authorization_reference]
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.authorization.*, security.*, compliance.control_id]
@@ -1145,7 +1145,7 @@ fields:
       asks: [ocsf_ai_approval]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.approval.*, identity.*]
@@ -1162,7 +1162,7 @@ fields:
       asks: [ocsf_ai_tool]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.auth.scope_granted]
@@ -1179,7 +1179,7 @@ fields:
       asks: [ocsf_ai_taint]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.taint.*, security.*]
@@ -1196,7 +1196,7 @@ fields:
       note: No ask proposed.
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [gen_ai.route.*, gen_ai.provider.name]
@@ -1213,7 +1213,7 @@ fields:
       note: No ask proposed.
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.mediation.*]
@@ -1292,7 +1292,7 @@ fields:
       asks: [ocsf_ai_authorization]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [security.*, compliance.control_id]
@@ -1664,7 +1664,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.*]
@@ -1689,7 +1689,7 @@ fields:
       asks: [ocsf_identity_verification]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.auth.method, identity.auth.result]
@@ -1712,7 +1712,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.*]
@@ -1737,7 +1737,7 @@ fields:
       asks: [ocsf_delegation_lineage, ocsf_ai_delegation_activity]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       note: delegation activity (OCSF 9002)
@@ -1754,7 +1754,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.auth.scope_granted]
@@ -1771,7 +1771,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.*, compliance.*]
@@ -1789,7 +1789,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.credential.mint.*, identity.auth.scope_granted]
@@ -1813,7 +1813,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.boundary.*, identity.*]
@@ -1830,7 +1830,7 @@ fields:
       asks: [ocsf_runtime_attestation]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.auth.method, identity.trust.method]
@@ -1854,7 +1854,7 @@ fields:
       asks: [ocsf_delegation_lineage]
     otel:
       coverage: out_of_scope
-      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3).
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
       constructs: [identity.lifecycle.operation]

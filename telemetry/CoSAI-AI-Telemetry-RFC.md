@@ -43,11 +43,11 @@ These are four fields, none exotic: Input Trust Classification, Retrieved-Conten
 
 ### 2.1 In scope
 
-In scope is the security telemetry an AI system needs to produce. For each field the RFC gives the documented attacks that justify it, its tier (**MUST**, **SHOULD**, or **MAY**, against the test in [§4.7](#47-tiers)), and the component that emits it, in implementation order ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) adds correlation patterns: how attacks motivate each field, and how fields combine into detections. The [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field catalogue onto OpenTelemetry, OCSF, the AI Telemetry Framework (AITF) [[25]](#standards--frameworks), ODIS, OWASP AOS, the NIST Cybersecurity Framework (CSF) [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
+In scope is the security telemetry an AI system needs to produce. For each field the RFC gives its tier (**MUST**, **SHOULD**, or **MAY**, against the test in [§4.7](#47-tiers)) and the component that emits it, in implementation order ([§6](#6-field-catalogue)). The [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md) gives the documented attacks behind each field, and the correlation patterns that combine fields into detections. The [Cross-Mapping Addendum](Telemetry-Cross-Mapping-Addendum.md) maps the field catalogue onto OpenTelemetry, OCSF, the AI Telemetry Framework (AITF) [[25]](#standards--frameworks), ODIS, OWASP AOS, the NIST Cybersecurity Framework (CSF) [[31]](#standards--frameworks) and AI RMF, and ISO/IEC 42001 [[33]](#standards--frameworks).
 
 Telemetry for agents the deployment does not operate is in scope, within the limits set in [§4.6](#46-record-your-boundary-not-their-internals).
 
-The telemetry covers the security slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
+The catalogue covers the runtime path; no corpus entry attacks the training pipeline, so the data and training components carry no fields ([§6](#6-field-catalogue)). It covers the security slice of AI trustworthiness; fairness, bias, safety alignment, and environmental impact are outside its remit.
 
 ### 2.2 Not in scope
 
@@ -91,7 +91,7 @@ To operationalize telemetry collection for a live AI system:
 4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-opentelemetry), the OCSF mapping in [XM §1](Telemetry-Cross-Mapping-Addendum.md#1-ocsf), and the AITF names in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-aitf). Do not invent a schema.
 5. **Conform.** Meet the hashing and sampling rules in [§5](#5-conformance). Propagate trace context across every hop you operate, including Model Context Protocol (MCP) [[39]](#standards--frameworks) and agent-to-agent (A2A) [[40]](#standards--frameworks) calls.
 6. **Sequence.** Build in the order of [§6](#6-field-catalogue): each subsection is one step. §6.1 comes first because every later step resolves through its identifiers.
-7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamp each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)).
+7. **Detect.** Implement the correlation patterns in [AD §2](Telemetry-Attack-Detection-Addendum.md#2-correlation-patterns) as your first detections, and use the attacks each field cites ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)) as test cases. Stamping each fired detection with its ATLAS technique ([AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping)) lets AI alerts join ATT&CK-aligned tooling; the tag itself is MAY ([§6.2](#62-content-trust-verdicts-and-their-availability)).
 
 ---
 

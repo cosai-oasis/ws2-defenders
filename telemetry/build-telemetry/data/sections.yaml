@@ -158,13 +158,13 @@ ad_inventory_tables:
 - number: '3.3'
   title: 'CoSAI WS2: AI Incident Response case studies'
   header:
-  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) | Risk Map risks |'
+  - '| ID | Name | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
   - '| :---- | :--------- | :----------------------------- | :-------------------- | :------------ | :------------ |'
   attacks: [IR-01, IR-02, IR-03, IR-04, IR-05]
 - number: '3.4'
   title: 'Agents of Chaos (arXiv:2602.20021): live red-team case studies'
   header:
-  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) | Risk Map risks |'
+  - '| ID | Name | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
   - '| :---- | :------------------ | :--------------------------------------------- | :----------------------- | :----------- | :------------ |'
   attacks: [AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
 ad_atlas_table:
