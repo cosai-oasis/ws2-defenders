@@ -1371,6 +1371,25 @@ That absence is itself a finding, and probably a **collection artifact**: attack
 
 A third mode reads the telemetry instead of redirecting it. [`TA-38`](#a-ta-38) to [`TA-40`](#a-ta-40) place instructions in content a defender's AI analyzes: logged fields an attacker controls, and a malware sample built to make AI-assisted analysis abort. The detecting fields belong to the analyzing system's entry path, not to the plane: **Input Source / Channel**, whose capture names telemetry as a channel of its own, and **Input Trust Classification**, read by [Instructions followed from an untrusted-data segment](#p-untrusted-data-instructions-followed). Content-bearing fields carry attacker text by construction ([RFC §2.3](CoSAI-AI-Telemetry-RFC.md#23-terms)), so a deployment that gives its telemetry to a model treats it as untrusted input.
 
+### 4.3 Asserted fields and unresolved claims
+
+These fields carry a value an agent or counterparty supplies about itself, with no independent authority (origin *asserted* in §1). Each records what was said, not what happened:
+
+<!-- BEGIN GENERATED: asserted -->
+- [System Prompt / Instruction Config](#f-system-prompt-instruction-config) ([§1.1](#11-identifiers-trace-context-and-model-identity)): Instruction configuration in force for the call.
+- [Autonomy Level](#f-autonomy-level) ([§1.1](#11-identifiers-trace-context-and-model-identity)): Declared independence level the run is authorized for.
+- [Observation / Thought (reasoning trace)](#f-observation-thought-reasoning-trace) ([§1.2](#12-content-trust-verdicts-and-their-availability)): Reasoning trace, where the provider exposes it.
+- [MCP Server Identity & Primitive](#f-mcp-server-identity-primitive) ([§1.3](#13-tool-calls-and-policy-decisions)): MCP server name, version, transport and endpoint, and the primitive exercised.
+- [Tool Selection Rationale](#f-tool-selection-rationale) ([§1.3](#13-tool-calls-and-policy-decisions)): The agent's stated reason for a tool call.
+- [Memory Write Rationale](#f-memory-write-rationale) ([§1.4](#14-memory-and-retrieval)): The agent's stated reason for persisting an item.
+- [Task / Intent Declaration](#f-task-intent-declaration) ([§1.5](#15-orchestration)): Declared purpose the run is authorized to pursue.
+- [Peer Agent Card / Descriptor](#f-peer-agent-card-descriptor) ([§1.5](#15-orchestration)): A counterparty agent's descriptor at contact, with change and verification outcome.
+<!-- END GENERATED: asserted -->
+
+**Peer Agent Card / Descriptor** and the server name and version in **MCP Server Identity & Primitive** are the counterparty's assertion rather than the agent's own. A detection resting on any of these inherits whatever the agent or counterparty chose to say, which is why **Attribute Source / Trusted-Provenance Marking** ([§1.2](#12-content-trust-verdicts-and-their-availability)) is a cross-cutting MUST.
+
+A claim about an outcome is verified or unresolved ([RFC §2.3](CoSAI-AI-Telemetry-RFC.md#23-terms)). For example, **Execution Status** ([§1.1](#11-identifiers-trace-context-and-model-identity)) is verified when its **Tool Execution ID** matches a **Tool Call I/O** outcome ([§1.3](#13-tool-calls-and-policy-decisions)). A claim with no such identifier is **unresolved**: the record says so, and no reader can settle it. Recording unresolved claims as unresolved, rather than counting them as outcomes, makes corroboration a property a checker can decide.
+
 ---
 
 ## References

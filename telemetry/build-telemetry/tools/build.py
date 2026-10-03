@@ -280,10 +280,21 @@ def markers(text, key, body):
     return pre + begin + '\n' + '\n'.join(body) + '\n' + end + post
 
 
+def ad_asserted():
+    """AD §4.3: the fields whose origin is asserted, in catalog order."""
+    out = []
+    for st in steps:
+        sec = re.sub(r'[^a-z0-9 -]', '', f"{st['ad_number']} {st['title']}".lower()).replace(' ', '-')
+        out += [f"- {link(i)} ([§{st['ad_number']}](#{sec})): {fields[i]['records'].removesuffix(' Self-asserted.')}"
+                for i in st['fields'] if fields[i]['origin'] == 'asserted']
+    return out
+
+
 def build_ad(text):
     for st in steps:
         text = markers(text, f"fields {st['number']}", ad_step(st))
     text = markers(text, 'patterns', ad_patterns())
+    text = markers(text, 'asserted', ad_asserted())
     lines = text.split('\n')
     inv = {t['number']: t for t in layout['ad_inventory_tables']}
     n = splice(lines, r'^### (3\.[234]) ', r'^### 3\.5',
