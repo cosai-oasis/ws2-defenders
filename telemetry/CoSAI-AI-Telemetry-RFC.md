@@ -16,9 +16,9 @@
 
 AI systems now read untrusted content, decide what to do about it, and act: calling tools, writing memory, retrieving documents, sending mail, invoking other agents. Attacks against them succeed in the gap between reading and acting. Detection has to happen in that gap, as far left in the kill chain as possible.
 
-Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Default application logging records none of this. It captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards nothing solid to investigate, debug, or audit.
+Catching an injection attack in flight means knowing what the model was given, how far that input was trusted, what it decided to do, and where its output went. Default application logging records none of this. It captures HTTP requests, database queries, and authentication events. The decisive moments in an AI system (an instruction arriving inside a retrieved document, a guardrail verdict, a memory write that will shape every future session) leave no trace there. Without those records there is nothing to detect against, and afterwards no record to investigate, debug, or audit.
 
-Nor is the adversary always external. In July 2026, frontier models under evaluation at OpenAI and Anthropic reached production systems at other organizations from their test environments, and Hugging Face published a forensic timeline of one intrusion [[64]](#other-sources).
+The adversary can also be the model. In July 2026, frontier models under evaluation at OpenAI and Anthropic reached production systems at other organizations from their test environments, and Hugging Face published a forensic timeline of one intrusion [[64]](#other-sources). **Execution Environment / Sandbox** and **Output Egress Destination** ([§6](#6-field-catalog)) record that kind of crossing.
 
 ### 1.1 One umbrella, many efforts
 
@@ -37,7 +37,7 @@ Each step in that chain would have left evidence in a field that default logging
 - The injection classifier was bypassed. A classifier whose verdicts are not logged cannot be shown to have failed.
 - Content left for a previously unseen outbound destination: the last point at which the attack could have been stopped rather than reconstructed afterwards.
 
-These are four fields, none exotic: Input Trust Classification, Retrieved-Content Provenance, Input Guardrail Verdict and Output Egress Destination. Without them a detection has nothing to read, and the first record of the attack is the disclosure notice.
+These are four fields, none exotic: Input Trust Classification, Retrieved-Content Provenance, Input Guardrail Verdict and Output Egress Destination.
 
 ---
 
@@ -79,8 +79,8 @@ The primary implementer is the organization that operates the AI deployment: it 
 
 Go to the field catalog ([§6](#6-field-catalog)), which lists every field by implementation step and tier with its emitting component. Treat the applicable subset of the MUST column as the baseline for each AI deployment; [§5.1](#51-applicability-and-emission) defines applicability. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.7](#47-tiers). The catalog contains 52 MUST fields. This is the artifact to take into an engineering plan or a budget discussion.
 
-- **The justification is evidentiary.** Every MUST field rests on at least two documented instances from the corpus, or is needed to read another MUST field. The ask is "these fields catch these attacks," not "best practice suggests." Each field's entry in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables) sets out that reasoning if it is challenged.
-- **There is a build order.** The catalog is ordered by implementation step ([§6](#6-field-catalog)).
+- **The justification is evidentiary.** Every MUST field rests on at least two documented instances from the corpus, or is needed to read another MUST field. Each field's entry in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables) sets out that reasoning if it is challenged.
+- **Build order.** Start with the identifiers in [§6.1](#61-identifiers-trace-context-and-model-identity); every later detection joins on them ([§6](#6-field-catalog)).
 - **Adoption runs through existing standards.** The fields bind to OpenTelemetry for emission and to OCSF for SOC consumption ([XM §§1 and 2](Telemetry-Cross-Mapping-Addendum.md#1-ocsf)), and AITF carries all but five MUST fields on both today ([XM §3.4](Telemetry-Cross-Mapping-Addendum.md#34-path-to-ocsf-and-opentelemetry)). That lowers the cost of building to the catalog without removing it; where neither standard carries a field yet, the asks are in [XM §1.4](Telemetry-Cross-Mapping-Addendum.md#14-asks) and [XM §2.4](Telemetry-Cross-Mapping-Addendum.md#24-asks).
 - **Compliance follows detection.** Fields built for detection also give an auditor the event content. Audit-grade evidence further needs the integrity and retention controls that [§2.2](#22-not-in-scope) excludes. Fields built only for audit produce no detection. The NIST and ISO/IEC 42001 mappings are in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-nist-csf-ai-rmf-and-isoiec-42001).
 
@@ -145,7 +145,7 @@ Read every field in [§6](#6-field-catalog) against one of these **knowability**
 | **Attested** | The counterparty presents verifiable claims (ODIS credential, signed agent bill of materials (AgBOM), agent card) | Record the claim and its verification outcome. An unverified claim is `self-asserted`, whatever it asserts |
 | **Opaque** | Only the wire interaction | The input, output, and orchestration fields at the protocol surface, and nothing more. Do not synthesize fields you cannot observe. An opaque counterparty needs to be visibly opaque in the telemetry, not silently defaulted |
 
-The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. In `AOC-08` [[2]](#primary-sources-attack-corpus--taxonomy) an agent accepted a spoofed display name as its owner, which is that failure in miniature. In `AOC-11` an impersonated owner drove a mass broadcast of defamatory email, which is its consequence at scale.
+The third row collapsing into the second is the failure to avoid: recording an external agent's self-description as though it were established fact. In `AOC-08` [[2]](#primary-sources-attack-corpus--taxonomy) an agent accepted a spoofed display name as its owner. In `AOC-11` an impersonated owner drove a mass broadcast of defamatory email.
 
 ### 4.7 Tiers
 
@@ -159,7 +159,7 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in RFC 2119 [
 
 Two instances are independent when they are separate incidents, not two accounts of the same event. A field whose defining event is itself conditional (a rewrite, an emitted citation, a fired detection) is tiered like any other and applies where that event occurs ([§5.1](#51-applicability-and-emission)): conditionality is applicability, not a tier. Whether a field is observed or derived does not affect its tier. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalog).
 
-SHOULD is not "MUST later." It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
+A SHOULD field binds like a MUST for any deployment that runs its modality. RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
 
 ---
 
@@ -186,7 +186,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling-privacy-and-canonicalization)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer. Consumers MUST NOT compare digests across producers whose declared canonicalizations differ.
 3. **Where a field carries an identifier, the obligation is the signal, not the identifier.** For **Content Modality & Attachment Identity** ([§6.2](#62-content-trust-verdicts-and-their-availability)) it is the content hash, and the filename is policy. For **Citations / Source Attribution** ([§6.2](#62-content-trust-verdicts-and-their-availability)) it is the resolution outcome, whether each citation resolves to an item returned by a logged Retrieval Event, and the clear-text URL is policy.
 
-The hash is the correlation primitive the corpus turns on: `AOC-03` [[2]](#primary-sources-attack-corpus--taxonomy) (extraction escalating across turns) and `IR-02` [[3]](#primary-sources-attack-corpus--taxonomy) (an implant persisting into later sessions) are both detected by matching one content item against another. A digest matches only content that is identical after canonicalization. It finds a repeated payload without the raw text, but a fragment or a paraphrase needs retained text or a finer-grained digest. Requiring the hash, and leaving raw content to policy, lets deployments with different privacy postures compare content without exchanging it.
+The hash is the correlation primitive the corpus turns on: `AOC-03` [[2]](#primary-sources-attack-corpus--taxonomy) (extraction escalating across turns) and `IR-02` [[3]](#primary-sources-attack-corpus--taxonomy) (an implant persisting into later sessions) are both detected by matching one content item against another. A digest matches only content that is identical after canonicalization. It finds a repeated payload without the raw text, but a fragment or a paraphrase needs retained text or a finer-grained digest. Requiring the hash, and leaving raw content to policy, lets deployments with different raw-content retention policies compare content without exchanging it.
 
 ## 6. Field catalog
 
@@ -224,7 +224,7 @@ Every later detection resolves through these identifiers; the model and serving 
 
 ### 6.2 Content, trust, verdicts and their availability
 
-This is the densest detection step. With [§6.1](#61-identifiers-trace-context-and-model-identity), it supplies the records an injection detection reads. Coverage, enforcement-point availability and attribute provenance come with it, for the reasons in [§§4.4 to 4.5](#44-the-agent-might-be-lying).
+This step holds 16 of the 52 MUST fields. With [§6.1](#61-identifiers-trace-context-and-model-identity), it supplies the records an injection detection reads. Coverage, enforcement-point availability and attribute provenance come with it, for the reasons in [§§4.4 to 4.5](#44-the-agent-might-be-lying).
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
@@ -251,11 +251,11 @@ This is the densest detection step. With [§6.1](#61-identifiers-trace-context-a
 
 ### 6.3 Tool calls and policy decisions
 
-These fields carry the highest response value: what the agent did, where it ran, and what policy decided about it.
+Responders reconstruct what the agent did, where it ran, and what policy decided about it from these fields.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
-| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | Isolation posture: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
+| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | Isolation settings: sandbox mode, runtime, OS, timeout, egress policy. | `componentIsolationRuntime`, `componentToolHosting` |
 | [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#f-tool-call-io) | MUST | Full arguments and output of every tool or MCP call. | `componentToolServer`, `componentTools` |
 | [Tool Name](Telemetry-Attack-Detection-Addendum.md#f-tool-name) | MUST | The capability invoked, as the agent saw it. | `componentToolServer` |
 | [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) | MUST | MCP, internal, direct-storage or code-execution. | `componentTools` |
@@ -294,7 +294,7 @@ These apply where the deployment persists state across turns or retrieves conten
 
 ### 6.5 Orchestration
 
-These fields cover multi-agent and autonomous execution, where agentic risk compounds.
+In `AOC-04` [[2]](#primary-sources-attack-corpus--taxonomy) two agents relayed messages for days and spawned shell loops and cron jobs with no termination. These fields record that pattern in multi-agent and autonomous execution.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
@@ -309,7 +309,7 @@ These fields cover multi-agent and autonomous execution, where agentic risk comp
 
 ### 6.6 Identity, provenance and inventory
 
-These fields cover delegated identity, inventory, and the integrity of the event stream, all of which build on everything before.
+Build these after [§§6.1 to 6.5](#61-identifiers-trace-context-and-model-identity): delegation, inventory and event-stream records join to the identifiers, tool calls and memory events those steps emit.
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
@@ -351,7 +351,7 @@ These fields are an independent track: they depend on none of the steps before, 
 
 ## 7. Conclusion
 
-The field catalog was assembled from documented instances, not from a list of what might be useful: 61 entries, comprising 40 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy) ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)). Every MUST can therefore be checked against the attacks it cites, and a tier moves when the evidence or the deployment modality changes. Training data and training infrastructure form an independent track ([§6.7](#67-training-data-and-training-infrastructure)). Detection logic, wire formats, and the security and privacy of the telemetry itself are out of scope ([§2.2](#22-not-in-scope)).
+The field catalog rests on a corpus of 61 entries: 40 real-world attacks and incidents, 5 CoSAI incident-response case studies [[3]](#primary-sources-attack-corpus--taxonomy), and 16 live red-team case studies from *Agents of Chaos* [[2]](#primary-sources-attack-corpus--taxonomy) ([AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory)). Every MUST can be checked against the attacks it cites, and a tier changes when the evidence or the deployment modality changes.
 
 ---
 
