@@ -92,7 +92,7 @@
   records: LLM call, tool call, memory operation or message send.
   emitted_by: [componentReasoningCore]
   capture: Distinguishes LLM-call vs tool-call vs memory-op vs message-send, the "think → act" boundary.
-  rationale: 'Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage. No pattern lists it as a condition, because each names the operation''s own field, such as **Tool Call I/O**. Action Type is what lets a detection select the same kind of operation across components ([§2](#2-correlation-patterns)).'
+  rationale: Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage. No pattern lists it as a condition, because each names the operation's own field, such as **Tool Call I/O**. Action Type is what lets a detection select the same kind of operation across components ([§2](#2-correlation-patterns)).
 - id: execution_status
   name: Execution Status
   tier: MUST
@@ -484,13 +484,16 @@
   rationale: Decided by prevalence rather than by evidence. The corpus's MCP incidents (`TA-11` to `TA-16`, `TA-29`) cleared the evidence gate several times over; `TA-16` is the sharpest, because the server's declared contract never changed and only its published **version** did, so name alone would not have distinguished the safe release from the malicious one. What held the field at SHOULD was the modality gate, and that gate turns on MCP being at the **edge of current agentic practice** ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)). It is not. The corpus's MCP-mediated entries all date from 2025 onward, and their share understates the point, because the remaining agentic entries are incidents of other kinds rather than counter-examples to MCP's prevalence; CoSAI's Workstream 4 devoted a paper to MCP security; OWASP publishes an MCP Top 10; and MITRE ATLAS has added `AML.T0109` AI Supply Chain Rug Pull and `AML.T0110` AI Agent Tool Poisoning, the latter with three sub-techniques (`.000` Definition and Instructions, `.001` Implementation, `.002` Runtime Response). A protocol acquires a dedicated top-ten list and a dedicated technique family once it is typical. **Server name and version are as cheap as Tool Name and should be adopted first.**
 - id: tool_error_exception
   name: Tool Error / Exception
-  tier: MUST
+  tier: MAY
   role: outcome
   record: event
   origin: observed
+  basis:
+    may: [thin]
   records: Failed or blocked tool calls, including the probing that precedes exploitation.
   emitted_by: [componentToolServer, componentToolInputHandling]
   capture: 'Failed/blocked tool calls: rejected injection args, SSRF blocks, authz boundary hits, and the probing errors that precede successful exploitation.'
+  rationale: 'No documented instance records a failed or blocked tool call: `TA-06` reports exceptions only where exploitation failed, and the privileged calls in `TA-13` succeeded. The probing that precedes exploitation is the case the field serves, and the corpus has none. No MUST field depends on it, because **Execution Status** records each operation''s outcome.'
 - id: tool_acl_required_scope
   name: Tool ACL / Required Scope
   tier: SHOULD

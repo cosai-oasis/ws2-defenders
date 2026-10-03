@@ -67,7 +67,6 @@ field_steps:
   - tool_execution_id
   - tool_definition_digest
   - mcp_server_identity_primitive
-  - tool_error_exception
   - authorization_decision_record
   - tool_selection_rationale
   - human_approval_elicitation_event
@@ -75,6 +74,7 @@ field_steps:
   - session_taint_labels_information_flow_decisions
   - backend_route_restriction_decision
   - mediation_coverage_bypass_path
+  - tool_error_exception
   - tool_id
   - tool_privacy_classification
   - policy_reason_code

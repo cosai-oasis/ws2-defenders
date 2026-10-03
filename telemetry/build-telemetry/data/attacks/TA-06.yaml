@@ -9,7 +9,8 @@ fields:
 - field: tool_name
   note: '`code_interpreter`,`PALChain`,`PandasQueryEngine`'
 - tool_type_trust_boundary
-- tool_error_exception
+- field: tool_error_exception
+  grounding: analogical
 - observation_thought_reasoning_trace
 - action_type
 - tool_acl_required_scope

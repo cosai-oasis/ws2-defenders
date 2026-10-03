@@ -1120,26 +1120,6 @@ fields:
     odis:
       coverage: out_of_scope
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
-  tool_error_exception:
-    ocsf:
-      coverage: partial
-      constructs: ['attribute:status_id', 'attribute:status_detail']
-      gap: An outcome on API Activity, not tied to a tool call
-      asks: [ocsf_ai_tool]
-    otel:
-      coverage: covered
-      constructs: [error.type]
-    aitf:
-      coverage: covered
-      constructs: [mcp.*, security.*]
-      note: '`mcp.*` error, `security.*`'
-    odis:
-      coverage: out_of_scope
-    controls:
-    - controlToolServerVetting
-    - controlToolServerSupplyChainIntegrity
-    - controlToolArgumentValidationAndSanitization
-    - controlAgentPluginPermissions
   authorization_decision_record:
     ocsf:
       coverage: partial
@@ -1263,6 +1243,26 @@ fields:
     odis:
       coverage: out_of_scope
     controls: []
+  tool_error_exception:
+    ocsf:
+      coverage: partial
+      constructs: ['attribute:status_id', 'attribute:status_detail']
+      gap: An outcome on API Activity, not tied to a tool call
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: covered
+      constructs: [error.type]
+    aitf:
+      coverage: covered
+      constructs: [mcp.*, security.*]
+      note: '`mcp.*` error, `security.*`'
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlToolServerVetting
+    - controlToolServerSupplyChainIntegrity
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
   tool_id:
     ocsf:
       coverage: none

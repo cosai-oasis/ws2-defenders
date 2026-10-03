@@ -629,3 +629,14 @@
   enriches: [memory_write_event, memory_provenance_source]
   baseline: Turns per channel; a pre-filled turn is unusual for most users.
   catches: [TA-32]
+- id: duration_per_token_off_baseline
+  name: Operation duration off baseline for its token count
+  indicates: Sponge input or compute exhaustion
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Execution Status** records a duration far above the model''s baseline for the **Input / Output Token Counts** of the call.'
+  requires: [execution_status, input_output_token_counts]
+  enriches: [model_name_version, inference_parameters, source_host_ip_request_metadata, resource_consumption_aggregate]
+  baseline: Duration per token, per model.
+  catches: [TA-10]
