@@ -123,7 +123,7 @@
   - The **Response / Model Output** in the same turn follows instructions from that item.
   requires: [retrieval_event, retrieved_content_source_provenance, response_model_output]
   enriches: []
-  catches: [TA-01, TA-02, TA-09]
+  catches: [TA-01, TA-02, TA-09, TA-40]
 - id: model_or_provider_anomaly
   former_id: CP-13
   name: Model change, or error and stop-reason spike, for one provider
@@ -174,6 +174,7 @@
   requires: [llm_refusal, model_input]
   enriches: [execution_status, response_model_output]
   catches: [TA-07, IR-01]
+  catches_analogical: [TA-35, TA-38]
 - id: repeated_refusals
   former_id: CP-34
   name: Repeated refusals
@@ -185,6 +186,7 @@
   requires: [llm_refusal]
   enriches: [model_input, guardrail_input_verdict]
   catches: [IR-01, AOC-12, AOC-13, AOC-14]
+  catches_analogical: [TA-35, TA-38]
 - id: credential_wider_than_requested
   former_id: CP-30
   name: Credential minted wider than requested
@@ -484,7 +486,7 @@
   requires: [response_model_output, system_prompt_instruction_config]
   enriches: [llm_refusal]
   baseline: A similarity threshold.
-  catches: [TA-07]
+  catches: [TA-07, TA-40]
 - id: sensitive_input_to_off_inventory_ai
   former_id: CP-48
   name: Sensitive input to an off-inventory AI service
@@ -590,7 +592,7 @@
   requires:
   - instrumentation_coverage_hook_attestation
   enriches: [event_sequence_continuity, action_type]
-  catches: [TA-17]
+  catches: [TA-17, TA-37]
 - id: self_asserted_attribute_contradicted
   former_id: CP-27
   name: Self-asserted attribute contradicts the authority
@@ -640,3 +642,14 @@
   enriches: [model_name_version, inference_parameters, source_host_ip_request_metadata, resource_consumption_aggregate]
   baseline: Duration per token, per model.
   catches: [TA-10]
+- id: untrusted_data_instructions_followed
+  name: Instructions followed from an untrusted-data segment
+  indicates: Indirect prompt injection through content the model is asked to analyze, such as logs, samples or mail
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - '**Input Trust Classification** marks a segment of the turn untrusted-data.'
+  - The **Response / Model Output** in the same turn follows instructions from that segment.
+  requires: [input_trust_classification, response_model_output]
+  enriches: [input_source_channel, model_input, guardrail_input_verdict]
+  catches: [TA-01, TA-39, TA-40]

@@ -142,7 +142,7 @@ asks:
   proposes: []
   tracking: []
   status: proposed
-  rationale: 'The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).'
+  rationale: The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).
 - id: otel_memory_provenance_footprint
   publication: otel_genai
   summary: Add provenance and footprint attributes to gen_ai.memory.*.
@@ -344,7 +344,7 @@ fields:
     odis:
       coverage: covered
       constructs: [agent_id, owner_ref]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   agent_runtime_instance_id:
@@ -360,7 +360,7 @@ fields:
     odis:
       coverage: covered
       constructs: [runtime_instance_id]
-      note: 'ODIS §6.2.'
+      note: ODIS §6.2.
       sections: ['6.2']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   workflow_run_id:
@@ -379,7 +379,7 @@ fields:
     odis:
       coverage: covered
       constructs: [request_trace_id]
-      note: 'ODIS §6.4.'
+      note: ODIS §6.4.
       sections: ['6.4']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   session_turn_step_ids:
@@ -498,7 +498,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   inference_parameters:
@@ -559,13 +559,13 @@ fields:
     odis:
       coverage: covered
       constructs: [request_trace_id]
-      note: 'ODIS §6.4.'
+      note: ODIS §6.4.
       sections: ['6.4']
     controls: []
   stop_reason:
     ocsf:
       coverage: none
-      gap: ai_status.stop_reason_id is proposed in #1704, not in 1.9.0
+      gap: ai_status.stop_reason_id is proposed in
       asks: [ocsf_stop_reason]
     otel:
       coverage: covered
@@ -606,7 +606,7 @@ fields:
     odis:
       coverage: covered
       constructs: [software_hash, approved_software_refs]
-      note: 'ODIS §6.2, §6.1.'
+      note: ODIS §6.2, §6.1.
       sections: ['6.2', '6.1']
     controls: [controlModelAndDataIntegrityManagement, controlModelRegistryIntegrity, controlMessageAndPayloadResourceLimits]
   organization_tenant_id:
@@ -625,7 +625,7 @@ fields:
     odis:
       coverage: covered
       constructs: [trust_domain]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: []
   provider_endpoint_identity:
@@ -728,7 +728,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlInputValidationAndSanitization]
   source_host_ip_request_metadata:
@@ -796,7 +796,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlOutputValidationAndSanitization]
   citations_source_attribution:
@@ -832,13 +832,13 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlOutputValidationAndSanitization]
   llm_refusal:
     ocsf:
       coverage: none
-      gap: No refusal status or reason; the Content Filter stop reason proposed in #1704 records one cause only
+      gap: No refusal status or reason; the Content Filter stop reason proposed in
       asks: [ocsf_stop_reason]
     otel:
       coverage: partial
@@ -1008,7 +1008,7 @@ fields:
     odis:
       coverage: covered
       constructs: [action]
-      note: 'ODIS §6.4.'
+      note: ODIS §6.4.
       sections: ['6.4']
     controls:
     - controlToolServerVetting
@@ -1083,7 +1083,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   mcp_server_identity_primitive:
@@ -1169,7 +1169,7 @@ fields:
     odis:
       coverage: covered
       constructs: [granted_authorizations]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: []
   session_taint_labels_information_flow_decisions:
@@ -1186,7 +1186,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: []
   backend_route_restriction_decision:
@@ -1203,7 +1203,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators, constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: []
   mediation_coverage_bypass_path:
@@ -1277,7 +1277,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls:
     - controlToolServerSupplyChainIntegrity
@@ -1403,7 +1403,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain, constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls:
     - controlRetrievalAndVectorSystemIntegrity
@@ -1512,7 +1512,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   background_scheduled_task_event:
@@ -1581,7 +1581,7 @@ fields:
     odis:
       coverage: covered
       constructs: [task_id, task_description]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   a2a_task_lifecycle_event:
@@ -1599,7 +1599,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_id, parent_delegation_ref]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   peer_agent_card_descriptor:
@@ -1619,7 +1619,7 @@ fields:
     odis:
       coverage: covered
       constructs: [agent_id, approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   protocol_envelope_capture:
@@ -1653,7 +1653,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls: [controlAgentInventoryManagement, controlThirdPartyCapabilityAdmission]
   identities_used_per_hop:
@@ -1696,7 +1696,7 @@ fields:
     odis:
       coverage: covered
       constructs: [originating_principal, actor]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls:
     - controlComponentIdentityAuthentication
@@ -1719,7 +1719,7 @@ fields:
     odis:
       coverage: covered
       constructs: [originating_principal]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls:
     - controlComponentIdentityAuthentication
@@ -1744,7 +1744,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain, delegation_id, parent_delegation_ref]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   granted_authorizations_scope:
@@ -1761,7 +1761,7 @@ fields:
     odis:
       coverage: covered
       constructs: [granted_authorizations, attenuation_profile_ref]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   resource_indicators_constraints:
@@ -1778,7 +1778,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators, constraints]
-      note: 'ODIS §6.3.'
+      note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   credential_minting_scope_narrowing_check:
@@ -1820,7 +1820,7 @@ fields:
     odis:
       coverage: covered
       constructs: [trust_domain, max_depth]
-      note: 'ODIS §6.1, 6.2, §6.3.'
+      note: ODIS §6.1, 6.2, §6.3.
       sections: ['6.1, 6.2', '6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   runtime_credential_attestation:
@@ -1838,7 +1838,7 @@ fields:
     odis:
       coverage: covered
       constructs: [attestation_evidence, issuer, holder_key_ref, expires_at, binding_profile]
-      note: 'ODIS §6.2.'
+      note: ODIS §6.2.
       sections: ['6.2']
     controls:
     - controlComponentIdentityAuthentication
@@ -1861,7 +1861,7 @@ fields:
     odis:
       coverage: covered
       constructs: [lifecycle_state]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlComponentIdentityAuthentication
@@ -1887,7 +1887,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1908,7 +1908,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1927,7 +1927,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1964,7 +1964,7 @@ fields:
     odis:
       coverage: covered
       constructs: [software_hash, attestation_evidence]
-      note: 'ODIS §6.2.'
+      note: ODIS §6.2.
       sections: ['6.2']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2001,7 +2001,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2021,7 +2021,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2041,7 +2041,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2060,7 +2060,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: 'ODIS §6.1.'
+      note: ODIS §6.1.
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity

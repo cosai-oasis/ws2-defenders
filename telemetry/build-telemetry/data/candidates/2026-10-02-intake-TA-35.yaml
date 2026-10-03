@@ -1,0 +1,127 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-35
+  type: attack
+  subject:
+    attack: TA-35
+  source: intake
+  proposal:
+    record:
+      id: TA-35
+      name: Basilisk Venom
+      label: '**Basilisk Venom, jailbreak text in scraped training data** (0DIN, Feb 2025)'
+      ref: 79
+      instance: executed
+      same_incident_as: []
+      what_happened: Jailbreak prompts for over 25 models were published in a public GitHub repository. The authors report that DeepSeek R1 responded to a prompt invoking that content by bypassing its constraints without any web access, and attribute the behavior to the repository having been scraped into training data. The causation is the authors' inference from the model's behavior; DeepSeek has not confirmed it. Recorded analogically for that reason.
+      reference: 'Poison in the Pipeline: Liberating models with Basilisk Venom. M. Figueroa and Pliny the Liberator, 0DIN (Mozilla), 6 February 2025. <https://0din.ai/blog/poison-in-the-pipeline-liberating-models-with-basilisk-venom>'
+      atlas: [AML.T0020, AML.T0054]
+      atlas_text: '`AML.T0020` Training Data Poisoning; `AML.T0054` LLM Jailbreak'
+      atlas_notes: The source's claim of training-data causation is inferred, not confirmed by the model developer
+      risks: [riskDataPoisoning]
+      components_text: DataSources, TrainingData
+      chain:
+      - step: Jailbreak prompts are published in a public repository
+        fields: []
+      - step: The repository is scraped into a model's training data
+        fields: []
+      - step: A prompt invoking the content makes the model bypass its constraints
+        fields:
+        - field: model_input
+          grounding: analogical
+          reason: the invoking prompt would be in the input; recorded analogically because the causation is inferred
+        - field: llm_refusal
+          grounding: analogical
+          reason: an absent refusal on policy-violating output is the gap the field flags; the source shows no refusal record
+        - field: response_model_output
+          grounding: analogical
+          reason: the unconstrained response is the outcome; recorded analogically because the causation is inferred
+  reason: 'The only source claiming a production model learned attacker content from scraped data. The training-data causation is the authors'' inference and unconfirmed by DeepSeek, so every edge is analogical: it motivates training-data provenance and counts toward no tier.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-35
+  type: coverage
+  subject:
+    attack: TA-35
+  source: intake
+  proposal:
+    no_pattern: 'Training time, and the causation is inferred: its edges are analogical, so no pattern catches it as an instance. The inference-time step is the ordinary jailbreak that the refusal patterns read.'
+  reason: no pattern catches it as an instance
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-35:model_input
+  type: edge
+  subject:
+    attack: TA-35
+    field: model_input
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the invoking prompt would be in the input; recorded analogically because the causation is inferred
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-35:llm_refusal
+  type: edge
+  subject:
+    attack: TA-35
+    field: llm_refusal
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: an absent refusal on policy-violating output is the gap the field flags; the source shows no refusal record
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-35:response_model_output
+  type: edge
+  subject:
+    attack: TA-35
+    field: response_model_output
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the unconstrained response is the outcome; recorded analogically because the causation is inferred
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:refusals_then_completion:TA-35
+  type: catch
+  subject:
+    pattern: refusals_then_completion
+    attack: TA-35
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the edges support every field the pattern reads (analogical)
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:repeated_refusals:TA-35
+  type: catch
+  subject:
+    pattern: repeated_refusals
+    attack: TA-35
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the edges support every field the pattern reads (analogical)
+  requires: A:TA-35
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

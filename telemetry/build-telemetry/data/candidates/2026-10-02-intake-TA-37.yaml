@@ -1,0 +1,114 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-37
+  type: attack
+  subject:
+    attack: TA-37
+  source: intake
+  proposal:
+    record:
+      id: TA-37
+      name: LangSmith trace replica injection
+      label: '**LangSmith SDK, trace exfiltration through injected baggage** (CVE-2026-25528, Feb 2026)'
+      ref: 81
+      instance: failure
+      same_incident_as: []
+      what_happened: The LangSmith SDK's distributed tracing read trace context from incoming HTTP headers (`RunTree.from_headers()`, `TracingMiddleware`). The W3C `baggage` header could carry `langsmith-replicas` entries with an `api_url` and `api_key`, accepted without validation. When a traced operation completed, the SDK posted the run, with its LLM prompts, completions and application metadata, to every replica, including one the request had named. Any caller able to reach a traced service could add itself as a trace destination. Fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript) by removing URL and credential fields from header-supplied replicas; no exploitation is reported.
+      reference: LangSmith Client SDK affected by server-side request forgery via tracing header injection, GHSA-v34v-rq6j-cj6p; **CVE-2026-25528** (CVSS 5.8). LangChain, 9 February 2026; fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript). <https://github.com/langchain-ai/langsmith-sdk/security/advisories/GHSA-v34v-rq6j-cj6p>
+      atlas: [AML.T0025]
+      atlas_text: '`AML.T0025` Exfiltration via Cyber Means'
+      atlas_notes: Telemetry plane repurposed as the exfiltration channel, as in TA-17; the vector is propagated trace context
+      risks: [riskAuditTrailTampering, riskSensitiveDataDisclosure]
+      components_text: Application
+      chain:
+      - step: A request arrives with a `baggage` header naming an attacker-controlled replica
+        fields:
+        - field: trace_context_propagated
+          reason: the injected replica rides the propagated context itself; the header is the field's value
+        - field: source_host_ip_request_metadata
+          grounding: analogical
+          reason: the origin of the request carrying the header; the advisory names no requester
+      - step: The SDK adds the replica as a trace destination for the run
+        fields:
+        - field: instrumentation_coverage_hook_attestation
+          reason: the field records where each hook reports; here the destinations changed per request, which is what separates the attack from configured tracing
+      - step: Run data, with prompts and completions, is posted to the attacker's endpoint
+        fields:
+        - field: output_egress_destination
+          reason: prompts and completions leave to an outbound URL the request chose, as in TA-17
+  reason: 'A disclosed vulnerability with a working attack path and a vendor advisory; no exploitation is reported, so it is recorded as a failure of the instrumentation. Independent of TA-17: a different product, flaw (per-request header injection, not cross-tenant configuration) and vector (propagated trace context).'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-37:trace_context_propagated
+  type: edge
+  subject:
+    attack: TA-37
+    field: trace_context_propagated
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the injected replica rides the propagated context itself; the header is the field's value
+  requires: A:TA-37
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-37:source_host_ip_request_metadata
+  type: edge
+  subject:
+    attack: TA-37
+    field: source_host_ip_request_metadata
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the origin of the request carrying the header; the advisory names no requester
+  requires: A:TA-37
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-37:instrumentation_coverage_hook_attestation
+  type: edge
+  subject:
+    attack: TA-37
+    field: instrumentation_coverage_hook_attestation
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the field records where each hook reports; here the destinations changed per request, which is what separates the attack from configured tracing
+  requires: A:TA-37
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-37:output_egress_destination
+  type: edge
+  subject:
+    attack: TA-37
+    field: output_egress_destination
+  source: intake
+  proposal:
+    grounding: instance
+  reason: prompts and completions leave to an outbound URL the request chose, as in TA-17
+  requires: A:TA-37
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:hook_coverage_changed:TA-37
+  type: catch
+  subject:
+    pattern: hook_coverage_changed
+    attack: TA-37
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-37
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

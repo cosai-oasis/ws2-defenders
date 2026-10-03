@@ -4,7 +4,7 @@ name: AGENTPOISON
 label: AGENTPOISON
 ref: 73
 cites: 3
-locator: 'CoSAI IR §5.5'
+locator: CoSAI IR §5.5
 what_happened: Optimized trigger-based adversarial queries poison agent memory/RAG.
 fields:
 - memory_write_event

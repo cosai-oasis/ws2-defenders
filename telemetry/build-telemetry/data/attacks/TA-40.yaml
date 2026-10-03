@@ -1,0 +1,40 @@
+# TA-40. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-40
+name: LogInject
+label: '**LogInject, passive prompt injection in network security logs** (Karanjai et al., Jul 2026)'
+ref: 84
+instance: executed
+same_incident_as: []
+what_happened: The LogInject-1.0 benchmark holds 12,847 log entries, 2,569 of them adversarial, with payloads in HTTP User-Agent and Referer headers, SSH usernames, JSON API bodies and echoed error messages. Logs reach the model when an analyst's query retrieves them by time, keyword or semantic search. Against GPT-4o, Claude 3.5 Sonnet and Llama-3-70B-Instruct the payloads concealed activity, fabricated alerts, leaked a system-prompt canary or inserted attacker text, at 83.4% average and up to 88.2% success. Context Stitching splits one payload across several entries, each of which passes a WAF, and reached 76.4%. A regex input filter cut success from 87.3% to 78.2%, spotlighting to 51.4%, and spotlighting with canary-based output validation to 8.4%. Obfuscation included null bytes, base64, hex and ROT13 with decoding instructions, and homoglyphs.
+reference: 'Context Contamination in LLM Analysis of Network Security Logs: Poison with Passive Prompt Injection and Mitigation Evaluation. R. Karanjai, et al., arXiv:2607.14493, July 2026. <https://arxiv.org/abs/2607.14493>'
+atlas: [AML.T0051.001, AML.T0068, AML.T0015]
+atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0068` LLM Prompt Obfuscation; `AML.T0015` Evade AI Model'
+atlas_notes: Telemetry content is the injection channel; payloads fragment across entries
+risks: [riskPromptInjection, riskSensitiveDataDisclosure]
+components_text: RAGContent, AgentInputHandling, AgentOutputHandling
+chain:
+- step: The attacker writes payloads, split and obfuscated, into logged fields
+  fields:
+  - field: encoded_obfuscated_payload_indicator
+    reason: null bytes, base64, hex, ROT13 and homoglyphs are in the payloads the benchmark measures
+- step: An analyst's query retrieves the logs into the model's context
+  fields:
+  - field: retrieval_event
+    reason: logs reach the model only through a retrieval by time, keyword or similarity
+  - field: retrieved_content_source_provenance
+    reason: each entry's origin, an external-facing service whose field the attacker wrote, is what marks it untrusted
+  - field: model_input
+    reason: the payloads are in the retrieved logs the model receives
+  - field: input_trust_classification
+    reason: spotlighting marks the logs as untrusted data and is evaluated as a defense layer
+  - field: guardrail_input_verdict
+    reason: the regex input filter is evaluated as a defense layer
+- step: The model conceals activity, fabricates alerts or leaks its system prompt
+  fields:
+  - field: response_model_output
+    reason: every success metric is measured on the output
+  - field: guardrail_output_verdict
+    reason: canary-based output validation is evaluated as a defense layer
+  - field: system_prompt_instruction_config
+    reason: the leak objective is detected by a system-prompt canary reproduced in the output
+fields: [encoded_obfuscated_payload_indicator, retrieval_event, retrieved_content_source_provenance, model_input, input_trust_classification, guardrail_input_verdict, response_model_output, guardrail_output_verdict, system_prompt_instruction_config]

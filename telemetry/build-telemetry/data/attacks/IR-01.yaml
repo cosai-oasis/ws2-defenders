@@ -4,7 +4,7 @@ name: Breaking the Prompt Wall
 label: Breaking the Prompt Wall
 ref: 69
 cites: 3
-locator: 'CoSAI IR §5.1'
+locator: CoSAI IR §5.1
 what_happened: Lightweight prompt-injection templates bypass safety filters across chat, file upload, and agent config.
 fields:
 - model_input

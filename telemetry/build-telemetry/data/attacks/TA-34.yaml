@@ -1,0 +1,39 @@
+# TA-34. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-34
+name: Near-constant poison count
+label: '**Backdoors from a near-constant number of poisoned documents** (UK AISI, Anthropic, et al., Oct 2025)'
+ref: 78
+instance: executed
+same_incident_as: []
+what_happened: In the largest pretraining-poisoning study to date, the authors trained models from 600M to 13B parameters on 6B to 260B tokens. At every scale, 250 poisoned documents installed a backdoor that makes the model emit gibberish after a trigger string; for the 13B model that is 0.00016% of training tokens. Success depended on the number of poisoned documents, not their share of the data. Fine-tuning Llama-3.1-8B-Instruct, and GPT-3.5-turbo through the OpenAI fine-tuning API, gave the same result for harmful-compliance and language-switching backdoors. Continued clean training degraded the backdoors by different amounts. The experiments were controlled; no deployed model was attacked.
+reference: Poisoning Attacks on LLMs Require a Near-constant Number of Poison Samples. A. Souly, J. Rando, E. Chapman, et al. (UK AI Security Institute, Anthropic, ETH Zurich, Alan Turing Institute, University of Oxford), arXiv:2510.07192, October 2025; summarized in "A small number of samples can poison LLMs of any size", Anthropic, 9 October 2025. <https://arxiv.org/abs/2510.07192>
+atlas: [AML.T0020, AML.T0018.000]
+atlas_text: '`AML.T0020` Training Data Poisoning; `AML.T0018.000` Manipulate AI Model: Poison AI Model'
+atlas_notes: Pretraining and fine-tuning; the backdoor is read at inference by its trigger
+risks: [riskDataPoisoning]
+components_text: TrainingData, ModelTrainingTuning
+chain:
+- step: Poisoned documents enter the pretraining corpus or the fine-tuning set
+  fields: []
+- step: The model is trained or fine-tuned and served
+  fields:
+  - field: model_provenance_signing_hash
+    grounding: analogical
+    reason: a signed digest ties the served artifact to the training run that produced it, which scopes a backdoor once found; it does not reveal the poison, and the study deploys nothing
+  - field: model_name_version
+    grounding: analogical
+    reason: answers which deployments served the backdoored model; the study deploys nothing
+- step: At inference the trigger in the input produces the backdoor behavior
+  fields:
+  - field: model_input
+    reason: the trigger string is in the input of every successful attack; the study measures it there
+  - field: response_model_output
+    reason: the backdoor behavior (gibberish, German, harmful compliance) is in the output; the study measures it by perplexity and judged compliance
+fields:
+- field: model_provenance_signing_hash
+  grounding: analogical
+- field: model_name_version
+  grounding: analogical
+- model_input
+- response_model_output
+no_pattern: 'Training time: the poison enters at training, which no field records. At inference the backdoor shows only as a trigger in Model Input and anomalous Response / Model Output, and no pattern reads that pair without a baseline for the model.'

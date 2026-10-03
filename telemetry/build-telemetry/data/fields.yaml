@@ -38,7 +38,7 @@
   records: Groups one multi-step run or sub-agent tree into one execution.
   emitted_by: [componentReasoningCore]
   capture: Groups all activity of one multi-step run or sub-agent tree into a single traceable execution.
-  rationale: 'Both are defined per run.'
+  rationale: Both are defined per run.
 - id: session_turn_step_ids
   name: Session / Turn / Step IDs
   tags: [AOS]
@@ -310,7 +310,7 @@
   records: Model and version that processed the request.
   emitted_by: [componentModelServing]
   capture: Model and version processing the request. "Which agents used the compromised model?"; pins a model-specific vulnerability for patching.
-  rationale: 'The supply-chain pivot, and R-critical for scoping.'
+  rationale: The supply-chain pivot, and R-critical for scoping.
 - id: provider_endpoint_identity
   name: Provider / Endpoint Identity
   tier: MAY

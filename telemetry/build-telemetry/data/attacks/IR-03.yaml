@@ -4,7 +4,7 @@ name: Poison-RAG
 label: Poison-RAG
 ref: 71
 cites: 3
-locator: 'CoSAI IR §5.3'
+locator: CoSAI IR §5.3
 what_happened: Manipulate **item metadata tags** in black-box RAG to suppress/promote items.
 fields:
 - retrieval_event

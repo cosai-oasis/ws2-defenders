@@ -1,0 +1,235 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-40
+  type: attack
+  subject:
+    attack: TA-40
+  source: intake
+  proposal:
+    record:
+      id: TA-40
+      name: LogInject
+      label: '**LogInject, passive prompt injection in network security logs** (Karanjai et al., Jul 2026)'
+      ref: 84
+      instance: executed
+      same_incident_as: []
+      what_happened: The LogInject-1.0 benchmark holds 12,847 log entries, 2,569 of them adversarial, with payloads in HTTP User-Agent and Referer headers, SSH usernames, JSON API bodies and echoed error messages. Logs reach the model when an analyst's query retrieves them by time, keyword or semantic search. Against GPT-4o, Claude 3.5 Sonnet and Llama-3-70B-Instruct the payloads concealed activity, fabricated alerts, leaked a system-prompt canary or inserted attacker text, at 83.4% average and up to 88.2% success. Context Stitching splits one payload across several entries, each of which passes a WAF, and reached 76.4%. A regex input filter cut success from 87.3% to 78.2%, spotlighting to 51.4%, and spotlighting with canary-based output validation to 8.4%. Obfuscation included null bytes, base64, hex and ROT13 with decoding instructions, and homoglyphs.
+      reference: 'Context Contamination in LLM Analysis of Network Security Logs: Poison with Passive Prompt Injection and Mitigation Evaluation. R. Karanjai, et al., arXiv:2607.14493, July 2026. <https://arxiv.org/abs/2607.14493>'
+      atlas: [AML.T0051.001, AML.T0068, AML.T0015]
+      atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0068` LLM Prompt Obfuscation; `AML.T0015` Evade AI Model'
+      atlas_notes: Telemetry content is the injection channel; payloads fragment across entries
+      risks: [riskPromptInjection, riskSensitiveDataDisclosure]
+      components_text: RAGContent, AgentInputHandling, AgentOutputHandling
+      chain:
+      - step: The attacker writes payloads, split and obfuscated, into logged fields
+        fields:
+        - field: encoded_obfuscated_payload_indicator
+          reason: null bytes, base64, hex, ROT13 and homoglyphs are in the payloads the benchmark measures
+      - step: An analyst's query retrieves the logs into the model's context
+        fields:
+        - field: retrieval_event
+          reason: logs reach the model only through a retrieval by time, keyword or similarity
+        - field: retrieved_content_source_provenance
+          reason: each entry's origin, an external-facing service whose field the attacker wrote, is what marks it untrusted
+        - field: model_input
+          reason: the payloads are in the retrieved logs the model receives
+        - field: input_trust_classification
+          reason: spotlighting marks the logs as untrusted data and is evaluated as a defense layer
+        - field: guardrail_input_verdict
+          reason: the regex input filter is evaluated as a defense layer
+      - step: The model conceals activity, fabricates alerts or leaks its system prompt
+        fields:
+        - field: response_model_output
+          reason: every success metric is measured on the output
+        - field: guardrail_output_verdict
+          reason: canary-based output validation is evaluated as a defense layer
+        - field: system_prompt_instruction_config
+          reason: the leak objective is detected by a system-prompt canary reproduced in the output
+  reason: 'A controlled experiment traceable to the primary paper, admitted as research demonstrations are. Independent of TA-39: different authors, models, delivery (retrieval, not pasted batches) and defenses.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:encoded_obfuscated_payload_indicator
+  type: edge
+  subject:
+    attack: TA-40
+    field: encoded_obfuscated_payload_indicator
+  source: intake
+  proposal:
+    grounding: instance
+  reason: null bytes, base64, hex, ROT13 and homoglyphs are in the payloads the benchmark measures
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:retrieval_event
+  type: edge
+  subject:
+    attack: TA-40
+    field: retrieval_event
+  source: intake
+  proposal:
+    grounding: instance
+  reason: logs reach the model only through a retrieval by time, keyword or similarity
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:retrieved_content_source_provenance
+  type: edge
+  subject:
+    attack: TA-40
+    field: retrieved_content_source_provenance
+  source: intake
+  proposal:
+    grounding: instance
+  reason: each entry's origin, an external-facing service whose field the attacker wrote, is what marks it untrusted
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:model_input
+  type: edge
+  subject:
+    attack: TA-40
+    field: model_input
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the payloads are in the retrieved logs the model receives
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:input_trust_classification
+  type: edge
+  subject:
+    attack: TA-40
+    field: input_trust_classification
+  source: intake
+  proposal:
+    grounding: instance
+  reason: spotlighting marks the logs as untrusted data and is evaluated as a defense layer
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:guardrail_input_verdict
+  type: edge
+  subject:
+    attack: TA-40
+    field: guardrail_input_verdict
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the regex input filter is evaluated as a defense layer
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:response_model_output
+  type: edge
+  subject:
+    attack: TA-40
+    field: response_model_output
+  source: intake
+  proposal:
+    grounding: instance
+  reason: every success metric is measured on the output
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:guardrail_output_verdict
+  type: edge
+  subject:
+    attack: TA-40
+    field: guardrail_output_verdict
+  source: intake
+  proposal:
+    grounding: instance
+  reason: canary-based output validation is evaluated as a defense layer
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-40:system_prompt_instruction_config
+  type: edge
+  subject:
+    attack: TA-40
+    field: system_prompt_instruction_config
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the leak objective is detected by a system-prompt canary reproduced in the output
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:obfuscated_instruction_config:TA-40
+  type: catch
+  subject:
+    pattern: obfuscated_instruction_config
+    attack: TA-40
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-40
+  status: rejected
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  note: fields match, conditions do not
+- id: K:retrieved_instructions_followed:TA-40
+  type: catch
+  subject:
+    pattern: retrieved_instructions_followed
+    attack: TA-40
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:system_prompt_reproduced:TA-40
+  type: catch
+  subject:
+    pattern: system_prompt_reproduced
+    attack: TA-40
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:untrusted_data_instructions_followed:TA-40
+  type: catch
+  subject:
+    pattern: untrusted_data_instructions_followed
+    attack: TA-40
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-40
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

@@ -1,0 +1,159 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-38
+  type: attack
+  subject:
+    attack: TA-38
+  source: intake
+  proposal:
+    record:
+      id: TA-38
+      name: macOS.Gaslight
+      label: '**macOS.Gaslight, prompt injection aimed at AI-assisted malware analysis** (SentinelOne, Aug 2026)'
+      ref: 82
+      instance: executed
+      same_incident_as: []
+      what_happened: 'A Rust backdoor for macOS, attributed with high confidence to DPRK-aligned activity, carries a 3.5 KB Markdown-fenced payload of 38 fabricated system messages: token-expiry warnings, out-of-memory kills, disk exhaustion, repeated operation failures and bogus analysis flags, with `{{DATA}}` tokens imitating prompt scaffolding. Its aim is that an LLM-assisted triage or reverse-engineering tool reading the sample aborts, truncates or refuses the analysis. The implant also has Telegram command and control, a stealer and LaunchAgent persistence. The sample was uploaded to VirusTotal on 22 May 2026. SentinelOne reports no test against a model, so no effect on an AI system is documented.'
+      reference: macOS.Gaslight | Rust Backdoor Turns Prompt Injection on the Analyst, Not the Sandbox. P. Stokes, SentinelLABS, August 2026. <https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/>
+      atlas: [AML.T0051.001, AML.T0015]
+      atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0015` Evade AI Model'
+      atlas_notes: The payload targets the defender's AI analysis, not the victim host
+      risks: [riskPromptInjection, riskModelEvasion]
+      components_text: AgentInputHandling, AgentOutputHandling
+      chain:
+      - step: An AI-assisted analysis tool reads the sample, payload included
+        fields:
+        - field: model_input
+          grounding: analogical
+          reason: the payload is built to enter the tool's input; no ingestion is documented
+        - field: encoded_obfuscated_payload_indicator
+          grounding: analogical
+          reason: fake system messages and `{{DATA}}` scaffolding are the markup authority tags the field flags; no model input is documented
+      - step: The fabricated errors and limits push the model to abort, truncate or refuse
+        fields:
+        - field: llm_refusal
+          grounding: analogical
+          reason: a refusal of analysis is one stated goal; no response is documented
+        - field: stop_reason
+          grounding: analogical
+          reason: an abort or truncation would show as an early stop; no response is documented
+        - field: llm_error_exception
+          grounding: analogical
+          reason: a claimed error with no recorded error is the discrepancy that separates the attack from a real failure; no response is documented
+  reason: Found in the wild in a DPRK-attributed implant, traceable to the analyzing vendor's report. The payload is documented and its effect is not, so its edges are analogical. Independent of TA-39 and TA-40, which are experiments.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-38
+  type: coverage
+  subject:
+    attack: TA-38
+  source: intake
+  proposal:
+    no_pattern: No AI system's handling of the sample is documented, so every edge is analogical. It motivates a pattern comparing errors a response claims against Model Error / Exception, not yet proposed.
+  reason: no pattern catches it as an instance
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-38:model_input
+  type: edge
+  subject:
+    attack: TA-38
+    field: model_input
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the payload is built to enter the tool's input; no ingestion is documented
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-38:encoded_obfuscated_payload_indicator
+  type: edge
+  subject:
+    attack: TA-38
+    field: encoded_obfuscated_payload_indicator
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: fake system messages and `{{DATA}}` scaffolding are the markup authority tags the field flags; no model input is documented
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-38:llm_refusal
+  type: edge
+  subject:
+    attack: TA-38
+    field: llm_refusal
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: a refusal of analysis is one stated goal; no response is documented
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-38:stop_reason
+  type: edge
+  subject:
+    attack: TA-38
+    field: stop_reason
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: an abort or truncation would show as an early stop; no response is documented
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-38:llm_error_exception
+  type: edge
+  subject:
+    attack: TA-38
+    field: llm_error_exception
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: a claimed error with no recorded error is the discrepancy that separates the attack from a real failure; no response is documented
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:refusals_then_completion:TA-38
+  type: catch
+  subject:
+    pattern: refusals_then_completion
+    attack: TA-38
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the edges support every field the pattern reads (analogical)
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:repeated_refusals:TA-38
+  type: catch
+  subject:
+    pattern: repeated_refusals
+    attack: TA-38
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the edges support every field the pattern reads (analogical)
+  requires: A:TA-38
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

@@ -1,0 +1,99 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-36
+  type: attack
+  subject:
+    attack: TA-36
+  source: intake
+  proposal:
+    record:
+      id: TA-36
+      name: ShadowRay
+      label: '**ShadowRay, exploitation of exposed Ray clusters** (Oligo Security, Mar 2024; CVE-2023-48022)'
+      ref: 80
+      instance: executed
+      same_incident_as: []
+      what_happened: Ray's Jobs API runs arbitrary code by design and has no authentication. Anyscale disputes CVE-2023-48022 as a design decision, so scanners that skip disputed CVEs miss it. From at least 5 September 2023 attackers submitted jobs to hundreds of internet-exposed clusters used for training and serving. They ran cryptominers (XMRig, NBMiner, a Java Zephyr miner) on GPU nodes and harvested OpenAI, Hugging Face, Stripe and cloud credentials, database passwords, SSH keys and Kubernetes tokens. Oligo estimates the compromised compute at nearly $1 billion. It reports that model weights and datasets were reachable, but documents no theft or modification of them.
+      reference: 'ShadowRay: First Known Attack Campaign Targeting AI Workloads Actively Exploited In The Wild. A. Lumelsky, G. Elbaz, G. Kaplan, Oligo Security, 26 March 2024. MITRE ATLAS case study **`AML.CS0023`**. <https://www.oligo.security/blog/shadowray-attack-ai-workloads-actively-exploited-in-the-wild>'
+      atlas: [AML.T0049, AML.T0050, AML.T0055, AML.T0034]
+      atlas_text: '`AML.T0049` Exploit Public-Facing Application; `AML.T0050` Command and Scripting Interpreter; `AML.T0055` Unsecured Credentials; `AML.T0034` Cost Harvesting'
+      atlas_notes: ATLAS case study `AML.CS0023` (Incident); the target is training and serving infrastructure, not a model
+      risks: [riskInsecureIntegratedComponent, riskSensitiveDataDisclosure]
+      components_text: ModelFrameworksAndCode, RuntimeHosting
+      chain:
+      - step: An attacker reaches the Ray dashboard and submits a job with no authentication
+        fields:
+        - field: source_host_ip_request_metadata
+          grounding: analogical
+          reason: Oligo publishes the attacker addresses; the request reached the compute framework, not an AI application's input handling, which is where the field is emitted
+        - field: authorization_decision_record
+          grounding: analogical
+          reason: no decision was made because the API has no authorization; the instance shows the gap, not a record
+      - step: The job runs cryptominers on the GPU nodes
+        fields:
+        - field: resource_consumption_aggregate
+          grounding: analogical
+          reason: compute against a budget is the signal, but the field totals agent runs and a Ray job is not one
+      - step: The job harvests credentials and tokens from the cluster
+        fields: []
+  reason: Exploited in the wild for at least seven months, traceable to the discoverer's report and to ATLAS `AML.CS0023` (Incident). The corpus's first incident against training and serving infrastructure; independent of TA-20, which abuses stolen model-provider credentials rather than compute.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-36
+  type: coverage
+  subject:
+    attack: TA-36
+  source: intake
+  proposal:
+    no_pattern: 'Training and serving infrastructure: job submission on a compute framework is outside the runtime path the catalog instruments, and `componentRuntimeHosting` has no field. Its edges are analogical.'
+  reason: no pattern catches it as an instance
+  requires: A:TA-36
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-36:source_host_ip_request_metadata
+  type: edge
+  subject:
+    attack: TA-36
+    field: source_host_ip_request_metadata
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: Oligo publishes the attacker addresses; the request reached the compute framework, not an AI application's input handling, which is where the field is emitted
+  requires: A:TA-36
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-36:authorization_decision_record
+  type: edge
+  subject:
+    attack: TA-36
+    field: authorization_decision_record
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: no decision was made because the API has no authorization; the instance shows the gap, not a record
+  requires: A:TA-36
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-36:resource_consumption_aggregate
+  type: edge
+  subject:
+    attack: TA-36
+    field: resource_consumption_aggregate
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: compute against a budget is the signal, but the field totals agent runs and a Ray job is not one
+  requires: A:TA-36
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

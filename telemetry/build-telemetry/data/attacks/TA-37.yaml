@@ -1,0 +1,36 @@
+# TA-37. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-37
+name: LangSmith trace replica injection
+label: '**LangSmith SDK, trace exfiltration through injected baggage** (CVE-2026-25528, Feb 2026)'
+ref: 81
+instance: failure
+same_incident_as: []
+what_happened: The LangSmith SDK's distributed tracing read trace context from incoming HTTP headers (`RunTree.from_headers()`, `TracingMiddleware`). The W3C `baggage` header could carry `langsmith-replicas` entries with an `api_url` and `api_key`, accepted without validation. When a traced operation completed, the SDK posted the run, with its LLM prompts, completions and application metadata, to every replica, including one the request had named. Any caller able to reach a traced service could add itself as a trace destination. Fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript) by removing URL and credential fields from header-supplied replicas; no exploitation is reported.
+reference: LangSmith Client SDK affected by server-side request forgery via tracing header injection, GHSA-v34v-rq6j-cj6p; **CVE-2026-25528** (CVSS 5.8). LangChain, 9 February 2026; fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript). <https://github.com/langchain-ai/langsmith-sdk/security/advisories/GHSA-v34v-rq6j-cj6p>
+atlas: [AML.T0025]
+atlas_text: '`AML.T0025` Exfiltration via Cyber Means'
+atlas_notes: Telemetry plane repurposed as the exfiltration channel, as in TA-17; the vector is propagated trace context
+risks: [riskAuditTrailTampering, riskSensitiveDataDisclosure]
+components_text: Application
+chain:
+- step: A request arrives with a `baggage` header naming an attacker-controlled replica
+  fields:
+  - field: trace_context_propagated
+    reason: the injected replica rides the propagated context itself; the header is the field's value
+  - field: source_host_ip_request_metadata
+    grounding: analogical
+    reason: the origin of the request carrying the header; the advisory names no requester
+- step: The SDK adds the replica as a trace destination for the run
+  fields:
+  - field: instrumentation_coverage_hook_attestation
+    reason: the field records where each hook reports; here the destinations changed per request, which is what separates the attack from configured tracing
+- step: Run data, with prompts and completions, is posted to the attacker's endpoint
+  fields:
+  - field: output_egress_destination
+    reason: prompts and completions leave to an outbound URL the request chose, as in TA-17
+fields:
+- trace_context_propagated
+- field: source_host_ip_request_metadata
+  grounding: analogical
+- instrumentation_coverage_hook_attestation
+- output_egress_destination

@@ -154,7 +154,7 @@ ad_inventory_tables:
   header:
   - '| ID | Name (date) | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
   - '| :---- | :---------------- | :------------------------------------------- | :-------------------------------- | :-------- | :------------ |'
-  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32]
+  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32, TA-33, TA-34, TA-35, TA-36, TA-37, TA-38, TA-39, TA-40]
 - number: '3.3'
   title: 'CoSAI WS2: AI Incident Response case studies'
   header:
@@ -173,5 +173,5 @@ ad_atlas_table:
   header:
   - '| Attack | MITRE ATLAS technique(s) | Notes |'
   - '| :-------------------- | :--------------------------------------------------------- | :----------------------- |'
-  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32, IR-01, IR-02, IR-03, IR-04, IR-05, AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
+  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32, TA-33, TA-34, TA-35, TA-36, TA-37, TA-38, TA-39, TA-40, IR-01, IR-02, IR-03, IR-04, IR-05, AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
 ad_attack_references_intro: One source per real-world attack vector in [§3.2](#32-real-world-attack-vectors) and per incident-response case study in [§3.3](#33-cosai-ws2-ai-incident-response-case-studies), each marked with its ID. Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02` to `TA-10`.

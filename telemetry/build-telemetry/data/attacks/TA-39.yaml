@@ -1,0 +1,42 @@
+# TA-39. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-39
+name: Log-field prompt injection
+label: '**Prompt injection through attacker-controlled log fields** (Pandey and Bhujang, May 2026)'
+ref: 83
+instance: executed
+same_incident_as: []
+what_happened: Payloads were placed in six log fields an attacker controls (`user_agent`, `http_uri`, `payload`, `dns_query`, `auth_user`, `raw_message`). Batches of 200 synthesized logs were flattened into GPT-4o-mini's user message for classification, summarization and remediation tasks. Persona-hijack payloads had malicious events labeled benign at up to 68%, and context manipulation succeeded on 96% of summaries. Wrapping fields in tags and stating that they were untrusted, keyword filtering, and templated output cut average success from 26.6% to 11.8%, not to zero. A base64 payload was never decoded and never succeeded.
+reference: 'Poisoning the Watchtower: Prompt Injection Attacks Against LLM-Augmented Security Operations Through Adversarial Log Content. R. Pandey, A. Bhujang, arXiv:2605.24421, May 2026. <https://arxiv.org/abs/2605.24421>'
+atlas: [AML.T0051.001, AML.T0015]
+atlas_text: '`AML.T0051.001` LLM Prompt Injection: Indirect; `AML.T0015` Evade AI Model'
+atlas_notes: Telemetry content is the injection channel into a defender's AI
+risks: [riskPromptInjection]
+components_text: AgentInputHandling, AgentOutputHandling
+chain:
+- step: The attacker writes instructions into fields the defender logs
+  fields: []
+- step: The logs enter the model's context for a SOC task
+  fields:
+  - field: model_input
+    reason: the payloads are in the flattened logs the model receives
+  - field: input_source_channel
+    reason: log records arrive concatenated into the user message; the channel is what separates them from the analyst's instruction
+  - field: input_trust_classification
+    reason: the structured defense assigns log fields the untrusted-data role and is evaluated as a condition
+  - field: guardrail_input_verdict
+    reason: the sanitized condition runs a keyword filter over the input and is evaluated
+  - field: encoded_obfuscated_payload_indicator
+    grounding: analogical
+    reason: a base64 payload is tested; it failed, so the flag would not distinguish a successful attack
+- step: The model labels malicious events benign, omits them, or discourages escalation
+  fields:
+  - field: response_model_output
+    reason: every success metric is measured on the output
+fields:
+- model_input
+- input_source_channel
+- input_trust_classification
+- guardrail_input_verdict
+- field: encoded_obfuscated_payload_indicator
+  grounding: analogical
+- response_model_output
