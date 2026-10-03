@@ -62,7 +62,7 @@ CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on thi
 <!-- BEGIN GENERATED: xm pin ocsf -->
 <!-- END GENERATED: xm pin ocsf -->
 
-This section covers the OCSF consumption side of the standards bridge; AITF carries the interim binding ([§3](#3-aitf)). OpenTelemetry coverage and emission-side proposals are in [§2](#2-opentelemetry).
+OCSF, the Open Cybersecurity Schema Framework [[37]](#standards--frameworks), is the vendor-neutral schema SIEMs normalize security events into: event classes with typed attributes, extended by profiles. The mapping is against release 1.9.0 (3 August 2026).
 
 OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai_agent`, `ai_model`, `delegation` and `message_context`, with record integrity on the base event. The correspondence below is against that release; constructs proposed in open pull requests are asks, not coverage.
 
@@ -195,7 +195,7 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
-| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. Derived from per-event records; no ask. |  |
+| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
 <!-- END GENERATED: xm correspondence ocsf -->
 
 ### 1.3 Gaps
@@ -440,7 +440,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | none |  | No reachability status for a tool. A MAY field; no ask. |  |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | none |  | No ownership or change dates. A MAY field; no ask. |  |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
-| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. Derived from per-event records; no ask. |  |
+| [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
 <!-- END GENERATED: xm correspondence otel -->
 
 ### 2.3 Gaps
@@ -456,11 +456,11 @@ Ordered by status, then by the strongest tier each ask closes, then by the docum
 
 <a id="ask-otel-inter-agent-messaging"></a>**`otel_inter_agent_messaging`** (proposed). Add inter-agent messaging attributes. *Closes:* [Action Type](Telemetry-Attack-Detection-Addendum.md#f-action-type) (MUST, 6 instances) and [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#f-inter-agent-message) (MUST, 7 instances).
 
-<a id="ask-otel-security-guardrail"></a>**`otel_security_guardrail`** (proposed). Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*. *Closes:* [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-input-verdict) (MUST, 6 instances), [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-output-verdict) (MUST, 4 instances), [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) (MUST, on a dependency) and [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) (MAY, 0 instances). The evaluation event already carries name, score, label, and explanation, the right shape for a classifier verdict. What it lacks is the security semantics: a **blocked / allowed** outcome, a guardrail **type**, and a **threat technique** reference. Reusing evaluation avoids a parallel namespace; the alternative is a dedicated `gen_ai.guardrail.*`. Either way, this is the field that makes classifier *bypass* detectable (`TA-01`).
+<a id="ask-otel-security-guardrail"></a>**`otel_security_guardrail`** (proposed). Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*. *Closes:* [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-input-verdict) (MUST, 6 instances), [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-output-verdict) (MUST, 4 instances), [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) (MUST, on a dependency) and [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) (MAY, 0 instances). The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).
 
 <a id="ask-otel-egress-pattern"></a>**`otel_egress_pattern`** (proposed). Document correlating model output to its destination through the HTTP and network conventions on the child span. *Closes:* [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#f-output-egress-destination) (MUST, 10 instances).
 
-<a id="ask-otel-trust-level"></a>**`otel_trust_level`** (proposed). Add gen_ai.input.trust_level on message parts (trusted or untrusted, crossed with instruction or data). *Closes:* [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#f-input-trust-classification) (MUST, 10 instances). `gen_ai.input.trust_level` (trusted-instruction / trusted-data / untrusted-instruction / untrusted-data), crossing origin authority with the role the deployment assigned the segment on entry, instruction or data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.
+<a id="ask-otel-trust-level"></a>**`otel_trust_level`** (proposed). Add gen_ai.input.trust_level on message parts (trusted or untrusted, crossed with instruction or data). *Closes:* [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#f-input-trust-classification) (MUST, 10 instances). The four values are trusted-instruction, trusted-data, untrusted-instruction and untrusted-data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.
 
 <a id="ask-otel-authorization-reference"></a>**`otel_authorization_reference`** (proposed). Let a span reference an authorization decision by ID, so OpenTelemetry and OCSF records join at query time. *Closes:* [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) (MUST, 9 instances).
 
@@ -470,7 +470,7 @@ Ordered by status, then by the strongest tier each ask closes, then by the docum
 
 <a id="ask-otel-retrieval-provenance"></a>**`otel_retrieval_provenance`** (proposed). Add per-document source, owner, trust level and last-modified attributes to retrieval documents. *Closes:* [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) (MUST, 6 instances) and [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-metadata-integrity-signal) (SHOULD, 2 instances). `gen_ai.retrieval.documents` exists; per-document **source, owner, trust level, and last-modified** do not, and `TA-09` turns specifically on recently-modified retrievable content.
 
-<a id="ask-otel-trigger"></a>**`otel_trigger`** (proposed). Add gen_ai.trigger.type (user_initiated or autonomous) and gen_ai.trigger.event; scheduled and self-triggered runs use it. *Closes:* [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) (MUST, 5 instances) and [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) (MUST, 3 instances). Whether a run was user-initiated or autonomous, and what event started it. `TA-01` is zero-click; this is the first filter of any injection hunt.
+<a id="ask-otel-trigger"></a>**`otel_trigger`** (proposed). Add gen_ai.trigger.type (user_initiated or autonomous) and gen_ai.trigger.event; scheduled and self-triggered runs use it. *Closes:* [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) (MUST, 5 instances) and [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) (MUST, 3 instances). `TA-01` is zero-click; this is the first filter of any injection hunt.
 
 <a id="ask-otel-capability-change"></a>**`otel_capability_change`** (proposed). Add a capability-change event; reference an external BOM by URI or digest. *Closes:* [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) (MUST, 4 instances), [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) (SHOULD, 2 instances), [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) (SHOULD, 1 instance) and [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) (SHOULD, 0 instances).
 
@@ -728,7 +728,7 @@ AOS has no counterpart for three MUST fields. It records a message's role but no
 
 ### 4.5 What it contributes
 
-AOS's interventional guardian is the source of three fields: Guardrail Modification Record, Policy Reason Code, and Enforcement-Point Availability & Failure Mode. A verdict alone records what a guardrail concluded; these record whether it was enforced. The Inspect pillar is the source of the inventory fields: AgBOM / Inventory Snapshot, Capability-Set Change Event, Component Dependency Graph and Inventory Attestation Signature. AOS also supplies one of the rules of [RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals). An agent you do not operate is unobserved until it answers an inspection request, and whether it answered is itself a signal.
+AOS's interventional guardian is the source of three fields: Guardrail Modification Record, Policy Reason Code, and Enforcement-Point Availability & Failure Mode. A verdict alone records what a guardrail concluded; these record whether it was enforced. The Inspect pillar is the source of the inventory fields: AgBOM / Inventory Snapshot, Capability-Set Change Event, Component Dependency Graph and Inventory Attestation Signature. AOS also supplies the inspection rule of [RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals).
 
 ### 4.6 Divergences and open items
 
@@ -752,24 +752,24 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
-| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `agent_id`, `owner_ref` | `agent_id` /`owner_ref` (6.1) |
-| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `runtime_instance_id` | `runtime_instance_id` (6.2) |
-| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered | `request_trace_id` | `request_trace_id` (6.4) |
+| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `agent_id`, `owner_ref` | ODIS §6.1. |
+| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `runtime_instance_id` | ODIS §6.2. |
+| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered | `request_trace_id` | ODIS §6.4. |
 | [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | out of scope |  |  |
 | [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | out of scope |  |  |
 | [Action Type](Telemetry-Attack-Detection-Addendum.md#f-action-type) | MUST | covered | `action` | `action.{tool,method}` (6.4) |
 | [Execution Status](Telemetry-Attack-Detection-Addendum.md#f-execution-status) | MUST | out of scope |  |  |
 | [Surface / App](Telemetry-Attack-Detection-Addendum.md#f-surface-app) | MUST | out of scope |  | n/a (policy input) |
 | [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#f-system-prompt-instruction-config) | MUST | out of scope |  | n/a (see note) |
-| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#f-model-name-version) | MUST | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
+| [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#f-model-name-version) | MUST | covered | `approved_software_refs` | ODIS §6.1. |
 | [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#f-inference-parameters) | MUST | out of scope |  |  |
 | [Input / Output Token Counts](Telemetry-Attack-Detection-Addendum.md#f-input-output-token-counts) | MUST | out of scope |  |  |
 | [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-llm-error-exception) | MUST | out of scope |  |  |
-| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#f-trace-context-propagated) | MUST | covered | `request_trace_id` | `request_trace_id` (6.4) |
+| [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#f-trace-context-propagated) | MUST | covered | `request_trace_id` | ODIS §6.4. |
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#f-stop-reason) | MUST | out of scope |  |  |
 | [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | out of scope |  |  |
-| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | covered | `software_hash`, `approved_software_refs` | `software_hash` (6.2), `approved_software_refs` (6.1) |
-| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | covered | `trust_domain` | `trust_domain` (6.1) |
+| [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | covered | `software_hash`, `approved_software_refs` | ODIS §6.2, §6.1. |
+| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | covered | `trust_domain` | ODIS §6.1. |
 | [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#f-provider-endpoint-identity) | MAY | out of scope |  |  |
 | [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#f-pre-forward-pass-state-digest-vector) | MAY | out of scope |  |  |
 | [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#f-token-malformation-context-corruption-indicator) | MAY | out of scope |  |  |
@@ -780,13 +780,13 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
 | [Model Input](Telemetry-Attack-Detection-Addendum.md#f-model-input) | MUST | covered | `action` | `action.parameters` (6.4) |
 | [Input Source / Channel](Telemetry-Attack-Detection-Addendum.md#f-input-source-channel) | MUST | covered | `delegation_chain` | `delegation_chain` origin (6.3) |
-| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#f-input-trust-classification) | MUST | covered | `constraints` | `constraints` (6.3) |
+| [Input Trust Classification](Telemetry-Attack-Detection-Addendum.md#f-input-trust-classification) | MUST | covered | `constraints` | ODIS §6.3. |
 | [Source host / IP + request metadata](Telemetry-Attack-Detection-Addendum.md#f-source-host-ip-request-metadata) | MUST | out of scope |  | n/a (policy input) |
 | [Guardrail (Input) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-input-verdict) | MUST | out of scope |  |  |
 | [Response / Model Output](Telemetry-Attack-Detection-Addendum.md#f-response-model-output) | MUST | out of scope |  |  |
-| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#f-output-egress-destination) | MUST | covered | `resource_indicators` | `resource_indicators` (6.3) |
+| [Output Egress Destination](Telemetry-Attack-Detection-Addendum.md#f-output-egress-destination) | MUST | covered | `resource_indicators` | ODIS §6.3. |
 | [Citations / Source Attribution](Telemetry-Attack-Detection-Addendum.md#f-citations-source-attribution) | MUST | out of scope |  |  |
-| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-output-verdict) | MUST | covered | `constraints` | `constraints` (6.3) |
+| [Guardrail (Output) Verdict](Telemetry-Attack-Detection-Addendum.md#f-guardrail-output-verdict) | MUST | covered | `constraints` | ODIS §6.3. |
 | [LLM Refusal](Telemetry-Attack-Detection-Addendum.md#f-llm-refusal) | MUST | out of scope |  |  |
 | [Content Modality & Attachment Identity](Telemetry-Attack-Detection-Addendum.md#f-content-modality-attachment-identity) | MUST | out of scope |  |  |
 | [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#f-attribute-source-trusted-provenance-marking) | MUST | partial | `attestation_evidence` | `attestation_evidence` (6.2, partial) |
@@ -802,22 +802,22 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
 | [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | partial | `binding_profile` | `binding_profile` (6.2, partial) |
-| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#f-tool-call-io) | MUST | covered | `action` | `action` (6.4) |
+| [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#f-tool-call-io) | MUST | covered | `action` | ODIS §6.4. |
 | [Tool Name](Telemetry-Attack-Detection-Addendum.md#f-tool-name) | MUST | out of scope |  |  |
 | [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) | MUST | out of scope |  |  |
 | [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#f-tool-execution-id) | MUST | out of scope |  |  |
-| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
+| [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | covered | `approved_software_refs` | ODIS §6.1. |
 | [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | out of scope |  |  |
 | [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) | MUST | out of scope |  | n/a (see note) |
 | [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | out of scope |  |  |
 | [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#f-human-approval-elicitation-event) | SHOULD | partial | `originating_principal` | `originating_principal` (6.3, partial) |
-| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#f-tool-acl-required-scope) | SHOULD | covered | `granted_authorizations` | `granted_authorizations` (6.3) |
-| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#f-session-taint-labels-information-flow-decisions) | SHOULD | covered | `constraints` | `constraints` (6.3) |
-| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#f-backend-route-restriction-decision) | SHOULD | covered | `resource_indicators`, `constraints` | `resource_indicators`, `constraints` (6.3) |
+| [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#f-tool-acl-required-scope) | SHOULD | covered | `granted_authorizations` | ODIS §6.3. |
+| [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#f-session-taint-labels-information-flow-decisions) | SHOULD | covered | `constraints` | ODIS §6.3. |
+| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#f-backend-route-restriction-decision) | SHOULD | covered | `resource_indicators`, `constraints` | ODIS §6.3. |
 | [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#f-mediation-coverage-bypass-path) | SHOULD | out of scope |  |  |
 | [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-tool-error-exception) | MAY | out of scope |  |  |
 | [Tool ID](Telemetry-Attack-Detection-Addendum.md#f-tool-id) | MAY | out of scope |  |  |
-| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#f-tool-privacy-classification) | MAY | covered | `constraints` | `constraints` (6.3) |
+| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#f-tool-privacy-classification) | MAY | covered | `constraints` | ODIS §6.3. |
 | [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#f-policy-reason-code) | MAY | out of scope |  |  |
 
 **RFC §6.4 Memory and retrieval**
@@ -829,7 +829,7 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 | [Memory Provenance / Source](Telemetry-Attack-Detection-Addendum.md#f-memory-provenance-source) | MUST | out of scope |  |  |
 | [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#f-memory-footprint-growth) | MUST | out of scope |  |  |
 | [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#f-retrieval-event) | MUST | out of scope |  |  |
-| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) | MUST | covered | `delegation_chain`, `constraints` | `delegation_chain`/`constraints` (6.3) |
+| [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) | MUST | covered | `delegation_chain`, `constraints` | ODIS §6.3. |
 | [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#f-memory-integrity-poisoning-signal) | SHOULD | out of scope |  |  |
 | [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | out of scope |  |  |
 | [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-metadata-integrity-signal) | SHOULD | out of scope |  |  |
@@ -840,40 +840,40 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
-| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#f-inter-agent-message) | MUST | covered | `delegation_chain` | `delegation_chain` (6.3) |
+| [Inter-Agent Message](Telemetry-Attack-Detection-Addendum.md#f-inter-agent-message) | MUST | covered | `delegation_chain` | ODIS §6.3. |
 | [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) | MUST | out of scope |  |  |
 | [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#f-loop-step-count-signal) | MUST | out of scope |  |  |
 | [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#f-resource-consumption-aggregate) | MUST | covered | `constraints` | `constraints` (rate) (6.3) |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | covered | `task_id`, `task_description` | `task_id`, `task_description` (6.3) |
-| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | covered | `delegation_id`, `parent_delegation_ref` | `delegation_id`, `parent_delegation_ref` (6.3) |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | covered | `agent_id`, `approved_software_refs` | `agent_id`, `approved_software_refs` (6.1) |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | covered | `task_id`, `task_description` | ODIS §6.3. |
+| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | covered | `delegation_id`, `parent_delegation_ref` | ODIS §6.3. |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | covered | `agent_id`, `approved_software_refs` | ODIS §6.1. |
 | [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture) | MAY | out of scope |  |  |
 
 **RFC §6.6 Identity, provenance and inventory**
 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
-| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) | MUST | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
+| [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) | MUST | covered | `approved_software_refs` | ODIS §6.1. |
 | [Identities Used (per hop)](Telemetry-Attack-Detection-Addendum.md#f-identities-used-per-hop) | MUST | covered | `actor` | `actor`, chain (6.3) |
-| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#f-verified-vs-displayed-identity) | MUST | covered | `originating_principal`, `actor` | `originating_principal`/`actor` (6.3) |
-| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#f-originating-principal-on-behalf-of) | SHOULD | covered | `originating_principal` | `originating_principal` (6.3) |
-| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#f-delegation-chain) | SHOULD | covered | `delegation_chain`, `delegation_id`, `parent_delegation_ref` | `delegation_chain`, `delegation_id`, `parent_delegation_ref` (6.3) |
-| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#f-granted-authorizations-scope) | SHOULD | covered | `granted_authorizations`, `attenuation_profile_ref` | `granted_authorizations`, `attenuation_profile_ref` (6.3) |
-| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#f-resource-indicators-constraints) | SHOULD | covered | `resource_indicators`, `constraints` | `resource_indicators`, `constraints` (6.3) |
+| [Verified vs Displayed Identity](Telemetry-Attack-Detection-Addendum.md#f-verified-vs-displayed-identity) | MUST | covered | `originating_principal`, `actor` | ODIS §6.3. |
+| [Originating Principal (on-behalf-of)](Telemetry-Attack-Detection-Addendum.md#f-originating-principal-on-behalf-of) | SHOULD | covered | `originating_principal` | ODIS §6.3. |
+| [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#f-delegation-chain) | SHOULD | covered | `delegation_chain`, `delegation_id`, `parent_delegation_ref` | ODIS §6.3. |
+| [Granted Authorizations / Scope](Telemetry-Attack-Detection-Addendum.md#f-granted-authorizations-scope) | SHOULD | covered | `granted_authorizations`, `attenuation_profile_ref` | ODIS §6.3. |
+| [Resource Indicators + Constraints](Telemetry-Attack-Detection-Addendum.md#f-resource-indicators-constraints) | SHOULD | covered | `resource_indicators`, `constraints` | ODIS §6.3. |
 | [Credential Minting & Scope-Narrowing Check](Telemetry-Attack-Detection-Addendum.md#f-credential-minting-scope-narrowing-check) | SHOULD | covered | `granted_authorizations`, `binding_profile` | `granted_authorizations`, `binding_profile` (6.2/6.3) |
-| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#f-trust-domain-crossing-delegation-depth) | SHOULD | covered | `trust_domain`, `max_depth` | `trust_domain` (6.1, 6.2), `max_depth` (6.3) |
-| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#f-runtime-credential-attestation) | SHOULD | covered | `attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` | `attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2) |
-| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#f-lifecycle-state) | SHOULD | covered | `lifecycle_state` | `lifecycle_state` (6.1) |
-| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
-| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
-| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | covered | `approved_software_refs` | `approved_software_refs` (6.1) |
+| [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#f-trust-domain-crossing-delegation-depth) | SHOULD | covered | `trust_domain`, `max_depth` | ODIS §6.1, 6.2, §6.3. |
+| [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#f-runtime-credential-attestation) | SHOULD | covered | `attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` | ODIS §6.2. |
+| [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#f-lifecycle-state) | SHOULD | covered | `lifecycle_state` | ODIS §6.1. |
+| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | covered | `approved_software_refs` | ODIS §6.1. |
+| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | covered | `approved_software_refs` | ODIS §6.1. |
+| [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | covered | `approved_software_refs` | ODIS §6.1. |
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | out of scope |  |  |
-| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | covered | `software_hash`, `attestation_evidence` | `software_hash`, `attestation_evidence` (6.2) |
+| [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | covered | `software_hash`, `attestation_evidence` | ODIS §6.2. |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | out of scope |  |  |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
-| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
-| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1) |
+| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
+| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
+| [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
+| [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | out of scope |  |  |
 <!-- END GENERATED: xm correspondence odis -->
 

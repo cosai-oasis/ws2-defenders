@@ -38,7 +38,7 @@
   records: Groups one multi-step run or sub-agent tree into one execution.
   emitted_by: [componentReasoningCore]
   capture: Groups all activity of one multi-step run or sub-agent tree into a single traceable execution.
-  rationale: Loop / Step-Count Signal and Resource-Consumption Aggregate are both defined per run.
+  rationale: 'Both are defined per run.'
 - id: session_turn_step_ids
   name: Session / Turn / Step IDs
   tags: [AOS]
@@ -195,7 +195,6 @@
   name: Content Modality & Attachment Identity
   tags: [AOS]
   tier: MUST
-  tier_mark: ‡
   role: label
   record: event
   origin: observed
@@ -208,7 +207,6 @@
   name: Guardrail Modification Record
   tags: [AOS]
   tier: MUST
-  tier_mark: ‡
   role: outcome
   record: event
   origin: observed
@@ -221,7 +219,6 @@
 - id: threat_classification_atlas_technique_tag
   name: Threat Classification / ATLAS Technique Tag
   tier: MAY
-  tier_mark: †
   role: label
   record: event
   origin: derived
@@ -313,7 +310,7 @@
   records: Model and version that processed the request.
   emitted_by: [componentModelServing]
   capture: Model and version processing the request. "Which agents used the compromised model?"; pins a model-specific vulnerability for patching.
-  rationale: The supply-chain pivot (*which agents used the compromised model*), and R-critical for scoping.
+  rationale: 'The supply-chain pivot, and R-critical for scoping.'
 - id: provider_endpoint_identity
   name: Provider / Endpoint Identity
   tier: MAY
@@ -356,7 +353,6 @@
   records: Errors under adversarial conditions and provider-side silent failures.
   emitted_by: [componentModelServing]
   capture: Errors that occur under adversarial conditions (overflow, malformed encoding, context exhaustion); provider-side silent failures.
-  rationale: Fires precisely under adversarial conditions.
 - id: model_provenance_signing_hash
   name: Model Provenance / Signing / Hash
   tier: SHOULD
@@ -379,7 +375,6 @@
   records: Digest of the exact inputs to a forward pass, for replay and drift detection.
   emitted_by: [componentTheModel]
   capture: Content-addressed digest (+ pooled vector) of the exact inputs to a forward pass, captured pre-inference for replay/drift detection.
-  rationale: A research-grade signal.
 - id: token_malformation_context_corruption_indicator
   name: Token Malformation / Context-Corruption Indicator
   tier: MAY
@@ -391,7 +386,6 @@
   records: Token-entropy anomalies correlated with confabulation.
   emitted_by: [componentTheModel]
   capture: Signal of context-induced token-entropy anomalies correlated with confabulation.
-  rationale: A research-grade signal.
 - id: tool_call_io
   name: Tool Call I/O
   tier: MUST
@@ -615,7 +609,7 @@
   records: Query issued, items returned and their scores.
   emitted_by: [componentRAGContent]
   capture: Query issued + documents/chunks returned + retrieval scores.
-  rationale: 'RAG is the document''s most-cited injection channel (`TA-01`, `TA-02`, `TA-09`, `IR-03`, `AOC-10` are all retrieval-mediated). This field and **Retrieved-Content Source / Provenance** answer the halves a detection needs: *what came back*, and *where it came from and when it changed*. Together they connect "what was retrieved" to "what the model then did"; neither is sufficient alone.'
+  rationale: 'RAG is the document''s most-cited injection channel (`TA-01`, `TA-02`, `TA-09`, `IR-03`, `AOC-10` are all retrieval-mediated). This field and **Retrieved-Content Source / Provenance** answer the halves a detection needs: *what came back*, and *where it came from and when it changed*.'
 - id: retrieved_content_source_provenance
   name: Retrieved-Content Source / Provenance
   tier: MUST
@@ -1038,14 +1032,13 @@
   name: Attribute Source / Trusted-Provenance Marking
   tags: [CPEX]
   tier: MUST
-  tier_mark: ‡
   role: provenance
   record: event
   origin: observed
   records: The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier.
   emitted_by_text: every security-relevant attribute
-  capture: '**Cross-cutting.** For every security-relevant attribute, the **authority that supplied it**: verified IdP token, policy decision point, enforcement-owned session store, platform/runtime, versus **self-asserted by the agent or model**. Under assume-breach, an unmarked value is an unverified value.'
-  rationale: 'The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity (§1.6)) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task Declaration, System Prompt, and every reasoning field are agent-supplied, and the corpus shows that agents *do* report falsely: in `AOC-07` the agent declared "I''m done responding" more than a dozen times and kept replying, and in `AOC-01` it claimed a secret had been deleted while the data remained recoverable. Cost is an enum per attribute group, not per event.'
+  capture: '**Cross-cutting.** For every security-relevant attribute, the **authority that supplied it**: verified IdP token, policy decision point, enforcement-owned session store, platform/runtime, versus **self-asserted by the agent or model**. Security-relevant attributes are those a hostile agent could plausibly fabricate: identity, authorization outcome, taint state, approval status, autonomy level, task declaration, and instruction configuration. Under assume-breach, an unmarked value is an unverified value.'
+  rationale: 'The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity (§1.6)) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task Declaration, System Prompt, and every reasoning field are agent-supplied, and the corpus shows that agents *do* report falsely ([RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-the-agent-might-be-lying)). Cost is an enum per attribute group, not per event.'
 - id: session_taint_labels_information_flow_decisions
   name: Session Taint Labels & Information-Flow Decisions
   tags: [CPEX]

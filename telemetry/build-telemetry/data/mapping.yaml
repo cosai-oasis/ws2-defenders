@@ -135,14 +135,14 @@ asks:
   proposes: [gen_ai.input.trust_level]
   tracking: []
   status: proposed
-  rationale: '`gen_ai.input.trust_level` (trusted-instruction / trusted-data / untrusted-instruction / untrusted-data), crossing origin authority with the role the deployment assigned the segment on entry, instruction or data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.'
+  rationale: 'The four values are trusted-instruction, trusted-data, untrusted-instruction and untrusted-data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.'
 - id: otel_security_guardrail
   publication: otel_genai
   summary: Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*.
   proposes: []
   tracking: []
   status: proposed
-  rationale: 'The evaluation event already carries name, score, label, and explanation, the right shape for a classifier verdict. What it lacks is the security semantics: a **blocked / allowed** outcome, a guardrail **type**, and a **threat technique** reference. Reusing evaluation avoids a parallel namespace; the alternative is a dedicated `gen_ai.guardrail.*`. Either way, this is the field that makes classifier *bypass* detectable (`TA-01`).'
+  rationale: 'The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).'
 - id: otel_memory_provenance_footprint
   publication: otel_genai
   summary: Add provenance and footprint attributes to gen_ai.memory.*.
@@ -170,7 +170,7 @@ asks:
   proposes: [gen_ai.trigger.type, gen_ai.trigger.event]
   tracking: []
   status: proposed
-  rationale: Whether a run was user-initiated or autonomous, and what event started it. `TA-01` is zero-click; this is the first filter of any injection hunt.
+  rationale: '`TA-01` is zero-click; this is the first filter of any injection hunt.'
 - id: otel_tool_digest_mcp_primitive
   publication: otel_genai
   summary: Add gen_ai.tool.definitions.hash and an mcp.primitive value set (tool, resource, prompt, sampling, elicitation, roots).
@@ -344,7 +344,7 @@ fields:
     odis:
       coverage: covered
       constructs: [agent_id, owner_ref]
-      note: '`agent_id` /`owner_ref` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   agent_runtime_instance_id:
@@ -360,7 +360,7 @@ fields:
     odis:
       coverage: covered
       constructs: [runtime_instance_id]
-      note: '`runtime_instance_id` (6.2)'
+      note: 'ODIS §6.2.'
       sections: ['6.2']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   workflow_run_id:
@@ -379,7 +379,7 @@ fields:
     odis:
       coverage: covered
       constructs: [request_trace_id]
-      note: '`request_trace_id` (6.4)'
+      note: 'ODIS §6.4.'
       sections: ['6.4']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
   session_turn_step_ids:
@@ -498,7 +498,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
   inference_parameters:
@@ -559,7 +559,7 @@ fields:
     odis:
       coverage: covered
       constructs: [request_trace_id]
-      note: '`request_trace_id` (6.4)'
+      note: 'ODIS §6.4.'
       sections: ['6.4']
     controls: []
   stop_reason:
@@ -606,7 +606,7 @@ fields:
     odis:
       coverage: covered
       constructs: [software_hash, approved_software_refs]
-      note: '`software_hash` (6.2), `approved_software_refs` (6.1)'
+      note: 'ODIS §6.2, §6.1.'
       sections: ['6.2', '6.1']
     controls: [controlModelAndDataIntegrityManagement, controlModelRegistryIntegrity, controlMessageAndPayloadResourceLimits]
   organization_tenant_id:
@@ -625,7 +625,7 @@ fields:
     odis:
       coverage: covered
       constructs: [trust_domain]
-      note: '`trust_domain` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: []
   provider_endpoint_identity:
@@ -728,7 +728,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: '`constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlInputValidationAndSanitization]
   source_host_ip_request_metadata:
@@ -796,7 +796,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators]
-      note: '`resource_indicators` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlOutputValidationAndSanitization]
   citations_source_attribution:
@@ -832,7 +832,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: '`constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlOutputValidationAndSanitization]
   llm_refusal:
@@ -1008,7 +1008,7 @@ fields:
     odis:
       coverage: covered
       constructs: [action]
-      note: '`action` (6.4)'
+      note: 'ODIS §6.4.'
       sections: ['6.4']
     controls:
     - controlToolServerVetting
@@ -1083,7 +1083,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
   mcp_server_identity_primitive:
@@ -1169,7 +1169,7 @@ fields:
     odis:
       coverage: covered
       constructs: [granted_authorizations]
-      note: '`granted_authorizations` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: []
   session_taint_labels_information_flow_decisions:
@@ -1186,7 +1186,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: '`constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: []
   backend_route_restriction_decision:
@@ -1203,7 +1203,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators, constraints]
-      note: '`resource_indicators`, `constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: []
   mediation_coverage_bypass_path:
@@ -1277,7 +1277,7 @@ fields:
     odis:
       coverage: covered
       constructs: [constraints]
-      note: '`constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls:
     - controlToolServerSupplyChainIntegrity
@@ -1403,7 +1403,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain, constraints]
-      note: '`delegation_chain`/`constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls:
     - controlRetrievalAndVectorSystemIntegrity
@@ -1512,7 +1512,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain]
-      note: '`delegation_chain` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   background_scheduled_task_event:
@@ -1581,7 +1581,7 @@ fields:
     odis:
       coverage: covered
       constructs: [task_id, task_description]
-      note: '`task_id`, `task_description` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   a2a_task_lifecycle_event:
@@ -1599,7 +1599,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_id, parent_delegation_ref]
-      note: '`delegation_id`, `parent_delegation_ref` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   peer_agent_card_descriptor:
@@ -1619,7 +1619,7 @@ fields:
     odis:
       coverage: covered
       constructs: [agent_id, approved_software_refs]
-      note: '`agent_id`, `approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
   protocol_envelope_capture:
@@ -1653,7 +1653,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls: [controlAgentInventoryManagement, controlThirdPartyCapabilityAdmission]
   identities_used_per_hop:
@@ -1696,7 +1696,7 @@ fields:
     odis:
       coverage: covered
       constructs: [originating_principal, actor]
-      note: '`originating_principal`/`actor` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls:
     - controlComponentIdentityAuthentication
@@ -1719,7 +1719,7 @@ fields:
     odis:
       coverage: covered
       constructs: [originating_principal]
-      note: '`originating_principal` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls:
     - controlComponentIdentityAuthentication
@@ -1744,7 +1744,7 @@ fields:
     odis:
       coverage: covered
       constructs: [delegation_chain, delegation_id, parent_delegation_ref]
-      note: '`delegation_chain`, `delegation_id`, `parent_delegation_ref` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   granted_authorizations_scope:
@@ -1761,7 +1761,7 @@ fields:
     odis:
       coverage: covered
       constructs: [granted_authorizations, attenuation_profile_ref]
-      note: '`granted_authorizations`, `attenuation_profile_ref` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   resource_indicators_constraints:
@@ -1778,7 +1778,7 @@ fields:
     odis:
       coverage: covered
       constructs: [resource_indicators, constraints]
-      note: '`resource_indicators`, `constraints` (6.3)'
+      note: 'ODIS §6.3.'
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   credential_minting_scope_narrowing_check:
@@ -1820,7 +1820,7 @@ fields:
     odis:
       coverage: covered
       constructs: [trust_domain, max_depth]
-      note: '`trust_domain` (6.1, 6.2), `max_depth` (6.3)'
+      note: 'ODIS §6.1, 6.2, §6.3.'
       sections: ['6.1, 6.2', '6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
   runtime_credential_attestation:
@@ -1838,7 +1838,7 @@ fields:
     odis:
       coverage: covered
       constructs: [attestation_evidence, issuer, holder_key_ref, expires_at, binding_profile]
-      note: '`attestation_evidence`, `issuer`, `holder_key_ref`, `expires_at`, `binding_profile` (6.2)'
+      note: 'ODIS §6.2.'
       sections: ['6.2']
     controls:
     - controlComponentIdentityAuthentication
@@ -1861,7 +1861,7 @@ fields:
     odis:
       coverage: covered
       constructs: [lifecycle_state]
-      note: '`lifecycle_state` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlComponentIdentityAuthentication
@@ -1887,7 +1887,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1908,7 +1908,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1927,7 +1927,7 @@ fields:
     odis:
       coverage: covered
       constructs: [approved_software_refs]
-      note: '`approved_software_refs` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -1964,7 +1964,7 @@ fields:
     odis:
       coverage: covered
       constructs: [software_hash, attestation_evidence]
-      note: '`software_hash`, `attestation_evidence` (6.2)'
+      note: 'ODIS §6.2.'
       sections: ['6.2']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2001,7 +2001,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2021,7 +2021,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2041,7 +2041,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2060,7 +2060,7 @@ fields:
     odis:
       coverage: covered
       constructs: [sponsor_ref, owner_ref, created_at, updated_at]
-      note: '`sponsor_ref`, `owner_ref`, `created_at`, `updated_at` (6.1)'
+      note: 'ODIS §6.1.'
       sections: ['6.1']
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
@@ -2068,11 +2068,11 @@ fields:
     ocsf:
       coverage: none
       gap: Fleet aggregates are derived
-      note: Derived from per-event records; no ask.
+      note: No ask proposed.
     otel:
       coverage: none
       gap: Fleet aggregates are derived
-      note: Derived from per-event records; no ask.
+      note: No ask proposed.
     aitf:
       coverage: none
       note: (derived)

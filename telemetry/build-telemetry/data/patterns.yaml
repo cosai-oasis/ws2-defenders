@@ -59,7 +59,7 @@
   conditions:
   - The **Tool Definition Digest** at invocation differs from the digest approved for the same tool name and server.
   requires: [tool_definition_digest]
-  enriches: [mcp_server_identity_primitive, tool_call_io, human_approval_elicitation_event]
+  enriches: [tool_call_io, human_approval_elicitation_event]
   baseline: The approved digest per tool.
   catches: [TA-29]
 - id: denials_then_allow
@@ -195,7 +195,7 @@
   - A **Credential Minting & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
   requires:
   - credential_minting_scope_narrowing_check
-  enriches: [granted_authorizations_scope, identities_used_per_hop]
+  enriches: [granted_authorizations_scope]
   catches: [TA-08]
   catches_analogical: [AOC-02, AOC-08]
 - id: cross_tenant_access
