@@ -140,8 +140,8 @@ field_steps:
   - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
   fields: [training_data_item_digest, training_data_source_provenance, compute_job_submission_event]
 ad_field_header:
-- '| Field | Tier | Role | What it records | Emitted by | Grounding attacks |'
-- '| :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |'
+- '| Field | Tier | Role | Origin | What it records | Emitted by | Grounding attacks |'
+- '| :------------ | :---- | :---------- | :-------- | :------------------------------------- | :-------------------- | :------------ |'
 pattern_stages:
 - stage: entry
   title: 'Entry: input arrives'

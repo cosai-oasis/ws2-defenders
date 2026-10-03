@@ -147,7 +147,7 @@ def ad_field_row(f):
     name = f"**{f['name']}**" + ''.join(f' **[{t}]**' for t in f.get('tags', []))
     tier = f['tier'] + (' ' + f['tier_mark'] if 'tier_mark' in f else '')
     ev = ', '.join(alink(a) if g == 'instance' else f'*{alink(a)}*' for a, g in grounds[f['id']])
-    return row([name, tier, f['role'], records(f), emitted(f), ev])
+    return row([name, tier, f['role'], f['origin'], records(f), emitted(f), ev])
 
 
 def capture_entry(f):
