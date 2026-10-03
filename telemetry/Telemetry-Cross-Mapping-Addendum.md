@@ -28,7 +28,7 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 | :------------------ | :------------------ | :--- | :------------------ |
 | Open Cybersecurity Schema Framework | 1.9.0 (2026-08-03) | [[37]](#standards--frameworks) | yes, 2026-10-02 |
 | OpenTelemetry GenAI semantic conventions | commit `e07f4eb` (2026-10-02) | [[35]](#standards--frameworks) | yes, 2026-10-02 |
-| OpenTelemetry semantic conventions (core) | v1.44.0 (2026-08-04) | [[36]](#standards--frameworks) | yes, 2026-10-02 |
+| OpenTelemetry semantic conventions (core) | v1.44.0 (2026-08-04) | [[35]](#standards--frameworks) | yes, 2026-10-02 |
 | AI Telemetry Framework | commit `e17c514` (2026-09-07) | [[25]](#standards--frameworks) | yes, 2026-10-02 |
 | Open Delegation & Identity Standard | commit `148dc41` (2026-09-08) | [[26]](#standards--frameworks) | yes, 2026-10-02 |
 | OWASP Agent Observability Standard | 0.1.0 (2025-12-30) | [[38]](#standards--frameworks) | yes, 2026-10-02 |
@@ -917,7 +917,7 @@ ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.
 
 ### Standards & frameworks
 
-25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry>
+25. **AITF**: AI Telemetry Framework (OTel + OCSF binding), donated to CoSAI WS2. <https://github.com/cosai-oasis/ws2-defenders/tree/main/telemetry/aitf>. Cited at version 0.4, commit `e17c514` (7 September 2026).
 26. **ODIS**: Coalition for Secure AI, Workstream 4: *Open Delegation & Identity Standard*. Apache-2.0. Records defined in ODIS §6: Agent Registration Record (6.1), Agent Runtime Credential Descriptor (6.2), Delegation Record (6.3), Identity Context (Policy Engine Feed) (6.4). Cited at commit `148dc41` (8 September 2026); ODIS is a working draft, so this reference is pinned to a commit rather than to `main` to keep the section numbers and field names in [XM §5](Telemetry-Cross-Mapping-Addendum.md#5-odis) checkable. <https://github.com/cosai-oasis/ws4-odis/blob/148dc4187139a41325e3c6d6e7533d956bd33144/RFCs/ODIS.md>
 
 <!-- list break: reference numbers are not contiguous -->
@@ -929,9 +929,9 @@ ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.
 
 <!-- list break: reference numbers are not contiguous -->
 
-35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names therefore come from the new repository, not the deprecated registry. **Names in XM §§2 to 3 were verified against `semantic-conventions-genai` @ `0c87594` (10 September 2026) and `semantic-conventions` @ `22b6cbb` (9 September 2026); neither repository publishes release tags, so commit SHAs are the only stable anchor.** Cross referenced in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-opentelemetry).
+35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names therefore come from the new repository, not the deprecated registry. **Names in XM §§2 and 3 resolve at `semantic-conventions-genai` commit `e07f4eb` (2 October 2026), which publishes no releases, and at `semantic-conventions` release v1.44.0 (4 August 2026).** Cross referenced in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-opentelemetry).
 36. **OpenTelemetry, core specification.** Signals, context propagation, sampling. <https://opentelemetry.io/docs/specs/otel/> · **W3C Trace Context**: <https://www.w3.org/TR/trace-context/> · MCP context propagation via `params._meta` (Specification Enhancement Proposal **SEP-414**): <https://modelcontextprotocol.io/community/seps/414-request-meta>
-37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>
+37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>. Cited at release 1.9.0 (3 August 2026).
 38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-owasp-aos). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
 
 <!-- list break: reference numbers are not contiguous -->
