@@ -92,7 +92,7 @@
   records: LLM call, tool call, memory operation or message send.
   emitted_by: [componentReasoningCore]
   capture: Distinguishes LLM-call vs tool-call vs memory-op vs message-send, the "think → act" boundary.
-  rationale: Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage.
+  rationale: 'Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage. No pattern lists it as a condition, because each names the operation''s own field, such as **Tool Call I/O**. Action Type is what lets a detection select the same kind of operation across components ([§2](#2-correlation-patterns)).'
 - id: execution_status
   name: Execution Status
   tier: MUST

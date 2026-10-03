@@ -74,7 +74,7 @@ These fields establish what is running and where: the asset inventory of the AI 
 
 <a id="f-action-type"></a>**Action Type.** Distinguishes LLM-call vs tool-call vs memory-op vs message-send, the "think → act" boundary.
 
-*Tier:* MUST, on 6 documented instances. Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage. *Risk Map controls:* `controlAgentInventoryManagement`, `controlAgentObservability`.
+*Tier:* MUST, on 6 documented instances. Marks the think→act boundary where `AOC-01` and `AOC-02` did their damage. No pattern lists it as a condition, because each names the operation's own field, such as **Tool Call I/O**. Action Type is what lets a detection select the same kind of operation across components ([§2](#2-correlation-patterns)). *Risk Map controls:* `controlAgentInventoryManagement`, `controlAgentObservability`.
 
 <a id="f-execution-status"></a>**Execution Status.** Outcome of the operation or turn (complete / error / exit / aborted) + duration. Spikes/timeouts reveal probing, DoS, or mass failure. Distinct from **Stop Reason** below, which records why a *completion* ended.
 
