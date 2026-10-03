@@ -81,8 +81,8 @@
   compound: label plus identifier of the originating event
   records: User-initiated or autonomous, and for autonomous runs the originating event.
   emitted_by: [componentReasoningCore]
-  capture: Whether this run was **user-initiated or autonomous**, and for autonomous runs the originating event (inbound email, chat message, webhook, schedule). Distinct from Surface/App, which records the *channel*, not who or what started the run.
-  rationale: Zero-click is a telemetry category. `TA-01` starts an entire run from one inbound email with no human in the loop. Surface/App would record "email" for both that and an ordinary request; the autonomous flag is what separates them.
+  capture: Whether this run was **user-initiated or autonomous**, and for autonomous runs the originating event (inbound email, chat message, webhook, schedule). Distinct from Surface / App, which records the *channel*, not who or what started the run.
+  rationale: Zero-click is a telemetry category. `TA-01` starts an entire run from one inbound email with no human in the loop. Surface / App would record "email" for both that and an ordinary request; the autonomous flag is what separates them.
 - id: action_type
   name: Action Type
   tier: MUST
@@ -290,7 +290,7 @@
   origin: observed
   records: Output filter result (pass, flag, block, modify).
   emitted_by: [componentApplicationOutputHandling, componentAgentOutputHandling]
-  capture: 'Output-side filter result (PII/DLP, harmful content, exfil pattern): **pass / flag / block / modify**. Modifications are recorded via the **Guardrail Modification Record** (§1.2). Fired detections carry the **ATLAS Technique Tag** (see §1.2).'
+  capture: 'Output-side filter result (PII/DLP, harmful content, exfil pattern): **pass / flag / block / modify**. Modifications are recorded via the **Guardrail Modification Record**. Fired detections can carry the **ATLAS Technique Tag**.'
 - id: llm_refusal
   name: LLM Refusal
   tier: MUST
@@ -300,7 +300,7 @@
   records: Refusal status and reason.
   emitted_by: [componentAgentOutputHandling]
   capture: Status + reason when the model refuses. A refusal-then-success streak signals a jailbreak in progress; an *absent* refusal on clearly policy-violating output flags a guardrail gap.
-  rationale: An early-warning tripwire. `IR-01` is iterated reframing until a refusal flips; `AOC-12/13/14` are the mirror image, successful refusals whose telemetry documents attempted attacks even when blocked.
+  rationale: An early-warning tripwire. `IR-01` is iterated reframing until a refusal flips; `AOC-12`, `AOC-13` and `AOC-14` are the mirror image, successful refusals whose telemetry documents attempted attacks even when blocked.
 - id: model_name_version
   name: Model Name + Version
   tier: MUST
@@ -321,7 +321,7 @@
     may: [qa, redundant]
   records: Which provider or endpoint served the call.
   emitted_by: [componentModelServing]
-  capture: Which provider/endpoint served the call. The reason the completion ended is **Stop Reason** (§1.1).
+  capture: Which provider/endpoint served the call. The reason the completion ended is **Stop Reason**.
   rationale: '`TA-28` is the case that tests the tier. `AOC-06` is a governance and availability signal rather than a discrete adversary technique, which makes the field Q- and A-dominant, and the D concern it is usually asked to carry, model substitution, belongs to Model Name + Version. `TA-28` is different: a backdoor using a provider''s own API as its command-and-control channel, where the exfiltration destination is an endpoint the application legitimately calls. That is a detection argument rather than a governance one, and it is carried by **Output Egress Destination** (§1.2, MUST) recording the destination together with what left, not by provider identity alone, because a legitimate call and a C2 beacon share the provider. The field stays MAY because knowing *which* provider was called does not separate them; knowing what was sent does.'
 - id: inference_parameters
   name: Inference Parameters
@@ -332,7 +332,7 @@
   origin: declared
   records: Decoding parameters and declared context window in force for the call; the denominator for max-length-output and oversized-input detections.
   emitted_by: [componentModelServing]
-  capture: 'The decoding/config parameters in force for the call: `temperature`, `top_p`/`top_k`, `max_tokens`, `stop` sequences, `seed`, and the **declared context-window size**. The runtime half of the configuration-integrity baseline that **System Prompt** (§1.1) covers for instructions.'
+  capture: 'The decoding/config parameters in force for the call: `temperature`, `top_p`/`top_k`, `max_tokens`, `stop` sequences, `seed`, and the **declared context-window size**. The runtime half of the configuration-integrity baseline that **System Prompt / Instruction Config** covers for instructions.'
   rationale: 'Rests on a *denominator* argument rather than a tampering attack: "max-length output" (`TA-04`) and "anomalously large input" (`TA-10`) are the documented detection signatures, and neither is computable without `max_tokens` and the declared context window. It also gives decoding configuration the integrity baseline the system prompt has. Capture it per call: per-request overrides are the attack.'
 - id: input_output_token_counts
   name: Input / Output Token Counts
@@ -511,7 +511,7 @@
   records: Sensitivity class of the data a tool touches.
   emitted_by: [componentTools]
   capture: Sensitivity class of data the tool touches, feeds DLP / data-flow governance.
-  rationale: DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL/Scope and Output Egress.
+  rationale: DLP and compliance governance metadata, A-dominant, and not modality-gated. Its D value is already carried by Tool ACL / Required Scope and Output Egress Destination.
 - id: tool_selection_rationale
   name: Tool Selection Rationale
   tags: [AOS]
@@ -532,7 +532,7 @@
   records: Each create, update or delete of a persistent memory item, and by whom.
   emitted_by: [componentMemory]
   capture: 'Every create/update/delete to persistent or long-term memory: what changed, by which turn/actor. Deletions include evictions made by the store itself under a size or token budget, recorded with the policy that evicted the item, so an item lost to eviction is distinguishable from one that was retrieved poorly.'
-  rationale: 'MINJA (`IR-02`) poisons memory using only benign queries: the agent autonomously persists malicious reasoning. AGENTPOISON (`IR-05`) uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write and Read plus **Memory Provenance**.'
+  rationale: 'MINJA (`IR-02`) poisons memory using only benign queries: the agent autonomously persists malicious reasoning. AGENTPOISON (`IR-05`) uses optimized triggers. `TA-18` is the production instance: injected ChatGPT memories persisted and were recalled in later conversations. None is detectable without Memory Write Event, Memory Read / Injection Event and **Memory Provenance / Source**.'
 - id: memory_read_injection_event
   name: Memory Read / Injection Event
   tier: MUST
@@ -587,7 +587,7 @@
   records: A memory store's declared identity, limits and retrieval settings.
   emitted_by: [componentMemory]
   capture: 'The memory store''s declared identity and limits: name, type, backend, size cap, retention, and retrieval spec (top-k, scoring). The baseline that **Memory Footprint** is measured against.'
-  rationale: '`TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field''s job (a baseline for Memory Footprint) can be met by hard-coding known limits.'
+  rationale: '`TA-30` is an instance (a store with no retention policy), but the silently-raised-limit scenario is absent from the corpus, and the field''s job (a baseline for Memory Footprint / Growth) can be met by hard-coding known limits.'
 - id: memory_write_rationale
   name: Memory Write Rationale
   tags: [AOS]
@@ -908,7 +908,7 @@
   capture: Cryptographic signature over the emitted inventory (signature value + key identifier), binding the declared composition to a signer.
   rationale: 'An inventory a compromised agent can rewrite is worth little. The limit: a signature proves who asserted the inventory, not that the assertion is true, which is the subject of Attribute Source / Trusted-Provenance Marking (§1.2).'
 - id: tool_description
-  name: Description
+  name: Tool Description
   tier: MAY
   role: content
   record: state
@@ -920,7 +920,7 @@
   capture: 'Declared purpose: detects misleadingly-described ("read-only" but writes) tools.'
   rationale: No documented instance turns on a tool whose declared purpose misdescribes its behavior; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
 - id: tool_status
-  name: Status (active/disabled)
+  name: Tool Status (active/disabled)
   tier: MAY
   role: label
   record: state
@@ -1027,7 +1027,7 @@
   - componentAuthorizationPolicyDecisionPoint
   - componentAuthorizationPolicyEnforcementPoint
   capture: 'Per mediated operation: the terminal decision (**allow / deny**, with **allow-after-modification** flagged), the deny **reason and machine-readable code** (a fail-closed enforcement failure arrives as a deny with its own code), the per-step actions that produced it including any **suppressed deny** (a plugin denied and was overridden by pipeline role) and any **abort**, the **deciding authority** (inline policy rule vs external PDP, and which; Cedar / CEL / OPA [[49]](#standards--frameworks) / custom), the **rule or policy identifier** that produced it, and any obligations attached. Distinct from a content-guardrail verdict: this is the *authorization* outcome, not a classifier score.'
-  rationale: It records what the authorization layer **decided**, on which rule, and why. Guardrail Verdict records what a *content classifier* concluded and Tool ACL / Required Scope what authority a tool *requires*; without this field a denied operation and a never-attempted one are indistinguishable. Among the attacks that turn on that record are `AOC-02` (non-owner compliance), `AOC-08` (privileged action after spoof), `AOC-10` (injected authority), and `TA-08` (individually-authorized calls escalating in aggregate; visible only if each link's decision and rule are recorded). Universal rather than modality-gated; D and R jointly.
+  rationale: It records what the authorization layer **decided**, on which rule, and why. The guardrail verdicts record what a *content classifier* concluded and Tool ACL / Required Scope what authority a tool *requires*; without this field a denied operation and a never-attempted one are indistinguishable. Among the attacks that turn on that record are `AOC-02` (non-owner compliance), `AOC-08` (privileged action after spoof), `AOC-10` (injected authority), and `TA-08` (individually-authorized calls escalating in aggregate; visible only if each link's decision and rule are recorded). Universal rather than modality-gated; D and R jointly.
 - id: attribute_source_trusted_provenance_marking
   name: Attribute Source / Trusted-Provenance Marking
   tags: [CPEX]
@@ -1038,7 +1038,7 @@
   records: The authority that supplied each security-relevant attribute, or that it is self-asserted, and each counterparty's knowability tier.
   emitted_by_text: every security-relevant attribute
   capture: '**Cross-cutting.** For every security-relevant attribute, the **authority that supplied it**: verified IdP token, policy decision point, enforcement-owned session store, platform/runtime, versus **self-asserted by the agent or model**. Security-relevant attributes are those a hostile agent could plausibly fabricate: identity, authorization outcome, taint state, approval status, autonomy level, task declaration, and instruction configuration. Under assume-breach, an unmarked value is an unverified value.'
-  rationale: 'The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity (§1.6)) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task Declaration, System Prompt, and every reasoning field are agent-supplied, and the corpus shows that agents *do* report falsely ([RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-the-agent-might-be-lying)). Cost is an enum per attribute group, not per event.'
+  rationale: 'The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity, §1.6) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task / Intent Declaration, System Prompt / Instruction Config, and every reasoning field are agent-supplied, and the corpus shows that agents *do* report falsely ([RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-the-agent-might-be-lying)). Cost is an enum per attribute group, not per event.'
 - id: session_taint_labels_information_flow_decisions
   name: Session Taint Labels & Information-Flow Decisions
   tags: [CPEX]

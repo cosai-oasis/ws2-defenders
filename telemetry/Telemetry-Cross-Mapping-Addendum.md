@@ -6,7 +6,7 @@
 
 ---
 
-### How this addendum is organized
+## How this addendum is organized
 
 This addendum maps the field set onto the specifications that carry security telemetry, and states what each would need to carry the rest. **OCSF** and **OpenTelemetry** are its two target audiences, in that order: OCSF is how a SIEM consumes the telemetry, OpenTelemetry how instrumentation emits it. **AITF** is the bridge: it carries the fields today and stages the changes proposed to the other two. The remaining sections are cross references, included for completeness.
 
@@ -58,9 +58,6 @@ CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on thi
 ## 1. OCSF
 
 ### 1.1 What it is, and the version mapped
-
-<!-- BEGIN GENERATED: xm pin ocsf -->
-<!-- END GENERATED: xm pin ocsf -->
 
 OCSF, the Open Cybersecurity Schema Framework [[37]](#standards--frameworks), is the vendor-neutral schema SIEMs normalize security events into: event classes with typed attributes, extended by profiles. The mapping is against release 1.9.0 (3 August 2026).
 
@@ -191,8 +188,8 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | none |  | No dependency graph. | [ocsf_ai_bom](#ask-ocsf-ai-bom) |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | none |  | No BOM signature. | [ocsf_ai_bom](#ask-ocsf-ai-bom) |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | covered | `profile:record_integrity`, `object:attestation`, `attribute:prev_event`, `attribute:chain_uid` | No new schema: continuity maps to attestation.prev_event and attestation.chain_uid. |  |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
+| [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
+| [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
@@ -219,7 +216,7 @@ The table states each gap. Two need more than a cell.
 
 <a id="ask-ocsf-ai-bom"></a>**`ocsf_ai_bom`** (open; [ocsf-schema#1724](https://github.com/ocsf/ocsf-schema/issues/1724)). Add an ai_bom object (BOM reference, format, signature, dependency edges) and a capability-change activity on Agent Activity. *Closes:* [Capability-Set Change Event](Telemetry-Attack-Detection-Addendum.md#f-capability-set-change-event) (MUST, 4 instances), [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) (SHOULD, 2 instances), [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) (SHOULD, 1 instance) and [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) (SHOULD, 0 instances).
 
-<a id="ask-ocsf-ai-asset"></a>**`ocsf_ai_asset`** (open; [ocsf-schema#1724](https://github.com/ocsf/ocsf-schema/issues/1724)). Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage). *Closes:* [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) (MUST, on a dependency), [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) (SHOULD, 2 instances), [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) (SHOULD, 2 instances), [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) (MAY, 0 instances), [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) (MAY, 0 instances) and [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) (MAY, 0 instances).
+<a id="ask-ocsf-ai-asset"></a>**`ocsf_ai_asset`** (open; [ocsf-schema#1724](https://github.com/ocsf/ocsf-schema/issues/1724)). Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage). *Closes:* [Instrumentation Coverage / Hook Attestation](Telemetry-Attack-Detection-Addendum.md#f-instrumentation-coverage-hook-attestation) (MUST, on a dependency), [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) (SHOULD, 2 instances), [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) (SHOULD, 2 instances), [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) (MAY, 0 instances), [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) (MAY, 0 instances) and [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) (MAY, 0 instances).
 
 <a id="ask-ocsf-ai-delegation-activity"></a>**`ocsf_ai_delegation_activity`** (open; [ocsf-schema#1640](https://github.com/ocsf/ocsf-schema/issues/1640)). Ratify an AI Delegation Activity class (9002) for the delegation lifecycle. *Closes:* [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) (SHOULD, 0 instances) and [Delegation Chain](Telemetry-Attack-Detection-Addendum.md#f-delegation-chain) (SHOULD, 2 instances).
 
@@ -290,9 +287,6 @@ The `record_integrity` profile and the `attestation` object on the base event ca
 ## 2. OpenTelemetry
 
 ### 2.1 What it is, and the version mapped
-
-<!-- BEGIN GENERATED: xm pin otel -->
-<!-- END GENERATED: xm pin otel -->
 
 The OpenTelemetry and OCSF proposals should be sequenced together, with AITF carrying the interim binding ([§3](#3-aitf)).
 
@@ -436,8 +430,8 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | none |  | No dependency graph. | [otel_capability_change](#ask-otel-capability-change) |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | none |  | No inventory signature. | [otel_capability_change](#ask-otel-capability-change) |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | none |  | No per-session sequence number or hash chain. No ask proposed. |  |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `gen_ai.tool.description` |  |  |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | none |  | No reachability status for a tool. A MAY field; no ask. |  |
+| [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `gen_ai.tool.description` |  |  |
+| [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | none |  | No reachability status for a tool. A MAY field; no ask. |  |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | none |  | No ownership or change dates. A MAY field; no ask. |  |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
@@ -542,9 +536,6 @@ Signal choice matters. The following rules correct mistakes that show up often w
 ## 3. AITF
 
 ### 3.1 What it is, and the version mapped
-
-<!-- BEGIN GENERATED: xm pin aitf -->
-<!-- END GENERATED: xm pin aitf -->
 
 AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to CoSAI Workstream 2. It carries these fields as OpenTelemetry attributes today and emits them into OCSF ahead of formal ratification, so adopters are not blocked on either standards body. AITF v0.4 closed the 27 gaps RFC v0.4 recorded for it, adding 390 attributes ([`aitf/AITF_gaps.md`](aitf/AITF_gaps.md)).
 
@@ -675,8 +666,8 @@ AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to 
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | covered | `supply_chain.ai_bom.*` | `supply_chain.ai_bom.*` (dependency edges) |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | covered | `supply_chain.*` | `supply_chain.*` signature attrs |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | covered | `observability.sequence.*` |  |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `asset.*` |  |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `asset.*` |  |
+| [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `asset.*` |  |
+| [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `asset.*` |  |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `asset.*` |  |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `asset.*` |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | (derived) |
@@ -739,9 +730,6 @@ This field set records enforcement *outcomes* and leaves the enforcement *protoc
 ## 5. ODIS
 
 ### 5.1 What it is, and the version mapped
-
-<!-- BEGIN GENERATED: xm pin odis -->
-<!-- END GENERATED: xm pin odis -->
 
 Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) data-model field, verified against ODIS at commit `148dc41` (8 September 2026). Coverage is **selective**: it targets the delegation and identity fields relevant to detection and response, not the full ODIS specification. The ODIS column resolves **names**, not shapes: ODIS defines abstract schemas that implementations bind to a wire format, and this document is a requirements layer rather than a binding ([RFC §2.1](CoSAI-AI-Telemetry-RFC.md#21-in-scope)). Where cardinality or structure is normative for an ask, it is stated in [§1](#1-ocsf).
 
@@ -870,8 +858,8 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | out of scope |  |  |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | covered | `software_hash`, `attestation_evidence` | ODIS §6.2. |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | out of scope |  |  |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
+| [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
+| [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | out of scope |  |  |

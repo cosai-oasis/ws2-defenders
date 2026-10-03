@@ -220,7 +220,7 @@ Every later detection resolves through these identifiers; the model and serving 
 
 ### 6.2 Content, trust, verdicts and their availability
 
-This is the densest detection cluster. With [§6.1](#61-identifiers-trace-context-and-model-identity), it supplies the records an injection detection reads. Coverage, enforcement-point availability and attribute provenance come with it, for the reasons in [§§4.4 to 4.5](#44-the-agent-might-be-lying).
+This is the densest detection step. With [§6.1](#61-identifiers-trace-context-and-model-identity), it supplies the records an injection detection reads. Coverage, enforcement-point availability and attribute provenance come with it, for the reasons in [§§4.4 to 4.5](#44-the-agent-might-be-lying).
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
@@ -326,8 +326,8 @@ These fields cover delegated identity, inventory, and the integrity of the event
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | Dependency edges between inventoried components, including transitive ones. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | Signature over the emitted inventory, binding it to a signer. Modality: supply-chain attestation. | `componentApplication`, `componentToolRegistry` |
 | [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | Per-session sequence number, hash-chained, for gap and reordering detection. Modality: self-attesting instrumentation. | `componentAuditRecordRepository` |
-| [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | Declared purpose of a tool, against which behavior is compared. | `componentToolRegistry` |
-| [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
+| [Tool Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | Declared purpose of a tool, against which behavior is compared. | `componentToolRegistry` |
+| [Tool Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | Whether a tool is meant to be reachable. | `componentToolRegistry` |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | Ownership and change dates. | `componentToolRegistry`, `componentModelRegistry` |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | Exposure map per tool. | `componentToolRegistry` |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | Fleet aggregates: agents, sessions, users, tool-call volume. | fleet level |
