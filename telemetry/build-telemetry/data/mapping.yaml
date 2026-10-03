@@ -23,10 +23,10 @@ asks:
   status: proposed
 - id: ocsf_stop_reason
   publication: ocsf
-  summary: Merge ai_stop_reason_id on the ai_operation profile (End of Turn, Token Limit, Tool Use, Session Stop, Content Filter).
-  proposes: ['attribute:ai_stop_reason_id']
+  summary: Merge the ai_status object on the ai_operation profile; its stop_reason_id carries End of Turn, Token Limit, Tool Use, Session Stop and Content Filter.
+  proposes: ['object:ai_status', 'attribute:stop_reason_id']
   tracking: [ocsf-schema#1704]
-  status: approved
+  status: open
 - id: ocsf_message_context_content
   publication: ocsf
   summary: Extend message_context with prompt and response hashes, a redaction flag, the system prompt and its hash, and attachment identity, each hash with its canonicalization declaration.
@@ -65,8 +65,8 @@ asks:
   status: proposed
 - id: ocsf_ai_tool
   publication: ocsf
-  summary: Land the ai_tool object with its mcp sub-block, primitive axis and transaction_uid join key; add a tool_trust_boundary enum and a scope attribute.
-  proposes: ['object:ai_tool', 'attribute:tool_trust_boundary', 'attribute:transaction_uid']
+  summary: 'Land the ai_capability object: name, kind (type_id), serving system and transport, the transaction_uid join key, and fingerprints of the description and schemas with an approved baseline. Extend type_id to the client-side MCP primitives (sampling, elicitation, roots), and add a trust-boundary value set and a required-scope attribute.'
+  proposes: ['object:ai_capability', 'attribute:desc_fingerprint', 'attribute:baseline_fingerprint', 'attribute:tool_trust_boundary']
   tracking: [ocsf-schema#1729]
   status: open
 - id: ocsf_ai_memory
@@ -284,9 +284,9 @@ asks:
   status: proposed
 - id: ocsf_tool_execution_environment
   publication: ocsf
-  summary: 'Add the execution environment of a tool call to ai_tool: isolation mode, runtime, timeout and egress policy, aligned with AITF supply_chain.runtime.*.'
+  summary: Add the execution environment of a tool call (isolation mode, runtime, timeout and egress policy) beside ai_capability, aligned with AITF supply_chain.runtime.*.
   proposes: []
-  tracking: [ocsf-schema#1729]
+  tracking: []
   status: proposed
 - id: ocsf_identity_verification
   publication: ocsf
@@ -565,7 +565,7 @@ fields:
   stop_reason:
     ocsf:
       coverage: none
-      gap: ai_stop_reason_id is approved (#1704) but not in 1.9.0
+      gap: ai_status.stop_reason_id is proposed in #1704, not in 1.9.0
       asks: [ocsf_stop_reason]
     otel:
       coverage: covered
@@ -838,7 +838,7 @@ fields:
   llm_refusal:
     ocsf:
       coverage: none
-      gap: No refusal status or reason; a content-filter stop reason (#1704) records one cause only
+      gap: No refusal status or reason; the Content Filter stop reason proposed in #1704 records one cause only
       asks: [ocsf_stop_reason]
     otel:
       coverage: partial
