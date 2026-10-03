@@ -92,7 +92,8 @@ def vocabularies(offline):
 
 
 # ---------------------------------------------------------------- 5. documents
-def document_checks(T, n_attacks, tiers):
+def document_checks(T, corpus, tiers):
+    n_attacks = len(corpus)
     """The checks of validate_set.py, unchanged except that its counts come from the data."""
     ISO_TITLE = 'Information technology — Artificial intelligence — Management system'
     PREFIX = {'RFC': 'RFC', 'AD': 'AD', 'XM': 'XM'}
@@ -215,6 +216,15 @@ def document_checks(T, n_attacks, tiers):
         used |= set(re.findall(r'\b((?:TA|IR|AOC)-\d+)\b', t))
     check('no attack IDs cited but undefined', sorted(used - set(defs)))
     check(f'{n_attacks} attacks defined, as in the data', len(defs) == n_attacks or [len(defs)])
+    # The corpus summary is prose, not generated; its counts must match the data. A
+    # missing summary fails too, so rewording it cannot skip the check silently.
+    by_kind = Counter(a.split('-')[0] for a in corpus)
+    want = (len(corpus), by_kind['TA'], by_kind['IR'], by_kind['AOC'])
+    found = re.findall(r'(\d+) entries, comprising (\d+) real-world attacks and incidents, (\d+) CoSAI '
+                       r'incident-response case studies(?: \[\[\d+\]\]\([^)]*\))?, and (\d+) live red-team case studies',
+                       T['RFC'])
+    check('RFC: corpus summary counts match the data (entries, TA, IR, AOC: %d, %d, %d, %d)' % want,
+          [] if found and all(tuple(map(int, f)) == want for f in found) else (found or ['summary sentence not found']))
 
     def ref_section(t):
         m = re.search(r'^## (?:\d+\. )?References\s*$', t, re.M)
@@ -355,7 +365,7 @@ def main():
         check(f'{name}: generated regions match data/ (tools/build.py)', fn(text) == text)
 
     print('5. documents')
-    document_checks(T, len(attacks), tiers)
+    document_checks(T, sorted(attacks), tiers)
 
     print()
     print(('FAILED: ' + '; '.join(fails)) if fails else 'All checks passed.')

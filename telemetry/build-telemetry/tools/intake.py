@@ -59,6 +59,13 @@ def next_reference():
         with open(os.path.join(DIR, d), encoding='utf-8') as f:
             used |= {int(n) for n in re.findall(r'(?m)^(\d+)\. \*\*', f.read())}
     used |= {a.get('ref') for a in rules.load_data()[1].values() if a.get('ref')}
+    # Numbers held by intake batches not yet applied. A rejected batch releases its
+    # number: it was never published, and the set's numbering must stay contiguous.
+    for p in glob.glob(os.path.join(CAND, '*-intake-*.yaml')):
+        for c in load(p) or []:
+            ref = c.get('proposal', {}).get('record', {}).get('ref') if c.get('type') == 'attack' else None
+            if isinstance(ref, int) and c.get('status') != 'rejected':
+                used.add(ref)
     return max(used) + 1
 
 
