@@ -53,9 +53,7 @@ The catalog covers AI systems generally, not only agents: a model behind an API,
 
 ### 2.2 Not in scope
 
-This RFC is not a wire format.
-
-It does not specify detection logic, only the fields detections consume.
+This RFC specifies the fields detections consume. It defines neither a wire format nor detection logic; [XM §§1 and 2](Telemetry-Cross-Mapping-Addendum.md#1-ocsf) bind the fields to OCSF and OpenTelemetry.
 
 Security and privacy of the telemetry itself are left to a later CoSAI publication. That covers authenticating emitters, securing transport and storage, controlling access to collected content, the sensitivity of content hashes, retention, redaction, encryption, tamper-evidence, and chain of custody. It also covers privacy compliance: lawful basis, data-subject rights, cross-border transfer, and impact assessment. The field catalog treats the telemetry plane as an asset only insofar as it reports its own failure ([§4.5](#45-a-missing-verdict-is-not-an-allow)). Meeting the MUST tier discharges none of those obligations, and it does not satisfy the CoSAI Risk Map's [[23]](#standards--frameworks) proposed `controlAuditTrailIntegrityVerification` and `controlAuditRecordRepositoryIndependence`; adopters needing audit-grade evidence need to implement them separately.
 
