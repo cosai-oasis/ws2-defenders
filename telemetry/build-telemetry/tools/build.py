@@ -250,7 +250,8 @@ def source(a):
 def inventory_row(section, a):
     aid = f'<a id="{aanchor(a["id"])}"></a>**{a["id"]}**'
     sep = ' ' if 'ref' in a else ', '
-    return row([aid, f"{a['label']}{sep}{source(a)}", a['what_happened'], detecting(a), a['components_text']])
+    risks = ', '.join(f'`{r}`' for r in a.get('risks', [])) or '*none*'
+    return row([aid, f"{a['label']}{sep}{source(a)}", a['what_happened'], detecting(a), a['components_text'], risks])
 
 
 def atlas_row(a):

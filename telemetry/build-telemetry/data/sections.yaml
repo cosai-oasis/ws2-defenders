@@ -152,20 +152,20 @@ ad_inventory_tables:
 - number: '3.2'
   title: Real-world attack vectors
   header:
-  - '| ID | Name (date) | What happened | Detecting fields | Primary component(s) |'
-  - '| :---- | :---------------- | :------------------------------------------- | :-------------------------------- | :-------- |'
+  - '| ID | Name (date) | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
+  - '| :---- | :---------------- | :------------------------------------------- | :-------------------------------- | :-------- | :------------ |'
   attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32]
 - number: '3.3'
   title: 'CoSAI WS2: AI Incident Response case studies'
   header:
-  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) |'
-  - '| :---- | :--------- | :----------------------------- | :-------------------- | :------------ |'
+  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) | Risk Map risks |'
+  - '| :---- | :--------- | :----------------------------- | :-------------------- | :------------ | :------------ |'
   attacks: [IR-01, IR-02, IR-03, IR-04, IR-05]
 - number: '3.4'
   title: 'Agents of Chaos (arXiv:2602.20021): live red-team case studies'
   header:
-  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) |'
-  - '| :---- | :------------------ | :--------------------------------------------- | :----------------------- | :----------- |'
+  - '| ID | Name | What happened | Key telemetry needed | Primary component(s) | Risk Map risks |'
+  - '| :---- | :------------------ | :--------------------------------------------- | :----------------------- | :----------- | :------------ |'
   attacks: [AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
 ad_atlas_table:
   number: '3.6'
