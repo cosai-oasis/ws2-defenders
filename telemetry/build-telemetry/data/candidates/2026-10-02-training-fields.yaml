@@ -1,0 +1,469 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: S:6.7
+  type: step
+  subject:
+    step: '6.7'
+  source: intake-fields
+  proposal:
+    number: '6.7'
+    ad_number: '1.7'
+    title: Training data and training infrastructure
+    rfc_header:
+    - '| Field | Tier | What it records | Emitted by |'
+    - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  reason: Appended after §6.6, so no section renumbers. Training-time fields share no step with the runtime path; the step comes last in the implementation order because every field in it is modality-gated.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: F:training_data_item_digest
+  type: field
+  subject:
+    field: training_data_item_digest
+  source: intake-fields
+  proposal:
+    record:
+      id: training_data_item_digest
+      name: Training-Data Item Digest
+      tier: SHOULD
+      role: provenance
+      record: event
+      origin: derived
+      records: Digest of each training item at curation, checked against the content fetched.
+      modality: training or fine-tuning on externally sourced data
+      emitted_by: [componentDataFilteringAndProcessing, componentTrainingData]
+      capture: 'For each training item: the content digest taken when it was curated, the digest of the content fetched for training, the source URL, the fetch time, and whether the two match. A mismatch is an event. A dataset distributed as a list of URLs is fetched anew by every downloader, so the check belongs at fetch, not only at curation.'
+      rationale: 'Grounded by `TA-33`, where domains named in dataset indexes changed hands after indexing and downloads continued; the per-item hash the source proposes is this field, and several LAION datasets now publish one. Held at SHOULD by its modality: a deployment that trains on no externally sourced data has nothing for it to record.'
+    step: '6.7'
+  reason: Identified by the TA-33 to TA-40 intake; no existing field records this step of the attack.
+  requires: S:6.7
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-33:training_data_item_digest
+  type: edge
+  subject:
+    attack: TA-33
+    field: training_data_item_digest
+  source: intake-fields
+  proposal:
+    grounding: instance
+  reason: content fetched from the purchased domains differs from what the index recorded; a digest check at fetch is the defense the source proposes
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_item_digest:ocsf
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: ocsf
+  source: intake-fields
+  proposal:
+    coverage: none
+    gap: No training-time objects
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_item_digest:otel
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: otel
+  source: intake-fields
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_item_digest:aitf
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: aitf
+  source: intake-fields
+  proposal:
+    coverage: partial
+    constructs: [model_ops.training.dataset.version]
+    gap: A dataset version hash, not a digest per item checked at fetch
+  reason: judged against the pinned schema
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_item_digest:odis
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: odis
+  source: intake-fields
+  proposal:
+    coverage: out_of_scope
+  reason: judged against the pinned schema
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: C:training_data_item_digest
+  type: controls
+  subject:
+    field: training_data_item_digest
+  source: intake-fields
+  proposal:
+    controls: [controlTrainingDataManagement, controlModelAndDataIntegrityManagement]
+  reason: Risk Map controls whose components include an emitter of this field
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: F:training_data_source_provenance
+  type: field
+  subject:
+    field: training_data_source_provenance
+  source: intake-fields
+  proposal:
+    record:
+      id: training_data_source_provenance
+      name: Training-Data Source / Provenance
+      tier: SHOULD
+      role: provenance
+      record: state
+      origin: observed
+      records: Source, contributor and acquisition of each training document.
+      modality: training or fine-tuning on externally sourced data
+      emitted_by: [componentDataSources, componentTrainingData]
+      capture: 'Per document, not per dataset: the source (URL, repository, crawl, vendor, user feedback), the owner or contributing account where known, how it was acquired, when it was ingested, and the dataset version it entered.'
+      rationale: Grounded by `TA-33` (the owner of a source changed after indexing) and `TA-34` (a near-constant number of documents installs a backdoor whatever the corpus size, so dataset-level statistics cannot reveal it, and finding the documents after a backdoor is found needs their per-document origin); `TA-35` motivates it analogically. The two instances meet the evidence test; the modality gate holds the field at SHOULD (RFC §4.7).
+    step: '6.7'
+  reason: Identified by the TA-33 to TA-40 intake; no existing field records this step of the attack.
+  requires: S:6.7
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-33:training_data_source_provenance
+  type: edge
+  subject:
+    attack: TA-33
+    field: training_data_source_provenance
+  source: intake-fields
+  proposal:
+    grounding: instance
+  reason: the domain that served each item expired and was re-registered; ownership of the source is what the field records
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-34:training_data_source_provenance
+  type: edge
+  subject:
+    attack: TA-34
+    field: training_data_source_provenance
+  source: intake-fields
+  proposal:
+    grounding: instance
+  reason: the poison is a fixed set of inserted documents; per-document origin identifies them, and the constant count is why per-dataset provenance cannot
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-35:training_data_source_provenance
+  type: edge
+  subject:
+    attack: TA-35
+    field: training_data_source_provenance
+  source: intake-fields
+  proposal:
+    grounding: analogical
+  reason: a public repository as the source of scraped text; the causation is inferred
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_source_provenance:ocsf
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: ocsf
+  source: intake-fields
+  proposal:
+    coverage: none
+    gap: No training-time objects
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_source_provenance:otel
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: otel
+  source: intake-fields
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_source_provenance:aitf
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: aitf
+  source: intake-fields
+  proposal:
+    coverage: partial
+    constructs: [model_ops.training.dataset.id, supply_chain.model.training_data]
+    gap: Dataset identity and a free-text description, not per-document source
+  reason: judged against the pinned schema
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:training_data_source_provenance:odis
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: odis
+  source: intake-fields
+  proposal:
+    coverage: out_of_scope
+  reason: judged against the pinned schema
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: C:training_data_source_provenance
+  type: controls
+  subject:
+    field: training_data_source_provenance
+  source: intake-fields
+  proposal:
+    controls: [controlTrainingDataManagement, controlTrainingDataSanitization]
+  reason: Risk Map controls whose components include an emitter of this field
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: F:compute_job_submission_event
+  type: field
+  subject:
+    field: compute_job_submission_event
+  source: intake-fields
+  proposal:
+    record:
+      id: compute_job_submission_event
+      name: Compute Job Submission
+      tier: SHOULD
+      role: descriptor
+      record: event
+      origin: observed
+      records: Each job submitted to a training or serving compute framework, with its submitter.
+      modality: self-operated training or serving compute
+      emitted_by: [componentModelFrameworksAndCode, componentRuntimeHosting]
+      capture: 'A job submitted to a training or serving framework or scheduler: the submitter identity and whether it authenticated, the source address, the entrypoint or command, the image or code reference, the resources requested, and the cluster.'
+      rationale: 'Grounded by `TA-36`, where unauthenticated jobs on internet-exposed Ray clusters ran cryptominers and harvested credentials for at least seven months. An unauthenticated submission is the attack state; an entrypoint that is not a training or serving workload is the mining signature. It is the first field for `componentRuntimeHosting`. Held at SHOULD by its modality: a deployment on managed inference runs no jobs of its own.'
+    step: '6.7'
+  reason: Identified by the TA-33 to TA-40 intake; no existing field records this step of the attack.
+  requires: S:6.7
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-36:compute_job_submission_event
+  type: edge
+  subject:
+    attack: TA-36
+    field: compute_job_submission_event
+  source: intake-fields
+  proposal:
+    grounding: instance
+  reason: attackers submitted jobs through the unauthenticated Jobs API; the submission, its missing authentication and its entrypoint are what the field records
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:compute_job_submission_event:ocsf
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: ocsf
+  source: intake-fields
+  proposal:
+    coverage: partial
+    constructs: ['class:api_activity', 'attribute:actor', 'attribute:src_endpoint']
+    gap: Generic API activity carries the caller and source; no job entrypoint or resources
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:compute_job_submission_event:otel
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: otel
+  source: intake-fields
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    note: No ask proposed.
+  reason: judged against the pinned schema
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:compute_job_submission_event:aitf
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: aitf
+  source: intake-fields
+  proposal:
+    coverage: partial
+    constructs: [model_ops.training.*]
+    gap: Records a training run, not its submission or submitter
+  reason: judged against the pinned schema
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: M:compute_job_submission_event:odis
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: odis
+  source: intake-fields
+  proposal:
+    coverage: out_of_scope
+  reason: judged against the pinned schema
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: C:compute_job_submission_event
+  type: controls
+  subject:
+    field: compute_job_submission_event
+  source: intake-fields
+  proposal:
+    controls: [controlSecureByDefaultMLTooling, controlModelAndDataAccessControls]
+  reason: Risk Map controls whose components include an emitter of this field
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: X:trace_context_propagated:training
+  type: capture
+  subject:
+    field: trace_context_propagated
+  source: intake-fields
+  proposal:
+    capture_addition: Records the baggage members received with the context, by key. A member that names a telemetry destination or credential is attacker-controllable input, not configuration.
+  reason: 'TA-37: the attacker-supplied replica rode the W3C `baggage` header the field mandates propagating; recording baggage keys makes the injection visible, and the field already has the TA-37 instance edge.'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: X:input_source_channel:training
+  type: capture
+  subject:
+    field: input_source_channel
+  source: intake-fields
+  proposal:
+    capture_addition: 'Telemetry placed in a model''s context for analysis (log records, alerts, malware samples) is a channel of its own: its fields carry text an attacker wrote.'
+  reason: 'TA-38, TA-39 and TA-40: logs and samples given to an AI analyst carry attacker text; the capture text names surfaces, tools, agents and documents, not telemetry.'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: X:model_provenance_signing_hash:training
+  type: capture
+  subject:
+    field: model_provenance_signing_hash
+  source: intake-fields
+  proposal:
+    capture_addition: Where the deployment trains or fine-tunes the model, the provenance includes the training run and the digest of the dataset version it used.
+  reason: 'TA-34: a backdoor found at inference has to be traced to the run and data that installed it; the field''s capture covers the served artifact only.'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-33:training
+  type: coverage
+  subject:
+    attack: TA-33
+  source: intake-fields
+  proposal:
+    no_pattern: 'Training time: Training-Data Item Digest records the mismatch at fetch as one event, which needs no correlation. Its runtime edges are analogical, to retrieval, where the same split view applies.'
+  reason: the intake no_pattern said no training-time field exists; the fields in this batch change that
+  requires: F:training_data_item_digest
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-34:training
+  type: coverage
+  subject:
+    attack: TA-34
+  source: intake-fields
+  proposal:
+    no_pattern: 'Training time: Training-Data Source / Provenance locates the poisoned documents once a backdoor is found. At inference the backdoor shows only as a trigger in Model Input and anomalous Response / Model Output, and no pattern reads that pair without a baseline for the model.'
+  reason: the intake no_pattern said no training-time field exists; the fields in this batch change that
+  requires: F:training_data_source_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-36:training
+  type: coverage
+  subject:
+    attack: TA-36
+  source: intake-fields
+  proposal:
+    no_pattern: 'Training and serving infrastructure: Compute Job Submission records the unauthenticated submission as one event, which needs no correlation. Its edges to runtime-path fields are analogical.'
+  reason: the intake no_pattern said no training-time field exists; the fields in this batch change that
+  requires: F:compute_job_submission_event
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

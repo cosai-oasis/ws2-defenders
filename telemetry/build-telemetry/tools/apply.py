@@ -7,6 +7,9 @@ listed.
 
   attack   writes data/attacks/<ID>.yaml and appends the attack to the AD
            inventory and ATLAS tables
+  step     appends a field step (RFC §6.n, AD §1.n) to sections.yaml; the documents need
+           its heading, and AD its GENERATED markers, before build.py will run
+  field    adds a new field record to fields.yaml and to the end of its step's tier group
   edge     sets the attack's `fields:` entry with its grounding class
            (instance or analogical); reject removes it
   alias    already reflected in `fields:` by reconcile.py; stamped only
@@ -125,7 +128,7 @@ def main():
         sys.exit(f'{len(uncurated)} cited edges have no candidate, e.g. {uncurated[:3]}; run reconcile.py propose')
 
     superseded = {c['supersedes'] for c in all_c.values() if c.get('supersedes') and c['status'] == 'accepted'}
-    order = ('attack', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch', 'ask', 'mapping', 'controls')
+    order = ('attack', 'step', 'field', 'edge', 'alias', 'basis', 'tier', 'capture', 'facets', 'risks', 'pattern', 'coverage', 'catch', 'ask', 'mapping', 'controls')
     for kind in order:
         for _, cs in batches:
             for c in cs:
@@ -144,6 +147,19 @@ def main():
                     if rec['id'] not in at:
                         last_ta = max(i for i, a in enumerate(at) if a.startswith('TA-'))
                         at.insert(last_ta + 1, rec['id'])
+                elif kind == 'step':
+                    if not any(st['number'] == c['proposal']['number'] for st in layout['field_steps']):
+                        layout['field_steps'].append(dict(c['proposal'], fields=[]))
+                elif kind == 'field':
+                    rec = dict(c['proposal']['record'])
+                    if rec['id'] in fmap:
+                        sys.exit(f"{c['id']}: field {rec['id']} already exists")
+                    fields.append(rec)
+                    fmap[rec['id']] = rec
+                    st = next(st for st in layout['field_steps'] if st['number'] == c['proposal']['step'])
+                    rank = {'MUST': 0, 'SHOULD': 1, 'MAY': 2}
+                    st['fields'].append(rec['id'])
+                    st['fields'].sort(key=lambda i: rank[fmap[i]['tier']])
                 elif kind == 'edge':
                     g = c.get('decision', {}).get('grounding', c['proposal']['grounding'])
                     set_edge(attacks[s['attack']], s['field'], g)

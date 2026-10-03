@@ -42,10 +42,10 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 <!-- BEGIN GENERATED: xm summary -->
 | Publication | Covered | Partial | None | Out of scope | Asks |
 | :------------------ | ---: | ---: | ---: | ---: | :------------------ |
-| OCSF | 10 | 30 | 58 | 0 | 29: 7 open, 22 proposed |
-| OpenTelemetry | 22 | 19 | 38 | 19 | 24: 24 proposed |
-| AITF | 92 | 5 | 1 | 0 | none |
-| ODIS | 44 | 3 | 0 | 51 | none |
+| OCSF | 10 | 31 | 60 | 0 | 29: 7 open, 22 proposed |
+| OpenTelemetry | 22 | 19 | 41 | 19 | 24: 24 proposed |
+| AITF | 92 | 8 | 1 | 0 | none |
+| ODIS | 44 | 3 | 0 | 54 | none |
 <!-- END GENERATED: xm summary -->
 
 - **The proposals follow the tiers of [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers).** Every MUST field a publication cannot carry has an ask. A SHOULD field gets one where a deployment running its modality would need the publication to carry it. MAY fields appear only inside an ask that a MUST or SHOULD field already needs.
@@ -193,6 +193,14 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | partial | `class:inventory_info` | No AI-asset object. | [ocsf_ai_asset](#ask-ocsf-ai-asset) |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
+
+**RFC §6.7 Training data and training infrastructure**
+
+| Field | Tier | Coverage | Carried by | Gap or note | Asks |
+| :------------------ | :---- | :------- | :------------------ | :------------------ | :---------- |
+| [Training-Data Item Digest](Telemetry-Attack-Detection-Addendum.md#f-training-data-item-digest) | SHOULD | none |  | No training-time objects. No ask proposed. |  |
+| [Training-Data Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-training-data-source-provenance) | SHOULD | none |  | No training-time objects. No ask proposed. |  |
+| [Compute Job Submission](Telemetry-Attack-Detection-Addendum.md#f-compute-job-submission-event) | SHOULD | partial | `class:api_activity`, `attribute:actor`, `attribute:src_endpoint` | Generic API activity carries the caller and source; no job entrypoint or resources. No ask proposed. |  |
 <!-- END GENERATED: xm correspondence ocsf -->
 
 ### 1.3 Gaps
@@ -435,6 +443,14 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | none |  | No ownership or change dates. A MAY field; no ask. |  |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | none |  | No per-tool exposure map. A MAY field; no ask. |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | Fleet aggregates are derived. No ask proposed. |  |
+
+**RFC §6.7 Training data and training infrastructure**
+
+| Field | Tier | Coverage | Carried by | Gap or note | Asks |
+| :------------------ | :---- | :------- | :------------------ | :------------------ | :---------- |
+| [Training-Data Item Digest](Telemetry-Attack-Detection-Addendum.md#f-training-data-item-digest) | SHOULD | none |  | No training-time conventions. No ask proposed. |  |
+| [Training-Data Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-training-data-source-provenance) | SHOULD | none |  | No training-time conventions. No ask proposed. |  |
+| [Compute Job Submission](Telemetry-Attack-Detection-Addendum.md#f-compute-job-submission-event) | SHOULD | none |  | No training-time conventions. No ask proposed. |  |
 <!-- END GENERATED: xm correspondence otel -->
 
 ### 2.3 Gaps
@@ -671,6 +687,14 @@ AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to 
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `asset.*` |  |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `asset.*` |  |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | none |  | (derived) |
+
+**RFC §6.7 Training data and training infrastructure**
+
+| Field | Tier | Coverage | Carried by | Gap or note |
+| :------------------ | :---- | :------- | :------------------ | :------------------ |
+| [Training-Data Item Digest](Telemetry-Attack-Detection-Addendum.md#f-training-data-item-digest) | SHOULD | partial | `model_ops.training.dataset.version` | A dataset version hash, not a digest per item checked at fetch. |
+| [Training-Data Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-training-data-source-provenance) | SHOULD | partial | `model_ops.training.dataset.id`, `supply_chain.model.training_data` | Dataset identity and a free-text description, not per-document source. |
+| [Compute Job Submission](Telemetry-Attack-Detection-Addendum.md#f-compute-job-submission-event) | SHOULD | partial | `model_ops.training.*` | Records a training run, not its submission or submitter. |
 <!-- END GENERATED: xm correspondence aitf -->
 
 ### 3.3 Gaps
@@ -863,6 +887,14 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Surfaces Supported](Telemetry-Attack-Detection-Addendum.md#f-surfaces-supported) | MAY | covered | `sponsor_ref`, `owner_ref`, `created_at`, `updated_at` | ODIS §6.1. |
 | [Fleet counts](Telemetry-Attack-Detection-Addendum.md#f-fleet-counts) | MAY | out of scope |  |  |
+
+**RFC §6.7 Training data and training infrastructure**
+
+| Field | Tier | Coverage | Carried by | Gap or note |
+| :------------------ | :---- | :------- | :------------------ | :------------------ |
+| [Training-Data Item Digest](Telemetry-Attack-Detection-Addendum.md#f-training-data-item-digest) | SHOULD | out of scope |  |  |
+| [Training-Data Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-training-data-source-provenance) | SHOULD | out of scope |  |  |
+| [Compute Job Submission](Telemetry-Attack-Detection-Addendum.md#f-compute-job-submission-event) | SHOULD | out of scope |  |  |
 <!-- END GENERATED: xm correspondence odis -->
 
 ### 5.3 Notes on the mapping

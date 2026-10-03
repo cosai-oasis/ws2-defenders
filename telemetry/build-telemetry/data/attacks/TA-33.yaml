@@ -30,4 +30,6 @@ fields:
   grounding: analogical
 - field: retrieved_content_source_provenance
   grounding: analogical
-no_pattern: 'Training time: the attack acts on dataset download, and the catalog defines no training-time fields. Its edges are analogical, to retrieval at inference time, where the same split view applies.'
+- training_data_item_digest
+- training_data_source_provenance
+no_pattern: 'Training time: Training-Data Item Digest records the mismatch at fetch as one event, which needs no correlation. Its runtime edges are analogical, to retrieval, where the same split view applies.'

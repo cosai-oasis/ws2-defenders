@@ -2079,3 +2079,52 @@ fields:
     odis:
       coverage: out_of_scope
     controls: []
+  training_data_item_digest:
+    ocsf:
+      coverage: none
+      gap: No training-time objects
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      note: No ask proposed.
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.dataset.version]
+      gap: A dataset version hash, not a digest per item checked at fetch
+    odis:
+      coverage: out_of_scope
+    controls: [controlTrainingDataManagement, controlModelAndDataIntegrityManagement]
+  training_data_source_provenance:
+    ocsf:
+      coverage: none
+      gap: No training-time objects
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      note: No ask proposed.
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.dataset.id, supply_chain.model.training_data]
+      gap: Dataset identity and a free-text description, not per-document source
+    odis:
+      coverage: out_of_scope
+    controls: [controlTrainingDataManagement, controlTrainingDataSanitization]
+  compute_job_submission_event:
+    ocsf:
+      coverage: partial
+      constructs: ['class:api_activity', 'attribute:actor', 'attribute:src_endpoint']
+      gap: Generic API activity carries the caller and source; no job entrypoint or resources
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      note: No ask proposed.
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.*]
+      gap: Records a training run, not its submission or submitter
+    odis:
+      coverage: out_of_scope
+    controls: [controlSecureByDefaultMLTooling, controlModelAndDataAccessControls]

@@ -58,7 +58,7 @@
   origin: observed
   records: W3C trace context carried across every agent and tool hop.
   emitted_by_text: every hop
-  capture: W3C `traceparent` / `trace_id` + `span_id` **propagated across every agent→tool→agent hop**, including MCP [[39]](#standards--frameworks) and A2A [[40]](#standards--frameworks) calls. Without propagation, multi-agent activity cannot be reassembled into one trace.
+  capture: W3C `traceparent` / `trace_id` + `span_id` **propagated across every agent→tool→agent hop**, including MCP [[39]](#standards--frameworks) and A2A [[40]](#standards--frameworks) calls. Without propagation, multi-agent activity cannot be reassembled into one trace. Records the baggage members received with the context, by key. A member that names a telemetry destination or credential is attacker-controllable input, not configuration.
 - id: organization_tenant_id
   name: Organization / Tenant ID
   tags: [AOS]
@@ -161,7 +161,7 @@
   origin: observed
   records: Which surface, tool, agent or document each input segment came from.
   emitted_by: [componentApplicationInputHandling, componentAgentInputHandling]
-  capture: 'Provenance label for each input segment: which surface/tool/agent/document it came from.'
+  capture: 'Provenance label for each input segment: which surface/tool/agent/document it came from. Telemetry placed in a model''s context for analysis (log records, alerts, malware samples) is a channel of its own: its fields carry text an attacker wrote.'
 - id: input_trust_classification
   name: Input Trust Classification
   tier: MUST
@@ -362,7 +362,7 @@
   records: Signed digest or provenance of the served model artifact.
   modality: supply-chain attestation
   emitted_by: [componentModelServing, componentModelRegistry]
-  capture: Signed digest / provenance of the served model artifact (supply-chain attestation).
+  capture: Signed digest / provenance of the served model artifact (supply-chain attestation). Where the deployment trains or fine-tunes the model, the provenance includes the training run and the digest of the dataset version it used.
   rationale: A supply-chain primitive; ties to model-signing work and ODIS [[26]](#standards--frameworks) `software_hash`.
 - id: pre_forward_pass_state_digest_vector
   name: Pre-Forward-Pass State Digest/Vector
@@ -1088,3 +1088,36 @@
   emitted_by_text: enforcement points
   capture: Whether this operation traversed a reference monitor at all, at which **placement** (inbound gateway / egress sidecar / in-process framework), and whether **unmediated paths to the same capability exist**.
   rationale: The enforcement counterpart to Instrumentation Coverage (§1.2). That field asks *is the telemetry complete?*; this one asks *is the enforcement unbypassable?* `AOC-14` is precisely this attack. A control that can be routed around is not a control.
+- id: training_data_item_digest
+  name: Training-Data Item Digest
+  tier: SHOULD
+  role: provenance
+  record: event
+  origin: derived
+  records: Digest of each training item at curation, checked against the content fetched.
+  modality: training or fine-tuning on externally sourced data
+  emitted_by: [componentDataFilteringAndProcessing, componentTrainingData]
+  capture: 'For each training item: the content digest taken when it was curated, the digest of the content fetched for training, the source URL, the fetch time, and whether the two match. A mismatch is an event. A dataset distributed as a list of URLs is fetched anew by every downloader, so the check belongs at fetch, not only at curation.'
+  rationale: 'Grounded by `TA-33`, where domains named in dataset indexes changed hands after indexing and downloads continued; the per-item hash the source proposes is this field, and several LAION datasets now publish one. Held at SHOULD by its modality: a deployment that trains on no externally sourced data has nothing for it to record.'
+- id: training_data_source_provenance
+  name: Training-Data Source / Provenance
+  tier: SHOULD
+  role: provenance
+  record: state
+  origin: observed
+  records: Source, contributor and acquisition of each training document.
+  modality: training or fine-tuning on externally sourced data
+  emitted_by: [componentDataSources, componentTrainingData]
+  capture: 'Per document, not per dataset: the source (URL, repository, crawl, vendor, user feedback), the owner or contributing account where known, how it was acquired, when it was ingested, and the dataset version it entered.'
+  rationale: Grounded by `TA-33` (the owner of a source changed after indexing) and `TA-34` (a near-constant number of documents installs a backdoor whatever the corpus size, so dataset-level statistics cannot reveal it, and finding the documents after a backdoor is found needs their per-document origin); `TA-35` motivates it analogically. The two instances meet the evidence test; the modality gate holds the field at SHOULD (RFC §4.7).
+- id: compute_job_submission_event
+  name: Compute Job Submission
+  tier: SHOULD
+  role: descriptor
+  record: event
+  origin: observed
+  records: Each job submitted to a training or serving compute framework, with its submitter.
+  modality: self-operated training or serving compute
+  emitted_by: [componentModelFrameworksAndCode, componentRuntimeHosting]
+  capture: 'A job submitted to a training or serving framework or scheduler: the submitter identity and whether it authenticated, the source address, the entrypoint or command, the image or code reference, the resources requested, and the cluster.'
+  rationale: 'Grounded by `TA-36`, where unauthenticated jobs on internet-exposed Ray clusters ran cryptominers and harvested credentials for at least seven months. An unauthenticated submission is the attack state; an entrypoint that is not a training or serving workload is the mining signature. It is the first field for `componentRuntimeHosting`. Held at SHOULD by its modality: a deployment on managed inference runs no jobs of its own.'

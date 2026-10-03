@@ -36,4 +36,5 @@ fields:
   grounding: analogical
 - model_input
 - response_model_output
-no_pattern: 'Training time: the poison enters at training, which no field records. At inference the backdoor shows only as a trigger in Model Input and anomalous Response / Model Output, and no pattern reads that pair without a baseline for the model.'
+- training_data_source_provenance
+no_pattern: 'Training time: Training-Data Source / Provenance locates the poisoned documents once a backdoor is found. At inference the backdoor shows only as a trigger in Model Input and anomalous Response / Model Output, and no pattern reads that pair without a baseline for the model.'

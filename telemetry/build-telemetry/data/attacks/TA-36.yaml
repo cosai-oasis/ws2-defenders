@@ -35,4 +35,5 @@ fields:
   grounding: analogical
 - field: resource_consumption_aggregate
   grounding: analogical
-no_pattern: 'Training and serving infrastructure: job submission on a compute framework is outside the runtime path the catalog instruments, and `componentRuntimeHosting` has no field. Its edges are analogical.'
+- compute_job_submission_event
+no_pattern: 'Training and serving infrastructure: Compute Job Submission records the unauthenticated submission as one event, which needs no correlation. Its edges to runtime-path fields are analogical.'

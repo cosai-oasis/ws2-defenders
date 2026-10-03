@@ -35,4 +35,6 @@ fields:
   grounding: analogical
 - field: response_model_output
   grounding: analogical
+- field: training_data_source_provenance
+  grounding: analogical
 no_pattern: 'Training time, and the causation is inferred: its edges are analogical, so no pattern catches it as an instance. The inference-time step is the ordinary jailbreak that the refusal patterns read.'

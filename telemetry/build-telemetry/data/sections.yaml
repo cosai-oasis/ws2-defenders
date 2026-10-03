@@ -132,6 +132,13 @@ field_steps:
   - creator_id_oncall_creation_update_dates
   - surfaces_supported
   - fleet_counts
+- number: '6.7'
+  ad_number: '1.7'
+  title: Training data and training infrastructure
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields: [training_data_item_digest, training_data_source_provenance, compute_job_submission_event]
 ad_field_header:
 - '| Field | Tier | Role | What it records | Emitted by | Grounding attacks |'
 - '| :------------ | :---- | :---------- | :------------------------------------- | :-------------------- | :------------ |'
