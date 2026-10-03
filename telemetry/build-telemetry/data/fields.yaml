@@ -239,7 +239,7 @@
   records: Flag and decoded form of base64, image-embedded, invisible-Unicode or markup-authority input.
   emitted_by: [componentAgentInputHandling]
   capture: Flag + decoded form when input contains base64, image-embedded (OCR), or markup "authority" tags. Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
-  rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'
+  rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5.3](CoSAI-AI-Telemetry-RFC.md#53-content-hashing)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'
 - id: response_model_output
   name: Response / Model Output
   tier: MUST
@@ -991,7 +991,7 @@
   records: Which hooks are active, their version, where each reports, and the sampling configuration in force.
   emitted_by_text: instrumentation layer
   capture: Which lifecycle hooks are instrumented and active for this agent/run, the instrumentation version, and **where each hook reports**, the difference between "no events", "not observed", and "observed by someone else."
-  rationale: 'Grounded by `TA-17`, where the telemetry plane was redirected ([§4.2](#42-the-telemetry-plane)). Under sampling, an absent refusal, tool result or verdict cannot be read without the coverage and sampling record ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)). More generally it resolves the ambiguity undermining every absence-based detection in the document: no refusal, no termination condition, no matching request are each only interpretable if the relevant hook was instrumented. It is D-dominant, it is not modality-gated (every deployment has an instrumentation configuration), and recording *where each hook reports* is what separates a hijacked plane from a healthy one.'
+  rationale: 'Grounded by `TA-17`, where the telemetry plane was redirected ([§4.2](#42-the-telemetry-plane)). Under sampling, an absent refusal, tool result or verdict cannot be read without the coverage and sampling record ([RFC §5.2](CoSAI-AI-Telemetry-RFC.md#52-sampling)). More generally it resolves the ambiguity undermining every absence-based detection in the document: no refusal, no termination condition, no matching request are each only interpretable if the relevant hook was instrumented. It is D-dominant, it is not modality-gated (every deployment has an instrumentation configuration), and recording *where each hook reports* is what separates a hijacked plane from a healthy one.'
 - id: event_sequence_continuity
   name: Event Sequence Continuity
   tier: SHOULD

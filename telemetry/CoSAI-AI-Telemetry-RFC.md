@@ -73,19 +73,19 @@ A **content-bearing field** is one whose value includes text or a payload that a
 
 ### 3.1 For CISOs
 
-Go to the field catalog ([§6](#6-field-catalog)), which lists every field by implementation step and tier with its emitting component. Treat the applicable subset of the MUST column as the baseline for each AI deployment; [§5](#5-conformance) defines applicability. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.7](#47-tiers). The catalog contains 52 MUST fields. This is the artifact to take into an engineering plan or a budget discussion.
+Go to the field catalog ([§6](#6-field-catalog)), which lists every field by implementation step and tier with its emitting component. Treat the applicable subset of the MUST column as the baseline for each AI deployment; [§5.1](#51-applicability-and-emission) defines applicability. The three tiers are **MUST**, **SHOULD**, and **MAY**, used in the RFC 2119 sense and defined in [§4.7](#47-tiers). The catalog contains 52 MUST fields. This is the artifact to take into an engineering plan or a budget discussion.
 
 - **The justification is evidentiary.** Every MUST field rests on at least two documented instances from the corpus, or is needed to read another MUST field. The ask is "these fields catch these attacks," not "best practice suggests." Each field's entry in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables) sets out that reasoning if it is challenged.
 - **There is a build order.** The catalog is ordered by implementation step ([§6](#6-field-catalog)).
 - **Compliance follows detection.** Fields built for detection also give an auditor the event content. Audit-grade evidence further needs the integrity and retention controls that [§2.2](#22-not-in-scope) excludes. Fields built only for audit produce no detection. The NIST and ISO/IEC 42001 mappings are in [XM §6](Telemetry-Cross-Mapping-Addendum.md#6-nist-csf-ai-rmf-and-isoiec-42001).
 
-One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who can read it. For content-bearing fields the MUST tier requires a content hash, not the raw content ([§5](#5-conformance)); keeping raw content is a policy call, to be made deliberately rather than by default. The decision is recorded in the deployment's conformance statement ([§5](#5-conformance)).
+One decision cannot be delegated to engineering: how much prompt, response, and memory content is retained, for how long, and who can read it. For content-bearing fields the MUST tier requires a content hash, not the raw content ([§5.3](#53-content-hashing)); keeping raw content is a policy call, to be made deliberately rather than by default. The decision is recorded in the deployment's conformance statement ([§5](#5-conformance)).
 
 ### 3.2 For defenders of AI systems
 
 To operationalize telemetry collection for a live AI system:
 
-1. **Scope.** Map what you run onto the Risk Map components ([§6](#6-field-catalog)). Fields for components you do not run are not applicable ([§5](#5-conformance)).
+1. **Scope.** Map what you run onto the Risk Map components ([§6](#6-field-catalog)). Fields for components you do not run are not applicable ([§5.1](#51-applicability-and-emission)).
 2. **Select.** From the field catalog ([§6](#6-field-catalog)), take every MUST field your components emit, plus the SHOULD fields for each modality you run ([§4.7](#47-tiers)). That list is your baseline.
 3. **Define.** Read each field's capture definition and evidence in [AD §1](Telemetry-Attack-Detection-Addendum.md#1-field-tables).
 4. **Bind.** Use the OpenTelemetry attribute names and signal placement in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-opentelemetry), the OCSF mapping in [XM §1](Telemetry-Cross-Mapping-Addendum.md#1-ocsf), and the AITF names in [XM §3](Telemetry-Cross-Mapping-Addendum.md#3-aitf). Do not invent a schema.
@@ -128,7 +128,7 @@ A claim about an outcome is verified or unresolved ([§2.3](#23-terms)). For exa
 
 ### 4.5 A missing verdict is not an allow
 
-Every detection assumes the telemetry plane worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. Provider and availability signals belong here for the same reason: a provider that silently truncates a response is a failure the record has to distinguish from a clean result ([AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)). The field catalog therefore records the plane's own failures: **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). A missing verdict is found by comparison: the model calls recorded in **Action Type** for a turn, against the verdicts and callouts recorded for it. The same reasoning makes the sampling rules normative ([§5](#5-conformance)): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope ([§2.2](#22-not-in-scope)).
+Every detection assumes the telemetry plane worked. When a guardrail is starved or a hook disabled, a verdict that never arrived reads the same as a verdict of `allow`. Provider and availability signals belong here for the same reason: a provider that silently truncates a response is a failure the record has to distinguish from a clean result ([AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale)). The field catalog therefore records the plane's own failures: **Instrumentation Coverage / Hook Attestation** and **Enforcement-Point Availability & Failure Mode** ([§6.2](#62-content-trust-verdicts-and-their-availability)), and **Event Sequence Continuity** ([§6.6](#66-identity-provenance-and-inventory)). It records what policy decided, on which rule, and whether any path bypassed it: **Authorization Decision Record** and **Mediation Coverage & Bypass Path** ([§6.3](#63-tool-calls-and-policy-decisions)). A missing verdict is found by comparison: the model calls recorded in **Action Type** for a turn, against the verdicts and callouts recorded for it. The same reasoning makes the sampling rules normative ([§5.2](#52-sampling)): an event sampled away is indistinguishable from one that never occurred. Defending the plane itself is out of scope ([§2.2](#22-not-in-scope)).
 
 ### 4.6 Record your boundary, not their internals
 
@@ -150,11 +150,11 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in RFC 2119 [
 
 | Tag | Meaning | Test |
 | :---- | :-------------------- | :------------------------------------------------------------------------------ |
-| **MUST** | The baseline, wherever the field applies ([§5](#5-conformance)). | At least two independent documented instances in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) require it, or an applicable MUST field cannot be read without it: that field's value would be ambiguous between states a detection has to distinguish, or inaccurate. Analogical grounding does not count toward the two, and neither does an entry the inventory marks as outside AI systems. In either case the field is implementable wherever its component, operation, or event exists. |
+| **MUST** | The baseline, wherever the field applies ([§5.1](#51-applicability-and-emission)). | At least two independent documented instances in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory) require it, or an applicable MUST field cannot be read without it: that field's value would be ambiguous between states a detection has to distinguish, or inaccurate. Analogical grounding does not count toward the two, and neither does an entry the inventory marks as outside AI systems. In either case the field is implementable wherever its component, operation, or event exists. |
 | **SHOULD** | Applies once a deployment runs the modality it serves. | Serves a deployment modality, named in its [§6](#6-field-catalog) row, that is not yet typical of deployments; or is provider-gated. Attack grounding can be analogical: the corpus motivates the scenario without yet containing a documented instance. |
 | **MAY** | Valuable, but not needed to catch the core attack classes. | The field's dominant value is Q or A; or it has fewer than two independent documented instances, no MUST field depends on it, and it serves no modality; or it is a research-grade signal, or redundant with a MUST field. |
 
-Two instances are independent when they are separate incidents, not two accounts of the same event. A field whose defining event is itself conditional (a rewrite, an emitted citation, a fired detection) is tiered like any other and applies where that event occurs ([§5](#5-conformance)): conditionality is applicability, not a tier. Whether a field is observed or derived does not affect its tier. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalog).
+Two instances are independent when they are separate incidents, not two accounts of the same event. A field whose defining event is itself conditional (a rewrite, an emitted citation, a fired detection) is tiered like any other and applies where that event occurs ([§5.1](#51-applicability-and-emission)): conditionality is applicability, not a tier. Whether a field is observed or derived does not affect its tier. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalog).
 
 **SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
 ---
@@ -163,12 +163,12 @@ Two instances are independent when they are separate incidents, not two accounts
 
 A deployment states conformance in a **conformance statement**. It lists each applicable MUST field as emitted, and each inapplicable field as not applicable, naming the component, operation, or event that is absent. It also records the sampling configuration, the digest algorithm and canonicalization, and the decision on retaining raw content. It is reissued when the deployment's components, sampling configuration, or digest algorithm change.
 
-### Applicability and emission
+### 5.1 Applicability and emission
 
 1. **A field applies only where its defining component, operation, or event exists.** The memory fields ([§6.4](#64-memory-and-retrieval)) apply when the deployment uses persistent memory, and **Inter-Agent Message** when an agent-to-agent message is sent. An inapplicable field is marked not applicable in the conformance statement; a deployment does not add a component, manufacture an event, or emit a synthetic value to fill it.
 2. **Every applicable MUST field is supported, and emitted whenever its event occurs.** Each event carries only the fields that apply to its class: a field absent because its event did not occur is not a defect, and a field omitted from an event it applies to is.
 
-### Sampling
+### 5.2 Sampling
 
 Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores security relevance, so where OpenTelemetry carries security telemetry ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling-privacy-and-canonicalization) gives the rationale):
 
@@ -176,7 +176,7 @@ Default OpenTelemetry [[36]](#standards--frameworks) head sampling ignores secur
 2. **Where tail sampling is used, security relevance MUST be a retention predicate**: a trace containing a block, a denial, an error, or a flagged classification is always kept.
 3. **The sampling configuration in force MUST itself be recorded as telemetry**, in **Instrumentation Coverage / Hook Attestation** ([§6.2](#62-content-trust-verdicts-and-their-availability)), for the reason in [§4.5](#45-a-missing-verdict-is-not-an-allow).
 
-### Content hashing
+### 5.3 Content hashing
 
 1. **Every content-bearing field MUST carry a content hash.** Whether raw content accompanies it is deployment policy.
 2. **The canonicalization the digest is taken over MUST be declared**, by the deployment or by the carrier ([XM §2.8](Telemetry-Cross-Mapping-Addendum.md#28-context-propagation-sampling-privacy-and-canonicalization)). Otherwise two emitters that hash the same tool call under different serializations produce different digests, and the hash correlates only within one producer. Consumers MUST NOT compare digests across producers whose declared canonicalizations differ.
@@ -186,7 +186,7 @@ The hash is the correlation primitive the corpus turns on: `AOC-03` [[2]](#prima
 
 ## 6. Field catalog
 
-Every field in the set, 101 in all: 52 MUST, 33 SHOULD and 16 MAY, grouped by implementation step, then by tier. Within a step the MUST fields form the baseline, SHOULD fields wait for their modality ([§4.7](#47-tiers)), and MAY fields can be added at any point. Together the MUST fields supply the records for detecting prompt injection, data disclosure through model output and egress, memory and retrieval poisoning, exfiltration, resource abuse and denial of service, identity spoofing, runaway multi-agent loops, and unauthorized action. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). For content-bearing fields, "What it records" describes the content the hash covers; whether raw content is kept is deployment policy ([§5](#5-conformance)). The basis and reasoning for each tier are in the field's AD entry, and what applies across fields in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
+Every field in the set, 101 in all: 52 MUST, 33 SHOULD and 16 MAY, grouped by implementation step, then by tier. Within a step the MUST fields form the baseline, SHOULD fields wait for their modality ([§4.7](#47-tiers)), and MAY fields can be added at any point. Together the MUST fields supply the records for detecting prompt injection, data disclosure through model output and egress, memory and retrieval poisoning, exfiltration, resource abuse and denial of service, identity spoofing, runaway multi-agent loops, and unauthorized action. Each name links to its full definition (what to capture, and the attacks that require it) in the [Attack Detection Addendum](Telemetry-Attack-Detection-Addendum.md#1-field-tables). For content-bearing fields, "What it records" describes the content the hash covers; whether raw content is kept is deployment policy ([§5.3](#53-content-hashing)). The basis and reasoning for each tier are in the field's AD entry, and what applies across fields in [AD §4](Telemetry-Attack-Detection-Addendum.md#4-tiering-rationale).
 
 The "Emitted by" column names the CoSAI Risk Map [[23]](#standards--frameworks) component that produces each field, using the canonical IDs in [`risk-map/yaml/components.yaml`](https://github.com/cosai-oasis/secure-ai-tooling/blob/37e7beddd6611bdeb61ad707492aed069bcc51af/risk-map/yaml/components.yaml). Events do not carry a component identifier: attribution is a mapping, which costs nothing at runtime, whereas an emitted identifier would need a resolvable namespace and a deprecation policy, since events are immutable and a component renamed upstream would invalidate every event already carrying it. Fields for the data and training components and for `componentRuntimeHosting` form an independent track ([§6.7](#67-training-data-and-training-infrastructure)), grounded by `TA-33` to `TA-36` ([AD §3.2](Telemetry-Attack-Detection-Addendum.md#32-real-world-attack-vectors)). Two earlier entries, `IR-05` [[3]](#primary-sources-attack-corpus--taxonomy) and `AOC-10` [[2]](#primary-sources-attack-corpus--taxonomy), carry the ATLAS training-poisoning technique `AML.T0020`, but both poison memory and retrieval at runtime.
 
@@ -243,7 +243,7 @@ This is the densest detection step. With [§6.1](#61-identifiers-trace-context-a
 | [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | Reasoning trace, where the provider exposes it. Self-asserted. Provider-gated. | `componentReasoningCore` |
 | [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) | MAY | MITRE ATLAS technique IDs on any event where a detection fires. | any detector |
 
-**Conditional fields.** **Guardrail Modification Record** applies whenever an enforcement point rewrites rather than blocks ([§5](#5-conformance)). **Threat Classification / ATLAS Technique Tag** applies on events where a detection fires; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). It is MAY: no documented instance requires it and no MUST field depends on it.
+**Conditional fields.** **Guardrail Modification Record** applies whenever an enforcement point rewrites rather than blocks ([§5.1](#51-applicability-and-emission)). **Threat Classification / ATLAS Technique Tag** applies on events where a detection fires; its values come from the mapping in [AD §3.6](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping). It is MAY: no documented instance requires it and no MUST field depends on it.
 
 ### 6.3 Tool calls and policy decisions
 
@@ -272,7 +272,7 @@ These fields carry the highest response value: what the agent did, where it ran,
 
 ### 6.4 Memory and retrieval
 
-These apply where the deployment persists state across turns or retrieves content ([§5](#5-conformance)).
+These apply where the deployment persists state across turns or retrieves content ([§5.1](#51-applicability-and-emission)).
 
 | Field | Tier | What it records | Emitted by |
 | :------------------ | :---- | :--------------------------------------------- | :-------------------- |
