@@ -48,7 +48,7 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 | ODIS | 44 | 3 | 0 | 51 | none |
 <!-- END GENERATED: xm summary -->
 
-- **The proposals are evidence-gated and therefore small.** A field becomes a standardization ask only once it is MUST under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers). Nothing is proposed speculatively.
+- **The proposals follow the tiers of [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers).** Every MUST field a publication cannot carry has an ask. A SHOULD field gets one where a deployment running its modality would need the publication to carry it. MAY fields appear only inside an ask that a MUST or SHOULD field already needs.
 - **Emission and consumption move together.** A field OpenTelemetry emits but OCSF cannot represent arrives at the SIEM as unstructured overflow; a field OCSF defines but no instrumentation produces stays theoretical. Paired asks are the intent.
 
 CoSAI is engaging the **OpenTelemetry** and **OCSF** communities directly on this work, and welcomes input from the wider open source security community in turn. What is wanted in return: corrections to the mappings, and attacks the corpus is missing.
@@ -90,7 +90,7 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#f-stop-reason) | MUST | none |  | ai_stop_reason_id is approved (#1704) but not in 1.9.0. | [ocsf_stop_reason](#ask-ocsf-stop-reason) |
 | [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | none |  | No autonomy level. | [ocsf_autonomy_level](#ask-ocsf-autonomy-level) |
 | [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | none |  | Provenance and signing not standardized in the profile. | [ocsf_model_provenance](#ask-ocsf-model-provenance) |
-| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | partial | `object:metadata`, `attribute:tenant_uid` | One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately. No ask proposed; decide one or record why none. |  |
+| [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | partial | `object:metadata`, `attribute:tenant_uid` | One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately. No ask proposed. |  |
 | [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#f-provider-endpoint-identity) | MAY | covered | `object:ai_model`, `attribute:ai_provider` |  |  |
 | [Pre-Forward-Pass State Digest/Vector](Telemetry-Attack-Detection-Addendum.md#f-pre-forward-pass-state-digest-vector) | MAY | none |  | No forward-pass digest. A MAY research-grade signal; no ask. |  |
 | [Token Malformation / Context-Corruption Indicator](Telemetry-Attack-Detection-Addendum.md#f-token-malformation-context-corruption-indicator) | MAY | none |  | No token-entropy signal. A MAY research-grade signal; no ask. |  |
@@ -115,7 +115,7 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#f-enforcement-point-availability-failure-mode) | MUST | none |  | No enforcement availability or fail-open representation. | [ocsf_ai_guardrail](#ask-ocsf-ai-guardrail) |
 | [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) | MUST | none |  | No record that an enforcement point rewrote a payload. | [ocsf_ai_guardrail](#ask-ocsf-ai-guardrail), [ocsf_message_context_content](#ask-ocsf-message-context-content) |
 | [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#f-encoded-obfuscated-payload-indicator) | MUST | none |  | No obfuscation flag or decoded form. | [ocsf_obfuscation](#ask-ocsf-obfuscation) |
-| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | none |  | No reasoning trace. No ask proposed; decide one or record why none. |  |
+| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | none |  | No reasoning trace. No ask proposed. |  |
 | [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) | MAY | covered | `class:2004`, `attribute:attacks` | No schema change: populate attacks[].technique.uid with AML.Txxxx, the tactic, and attacks[].version with the ATLAS matrix version. |  |
 
 **RFC §6.3 Tool calls and policy decisions**
@@ -130,15 +130,15 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | none |  | No tool-definition digest. | [ocsf_ai_tool](#ask-ocsf-ai-tool) |
 | [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | none |  | No MCP object or primitive axis. | [ocsf_ai_tool](#ask-ocsf-ai-tool) |
 | [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) | MUST | partial | `class:3003` | No authorization-decision object for AI operations. | [ocsf_ai_authorization](#ask-ocsf-ai-authorization) |
-| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed; decide one or record why none. |  |
+| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed. |  |
 | [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#f-human-approval-elicitation-event) | SHOULD | none |  | No human-approval lifecycle. | [ocsf_ai_approval](#ask-ocsf-ai-approval) |
 | [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#f-tool-acl-required-scope) | SHOULD | none |  | No tool scope attribute. | [ocsf_ai_tool](#ask-ocsf-ai-tool) |
 | [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#f-session-taint-labels-information-flow-decisions) | SHOULD | none |  | No information-flow or taint labels. | [ocsf_ai_taint](#ask-ocsf-ai-taint) |
-| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#f-backend-route-restriction-decision) | SHOULD | none |  | No routing constraint or candidate backends. No ask proposed; decide one or record why none. |  |
-| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#f-mediation-coverage-bypass-path) | SHOULD | none |  | No mediation-coverage representation. XM names the gap and proposes no change; decide an ask or record why none. |  |
+| [Backend / Route Restriction Decision](Telemetry-Attack-Detection-Addendum.md#f-backend-route-restriction-decision) | SHOULD | none |  | No routing constraint or candidate backends. No ask proposed. |  |
+| [Mediation Coverage & Bypass Path](Telemetry-Attack-Detection-Addendum.md#f-mediation-coverage-bypass-path) | SHOULD | none |  | No mediation-coverage representation. No ask proposed. |  |
 | [Tool Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-tool-error-exception) | MAY | partial | `attribute:status_id`, `attribute:status_detail` | An outcome on API Activity, not tied to a tool call. | [ocsf_ai_tool](#ask-ocsf-ai-tool) |
 | [Tool ID](Telemetry-Attack-Detection-Addendum.md#f-tool-id) | MAY | none |  | No tool object. | [ocsf_ai_tool](#ask-ocsf-ai-tool) |
-| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#f-tool-privacy-classification) | MAY | partial | `profile:data_classification`, `object:data_classification`, `attribute:confidentiality` | Classification attaches to data, not to the tool that touches it. No ask proposed; decide one or record why none. |  |
+| [Tool Privacy Classification](Telemetry-Attack-Detection-Addendum.md#f-tool-privacy-classification) | MAY | partial | `profile:data_classification`, `object:data_classification`, `attribute:confidentiality` | Classification attaches to data, not to the tool that touches it. No ask proposed. |  |
 | [Policy Reason Code](Telemetry-Attack-Detection-Addendum.md#f-policy-reason-code) | MAY | none |  | No machine-readable enforcement reason code. | [ocsf_ai_authorization](#ask-ocsf-ai-authorization) |
 
 **RFC §6.4 Memory and retrieval**
@@ -152,10 +152,10 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#f-retrieval-event) | MUST | partial | `class:6005` | No retrieval object. | [ocsf_ai_retrieval](#ask-ocsf-ai-retrieval) |
 | [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) | MUST | none |  | No retrieved-content source or provenance. | [ocsf_ai_retrieval](#ask-ocsf-ai-retrieval) |
 | [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#f-memory-integrity-poisoning-signal) | SHOULD | none |  | No poisoning or isolation signal. | [ocsf_ai_memory](#ask-ocsf-ai-memory) |
-| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed; decide one or record why none. |  |
+| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed. |  |
 | [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-metadata-integrity-signal) | SHOULD | none |  | No retrieved-content integrity signal. | [ocsf_ai_retrieval](#ask-ocsf-ai-retrieval) |
-| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-memory-configuration) | MAY | none |  | No memory-store declaration. No ask proposed; decide one or record why none. |  |
-| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-knowledge-source-configuration) | MAY | none |  | No knowledge-source declaration. No ask proposed; decide one or record why none. |  |
+| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-memory-configuration) | MAY | none |  | No memory-store declaration. No ask proposed. |  |
+| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-knowledge-source-configuration) | MAY | none |  | No knowledge-source declaration. No ask proposed. |  |
 
 **RFC §6.5 Orchestration**
 
@@ -165,10 +165,10 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 | [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) | MUST | none |  | No background-task event. | [ocsf_ai_agent_activity](#ask-ocsf-ai-agent-activity) |
 | [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#f-loop-step-count-signal) | MUST | none |  | No loop or step signal. | [ocsf_ai_agent_activity](#ask-ocsf-ai-agent-activity) |
 | [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#f-resource-consumption-aggregate) | MUST | none |  | No resource aggregate, and no budget accounting on the consuming action. | [ocsf_ai_agent_activity](#ask-ocsf-ai-agent-activity), [ocsf_ai_authorization](#ask-ocsf-ai-authorization) |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | partial | `object:ai_agent`, `attribute:charter` | A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run. No ask proposed; decide one or record why none. |  |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | partial | `object:ai_agent`, `attribute:charter` | A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run. No ask proposed. |  |
 | [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | none |  | No delegated-task lifecycle. | [ocsf_ai_delegation_activity](#ask-ocsf-ai-delegation-activity) |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | partial | `object:ai_agent` | ai_agent can describe a counterparty; no descriptor change or verification outcome. No ask proposed; decide one or record why none. |  |
-| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture) | MAY | partial | `attribute:raw_data` | raw_data holds the source record before normalization, not the envelope of each MCP or A2A message. No ask proposed; decide one or record why none. |  |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | partial | `object:ai_agent` | ai_agent can describe a counterparty; no descriptor change or verification outcome. No ask proposed. |  |
+| [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture) | MAY | partial | `attribute:raw_data` | raw_data holds the source record before normalization, not the envelope of each MCP or A2A message. No ask proposed. |  |
 
 **RFC §6.6 Identity, provenance and inventory**
 
@@ -327,7 +327,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | none |  | No trigger type or source event. | [otel_trigger](#ask-otel-trigger) |
 | [Action Type](Telemetry-Attack-Detection-Addendum.md#f-action-type) | MUST | partial | `gen_ai.operation.name` | Operations include chat, execute_tool, invoke_agent and the memory operations; no inter-agent message send. | [otel_inter_agent_messaging](#ask-otel-inter-agent-messaging) |
 | [Execution Status](Telemetry-Attack-Detection-Addendum.md#f-execution-status) | MUST | covered | `error.type` | With the span status. |  |
-| [Surface / App](Telemetry-Attack-Detection-Addendum.md#f-surface-app) | MUST | none |  | No surface attribute. XM names the gap and proposes no change; decide an ask or record why none. | [otel_entry_point](#ask-otel-entry-point) |
+| [Surface / App](Telemetry-Attack-Detection-Addendum.md#f-surface-app) | MUST | none |  | No surface attribute. | [otel_entry_point](#ask-otel-entry-point) |
 | [System Prompt / Instruction Config](Telemetry-Attack-Detection-Addendum.md#f-system-prompt-instruction-config) | MUST | covered | `gen_ai.system_instructions` | Gated behind content-capture opt-in. | [otel_hash_only_capture](#ask-otel-hash-only-capture) |
 | [Model Name + Version](Telemetry-Attack-Detection-Addendum.md#f-model-name-version) | MUST | covered | `gen_ai.request.model`, `gen_ai.response.model` |  |  |
 | [Inference Parameters](Telemetry-Attack-Detection-Addendum.md#f-inference-parameters) | MUST | covered | `gen_ai.request.temperature`, `gen_ai.request.top_p`, `gen_ai.request.max_tokens`, `gen_ai.request.stop_sequences`, `gen_ai.request.seed` |  |  |
@@ -335,7 +335,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [LLM Error / Exception](Telemetry-Attack-Detection-Addendum.md#f-llm-error-exception) | MUST | covered | `error.type` |  |  |
 | [Trace Context (propagated)](Telemetry-Attack-Detection-Addendum.md#f-trace-context-propagated) | MUST | covered |  | OpenTelemetry trace context (W3C traceparent) is core to the specification. |  |
 | [Stop Reason](Telemetry-Attack-Detection-Addendum.md#f-stop-reason) | MUST | covered | `gen_ai.response.finish_reasons` |  |  |
-| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | none |  | No autonomy level. No ask proposed; decide one or record why none. |  |
+| [Autonomy Level](Telemetry-Attack-Detection-Addendum.md#f-autonomy-level) | SHOULD | none |  | No autonomy level. No ask proposed. |  |
 | [Model Provenance / Signing / Hash](Telemetry-Attack-Detection-Addendum.md#f-model-provenance-signing-hash) | SHOULD | none |  | No model provenance or signing. | [otel_model_provenance](#ask-otel-model-provenance) |
 | [Organization / Tenant ID](Telemetry-Attack-Detection-Addendum.md#f-organization-tenant-id) | SHOULD | none |  | No tenant attribute in the GenAI conventions. XM recommends adopting existing tenant and resource attributes rather than an ask. |  |
 | [Provider / Endpoint Identity](Telemetry-Attack-Detection-Addendum.md#f-provider-endpoint-identity) | MAY | covered | `gen_ai.provider.name` |  |  |
@@ -362,7 +362,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Enforcement-Point Availability & Failure Mode](Telemetry-Attack-Detection-Addendum.md#f-enforcement-point-availability-failure-mode) | MUST | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
 | [Guardrail Modification Record](Telemetry-Attack-Detection-Addendum.md#f-guardrail-modification-record) | MUST | none |  | No record that an enforcement point rewrote a payload. | [otel_security_guardrail](#ask-otel-security-guardrail) |
 | [Encoded / Obfuscated Payload Indicator](Telemetry-Attack-Detection-Addendum.md#f-encoded-obfuscated-payload-indicator) | MUST | none |  | No obfuscation flag or decoded form. | [otel_obfuscation](#ask-otel-obfuscation) |
-| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | partial | `gen_ai.usage.reasoning.output_tokens` | A count of reasoning tokens, not the trace. No ask proposed; decide one or record why none. |  |
+| [Observation / Thought (reasoning trace)](Telemetry-Attack-Detection-Addendum.md#f-observation-thought-reasoning-trace) | SHOULD | partial | `gen_ai.usage.reasoning.output_tokens` | A count of reasoning tokens, not the trace. No ask proposed. |  |
 | [Threat Classification / ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#f-threat-classification-atlas-technique-tag) | MAY | none |  | No threat-technique reference. | [otel_security_guardrail](#ask-otel-security-guardrail) |
 
 **RFC §6.3 Tool calls and policy decisions**
@@ -377,7 +377,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | partial | `gen_ai.tool.definitions` | The definitions, not a stable digest of them. | [otel_tool_digest_mcp_primitive](#ask-otel-tool-digest-mcp-primitive) |
 | [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | partial | `mcp.method.name`, `mcp.protocol.version`, `mcp.session.id` | No primitive discriminator; mcp.method.name partly serves. | [otel_tool_digest_mcp_primitive](#ask-otel-tool-digest-mcp-primitive) |
 | [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) | MUST | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). | [otel_authorization_reference](#ask-otel-authorization-reference) |
-| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed; decide one or record why none. |  |
+| [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed. |  |
 | [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#f-human-approval-elicitation-event) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
 | [Tool ACL / Required Scope](Telemetry-Attack-Detection-Addendum.md#f-tool-acl-required-scope) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
 | [Session Taint Labels & Information-Flow Decisions](Telemetry-Attack-Detection-Addendum.md#f-session-taint-labels-information-flow-decisions) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
@@ -398,11 +398,11 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Memory Footprint / Growth](Telemetry-Attack-Detection-Addendum.md#f-memory-footprint-growth) | MUST | none |  | No footprint attribute in the gen_ai registry. | [otel_memory_provenance_footprint](#ask-otel-memory-provenance-footprint) |
 | [Retrieval Event](Telemetry-Attack-Detection-Addendum.md#f-retrieval-event) | MUST | covered | `gen_ai.retrieval.query.text`, `gen_ai.retrieval.documents`, `gen_ai.data_source.id` |  |  |
 | [Retrieved-Content Source / Provenance](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-source-provenance) | MUST | none |  | No per-item source or provenance. | [otel_retrieval_provenance](#ask-otel-retrieval-provenance) |
-| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#f-memory-integrity-poisoning-signal) | SHOULD | none |  | No integrity or poisoning signal. No ask proposed; decide one or record why none. |  |
-| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed; decide one or record why none. |  |
+| [Memory Integrity / Poisoning Signal](Telemetry-Attack-Detection-Addendum.md#f-memory-integrity-poisoning-signal) | SHOULD | none |  | No integrity or poisoning signal. No ask proposed. |  |
+| [Memory Write Rationale](Telemetry-Attack-Detection-Addendum.md#f-memory-write-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed. |  |
 | [Retrieved-Content / Metadata Integrity Signal](Telemetry-Attack-Detection-Addendum.md#f-retrieved-content-metadata-integrity-signal) | SHOULD | none |  | No per-item integrity signal or freshness. | [otel_retrieval_provenance](#ask-otel-retrieval-provenance) |
-| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-memory-configuration) | MAY | partial | `gen_ai.memory.store.id` | Store identity only; no limits or retrieval settings. No ask proposed; decide one or record why none. |  |
-| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-knowledge-source-configuration) | MAY | partial | `gen_ai.data_source.id` | Data-source identity only; no schema or search parameters. No ask proposed; decide one or record why none. |  |
+| [Declared Memory Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-memory-configuration) | MAY | partial | `gen_ai.memory.store.id` | Store identity only; no limits or retrieval settings. No ask proposed. |  |
+| [Declared Knowledge-Source Configuration](Telemetry-Attack-Detection-Addendum.md#f-declared-knowledge-source-configuration) | MAY | partial | `gen_ai.data_source.id` | Data-source identity only; no schema or search parameters. No ask proposed. |  |
 
 **RFC §6.5 Orchestration**
 
@@ -412,9 +412,9 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Background / Scheduled Task Event](Telemetry-Attack-Detection-Addendum.md#f-background-scheduled-task-event) | MUST | none |  | No background-task or termination-condition signal. | [otel_trigger](#ask-otel-trigger) |
 | [Loop / Step-Count Signal](Telemetry-Attack-Detection-Addendum.md#f-loop-step-count-signal) | MUST | partial |  | Agent metrics count calls; no limit or termination semantics. | [otel_run_budget](#ask-otel-run-budget) |
 | [Resource-Consumption Aggregate](Telemetry-Attack-Detection-Addendum.md#f-resource-consumption-aggregate) | MUST | partial | `gen_ai.client.token.usage` | No per-run budget or threshold. | [otel_run_budget](#ask-otel-run-budget) |
-| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | none |  | No declared purpose for the run. No ask proposed; decide one or record why none. |  |
-| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | none |  | No A2A conventions. No ask proposed; decide one or record why none. |  |
-| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | partial | `gen_ai.agent.name`, `gen_ai.agent.id`, `gen_ai.agent.description`, `gen_ai.agent.version` | Describes the agent a span is about; no counterparty descriptor, change or verification. No ask proposed; decide one or record why none. |  |
+| [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) | SHOULD | none |  | No declared purpose for the run. No ask proposed. |  |
+| [A2A Task Lifecycle Event](Telemetry-Attack-Detection-Addendum.md#f-a2a-task-lifecycle-event) | SHOULD | none |  | No A2A conventions. No ask proposed. |  |
+| [Peer Agent Card / Descriptor](Telemetry-Attack-Detection-Addendum.md#f-peer-agent-card-descriptor) | SHOULD | partial | `gen_ai.agent.name`, `gen_ai.agent.id`, `gen_ai.agent.description`, `gen_ai.agent.version` | Describes the agent a span is about; no counterparty descriptor, change or verification. No ask proposed. |  |
 | [Protocol Envelope Capture](Telemetry-Attack-Detection-Addendum.md#f-protocol-envelope-capture) | MAY | none |  | No raw protocol envelope. A MAY field; no ask. |  |
 
 **RFC §6.6 Identity, provenance and inventory**
@@ -432,12 +432,12 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Trust-Domain Crossing & Delegation Depth](Telemetry-Attack-Detection-Addendum.md#f-trust-domain-crossing-delegation-depth) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
 | [Runtime Credential / Attestation](Telemetry-Attack-Detection-Addendum.md#f-runtime-credential-attestation) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
 | [Lifecycle State](Telemetry-Attack-Detection-Addendum.md#f-lifecycle-state) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (XM §2.3). |  |
-| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | partial | `gen_ai.agent.version` | Agent version only; no tool or framework version. No ask proposed; decide one or record why none. |  |
-| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | partial | `vcs.repository.url.full`, `vcs.ref.head.revision` | Version-control attributes exist for CI/CD telemetry, not for tool and agent code. No ask proposed; decide one or record why none. |  |
+| [Tool/Agent Version](Telemetry-Attack-Detection-Addendum.md#f-tool-agent-version) | SHOULD | partial | `gen_ai.agent.version` | Agent version only; no tool or framework version. No ask proposed. |  |
+| [Repository / Code Path / Software Ref](Telemetry-Attack-Detection-Addendum.md#f-repository-code-path-software-ref) | SHOULD | partial | `vcs.repository.url.full`, `vcs.ref.head.revision` | Version-control attributes exist for CI/CD telemetry, not for tool and agent code. No ask proposed. |  |
 | [AgBOM / Inventory Snapshot](Telemetry-Attack-Detection-Addendum.md#f-agbom-inventory-snapshot) | SHOULD | none |  | No BOM reference. | [otel_capability_change](#ask-otel-capability-change) |
 | [Component Dependency Graph](Telemetry-Attack-Detection-Addendum.md#f-component-dependency-graph) | SHOULD | none |  | No dependency graph. | [otel_capability_change](#ask-otel-capability-change) |
 | [Inventory Attestation Signature](Telemetry-Attack-Detection-Addendum.md#f-inventory-attestation-signature) | SHOULD | none |  | No inventory signature. | [otel_capability_change](#ask-otel-capability-change) |
-| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | none |  | No per-session sequence number or hash chain. No ask proposed; decide one or record why none. |  |
+| [Event Sequence Continuity](Telemetry-Attack-Detection-Addendum.md#f-event-sequence-continuity) | SHOULD | none |  | No per-session sequence number or hash chain. No ask proposed. |  |
 | [Description](Telemetry-Attack-Detection-Addendum.md#f-tool-description) | MAY | covered | `gen_ai.tool.description` |  |  |
 | [Status (active/disabled)](Telemetry-Attack-Detection-Addendum.md#f-tool-status) | MAY | none |  | No reachability status for a tool. A MAY field; no ask. |  |
 | [Creator ID / Oncall / Creation & Update dates](Telemetry-Attack-Detection-Addendum.md#f-creator-id-oncall-creation-update-dates) | MAY | none |  | No ownership or change dates. A MAY field; no ask. |  |
@@ -537,7 +537,7 @@ Signal choice matters. The following rules correct mistakes that show up often w
 
 **Privacy: content capture is opt-in, and that default is correct.** GenAI instrumentations gate message content behind an explicit capture setting, which aligns with the content-hash requirement in [RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance). The gap is that capture is close to binary (on or off) where security work needs a **middle setting**: hashes and classifications without raw content, so that correlation (same payload across many sessions, same attachment hash) survives even where raw capture is prohibited. That is the ask [`otel_hash_only_capture`](#ask-otel-hash-only-capture), the companion of [`otel_trust_level`](#ask-otel-trust-level), and it is the OTel expression of this document's **hash-first** principle. The OTel Collector is also the correct place to run redaction, since it applies uniformly across every instrumented service rather than per-library.
 
-**Canonicalization is a prerequisite for hash-first, and it must be declared.** A content hash or an event fingerprint correlates across producers only if every producer hashes the same logical bytes. The OpenTelemetry audit data model draft mandates RFC 8785 (JCS); OCSF's `attestation.fingerprint` instead *declares* its serialization (`serialization_id` plus a free-text `serialization`) so that non-JCS producers can declare it; CPEX [[44]](#standards--frameworks) hashes, at its audit seam ([cpex#166](https://github.com/contextforge-org/cpex/pull/166)), a sorted-key JSON that is documented as not RFC 8785. Two conformant implementations with different canonicalizations produce different digests for the same event, and the integrity claim degrades silently from "verify" to "trust the producer". Requirement: a producer that emits a hash of content or of an event MUST declare the canonicalization used (JCS by default), and consumers MUST NOT compare digests across producers whose declared canonicalizations differ. OCSF carries the declaration on `attestation.fingerprint`; the OTel-side ask is a single `audit.integrity.canonicalization` attribute.
+**Canonicalization is a prerequisite for hash-first, and it must be declared.** A content hash or an event fingerprint correlates across producers only if every producer hashes the same logical bytes. The OpenTelemetry audit data model draft mandates RFC 8785 (JCS); OCSF's `attestation.fingerprint` instead *declares* its serialization (`serialization_id` plus a free-text `serialization`) so that non-JCS producers can declare it; CPEX [[44]](#standards--frameworks) hashes, at its audit seam ([cpex#166](https://github.com/contextforge-org/cpex/pull/166)), a sorted-key JSON that is documented as not RFC 8785. Two conformant implementations with different canonicalizations produce different digests for the same event, and the integrity claim degrades silently from "verify" to "trust the producer". [RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance) requires a producer that emits a hash of content or of an event to declare the canonicalization used, and forbids consumers to compare digests across producers whose declared canonicalizations differ. JCS is the recommended default. OCSF carries the declaration on `attestation.fingerprint`; the OTel-side ask is a single `audit.integrity.canonicalization` attribute.
 
 ---
 
@@ -550,7 +550,7 @@ Signal choice matters. The following rules correct mistakes that show up often w
 
 AITF, the AI Telemetry Framework, was donated to CoSAI Workstream 2. It carries these fields as OpenTelemetry attributes today and emits them into OCSF ahead of formal ratification, so adopters are not blocked on either standards body. AITF v0.4 closed the 27 gaps RFC v0.4 recorded for it, adding 390 attributes ([`aitf/AITF_gaps.md`](aitf/AITF_gaps.md)).
 
-> **Note on the identifier mapping.** AD §1.1 distinguishes five levels (instance → run → session → turn → step). AITF maps the runtime instance to `gen_ai.agent.id` and the session to `gen_ai.conversation.id`; the run maps to the trace ID. AITF has no dedicated turn attribute today. Step identity is the OTel `span_id`, with `gen_ai.agent.step.index` recording its order within the agent sequence; the OpenTelemetry asks are in [§2.4](#24-asks).
+> **Note on the identifier mapping.** AD §1.1 distinguishes five levels (instance → run → session → turn → step). AITF carries each: `gen_ai.agent.id`, `gen_ai.run.id`, `gen_ai.conversation.id`, `gen_ai.turn.id` and `gen_ai.step.id`, with `gen_ai.turn.index` and `gen_ai.agent.step.index` recording order. OpenTelemetry lacks the run, turn and step identifiers; the asks are in [§2.4](#24-asks).
 
 ### 3.2 Correspondence
 
@@ -561,8 +561,8 @@ AITF, the AI Telemetry Framework, was donated to CoSAI Workstream 2. It carries 
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
 | [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `gen_ai.agent.name`, `asset.*` |  |
 | [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `gen_ai.agent.id` |  |
-| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered |  | trace id / run attr, *see note below* |
-| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | covered | `gen_ai.turn.*`, `gen_ai.conversation.id`, `gen_ai.agent.step.index` | Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.conversation.id`; turn attr; OTel `span_id` + `gen_ai.agent.step.index` Trace and span identifiers come from OpenTelemetry trace context (W3C traceparent). |
+| [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered | `gen_ai.run.id` |  |
+| [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | covered | `gen_ai.conversation.id`, `gen_ai.turn.id`, `gen_ai.step.id`, `gen_ai.agent.step.index` |  |
 | [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | covered | `gen_ai.trigger.*`, `gen_ai.agent.*` | Closed in AITF v0.4 (AITF_gaps.md). v0.5 mapping: `gen_ai.agent.*` trigger attrs |
 | [Action Type](Telemetry-Attack-Detection-Addendum.md#f-action-type) | MUST | covered | `gen_ai.agent.step.type` |  |
 | [Execution Status](Telemetry-Attack-Detection-Addendum.md#f-execution-status) | MUST | covered | `error.type` | span status + `error.type` |
@@ -692,13 +692,13 @@ AITF defines an attribute for every field except those the table marks *partial*
 
 AITF lets adopters emit this telemetry **before** OCSF ratifies it, and stages the upstream proposals so each is backward-compatible:
 
-- **Phase 0, today.** AITF carries every MUST field as OTel attributes and emits OCSF via the `ai_operation` profile on existing classes (6003/6005/2004/3002); the ATLAS tag rides on `compliance.control_id` (framework `mitre_atlas`).
+- **Phase 0, today.** AITF carries every MUST field except the five in [§3.3](#33-gaps) as OTel attributes and emits OCSF via the `ai_operation` profile on existing classes (6003/6005/2004/3002); the ATLAS tag rides on `compliance.control_id` (framework `mitre_atlas`).
 - **Phase 1, profile extension (backward-compatible).** Contribute the MUST attribute set plus the `ai_guardrail` and `ai_tool` objects to the OCSF `ai_operation` profile, and the `message_context` extensions (content hashes with their canonicalization declaration, redaction flags, system prompt, attachment identity); no new classes required, and `ai_content` only if content must attach to classes other than 6003 ([§1.2](#12-correspondence)).
 - **Phase 2, agentic classes.** Ratify **AI Agent Activity (9001)** plus the `ai_memory` and `ai_retrieval` objects (memory & RAG are absent from OCSF today and are MUST here).
 - **Phase 3, delegated authority.** Ratify **AI Delegation Activity (9002)** and the `runtime_attestation` object (ODIS-aligned), and land the lineage asks of [ocsf-schema#1739](https://github.com/ocsf/ocsf-schema/issues/1739) on `delegation`.
 - **Phase 4, inventory & analytics.** SHOULD/MAY clusters (`ai_asset`, drift, quality, fleet aggregates) as they stabilize.
 
-**Governance rule for promotion:** a field graduates from AITF-proposed to an OCSF or OpenTelemetry standardization ask once it is MUST under [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers): two independent documented instances in [AD §3](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory), or a MUST field that cannot be read without it. This keeps the OCSF surface minimal and evidence-driven rather than speculative.
+**Promotion from AITF.** A field AITF carries becomes an OCSF or OpenTelemetry ask under the rule in the [introduction](#how-this-addendum-is-organized).
 
 ---
 
@@ -932,7 +932,7 @@ ISO/IEC 42001 Annex A requires event logging over the AI system life cycle (A.6.
 35. **OpenTelemetry, GenAI semantic conventions.** Now maintained in a dedicated repository: <https://github.com/open-telemetry/semantic-conventions-genai>. Spans, metrics, events, MCP, and provider-specific conventions, **all at Development status**. Attribute registry: <https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/>. Entries marked *Deprecated* there mostly reflect the relocation rather than withdrawal, but not always: some were **renamed** in the move (`gen_ai.usage.cache_creation.input_tokens` → `gen_ai.usage.cache_write.input_tokens`) and some were **withdrawn outright** (`gen_ai.prompt` and `gen_ai.completion`, both `reason: obsoleted`, "Removed, no replacement at this time"). Names therefore come from the new repository, not the deprecated registry. **Names in XM §§2 and 3 resolve at `semantic-conventions-genai` commit `e07f4eb` (2 October 2026), which publishes no releases, and at `semantic-conventions` release v1.44.0 (4 August 2026).** Cross referenced in [XM §2](Telemetry-Cross-Mapping-Addendum.md#2-opentelemetry).
 36. **OpenTelemetry, core specification.** Signals, context propagation, sampling. <https://opentelemetry.io/docs/specs/otel/> · **W3C Trace Context**: <https://www.w3.org/TR/trace-context/> · MCP context propagation via `params._meta` (Specification Enhancement Proposal **SEP-414**): <https://modelcontextprotocol.io/community/seps/414-request-meta>
 37. **OCSF. Open Cybersecurity Schema Framework.** <https://ocsf.io/> · schema browser: <https://schema.ocsf.io/>. Cited at release 1.9.0 (3 August 2026).
-38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-owasp-aos). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification has not changed since that date.
+38. **OWASP AOS, Agent Observability Standard.** OWASP. <https://aos.owasp.org/>. Three pillars (Instrument / Trace / Inspect); cross referenced in [XM §4](Telemetry-Cross-Mapping-Addendum.md#4-owasp-aos). *Working draft.* Verified against the specification sources at commit `e4a50f6` (30 December 2025), schema version **0.1.0** (`specification/AOS/aos_schema.json` in [OWASP/www-project-agent-observability-standard](https://github.com/OWASP/www-project-agent-observability-standard)); the specification last changed on 10 November 2025.
 
 <!-- list break: reference numbers are not contiguous -->
 
