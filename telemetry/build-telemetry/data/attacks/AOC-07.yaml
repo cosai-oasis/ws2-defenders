@@ -2,6 +2,8 @@
 id: AOC-07
 name: Agent Harm
 label: Agent Harm
+cites: 2
+locator: 'Case Study #7'
 what_happened: Guilt/gaslighting framing drove **escalating self-destructive concessions** (delete names, wipe memory, expose files, leave server, self-DoS).
 fields:
 - memory_write_event

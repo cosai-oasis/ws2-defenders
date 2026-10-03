@@ -2,6 +2,8 @@
 id: AOC-11
 name: Libelous within Community
 label: Libelous within Agents' Community
+cites: 2
+locator: 'Case Study #11'
 what_happened: Impersonated owner + fabricated emergency with defamatory claims → **mass email broadcast** + attempted public post.
 fields:
 - verified_vs_displayed_identity

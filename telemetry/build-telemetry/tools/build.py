@@ -109,9 +109,18 @@ def plink(pid):
     return f"[{pmap[pid]['name']}](#{panchor(pid)})"
 
 
+def aanchor(aid):
+    return 'a-' + aid.lower()
+
+
+def alink(aid):
+    return f'[`{aid}`](#{aanchor(aid)})'
+
+
 def prose(s):
-    """Hand-written text that names a pattern by slug, with the slug shown as its linked name."""
-    return re.sub(r'`([a-z0-9_]+)`', lambda m: plink(m[1]) if m[1] in pmap else m[0], s)
+    """Hand-written text: a pattern named by slug shows as its linked name, an attack ID links to its row."""
+    s = re.sub(r'`([a-z0-9_]+)`', lambda m: plink(m[1]) if m[1] in pmap else m[0], s)
+    return re.sub(r'(?<!\[)`((?:TA|IR|AOC)-\d+)`', lambda m: alink(m[1]) if m[1] in attacks else m[0], s)
 
 
 def series(items):
@@ -137,7 +146,7 @@ MAY_REASON = {'qa': 'dominant value Q or A', 'thin': 'fewer than two documented 
 def ad_field_row(f):
     name = f"**{f['name']}**" + ''.join(f' **[{t}]**' for t in f.get('tags', []))
     tier = f['tier'] + (' ' + f['tier_mark'] if 'tier_mark' in f else '')
-    ev = ','.join(f'`{a}`' if g == 'instance' else f'*`{a}`*' for a, g in grounds[f['id']])
+    ev = ', '.join(alink(a) if g == 'instance' else f'*{alink(a)}*' for a, g in grounds[f['id']])
     return row([name, tier, f['role'], records(f), emitted(f), ev])
 
 
@@ -145,7 +154,7 @@ def capture_entry(f):
     name = (f"**{f['name']}** {f['name_note']}." if 'name_note' in f else f"**{f['name']}.**")
     tier = f'*Tier:* {tier_basis(f)}.'
     if 'rationale' in f:
-        tier += ' ' + f['rationale']
+        tier += ' ' + prose(f['rationale'])
     elif 'rationale_see' in f:
         tier += f" See {link(f['rationale_see'])}."
     if read_by[f['id']]:
@@ -153,7 +162,7 @@ def capture_entry(f):
     controls = (mapping or {}).get('fields', {}).get(f['id'], {}).get('controls', [])
     if controls:
         tier += ' *Risk Map controls:* ' + ', '.join(f'`{c}`' for c in controls) + '.'
-    return f'<a id="{anchor(f["id"])}"></a>{name} {f["capture"]}\n\n{tier}'
+    return f'<a id="{anchor(f["id"])}"></a>{name} {prose(f["capture"])}\n\n{tier}'
 
 
 def ad_step(st):
@@ -171,9 +180,9 @@ def rfc_field_row(f):
 
 def catches(p):
     order = lambda ids: sorted(ids, key=corpus_order.index)
-    out = ticks(order(p['catches']))
+    out = ', '.join(alink(a) for a in order(p['catches']))
     if p.get('catches_analogical'):
-        out += ('; ' if out else '') + 'analogically ' + ticks(order(p['catches_analogical']))
+        out += ('; ' if out else '') + 'analogically ' + ', '.join(alink(a) for a in order(p['catches_analogical']))
     return out or 'none in the corpus'
 
 
@@ -214,7 +223,7 @@ def ad_patterns():
         anal = [plink(p['id']) for p in patterns if aid in p.get('catches_analogical', [])]
         a = attacks[aid]
         first = ', '.join(inst) if inst else '*None.* ' + prose(a['no_pattern'])
-        out.append(row([f"`{aid}` {a['name']}", first, ', '.join(anal)]))
+        out.append(row([f"{alink(aid)} {a['name']}", first, ', '.join(anal)]))
     return out
 
 
@@ -227,19 +236,25 @@ def detecting(a):
     return ', '.join(out)
 
 
+CORPUS_REFS = '#primary-sources-attack-corpus--taxonomy'
+
+
+def source(a):
+    """The row's citations: its own primary source, then the corpus publication and where in it."""
+    out = [f"[[{a['ref']}]](#real-world-attack-primary-sources)"] if 'ref' in a else []
+    if 'cites' in a:
+        out.append(f"{a['locator']} [[{a['cites']}]]({CORPUS_REFS})")
+    return ', '.join(out)
+
+
 def inventory_row(section, a):
-    aid = f"**{a['id']}**"
-    if section == '3.2':
-        label = f"{a['label']} [[{a['ref']}]](#real-world-attack-primary-sources)"
-        return row([aid, label, a['what_happened'], detecting(a), a['components_text']])
-    if section == '3.3':
-        return row([aid, a['label'], a['what_happened'], a['taxonomy_text'],
-                    detecting(a), a['components_text']])
-    return row([aid, a['label'], a['what_happened'], detecting(a), a['components_text']])
+    aid = f'<a id="{aanchor(a["id"])}"></a>**{a["id"]}**'
+    sep = ' ' if 'ref' in a else ', '
+    return row([aid, f"{a['label']}{sep}{source(a)}", a['what_happened'], detecting(a), a['components_text']])
 
 
 def atlas_row(a):
-    return row([f"**{a['id']}** {a['name']}", a['atlas_text'], a['atlas_notes']])
+    return row([f"**[{a['id']}](#{aanchor(a['id'])})** {a['name']}", a['atlas_text'], a['atlas_notes']])
 
 
 def table(header, rows):

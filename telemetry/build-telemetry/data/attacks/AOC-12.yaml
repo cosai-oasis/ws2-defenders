@@ -2,6 +2,8 @@
 id: AOC-12
 name: Prompt Injection via Broadcast
 label: Prompt Injection via Broadcast *(resisted)*
+cites: 2
+locator: 'Case Study #12'
 what_happened: base64 payloads, image/OCR instructions, fake config overrides, XML/JSON privilege-escalation tags.
 fields:
 - model_input

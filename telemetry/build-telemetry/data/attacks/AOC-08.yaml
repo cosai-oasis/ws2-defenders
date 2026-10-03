@@ -2,6 +2,8 @@
 id: AOC-08
 name: Owner Identity Spoofing
 label: Owner Identity Spoofing
+cites: 2
+locator: 'Case Study #8'
 what_happened: Display-name spoof; same-channel detected (checked user ID) but **cross-channel spoof succeeded** → shutdown, file deletion, admin reassignment.
 fields:
 - verified_vs_displayed_identity

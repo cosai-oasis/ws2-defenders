@@ -2,8 +2,10 @@
 id: IR-02
 name: MINJA
 label: MINJA (Memory Injection Attack)
+ref: 70
+cites: 3
+locator: 'CoSAI IR §5.2'
 what_happened: Benign queries induce the agent to autonomously generate & persist malicious reasoning in memory.
-taxonomy_text: AT1070/AT1081/AT1050/AT1040/AT1080 → `AML.T0051`, `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`
 fields:
 - memory_write_event
 - memory_read_injection_event
@@ -22,4 +24,5 @@ fields:
 components_text: Memory
 atlas_text: '`AML.T0051.000` Direct and `AML.T0051.002` Triggered; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`'
 atlas_notes: 'Memory injection/feedback: injected as a user, activated by a victim''s query'
+reference: 'Memory Injection Attacks on LLM Agents via Query-Only Interaction (MINJA; first posted as *A Practical Memory Injection Attack against LLM Agents*). S. Dong, S. Xu, P. He, et al., arXiv:2503.03704, March 2025. <https://arxiv.org/abs/2503.03704>'
 risks: [riskAgentMemoryPoisoning]

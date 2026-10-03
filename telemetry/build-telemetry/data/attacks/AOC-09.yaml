@@ -2,6 +2,8 @@
 id: AOC-09
 name: Collaboration / Knowledge Sharing
 label: Agent Collaboration / Knowledge Sharing
+cites: 2
+locator: 'Case Study #9'
 what_happened: Cross-agent **skill/capability transfer** (teaching another agent to obtain a browser/download capability & bypass anti-bot).
 fields:
 - inter_agent_message

@@ -2,6 +2,8 @@
 id: AOC-13
 name: Email Spoofing request
 label: Email Spoofing request *(resisted)*
+cites: 2
+locator: 'Case Study #13'
 what_happened: SMTP sender-address forgery framed as a "challenge."
 fields:
 - field: tool_call_io

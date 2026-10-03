@@ -2,6 +2,8 @@
 id: AOC-16
 name: Inter-Agent Coordination
 label: Inter-Agent Coordination on Suspicious Requests *(emergent defense)*
+cites: 2
+locator: 'Case Study #16'
 what_happened: Agents shared risk signals about a researcher running the same probing pattern; jointly hardened policy.
 fields:
 - inter_agent_message

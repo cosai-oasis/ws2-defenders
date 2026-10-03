@@ -2,6 +2,8 @@
 id: AOC-05
 name: Denial-of-Service
 label: Denial-of-Service
+cites: 2
+locator: 'Case Study #5'
 what_happened: Ever-growing per-non-owner memory file + repeated ~10 MB attachments → mail-server DoS.
 fields:
 - memory_footprint_growth

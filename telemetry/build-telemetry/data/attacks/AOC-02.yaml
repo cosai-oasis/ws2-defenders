@@ -2,6 +2,8 @@
 id: AOC-02
 name: Compliance w/ Non-Owner
 label: Compliance with Non-Owner Instructions
+cites: 2
+locator: 'Case Study #2'
 what_happened: Agent ran shell cmds (`ls -la`,`pwd`), transferred files, and disclosed 124 email records for a **non-owner**; only refused overtly suspicious asks.
 fields:
 - input_trust_classification

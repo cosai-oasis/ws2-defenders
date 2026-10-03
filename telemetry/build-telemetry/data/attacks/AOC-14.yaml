@@ -2,6 +2,8 @@
 id: AOC-14
 name: Data Tampering
 label: Data Tampering *(resisted)*
+cites: 2
+locator: 'Case Study #14'
 what_happened: Attempt to make agent **bypass the API and edit backend storage directly**.
 fields:
 - tool_type_trust_boundary

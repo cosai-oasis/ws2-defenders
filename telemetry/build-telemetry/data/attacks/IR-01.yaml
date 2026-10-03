@@ -2,8 +2,10 @@
 id: IR-01
 name: Breaking the Prompt Wall
 label: Breaking the Prompt Wall
+ref: 69
+cites: 3
+locator: 'CoSAI IR §5.1'
 what_happened: Lightweight prompt-injection templates bypass safety filters across chat, file upload, and agent config.
-taxonomy_text: AT1070/AT1051/AT1091/AT1040 → `AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`
 fields:
 - model_input
 - input_source_channel
@@ -32,4 +34,5 @@ fields:
 components_text: ApplicationInputHandling, AgentInputHandling
 atlas_text: '`AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`'
 atlas_notes: See §3.3
+reference: 'Breaking the Prompt Wall (I): A Real-World Case Study of Attacking ChatGPT via Lightweight Prompt Injection. X. Chang, G. Dai, H. Di, et al., arXiv:2504.16125, April 2025. <https://arxiv.org/abs/2504.16125>'
 risks: [riskPromptInjection, riskModelEvasion]

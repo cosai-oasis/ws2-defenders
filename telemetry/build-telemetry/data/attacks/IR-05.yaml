@@ -2,8 +2,10 @@
 id: IR-05
 name: AGENTPOISON
 label: AGENTPOISON
+ref: 73
+cites: 3
+locator: 'CoSAI IR §5.5'
 what_happened: Optimized trigger-based adversarial queries poison agent memory/RAG.
-taxonomy_text: memory/RAG poisoning → `AML.T0070`, `AML.T0020`, `AML.T0043`
 fields:
 - memory_write_event
 - memory_read_injection_event
@@ -13,4 +15,5 @@ fields:
 components_text: Memory, RAGContent
 atlas_text: '`AML.T0070`, `AML.T0020`, `AML.T0043.004` Craft Adversarial Data: Insert Backdoor Trigger'
 atlas_notes: Trigger-based memory/RAG poisoning
+reference: 'AgentPoison: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases. Z. Chen, Z. Xiang, C. Xiao, et al., arXiv:2407.12784, July 2024. <https://arxiv.org/abs/2407.12784>'
 risks: [riskAgentMemoryPoisoning, riskRetrievalVectorStorePoisoning]

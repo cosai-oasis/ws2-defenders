@@ -2,6 +2,8 @@
 id: AOC-04
 name: Waste of Resources / Looping
 label: Waste of Resources / Looping
+cites: 2
+locator: 'Case Study #4'
 what_happened: Multi-day inter-agent relay loop (~60 K tokens); spawned **infinite shell loops & cron jobs with no termination**.
 fields:
 - inter_agent_message

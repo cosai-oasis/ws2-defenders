@@ -2,6 +2,8 @@
 id: AOC-15
 name: Social Engineering
 label: Social Engineering *(resisted)*
+cites: 2
+locator: 'Case Study #15'
 what_happened: '"Your owner account is compromised", rejected, but via **circular verification** on the possibly-compromised channel.'
 fields:
 - verified_vs_displayed_identity

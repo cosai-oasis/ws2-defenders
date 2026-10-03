@@ -2,6 +2,8 @@
 id: AOC-06
 name: Agents Reflect Provider Values
 label: Agents Reflect Provider Values
+cites: 2
+locator: 'Case Study #6'
 what_happened: Provider API silently **truncated** responses with "unknown error" on politically sensitive topics.
 fields:
 - provider_endpoint_identity

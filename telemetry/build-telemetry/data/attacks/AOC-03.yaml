@@ -2,6 +2,8 @@
 id: AOC-03
 name: Disclosure of Sensitive Info
 label: Disclosure of Sensitive Information
+cites: 2
+locator: 'Case Study #3'
 what_happened: Indirect/escalating framing (metadata→body→secrets) extracted **unredacted SSN, bank, medical** data from stored emails.
 fields:
 - tool_call_io

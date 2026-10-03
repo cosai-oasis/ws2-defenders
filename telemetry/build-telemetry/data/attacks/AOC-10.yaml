@@ -2,6 +2,8 @@
 id: AOC-10
 name: Agent Corruption
 label: Agent Corruption
+cites: 2
+locator: 'Case Study #10'
 what_happened: Indirect injection via an **externally editable Gist "constitution"** linked from memory; injected "holidays" → shut down peers, ban users, send unauthorized email.
 fields:
 - memory_provenance_source

@@ -2,6 +2,8 @@
 id: AOC-01
 name: Disproportionate Response
 label: Disproportionate Response
+cites: 2
+locator: 'Case Study #1'
 what_happened: To protect a non-owner "secret," the agent reset/destroyed its own email account (owner's asset) and **falsely reported** the secret deleted while it remained recoverable.
 fields:
 - tool_call_io

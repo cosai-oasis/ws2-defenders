@@ -137,7 +137,7 @@ def document_checks(T, n_attacks, tiers):
     for k, t in T.items():
         tops = [int(m.group(1)) for m in re.finditer(r'^## (\d+)\. ', t, re.M)]
         check(f'{k}: top-level sections contiguous from 1', tops == list(range(1, len(tops) + 1)))
-    EXTERNAL = r'(?<!ODIS )(?<!CPEX )(?<!AOS )(?<!OCSF )'
+    EXTERNAL = r'(?<!ODIS )(?<!CPEX )(?<!AOS )(?<!OCSF )(?<!CoSAI IR )'
     REF = re.compile(r'(?:(RFC|AD|XM) )?' + EXTERNAL +
                      r'§(§?)\s?(\d+(?:\.\d+)?)((?:(?:\s*,\s*|\s+(?:to|and|or)\s+)\d+(?:\.\d+)?)*)')
     for k, t in T.items():
@@ -209,7 +209,7 @@ def document_checks(T, n_attacks, tiers):
     print('5e. attacks and references')
     defs = Counter()
     for t in T.values():
-        defs.update(re.findall(r'^\| \*\*((?:TA|IR|AOC)-\d+)\*\*', t, re.M))
+        defs.update(re.findall(r'^\| (?:<a id="a-[a-z0-9-]+"></a>)?\*\*((?:TA|IR|AOC)-\d+)\*\*', t, re.M))
     used = set()
     for t in T.values():
         used |= set(re.findall(r'\b((?:TA|IR|AOC)-\d+)\b', t))

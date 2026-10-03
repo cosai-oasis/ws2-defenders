@@ -2,8 +2,10 @@
 id: IR-04
 name: Capital One
 label: Capital One Data Breach *(non-AI incident)*
+ref: 72
+cites: 3
+locator: 'CoSAI IR §5.4'
 what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
-taxonomy_text: non-AI infra/exfil → maps to MITRE **ATT&CK**, not ATLAS
 fields:
 - field: source_host_ip_request_metadata
   grounding: analogical
@@ -32,5 +34,6 @@ fields:
 components_text: ModelServing, Identity
 atlas_text: MITRE **ATT&CK** (non-AI)
 atlas_notes: SSRF/cloud exfil
+reference: 'A Case Study of the Capital One Data Breach. N. Novaes Neto, S. Madnick, A. M. G. de Paula, N. Malara Borges, MIT Sloan CISL Working Paper 2020-07, January 2020. <https://web.mit.edu/smadnick/www/wp/2020-07.pdf>'
 risks: [riskCredentialAndTokenTheft, riskExcessiveNetworkExposure]
 no_pattern: A non-AI incident, carried for field overlap; its edges are analogical. `identity_from_new_source` catches it analogically.
