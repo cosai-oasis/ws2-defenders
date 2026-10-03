@@ -346,10 +346,15 @@ def ask_anchor(aid):
     return 'ask-' + aid.replace('_', '-')
 
 
+# Tracking references that are pull requests, not issues (checked 2026-10-02).
+PULL_REQUESTS = {'ocsf-schema#1704', 'ocsf-schema#1729'}
+
+
 def tracking_link(ref):
     repo, num = ref.split('#')
     org = {'ocsf-schema': 'ocsf'}.get(repo, repo)
-    return f'[{ref}](https://github.com/{org}/{repo}/issues/{num})'
+    kind = 'pull' if ref in PULL_REQUESTS else 'issues'
+    return f'[{ref}](https://github.com/{org}/{repo}/{kind}/{num})'
 
 
 def pin_text(key):
