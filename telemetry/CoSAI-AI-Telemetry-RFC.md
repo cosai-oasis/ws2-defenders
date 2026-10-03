@@ -161,7 +161,8 @@ The keywords **MUST**, **SHOULD**, and **MAY** are used as defined in RFC 2119 [
 
 Two instances are independent when they are separate incidents, not two accounts of the same event. A field whose defining event is itself conditional (a rewrite, an emitted citation, a fired detection) is tiered like any other and applies where that event occurs ([§5.1](#51-applicability-and-emission)): conditionality is applicability, not a tier. Whether a field is observed or derived does not affect its tier. What counts as a documented instance, and how the evidence and priority tests interact, is set out in [AD §§3 and 4](Telemetry-Attack-Detection-Addendum.md#3-attack--incident-inventory). Tiers reflect evidence and how common a modality is, not any vendor's maturity; build sequencing is in [§6](#6-field-catalog).
 
-**SHOULD is not "MUST later."** It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
+SHOULD is not "MUST later." It is "MUST *if you run this modality*". RFC 2119 lets a SHOULD field be omitted for "valid reasons in particular circumstances". Here a valid reason is not running the modality the field serves, or, for a provider-gated field, a provider that does not expose the signal. Cost, effort, and inconvenience are not valid reasons.
+
 ---
 
 ## 5. Conformance
