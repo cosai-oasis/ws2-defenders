@@ -41,7 +41,7 @@ HEADER = ('# Curation registry batch. Edit status only through tools/curate.py, 
           '# keeping decided_by and decided_on filled in. See curate.py for the schema.\n'
           '# Intake batch written by tools/intake.py; fill in every TODO, then run\n'
           '# `intake.py propose <ID>` and `intake.py report <ID>`.\n')
-INSTANCE_KINDS = ('executed', 'resisted', 'failure')
+INSTANCE_KINDS = ('executed', 'resisted', 'failure', 'disclosed')
 TODO = 'TODO'
 
 

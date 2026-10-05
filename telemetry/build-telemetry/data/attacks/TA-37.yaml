@@ -1,9 +1,9 @@
 # TA-37. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-37
 name: LangSmith trace replica injection
-label: '**LangSmith SDK, trace exfiltration through injected baggage** (CVE-2026-25528, Feb 2026)'
+label: '**LangSmith SDK, trace exfiltration through injected baggage** (CVE-2026-25528, Feb 2026) *(disclosed)*'
 ref: 81
-instance: failure
+instance: disclosed
 same_incident_as: []
 what_happened: The LangSmith SDK's distributed tracing read trace context from incoming HTTP headers (`RunTree.from_headers()`, `TracingMiddleware`). The W3C `baggage` header could carry `langsmith-replicas` entries with an `api_url` and `api_key`, accepted without validation. When a traced operation completed, the SDK posted the run, with its LLM prompts, completions and application metadata, to every replica, including one the request had named. Any caller able to reach a traced service could add itself as a trace destination. Fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript) by removing URL and credential fields from header-supplied replicas; no exploitation is reported.
 reference: LangSmith Client SDK affected by server-side request forgery via tracing header injection, GHSA-v34v-rq6j-cj6p; **CVE-2026-25528** (CVSS 5.8). LangChain, 9 February 2026; fixed in langsmith 0.6.3 (Python) and 0.4.6 (JavaScript). <https://github.com/langchain-ai/langsmith-sdk/security/advisories/GHSA-v34v-rq6j-cj6p>

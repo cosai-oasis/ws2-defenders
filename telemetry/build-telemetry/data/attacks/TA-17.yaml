@@ -1,7 +1,8 @@
 # TA-17. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
 id: TA-17
 name: DifyTap
-label: '**DifyTap, cross-tenant trace-configuration hijack** (Dify; CVE-2026-41947, CVSS 9.1; Jun 2026)'
+label: '**DifyTap, cross-tenant trace-configuration hijack** (Dify; CVE-2026-41947, CVSS 9.1; Jun 2026) *(disclosed)*'
+instance: disclosed
 ref: 20
 what_happened: 'An authenticated editor could set and enable **trace configurations for any application regardless of tenant ownership**, redirecting every message and response of a victim tenant''s application to an attacker-controlled trace provider: a persistent exfiltration channel built out of the telemetry plane itself. Three of the four disclosed flaws carried cross-tenant impact.'
 fields:

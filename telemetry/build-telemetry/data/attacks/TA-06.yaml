@@ -2,6 +2,7 @@
 id: TA-06
 name: LangChain RCE
 label: LangChain remote code execution (2023, multiple CVEs)
+instance: executed
 ref: 9
 what_happened: Prompt injection makes the LLM emit malicious Python that LangChain executes unsandboxed (CVE-2023-36095/-29374/-34540) → server compromise.
 fields:
