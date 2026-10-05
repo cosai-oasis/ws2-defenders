@@ -460,7 +460,7 @@
   role: descriptor
   record: state
   origin: observed
-  records: 'Isolation posture: sandbox mode, runtime, OS, timeout, egress policy.'
+  records: 'Isolation settings: sandbox mode, runtime, OS, timeout, egress policy.'
   emitted_by: [componentIsolationRuntime, componentToolHosting]
   capture: 'The isolation posture of the execution: sandbox mode (none / container / VM / WASM), language runtime and version, OS/architecture, timeout, and network-egress policy.'
   rationale: '`TA-06` is characterized as model-emitted Python executed **unsandboxed**: the isolation posture *is* the finding. Two calls to the same code-execution tool, one containerized and one not, are otherwise the same event.'

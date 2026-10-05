@@ -220,7 +220,7 @@ def document_checks(T, corpus, tiers):
     # missing summary fails too, so rewording it cannot skip the check silently.
     by_kind = Counter(a.split('-')[0] for a in corpus)
     want = (len(corpus), by_kind['TA'], by_kind['IR'], by_kind['AOC'])
-    found = re.findall(r'(\d+) entries, comprising (\d+) real-world attacks and incidents, (\d+) CoSAI '
+    found = re.findall(r'(\d+) entries(?:, comprising|:) (\d+) real-world attacks and incidents, (\d+) CoSAI '
                        r'incident-response case studies(?: \[\[\d+\]\]\([^)]*\))?, and (\d+) live red-team case studies',
                        T['RFC'])
     check('RFC: corpus summary counts match the data (entries, TA, IR, AOC: %d, %d, %d, %d)' % want,
