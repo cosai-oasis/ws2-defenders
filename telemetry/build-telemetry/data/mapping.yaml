@@ -27,12 +27,6 @@ asks:
   proposes: ['object:ai_status', 'attribute:stop_reason_id']
   tracking: [ocsf-schema#1704]
   status: open
-- id: ocsf_message_context_content
-  publication: ocsf
-  summary: Extend message_context with prompt and response hashes, a redaction flag, the system prompt and its hash, and attachment identity, each hash with its canonicalization declaration.
-  proposes: ['attribute:prompt_hash', 'attribute:response_hash', 'attribute:is_redacted', 'attribute:system_prompt']
-  tracking: []
-  status: proposed
 - id: ocsf_trust_level
   publication: ocsf
   summary: Add a trust_level enum usable on content and message objects.
@@ -43,12 +37,6 @@ asks:
   publication: ocsf
   summary: Add an autonomy_level enum.
   proposes: ['attribute:autonomy_level']
-  tracking: []
-  status: proposed
-- id: ocsf_ai_guardrail
-  publication: ocsf
-  summary: Add an ai_guardrail object (type, verdict, score, blocked flag, threat reference), with enforcement availability and failure-mode attributes.
-  proposes: ['object:ai_guardrail']
   tracking: []
   status: proposed
 - id: ocsf_egress_correlation
@@ -63,12 +51,6 @@ asks:
   proposes: []
   tracking: []
   status: proposed
-- id: ocsf_ai_tool
-  publication: ocsf
-  summary: 'Land the ai_capability object: name, kind (type_id), serving system and transport, the transaction_uid join key, and fingerprints of the description and schemas with an approved baseline. Extend type_id to the client-side MCP primitives (sampling, elicitation, roots), and add a trust-boundary value set and a required-scope attribute.'
-  proposes: ['object:ai_capability', 'attribute:desc_fingerprint', 'attribute:baseline_fingerprint', 'attribute:tool_trust_boundary']
-  tracking: [ocsf-schema#1729]
-  status: open
 - id: ocsf_ai_memory
   publication: ocsf
   summary: Add an ai_memory object (operation, provenance, footprint, poisoning score, isolation verified).
@@ -79,42 +61,6 @@ asks:
   publication: ocsf
   summary: Add an ai_retrieval object (query, items, source and provenance, integrity signal).
   proposes: ['object:ai_retrieval']
-  tracking: []
-  status: proposed
-- id: ocsf_delegation_lineage
-  publication: ocsf
-  summary: Extend delegation with scope, constraints and lifecycle state; require parent_uid where a parent exists; add a root or subtree identifier.
-  proposes: []
-  tracking: [ocsf-schema#1739]
-  status: open
-- id: ocsf_runtime_attestation
-  publication: ocsf
-  summary: Add a runtime_attestation object carrying independently issued evidence objects and an explicit not-available status with a reason.
-  proposes: ['object:runtime_attestation']
-  tracking: []
-  status: proposed
-- id: ocsf_ai_asset
-  publication: ocsf
-  summary: Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage).
-  proposes: ['object:ai_asset']
-  tracking: [ocsf-schema#1724]
-  status: open
-- id: ocsf_ai_bom
-  publication: ocsf
-  summary: Add an ai_bom object (BOM reference, format, signature, dependency edges) and a capability-change activity on Agent Activity.
-  proposes: ['object:ai_bom']
-  tracking: [ocsf-schema#1724]
-  status: open
-- id: ocsf_ai_authorization
-  publication: ocsf
-  summary: Add an ai_authorization object (decision, reason, code, deciding authority, rule, obligations, budget accounting and the principal or subtree join key).
-  proposes: ['object:ai_authorization']
-  tracking: []
-  status: proposed
-- id: ocsf_ai_taint
-  publication: ocsf
-  summary: Add an ai_taint object (labels, scope, origin, taint-caused denial).
-  proposes: ['object:ai_taint']
   tracking: []
   status: proposed
 - id: ocsf_ai_approval
@@ -192,12 +138,6 @@ asks:
   tracking: []
   status: proposed
   rationale: Together they complete the supply-chain record that `gen_ai.request.model` starts.
-- id: otel_hash_only_capture
-  publication: otel_genai
-  summary: Ensure a hash-only content-capture mode exists for message content.
-  proposes: []
-  tracking: []
-  status: proposed
 - id: otel_citations
   publication: otel_genai
   summary: Add citation attributes on output messages with a resolution flag against retrieval.
@@ -237,12 +177,6 @@ asks:
 - id: otel_egress_pattern
   publication: otel_genai
   summary: Document correlating model output to its destination through the HTTP and network conventions on the child span.
-  proposes: []
-  tracking: []
-  status: proposed
-- id: otel_authorization_reference
-  publication: otel_genai
-  summary: Let a span reference an authorization decision by ID, so OpenTelemetry and OCSF records join at query time.
   proposes: []
   tracking: []
   status: proposed
@@ -327,6 +261,96 @@ asks:
 - id: otel_tool_trust_boundary
   publication: otel_genai
   summary: Extend gen_ai.tool.type, or add a trust-boundary attribute, to distinguish MCP, internal, direct-storage and code-execution tools.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_chain_end
+  publication: ocsf
+  summary: Add an end-of-chain marker to attestation, so a verifier can tell a closed chain from a truncated one. The signature bytes on digital_signature, merged as ocsf-schema#1709 after 1.9.0, complete the signed chain head.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: The OpenTelemetry Audit Logging data model already carries the marker as `audit.sequence.end` [[88]](#other-sources).
+- id: otel_audit_sequence
+  publication: otel_semconv
+  summary: 'Adopt the Audit Logging data model for security records: `audit.record.id`, the `audit.sequence.*` chain (number, previous hash, previous record id, end) and `audit.integrity.*` with its canonicalization declaration. Referenced here at commit `3c5a0ff` (2026-09-18) of the `auditing` branch.'
+  proposes: []
+  tracking: [community#2409]
+  status: open
+  rationale: The draft is in the Audit Logging SIG proposal, not yet the specification [[88]](#other-sources). A crosswalk maps each attribute to and from OCSF `attestation` [[89]](#other-sources).
+- id: ocsf_ai_authorization
+  publication: ocsf
+  summary: Add an ai_authorization object (decision, reason, code, deciding authority, rule, obligations, budget accounting and the principal or subtree join key).
+  proposes: ['object:ai_authorization']
+  tracking: [ocsf-schema#1756]
+  status: open
+  rationale: The budget accounting is the consumption side of the `constraint` object ocsf-schema#1756 proposes on delegation.
+- id: ocsf_delegation_lineage
+  publication: ocsf
+  summary: Extend delegation with scope, constraints and lifecycle state; require parent_uid where a parent exists; add a root or subtree identifier.
+  proposes: []
+  tracking: [ocsf-schema#1739, ocsf-schema#1756]
+  status: open
+  rationale: ocsf-schema#1756 proposes the constraints as a `constraint` object. Enforcement points already hold per-hop subject, audience, granted scopes and TTL; the schema has no place for them.
+- id: ocsf_ai_taint
+  publication: ocsf
+  summary: 'Add an ai_taint object: the label set at entry and the final label set, so the labels an operation added are their difference; scope; origin; and taint-caused denial.'
+  proposes: ['object:ai_taint']
+  tracking: []
+  status: proposed
+  rationale: Records in the AID-EMIT-1 format [[87]](#other-sources) carry both sets today, outside the schema.
+- id: ocsf_ai_tool
+  publication: ocsf
+  summary: 'Land the ai_capability object: name, kind (type_id), serving system and transport, the transaction_uid join key, and fingerprints of the description and schemas with an approved baseline. At the pull request''s head (`b6e44ac`, 2026-09-29) type_id has Tool, Resource and Prompt Template: extend it to the client-side MCP primitives (sampling, elicitation, roots), and add a trust-boundary value set and a required-scope attribute.'
+  proposes: ['object:ai_capability', 'attribute:desc_fingerprint', 'attribute:baseline_fingerprint', 'attribute:tool_trust_boundary']
+  tracking: [ocsf-schema#1729]
+  status: open
+  rationale: Its fingerprints reuse the `fingerprint` object, which declares `serialization_id`, so this ask already meets the canonicalization rule stated after the asks.
+- id: ocsf_ai_bom
+  publication: ocsf
+  summary: Add an ai_bom object (BOM reference, format, signature, dependency edges) and a capability-change activity on Agent Activity.
+  proposes: ['object:ai_bom']
+  tracking: [ocsf-schema#1724]
+  status: open
+  rationale: 'A [draft class](https://github.com/Levaj2000/AI-Identity/tree/main/docs/ocsf-1724-class-draft) for #1724, AI Agent Trust Inventory, has `agent_artifact` with a `fingerprint`, `agent_config_declaration`, `agent_execution_params` and `agent_credential`. It carries Inventory Integrity Signature as `record_integrity` on the inventory event, with one `chain_uid` per instance, so a gap in the chain is an unrecorded change.'
+- id: ocsf_ai_asset
+  publication: ocsf
+  summary: Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage).
+  proposes: ['object:ai_asset']
+  tracking: [ocsf-schema#1724]
+  status: open
+  rationale: 'Shape it against the #1724 draft class under [`ocsf_ai_bom`](#ask-ocsf-ai-bom).'
+- id: ocsf_runtime_attestation
+  publication: ocsf
+  summary: Add a runtime_attestation object carrying independently issued evidence objects and an explicit not-available status with a reason.
+  proposes: ['object:runtime_attestation']
+  tracking: []
+  status: proposed
+  rationale: 'The field needs both halves, each its own evidence object: the runtime workload credential with its attestor and freshness, and the software evidence of what ran. The #1724 draft class under [`ocsf_ai_bom`](#ask-ocsf-ai-bom) carries the second as `agent_artifact.fingerprint`.'
+- id: ocsf_message_context_content
+  publication: ocsf
+  summary: Extend message_context with prompt and response hashes, a redaction flag, the system prompt and its hash, and attachment identity. Each hash declares its canonicalization and may be a keyed digest with a key identifier; an absent hash means not digested, never unchanged.
+  proposes: ['attribute:prompt_hash', 'attribute:response_hash', 'attribute:is_redacted', 'attribute:system_prompt']
+  tracking: []
+  status: proposed
+  rationale: The AID-EMIT-1 record format [[87]](#other-sources) carries digests in that form today, `hmac-sha256:<key_id>:<hex>` or `sha256:<hex>`, taken at pipeline entry and at emission. Equal digests under one key identifier mean the content passed unchanged.
+- id: otel_hash_only_capture
+  publication: otel_genai
+  summary: Ensure a hash-only content-capture mode exists for message content. The digest declares its canonicalization and may be keyed with a key identifier; an absent digest means not captured.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: The digest form under [`ocsf_message_context_content`](#ask-ocsf-message-context-content) is a worked example.
+- id: ocsf_ai_guardrail
+  publication: ocsf
+  summary: Add an ai_guardrail object (type, verdict, score, blocked flag, threat reference), with enforcement availability and failure-mode attributes.
+  proposes: ['object:ai_guardrail']
+  tracking: []
+  status: proposed
+  rationale: 'A Guardrail Modification Record needs no content. Three facts on one record carry it: a modifying step naming the enforcement point, an allow-after-modification verdict, and entry and emission digests that differ under one key. The AID-EMIT-1 record format [[87]](#other-sources) carries that composition, and codes a fail-closed failure as a deny distinct from a policy deny. Whether the enforcement point was reached at all has no carrier yet.'
+- id: otel_authorization_reference
+  publication: otel_genai
+  summary: Let a span reference an authorization decision by the decision record's stable identifier (OCSF `metadata.uid`), so OpenTelemetry and OCSF records join at query time.
   proposes: []
   tracking: []
   status: proposed
@@ -1970,13 +1994,15 @@ fields:
     - controlToolRegistryAndDiscoveryIntegrity
   event_sequence_continuity:
     ocsf:
-      coverage: covered
-      constructs: ['profile:record_integrity', 'object:attestation', 'attribute:prev_event', 'attribute:chain_uid']
-      note: 'No new schema: continuity maps to attestation.prev_event and attestation.chain_uid.'
+      coverage: partial
+      constructs: ['profile:record_integrity', 'object:attestation', 'attribute:prev_event', 'attribute:chain_uid', 'attribute:sequence']
+      gap: No end-of-chain marker, so a truncated chain reads as an open one
+      note: '`attestation.prev_event` and `chain_uid` link the records and `metadata.sequence` counts them. Scoping the count to a producer epoch and stream is a producer convention, not schema (AID-EMIT-1 section 7 [[87]](#other-sources)).'
+      asks: [ocsf_chain_end]
     otel:
       coverage: none
-      gap: No per-session sequence number or hash chain
-      note: No ask proposed.
+      gap: No sequence number or hash chain in the GenAI or core conventions at the pin
+      asks: [otel_audit_sequence]
     aitf:
       coverage: covered
       constructs: [observability.sequence.*]

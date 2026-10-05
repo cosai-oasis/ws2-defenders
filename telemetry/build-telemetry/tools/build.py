@@ -363,7 +363,7 @@ PULL_REQUESTS = {'ocsf-schema#1704', 'ocsf-schema#1729'}
 
 def tracking_link(ref):
     repo, num = ref.split('#')
-    org = {'ocsf-schema': 'ocsf'}.get(repo, repo)
+    org = {'ocsf-schema': 'ocsf', 'community': 'open-telemetry'}.get(repo, repo)
     kind = 'pull' if ref in PULL_REQUESTS else 'issues'
     return f'[{ref}](https://github.com/{org}/{repo}/{kind}/{num})'
 
