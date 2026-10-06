@@ -1,0 +1,1197 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: P:mcp_server_version_unapproved
+  type: pattern
+  subject:
+    pattern: mcp_server_version_unapproved
+  source: phase5
+  proposal:
+    id: mcp_server_version_unapproved
+    former_id: CP-38
+    name: MCP server version not the approved one
+    indicates: Implementation rug pull under an adopted name
+    stage: entry
+    join: [mcp_server_identity_primitive]
+    conditions:
+    - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name.'
+    requires: [mcp_server_identity_primitive]
+    enriches: [tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, output_egress_destination]
+    baseline: Approved name and version per server.
+    catches: [TA-16]
+  reason: covers TA-16; the declared contract did not change, the shipped version did
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:obfuscated_instruction_config
+  type: pattern
+  subject:
+    pattern: obfuscated_instruction_config
+  source: phase5
+  proposal:
+    id: obfuscated_instruction_config
+    former_id: CP-45
+    name: Obfuscated content in the instruction configuration
+    indicates: Instruction-file poisoning
+    stage: entry
+    join: [agent_runtime_instance_id]
+    conditions:
+    - The **System Prompt / Instruction Config** loaded for a run contains content flagged by **Encoded / Obfuscated Payload Indicator**.
+    requires: [system_prompt_instruction_config, encoded_obfuscated_payload_indicator]
+    enriches:
+    - repository_code_path_software_ref
+    - attribute_source_trusted_provenance_marking
+    catches: [TA-21]
+  reason: covers TA-21
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:identity_from_new_source
+  type: pattern
+  subject:
+    pattern: identity_from_new_source
+  source: phase5
+  proposal:
+    id: identity_from_new_source
+    former_id: CP-14
+    name: Same identity from a new source
+    indicates: Credential theft or session hijack
+    stage: entry
+    join: [identities_used_per_hop]
+    conditions:
+    - An identity appears from a **Source host / IP** outside its history.
+    - Optionally on a new **Surface / App**.
+    requires: [source_host_ip_request_metadata, identities_used_per_hop]
+    enriches: [surface_app]
+    baseline: Source history per identity.
+    catches: [AOC-15]
+    catches_analogical: [IR-04]
+  reason: IR-04 is non-AI and its edges are analogical, so it moves to catches_analogical. TA-20 and TA-22 used stolen credentials but have no Source host / IP edge; the session note already holds that lead pending the primary sources
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:same_input_many_identities
+  type: pattern
+  subject:
+    pattern: same_input_many_identities
+  source: phase5
+  proposal:
+    id: same_input_many_identities
+    former_id: CP-01
+    name: Same input across many identities
+    indicates: Automated injection campaign
+    stage: entry
+    join: [model_input]
+    conditions:
+    - The same **Model Input** content hash arrives under many distinct **Identities Used** within a window.
+    - Optionally from several **Source host / IP** values.
+    requires: [model_input, identities_used_per_hop]
+    enriches: [source_host_ip_request_metadata]
+    baseline: Distinct identities per input hash in ordinary traffic.
+    catches: []
+    motivation: Template reuse in `IR-01`; no corpus entry records one payload under many identities.
+  reason: 'stated evidence IR-01 has no Identities Used edge: IR-01 reuses templates across surfaces, not identities'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:tool_definition_changed
+  type: pattern
+  subject:
+    pattern: tool_definition_changed
+  source: phase5
+  proposal:
+    id: tool_definition_changed
+    former_id: CP-17
+    name: Tool definition changed after approval
+    indicates: Tool definition rug pull
+    stage: entry
+    join: [mcp_server_identity_primitive]
+    conditions:
+    - The **Tool Definition Digest** at invocation differs from the digest approved for the same tool name and server.
+    requires: [tool_definition_digest]
+    enriches: [mcp_server_identity_primitive, tool_call_io, human_approval_elicitation_event]
+    baseline: The approved digest per tool.
+    catches: [TA-29]
+  reason: stated evidence (AOC-09, AOC-10, AOC-14) has no digest edge; TA-29 is the instance. TA-15 is malicious as published, so the digest never changes; it is caught by `unrequested_data_in_tool_arguments`
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:denials_then_allow
+  type: pattern
+  subject:
+    pattern: denials_then_allow
+  source: phase5
+  proposal:
+    id: denials_then_allow
+    former_id: CP-29
+    name: Denials, then an allow, for the same operation
+    indicates: Policy probing; an authorization bypass found
+    stage: decision
+    join: [identities_used_per_hop]
+    conditions:
+    - The **Authorization Decision Record** denies an operation repeatedly for one identity or source.
+    - The same operation is later allowed, or the deny codes shift.
+    requires: [authorization_decision_record, identities_used_per_hop]
+    enriches: [source_host_ip_request_metadata, policy_reason_code]
+    catches: [AOC-02, AOC-08]
+  reason: drops IR-01 (no authorization edge); AOC-08 was refused on one channel and succeeded on another
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:guardrail_blocks_stop
+  type: pattern
+  subject:
+    pattern: guardrail_blocks_stop
+  source: phase5
+  proposal:
+    id: guardrail_blocks_stop
+    former_id: CP-41
+    name: Guardrail blocks stop while volume continues
+    indicates: Guardrail bypass operated at scale
+    stage: decision
+    join: [identities_used_per_hop]
+    conditions:
+    - '**Guardrail (Input) Verdict** blocks repeatedly for an identity, then stops while request volume continues.'
+    - '**Guardrail (Output) Verdict** flags output for the same identity.'
+    requires: [guardrail_input_verdict, guardrail_output_verdict, identities_used_per_hop]
+    enriches: [llm_refusal, organization_tenant_id]
+    catches: [TA-22]
+  reason: covers TA-22
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:inference_parameters_off_baseline
+  type: pattern
+  subject:
+    pattern: inference_parameters_off_baseline
+  source: phase5
+  proposal:
+    id: inference_parameters_off_baseline
+    former_id: CP-21
+    name: Inference parameters off the approved baseline
+    indicates: Configuration tampering that widens extraction or jailbreak
+    stage: decision
+    join: []
+    conditions:
+    - '**Inference Parameters** on a call differ from the approved baseline: temperature raised, stop sequences removed, `max_tokens` raised.'
+    requires: [inference_parameters]
+    enriches: [system_prompt_instruction_config, llm_refusal, response_model_output]
+    baseline: Approved parameters per deployment.
+    catches: []
+    motivation: Per-request overrides of decoding configuration; no corpus entry changes it.
+  reason: stated evidence TA-04 and TA-07 used ordinary prompts, not changed parameters
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:context_limit_abuse
+  type: pattern
+  subject:
+    pattern: context_limit_abuse
+  source: phase5
+  proposal:
+    id: context_limit_abuse
+    former_id: CP-09
+    name: Input near the context limit ending on a limit or error
+    indicates: 'Context-window abuse: denial of service, cost blow-up or divergence'
+    stage: decision
+    join: [identities_used_per_hop]
+    conditions:
+    - '**Input / Output Token Counts** approach the context window or `max_tokens` in **Inference Parameters**.'
+    - The completion ends on a limit (**Stop Reason**) or an **LLM Error / Exception**.
+    - It repeats from the same source.
+    requires: [input_output_token_counts, inference_parameters, stop_reason]
+    enriches: [llm_error_exception, resource_consumption_aggregate, source_host_ip_request_metadata, model_input]
+    catches: [TA-04, TA-10]
+  reason: adds TA-04 (max-length output); reads the denominator fields the AD rationale for Inference Parameters names
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:retrieved_instructions_followed
+  type: pattern
+  subject:
+    pattern: retrieved_instructions_followed
+  source: phase5
+  proposal:
+    id: retrieved_instructions_followed
+    former_id: CP-06
+    name: Instructions followed from an external retrieved item
+    indicates: RAG injection or knowledge-base poisoning
+    stage: decision
+    join: [session_turn_step_ids]
+    conditions:
+    - A **Retrieval Event** returns an item whose **Retrieved-Content Source / Provenance** is external or recently modified.
+    - The **Response / Model Output** in the same turn follows instructions from that item.
+    requires: [retrieval_event, retrieved_content_source_provenance, response_model_output]
+    enriches: []
+    catches: [TA-01, TA-02, TA-09]
+  reason: unchanged evidence; structured
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:model_or_provider_anomaly
+  type: pattern
+  subject:
+    pattern: model_or_provider_anomaly
+  source: phase5
+  proposal:
+    id: model_or_provider_anomaly
+    former_id: CP-13
+    name: Model change, or error and stop-reason spike, for one provider
+    indicates: Model substitution or provider-side interference
+    stage: decision
+    match: any
+    join: []
+    conditions:
+    - '**Model Name + Version** changes for a deployment with no recorded change.'
+    - '**LLM Error / Exception** and abnormal **Stop Reason** rates rise for one provider.'
+    requires: [model_name_version, llm_error_exception, stop_reason]
+    enriches: [provider_endpoint_identity]
+    baseline: Model and error-rate history per deployment.
+    catches: [AOC-06]
+  reason: drops TA-06 (analogical Model Name edge only); Provider / Endpoint Identity (MAY) moves to enriching, so the minimum tier is MUST. The conditions are alternatives
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:privileged_action_on_displayed_identity
+  type: pattern
+  subject:
+    pattern: privileged_action_on_displayed_identity
+  source: phase5
+  proposal:
+    id: privileged_action_on_displayed_identity
+    former_id: CP-12
+    name: Privileged action authorized on a displayed identity
+    indicates: Identity spoofing or confused deputy
+    stage: decision
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Verified vs Displayed Identity** shows the authorizing principal matched on display name only.'
+    - The **Authorization Decision Record** allows a privileged operation on that basis.
+    requires: [verified_vs_displayed_identity, authorization_decision_record]
+    enriches: [surface_app, granted_authorizations_scope]
+    catches: [AOC-08]
+  reason: reads the Authorization Decision Record instead of Granted Authorizations (SHOULD), so the minimum tier is MUST; a new channel (Surface / App) moves to enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:privileged_mcp_tool_low_privilege_identity
+  type: pattern
+  subject:
+    pattern: privileged_mcp_tool_low_privilege_identity
+  source: phase5
+  proposal:
+    id: privileged_mcp_tool_low_privilege_identity
+    former_id: CP-49
+    name: Privileged MCP tool invoked by a low-privilege identity
+    indicates: Privilege escalation at the MCP tool boundary
+    stage: decision
+    join: [mcp_server_identity_primitive]
+    conditions:
+    - An identity without the privilege invokes a privileged MCP tool (**Identities Used**, **MCP Server Identity & Primitive**).
+    - The **Authorization Decision Record** allows it, or records no decision at the tool boundary.
+    requires: [identities_used_per_hop, mcp_server_identity_primitive, authorization_decision_record]
+    enriches: [granted_authorizations_scope, tool_error_exception]
+    catches: [TA-13]
+  reason: covers TA-13
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:refusals_then_completion
+  type: pattern
+  subject:
+    pattern: refusals_then_completion
+  source: phase5
+  proposal:
+    id: refusals_then_completion
+    former_id: CP-02
+    name: Refusals, then a completion, in one session
+    indicates: Jailbreak or extraction succeeded after probing
+    stage: decision
+    join: [session_turn_step_ids]
+    conditions:
+    - '**LLM Refusal** fires on several turns of a session.'
+    - A later turn of the same session, on similar **Model Input**, gets no refusal.
+    requires: [llm_refusal, model_input]
+    enriches: [execution_status, response_model_output]
+    catches: [TA-07, IR-01]
+  reason: adds TA-07 (refuse then succeed); drops AOC-12, which was resisted and fires only the first condition (now `repeated_refusals`). Success is read from the refusal stopping, so Execution Status moves to enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:repeated_refusals
+  type: pattern
+  subject:
+    pattern: repeated_refusals
+  source: phase5
+  proposal:
+    id: repeated_refusals
+    former_id: CP-34
+    name: Repeated refusals
+    indicates: An attack attempt in progress, resisted or probing
+    stage: decision
+    join: [session_turn_step_ids, identities_used_per_hop]
+    conditions:
+    - '**LLM Refusal** fires repeatedly within a session, or for one identity across sessions.'
+    requires: [llm_refusal]
+    enriches: [model_input, guardrail_input_verdict]
+    catches: [IR-01, AOC-12, AOC-13, AOC-14]
+  reason: 'the resisted entries: in them the refusal is the detection'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:credential_wider_than_requested
+  type: pattern
+  subject:
+    pattern: credential_wider_than_requested
+  source: phase5
+  proposal:
+    id: credential_wider_than_requested
+    former_id: CP-30
+    name: Credential minted wider than requested
+    indicates: Over-broad delegation or confused deputy
+    stage: decision
+    join: [identities_used_per_hop]
+    conditions:
+    - A **Credential Minting & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
+    requires:
+    - token_exchange_scope_narrowing_check
+    enriches: [granted_authorizations_scope, identities_used_per_hop]
+    catches: [TA-08]
+    catches_analogical: [AOC-02, AOC-08]
+  reason: AOC-08 has only an analogical minting edge
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:cross_tenant_access
+  type: pattern
+  subject:
+    pattern: cross_tenant_access
+  source: phase5
+  proposal:
+    id: cross_tenant_access
+    former_id: CP-25
+    name: Data or access across a tenant boundary
+    indicates: Cross-tenant bleed
+    stage: decision
+    match: any
+    join: [organization_tenant_id]
+    conditions:
+    - A response, retrieval or memory read served to one **Organization / Tenant ID** carries another tenant's data.
+    - An **Authorization Decision Record** allows an operation on another tenant's resource.
+    requires: [organization_tenant_id, authorization_decision_record]
+    enriches: [identities_used_per_hop, retrieval_event, memory_read_injection_event]
+    catches: [TA-11, TA-17]
+  reason: stated evidence AOC-02 and AOC-05 has no tenant edge; TA-11 and TA-17 are the cross-tenant instances. The conditions are alternatives
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:unsandboxed_code_execution
+  type: pattern
+  subject:
+    pattern: unsandboxed_code_execution
+  source: phase5
+  proposal:
+    id: unsandboxed_code_execution
+    former_id: CP-19
+    name: Code execution with no sandbox
+    indicates: Unsandboxed execution reachable from model output
+    stage: action
+    join: [tool_execution_id]
+    conditions:
+    - A code-execution **Tool Call I/O** runs with **Execution Environment / Sandbox** recording none.
+    requires: [execution_environment_sandbox, tool_call_io]
+    enriches: [tool_type_trust_boundary]
+    catches: [TA-06]
+    catches_analogical: [AOC-02]
+  reason: AOC-02 has only an analogical sandbox edge
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:consumption_spike_with_model_enumeration
+  type: pattern
+  subject:
+    pattern: consumption_spike_with_model_enumeration
+  source: phase5
+  proposal:
+    id: consumption_spike_with_model_enumeration
+    former_id: CP-40
+    name: Consumption spike and model enumeration under one identity
+    indicates: Stolen-credential model access (LLMjacking)
+    stage: action
+    join: [identities_used_per_hop]
+    conditions:
+    - For one identity, **Resource-Consumption Aggregate** rises far above its baseline.
+    - Its calls enumerate or switch to models (**Model Name + Version**) it did not use before.
+    requires: [identities_used_per_hop, resource_consumption_aggregate, model_name_version]
+    enriches: [input_output_token_counts, provider_endpoint_identity, source_host_ip_request_metadata]
+    baseline: Consumption and model set per identity.
+    catches: [TA-20]
+  reason: covers TA-20
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:authorized_calls_chained_across_identities
+  type: pattern
+  subject:
+    pattern: authorized_calls_chained_across_identities
+  source: phase5
+  proposal:
+    id: authorized_calls_chained_across_identities
+    former_id: CP-08
+    name: Individually authorized calls chained across identities
+    indicates: Tool-chaining privilege escalation
+    stage: action
+    join: [workflow_run_id, trace_context_propagated]
+    conditions:
+    - A run's **Tool Call I/O** sequence passes a credential or identifier from one call's output into a later call's input.
+    - '**Identities Used** changes within the chain.'
+    - Each call is individually allowed (**Authorization Decision Record**).
+    requires: [tool_call_io, identities_used_per_hop, authorization_decision_record]
+    enriches: [tool_acl_required_scope, loop_step_count_signal]
+    catches: [TA-08]
+  reason: reads the Authorization Decision Record instead of Tool ACL (SHOULD), so the minimum tier is MUST
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:inter_agent_relay_loop
+  type: pattern
+  subject:
+    pattern: inter_agent_relay_loop
+  source: phase5
+  proposal:
+    id: inter_agent_relay_loop
+    former_id: CP-10
+    name: Inter-agent relay with no terminating step
+    indicates: Multi-agent resource-exhaustion loop
+    stage: action
+    join: [workflow_run_id, trace_context_propagated]
+    conditions:
+    - '**Inter-Agent Message** volume between the same agents rises without a terminating step.'
+    - '**Loop / Step-Count Signal** exceeds its limit.'
+    - '**Resource-Consumption Aggregate** climbs against the run budget.'
+    requires: [inter_agent_message, loop_step_count_signal, resource_consumption_aggregate]
+    enriches: []
+    catches: [AOC-04]
+  reason: unchanged evidence; structured
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:autonomous_run_against_external_targets
+  type: pattern
+  subject:
+    pattern: autonomous_run_against_external_targets
+  source: phase5
+  proposal:
+    id: autonomous_run_against_external_targets
+    former_id: CP-47
+    name: Long autonomous run against many external targets
+    indicates: Agent operated as an attack framework
+    stage: action
+    join: [workflow_run_id]
+    conditions:
+    - A run's **Loop / Step-Count Signal** is long and its **Tool Call I/O** reaches many external targets.
+    - The activity does not match the declared task, or none is declared.
+    requires: [loop_step_count_signal, tool_call_io]
+    enriches: [task_intent_declaration, llm_refusal, trigger_type_source_event]
+    catches: [TA-24]
+  reason: covers TA-24 from the operator of the agent runtime, where it was detected; the victims see ordinary intrusion traffic
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:new_tool_with_call_spike
+  type: pattern
+  subject:
+    pattern: new_tool_with_call_spike
+  source: phase5
+  proposal:
+    id: new_tool_with_call_spike
+    former_id: CP-03
+    name: New tool name with a rise in tool calls
+    indicates: Agent reaching an unauthorized capability
+    stage: action
+    join: [agent_runtime_instance_id]
+    conditions:
+    - A **Tool Name** not seen for this agent appears.
+    - '**Tool Call I/O** volume for the run rises above its baseline.'
+    requires: [tool_name, tool_call_io]
+    enriches: [resource_consumption_aggregate, capability_set_change_event]
+    baseline: Tool set and call rate per agent.
+    catches: [TA-06, TA-08, AOC-02, AOC-10]
+  reason: Resource-Consumption Aggregate moves to enriching (no stated attack has an edge to it); adds TA-06 and TA-08
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:untrusted_attachment_to_destructive_tool
+  type: pattern
+  subject:
+    pattern: untrusted_attachment_to_destructive_tool
+  source: phase5
+  proposal:
+    id: untrusted_attachment_to_destructive_tool
+    former_id: CP-43
+    name: Untrusted attachment, then a destructive tool call
+    indicates: Attachment-borne injection reaching a shell
+    stage: action
+    join: [workflow_run_id]
+    conditions:
+    - '**Content Modality & Attachment Identity** records a file or image that **Input Trust Classification** marks untrusted.'
+    - A destructive or shell **Tool Call I/O** follows in the same run.
+    requires: [content_modality_attachment_identity, input_trust_classification, tool_call_io]
+    enriches: [guardrail_input_verdict, action_type]
+    catches: [TA-26]
+  reason: covers TA-26
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:untrusted_content_acted_on_later
+  type: pattern
+  subject:
+    pattern: untrusted_content_acted_on_later
+  source: phase5
+  proposal:
+    id: untrusted_content_acted_on_later
+    former_id: CP-42
+    name: Untrusted content acted on in a later turn
+    indicates: Delayed tool invocation
+    stage: action
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Input Trust Classification** marks content untrusted in one turn.'
+    - A sensitive **Tool Call I/O** in a later turn of the same session follows it, with no new user request.
+    requires: [input_trust_classification, tool_call_io]
+    enriches: [model_input]
+    catches: [TA-19]
+  reason: covers TA-19; a detection scoped to one turn misses it
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:unmediated_capability
+  type: pattern
+  subject:
+    pattern: unmediated_capability
+  source: phase5
+  proposal:
+    id: unmediated_capability
+    former_id: CP-31
+    name: Capability reached with no mediation record
+    indicates: Reference-monitor bypass
+    stage: action
+    join: [tool_execution_id]
+    conditions:
+    - A **Tool Call I/O** reaches a capability whose **Tool Type / Trust Boundary** requires mediation.
+    - No **Mediation Coverage & Bypass Path** record shows it passed the reference monitor.
+    requires: [tool_call_io, tool_type_trust_boundary, mediation_coverage_bypass_path]
+    enriches: []
+    catches: [AOC-14]
+    catches_analogical: [TA-06]
+  reason: AOC-02 has only an analogical mediation edge and no trust-boundary edge, so it is dropped; TA-06 is analogical
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:action_without_covering_approval
+  type: pattern
+  subject:
+    pattern: action_without_covering_approval
+  source: phase5
+  proposal:
+    id: action_without_covering_approval
+    former_id: CP-28
+    name: High-impact action without a covering approval
+    indicates: Missing, disabled or replayed human authorization
+    stage: action
+    join: [tool_execution_id]
+    conditions:
+    - A high-impact operation executes.
+    - No **Human Approval / Elicitation Event** covers it, or the approval does not cover the executed arguments, or approval was switched off.
+    requires: [human_approval_elicitation_event]
+    enriches: [tool_call_io, authorization_decision_record, capability_set_change_event]
+    catches: [TA-15, TA-23, TA-29, AOC-01, AOC-02, AOC-07, AOC-11]
+  reason: adds TA-15, TA-23 (approval disabled as configuration), TA-29 (dialog padded to hide the arguments) and AOC-02
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:agent_name_collision
+  type: pattern
+  subject:
+    pattern: agent_name_collision
+  source: phase5
+  proposal:
+    id: agent_name_collision
+    former_id: CP-33
+    name: One agent name bound to two peers
+    indicates: Agent name collision; wrong-peer dispatch
+    stage: action
+    join: [agent_name]
+    conditions:
+    - Within one host, an **Agent Name** resolves to more than one **Peer Agent Card / Descriptor**, endpoint or enrolled identity.
+    - '**Verified vs Displayed Identity** shows the requests addressed to the name reach a different peer.'
+    requires: [peer_agent_card_descriptor, verified_vs_displayed_identity]
+    enriches: [identities_used_per_hop, inter_agent_message]
+    catches: [TA-31]
+  reason: structures the accepted P:agent-name-collision (supersedes it)
+  status: accepted
+  supersedes: P:agent-name-collision
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:background_task_without_end
+  type: pattern
+  subject:
+    pattern: background_task_without_end
+  source: phase5
+  proposal:
+    id: background_task_without_end
+    former_id: CP-11
+    name: Background task with no end condition
+    indicates: Runaway automation or persistence
+    stage: persistence
+    join: [agent_runtime_instance_id]
+    conditions:
+    - A **Background / Scheduled Task Event** creates a task with no end condition or expiry.
+    - The task outlives the run that created it.
+    requires: [background_scheduled_task_event]
+    enriches: [action_type, trigger_type_source_event]
+    catches: [TA-25, AOC-04, AOC-10]
+  reason: adds TA-25; Action Type moves to enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:capability_after_inter_agent_message
+  type: pattern
+  subject:
+    pattern: capability_after_inter_agent_message
+  source: phase5
+  proposal:
+    id: capability_after_inter_agent_message
+    former_id: CP-18
+    name: Capability added soon after an inter-agent message
+    indicates: Cross-agent capability transfer
+    stage: persistence
+    join: [agent_runtime_instance_id]
+    conditions:
+    - A **Capability-Set Change Event** adds a tool or MCP server,
+    - within a window after an **Inter-Agent Message** to that agent.
+    requires: [capability_set_change_event, inter_agent_message]
+    enriches: [peer_agent_card_descriptor, tool_name]
+    catches: [AOC-09]
+  reason: drops AOC-04 (no Capability-Set Change edge); Peer Agent Card (SHOULD) moves to enriching, so the minimum tier is MUST
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:unapproved_capability_change
+  type: pattern
+  subject:
+    pattern: unapproved_capability_change
+  source: phase5
+  proposal:
+    id: unapproved_capability_change
+    former_id: CP-39
+    name: Capability or configuration change with no approval
+    indicates: Configuration rug pull, or a safeguard switched off
+    stage: persistence
+    join: [agent_runtime_instance_id]
+    conditions:
+    - A **Capability-Set Change Event** records a changed launch command, arguments or approval setting for an approved tool or agent.
+    - No approval accompanies the change.
+    requires: [capability_set_change_event]
+    enriches: [execution_environment_sandbox, human_approval_elicitation_event]
+    catches: [TA-14, TA-23, TA-29]
+  reason: covers TA-14 and TA-23
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:external_memory_read_back
+  type: pattern
+  subject:
+    pattern: external_memory_read_back
+  source: phase5
+  proposal:
+    id: external_memory_read_back
+    former_id: CP-05
+    name: Externally sourced memory read back later
+    indicates: Memory poisoning or indirect corruption
+    stage: persistence
+    join: []
+    conditions:
+    - A **Memory Write Event** has a **Memory Provenance / Source** that is a non-owner or external source.
+    - The item is read back (**Memory Read / Injection Event**) in a later session.
+    - Behaviour in that session departs from the request.
+    requires: [memory_write_event, memory_provenance_source, memory_read_injection_event]
+    enriches: [observation_thought_reasoning_trace, memory_integrity_poisoning_signal]
+    catches: [TA-18, IR-02, AOC-10]
+  reason: joins on the memory item; Observation / Thought (SHOULD) moves to enriching, so the minimum tier is MUST; adds TA-18
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:memory_beyond_limit
+  type: pattern
+  subject:
+    pattern: memory_beyond_limit
+  source: phase5
+  proposal:
+    id: memory_beyond_limit
+    former_id: CP-24
+    name: Memory store beyond its limit
+    indicates: Memory-store exhaustion or silent limit removal
+    stage: persistence
+    join: []
+    conditions:
+    - '**Memory Footprint / Growth** exceeds the store''s declared or hard-coded limit, or grows with no matching retention event.'
+    requires: [memory_footprint_growth]
+    enriches: [declared_memory_configuration, memory_write_event]
+    baseline: The declared limit, or a hard-coded one.
+    catches: [TA-30, AOC-05]
+  reason: adds TA-30; drops AOC-07 (no footprint edge); Declared Memory Configuration (MAY) moves to enriching, so the minimum tier is MUST
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:poisoned_item_read
+  type: pattern
+  subject:
+    pattern: poisoned_item_read
+  source: phase5
+  proposal:
+    id: poisoned_item_read
+    former_id: CP-35
+    name: Item flagged as poisoned, then read into context
+    indicates: Memory or retrieval poisoning taking effect
+    stage: persistence
+    join: []
+    conditions:
+    - A **Memory Integrity / Poisoning Signal** flags an item.
+    - The item is later read into context (**Memory Read / Injection Event**).
+    requires: [memory_integrity_poisoning_signal, memory_read_injection_event]
+    enriches:
+    - memory_provenance_source
+    - retrieved_content_metadata_integrity_signal
+    catches: [TA-18, IR-02, IR-05]
+  reason: covers IR-05 (optimized triggers), whose provenance is not recorded
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:zero_click_to_new_egress
+  type: pattern
+  subject:
+    pattern: zero_click_to_new_egress
+  source: phase5
+  proposal:
+    id: zero_click_to_new_egress
+    former_id: CP-22
+    name: Autonomous trigger, untrusted content, new egress
+    indicates: Zero-click injection-to-exfiltration
+    stage: egress
+    join: [workflow_run_id]
+    conditions:
+    - '**Trigger Type & Source Event** marks the run autonomous.'
+    - '**Input Trust Classification** marks the triggering content untrusted.'
+    - The run reaches an **Output Egress Destination** not seen for this agent.
+    requires: [trigger_type_source_event, input_trust_classification, output_egress_destination]
+    enriches: []
+    catches: [TA-01]
+  reason: drops AOC-10 (no trust-classification or egress edge)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:citation_without_retrieval
+  type: pattern
+  subject:
+    pattern: citation_without_retrieval
+  source: phase5
+  proposal:
+    id: citation_without_retrieval
+    former_id: CP-15
+    name: Citation with no matching retrieval
+    indicates: Fabricated or attacker-planted citation
+    stage: egress
+    match: any
+    join: [session_turn_step_ids]
+    conditions:
+    - A **Citations / Source Attribution** entry resolves to no item a **Retrieval Event** returned in the session.
+    - A citation resolves to an item whose provenance is external or recently modified.
+    requires: [citations_source_attribution, retrieval_event]
+    enriches: [retrieved_content_source_provenance, output_egress_destination]
+    catches: [TA-01, TA-02, IR-03]
+  reason: unchanged evidence; provenance and egress move to enriching. The conditions are alternatives
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:input_reemitted
+  type: pattern
+  subject:
+    pattern: input_reemitted
+  source: phase5
+  proposal:
+    id: input_reemitted
+    former_id: CP-44
+    name: Input content re-emitted to another agent or store
+    indicates: Self-replicating prompt propagation
+    stage: egress
+    join: [trace_context_propagated]
+    conditions:
+    - A **Model Input** content hash reappears in an outbound **Inter-Agent Message**, or in content stored where it is retrieved again.
+    requires: [model_input, inter_agent_message]
+    enriches: [retrieved_content_source_provenance, memory_write_event, trigger_type_source_event]
+    catches: [TA-27]
+  reason: covers TA-27
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:output_link_carrying_data
+  type: pattern
+  subject:
+    pattern: output_link_carrying_data
+  source: phase5
+  proposal:
+    id: output_link_carrying_data
+    former_id: CP-46
+    name: Output link carrying session data
+    indicates: Exfiltration through a rendered link or image
+    stage: egress
+    join: [session_turn_step_ids]
+    conditions:
+    - A **Response / Model Output** contains a URL whose path or query carries data from the session.
+    - The client fetches it (**Output Egress Destination**).
+    requires: [response_model_output, output_egress_destination]
+    enriches: [source_host_ip_request_metadata]
+    catches: [TA-01, TA-03]
+  reason: takes TA-03 from `untrusted_input_to_new_egress`, whose tool-call and trust conditions it does not meet
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:system_prompt_reproduced
+  type: pattern
+  subject:
+    pattern: system_prompt_reproduced
+  source: phase5
+  proposal:
+    id: system_prompt_reproduced
+    former_id: CP-07
+    name: Response reproduces the system prompt
+    indicates: System-prompt extraction
+    stage: egress
+    join: [session_turn_step_ids]
+    conditions:
+    - The **Response / Model Output** is similar to the **System Prompt / Instruction Config** in force.
+    requires: [response_model_output, system_prompt_instruction_config]
+    enriches: [llm_refusal]
+    baseline: A similarity threshold.
+    catches: [TA-07]
+  reason: LLM Refusal moves to enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:sensitive_input_to_off_inventory_ai
+  type: pattern
+  subject:
+    pattern: sensitive_input_to_off_inventory_ai
+  source: phase5
+  proposal:
+    id: sensitive_input_to_off_inventory_ai
+    former_id: CP-48
+    name: Sensitive input to an off-inventory AI service
+    indicates: Shadow AI use leaking data
+    stage: egress
+    join: [identities_used_per_hop]
+    conditions:
+    - An **Agent Name** or **Surface / App** not in the inventory receives **Model Input**.
+    - The input is sensitive by content or by the tool's classification.
+    requires: [agent_name, surface_app, model_input]
+    enriches: [tool_privacy_classification, guardrail_input_verdict]
+    baseline: The agent inventory.
+    catches: [TA-05]
+  reason: covers TA-05. The plan expected no pattern because TA-05 has no adversary, but RFC §4.7 admits non-adversarial failures and this one is detectable
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:unrequested_data_in_tool_arguments
+  type: pattern
+  subject:
+    pattern: unrequested_data_in_tool_arguments
+  source: phase5
+  proposal:
+    id: unrequested_data_in_tool_arguments
+    former_id: CP-36
+    name: Tool arguments carry data the request did not supply
+    indicates: 'Exfiltration through tool arguments: tool poisoning or shadowing'
+    stage: egress
+    join: [tool_execution_id]
+    conditions:
+    - 'A **Tool Call I/O** to an MCP tool carries in its arguments content the request did not supply: credential files, chat history, other tools'' output.'
+    - The tool was discovered from that server in the same session (**MCP Server Identity & Primitive**).
+    requires: [tool_call_io, mcp_server_identity_primitive]
+    enriches: [tool_definition_digest, output_egress_destination, human_approval_elicitation_event]
+    catches: [TA-15, TA-29]
+  reason: TA-15 is malicious as published, which no digest comparison catches; the arguments are where it shows
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:untrusted_input_to_new_egress
+  type: pattern
+  subject:
+    pattern: untrusted_input_to_new_egress
+  source: phase5
+  proposal:
+    id: untrusted_input_to_new_egress
+    former_id: CP-04
+    name: Untrusted input, then a tool call, then egress to a new destination
+    indicates: Injection-to-exfiltration chain
+    stage: egress
+    join: [session_turn_step_ids, trace_context_propagated]
+    conditions:
+    - '**Input Trust Classification** marks a segment untrusted.'
+    - A later **Tool Call I/O** in the same trace carries content derived from it.
+    - '**Output Egress Destination** is one not seen for this agent.'
+    requires: [input_trust_classification, tool_call_io, output_egress_destination]
+    enriches: []
+    baseline: Egress destinations per agent.
+    catches: [TA-01, TA-12]
+  reason: adds TA-12; drops TA-03, which has no tool call or trust classification (now `output_link_carrying_data`)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:egress_under_session_taint
+  type: pattern
+  subject:
+    pattern: egress_under_session_taint
+  source: phase5
+  proposal:
+    id: egress_under_session_taint
+    former_id: CP-26
+    name: Egress under accumulated session taint
+    indicates: Write-down attempt or injection-driven exfiltration
+    stage: egress
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Session Taint Labels & Information-Flow Decisions** show the session tainted by untrusted or sensitive content.'
+    - An egress with a clean payload is attempted under that taint (**Output Egress Destination**); a denial records the attempt, an allow the leak.
+    requires:
+    - session_taint_labels_information_flow_decisions
+    - output_egress_destination
+    enriches: [authorization_decision_record]
+    catches: [TA-01, AOC-03]
+  reason: drops TA-02 (no egress edge); reads egress, with the denial as enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:callback_to_undeclared_destination
+  type: pattern
+  subject:
+    pattern: callback_to_undeclared_destination
+  source: phase5
+  proposal:
+    id: callback_to_undeclared_destination
+    former_id: CP-20
+    name: Task callback registered to an undeclared destination
+    indicates: Covert egress through delegated-task callbacks
+    stage: egress
+    join: [workflow_run_id]
+    conditions:
+    - An **A2A Task Lifecycle Event** registers a push-notification callback.
+    - Its destination (**Output Egress Destination**) is not among the peer's declared endpoints or the agent's egress history.
+    requires: [a2a_task_lifecycle_event, output_egress_destination]
+    enriches: [peer_agent_card_descriptor]
+    catches: []
+    catches_analogical: [AOC-11]
+  reason: drops TA-01 (no A2A edge); AOC-11 has an analogical A2A edge. No corpus entry registers a callback
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:route_outside_restriction
+  type: pattern
+  subject:
+    pattern: route_outside_restriction
+  source: phase5
+  proposal:
+    id: route_outside_restriction
+    former_id: CP-32
+    name: Call routed outside the restriction in force
+    indicates: Data-residency or routing-policy violation
+    stage: egress
+    join: []
+    conditions:
+    - A **Backend / Route Restriction Decision** is in force for the session.
+    - The call is served by a **Provider / Endpoint Identity** outside it.
+    requires: [backend_route_restriction_decision, provider_endpoint_identity]
+    enriches:
+    - session_taint_labels_information_flow_decisions
+    catches: []
+    catches_analogical: [AOC-06]
+  reason: drops TA-01 (no route edge); AOC-06 is analogical
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:enforcement_point_fail_open
+  type: pattern
+  subject:
+    pattern: enforcement_point_fail_open
+  source: phase5
+  proposal:
+    id: enforcement_point_fail_open
+    former_id: CP-16
+    name: Enforcement point unreached, operation proceeds
+    indicates: Control-plane starvation or guardrail bypass by failing open
+    stage: plane
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Enforcement-Point Availability & Failure Mode** records a callout unreached or timed out.'
+    - The operation it guards proceeds.
+    requires:
+    - enforcement_point_availability_failure_mode
+    enriches: [guardrail_input_verdict, guardrail_output_verdict, resource_consumption_aggregate, source_host_ip_request_metadata]
+    catches: [TA-01]
+    catches_analogical: [TA-10]
+  reason: TA-10 has only an analogical edge to the enforcement-point field
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:hook_coverage_changed
+  type: pattern
+  subject:
+    pattern: hook_coverage_changed
+  source: phase5
+  proposal:
+    id: hook_coverage_changed
+    former_id: CP-23
+    name: Hook coverage or destination changes mid-run
+    indicates: Telemetry plane disabled or redirected
+    stage: plane
+    join: [agent_runtime_instance_id]
+    conditions:
+    - '**Instrumentation Coverage / Hook Attestation** records a hook disabled, or reporting to a new destination, during a run.'
+    requires:
+    - instrumentation_coverage_hook_status
+    enriches: [event_sequence_continuity, action_type]
+    catches: [TA-17]
+  reason: TA-17 (redirection) is the instance. The sequence-gap half becomes `event_sequence_gap`, so this pattern no longer needs a SHOULD field
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:self_asserted_attribute_contradicted
+  type: pattern
+  subject:
+    pattern: self_asserted_attribute_contradicted
+  source: phase5
+  proposal:
+    id: self_asserted_attribute_contradicted
+    former_id: CP-27
+    name: Self-asserted attribute contradicts the authority
+    indicates: Agent falsifying its own state or claims
+    stage: plane
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Attribute Source / Trusted-Provenance Marking** marks an attribute self-asserted.'
+    - The authority-supplied value for the same attribute differs.
+    requires:
+    - attribute_source_trusted_provenance_marking
+    enriches: [verified_vs_displayed_identity, authorization_decision_record]
+    catches: [AOC-01, AOC-08, AOC-10, AOC-15]
+  reason: adds AOC-15 (an owner-compromise claim made by a non-owner); the comparison fields move to enriching
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:event_sequence_gap
+  type: pattern
+  subject:
+    pattern: event_sequence_gap
+  source: phase5
+  proposal:
+    id: event_sequence_gap
+    former_id: CP-37
+    name: Gap in the event sequence
+    indicates: Selective suppression of telemetry
+    stage: plane
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Event Sequence Continuity** shows a gap or reordering in a session.'
+    requires: [event_sequence_continuity]
+    enriches:
+    - instrumentation_coverage_hook_status
+    catches: []
+    catches_analogical: [TA-17, AOC-01, AOC-10]
+  reason: the sequence-gap half of the old `hook_coverage_changed`; every edge to the field is analogical
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-28
+  type: coverage
+  subject:
+    attack: TA-28
+  source: phase5
+  proposal:
+    no_pattern: 'Outside the deployment: the backdoor ran on a compromised host and used the provider API from there, so no instrumented AI system carries the activity. Detection belongs to endpoint and network monitoring of provider API use; within a deployment, Output Egress Destination records what its own calls send.'
+  reason: no pattern proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:AOC-16
+  type: coverage
+  subject:
+    attack: AOC-16
+  source: phase5
+  proposal:
+    no_pattern: 'An emergent defence, not an attack: agents shared risk signals about a probing researcher. A pattern would detect the defence. Its Inter-Agent Message edge supports reading such signals.'
+  reason: no pattern proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:IR-04
+  type: coverage
+  subject:
+    attack: IR-04
+  source: phase5
+  proposal:
+    no_pattern: A non-AI incident, carried for field overlap; its edges are analogical. `identity_from_new_source` catches it analogically.
+  reason: no pattern proposed
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

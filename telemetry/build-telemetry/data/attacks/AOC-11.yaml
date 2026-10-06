@@ -1,0 +1,20 @@
+# AOC-11. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-11
+name: Libelous within Community
+label: Libelous within Agents' Community
+cites: 2
+locator: 'Case Study #11'
+what_happened: Impersonated owner + fabricated emergency with defamatory claims → **mass email broadcast** + attempted public post.
+fields:
+- verified_vs_displayed_identity
+- field: output_egress_destination
+  note: broadcast scope
+- response_model_output
+- identities_used_per_hop
+- human_approval_elicitation_event
+- field: inter_agent_message
+  grounding: analogical
+components_text: Identity, AgentOutputHandling
+atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0052.000` Spearphishing via LLM'
+atlas_notes: Impersonation → mass defamatory broadcast
+risks: [riskAgentIdentitySpoofing, riskRogueActions]

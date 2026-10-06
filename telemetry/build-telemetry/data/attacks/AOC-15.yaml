@@ -1,0 +1,16 @@
+# AOC-15. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-15
+name: Social Engineering
+label: Social Engineering *(resisted)*
+cites: 2
+locator: 'Case Study #15'
+what_happened: '"Your owner account is compromised", rejected, but via **circular verification** on the possibly-compromised channel.'
+fields:
+- verified_vs_displayed_identity
+- source_host_ip_request_metadata
+- identities_used_per_hop
+- attribute_source_trusted_provenance_marking
+components_text: Identity, AgentInputHandling
+atlas_text: '`AML.T0052.000` Spearphishing via Social Engineering LLM'
+atlas_notes: Fake owner-compromise *(resisted)*
+risks: [riskAgentIdentitySpoofing]

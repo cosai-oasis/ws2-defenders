@@ -1,0 +1,18 @@
+# TA-20. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-20
+name: LLMjacking
+label: '**LLMjacking, stolen cloud credentials reselling model access** (Sysdig, May 2024)'
+ref: 55
+what_happened: Stolen cloud credentials were used to reach cloud-hosted models, enumerate which models a victim account had enabled, and stand up a **reverse proxy reselling that access** to third parties. Cost lands on the victim; the activity is legitimate inference traffic under a valid identity.
+fields:
+- resource_consumption_aggregate
+- input_output_token_counts
+- identities_used_per_hop
+- provider_endpoint_identity
+- field: model_name_version
+  note: enumeration
+components_text: ModelServing, Identity
+atlas_text: '`AML.T0034.000` Cost Harvesting: Excessive Queries; `AML.T0012` Valid Accounts; `AML.T0040` AI Model Inference API Access'
+atlas_notes: Stolen credentials resold as model access
+reference: 'LLMjacking: stolen cloud credentials used to access cloud-hosted models and resell that access via a reverse proxy. Sysdig Threat Research Team, 6 May 2024. MITRE ATLAS case study **`AML.CS0030`**. <https://sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack/>'
+risks: [riskCredentialAndTokenTheft, riskEconomicDenialOfWallet]

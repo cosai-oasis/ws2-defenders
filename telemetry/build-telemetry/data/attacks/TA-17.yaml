@@ -1,0 +1,20 @@
+# TA-17. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-17
+name: DifyTap
+label: '**DifyTap, cross-tenant trace-configuration hijack** (Dify; CVE-2026-41947, CVSS 9.1; Jun 2026) *(disclosed)*'
+instance: disclosed
+ref: 20
+what_happened: 'An authenticated editor could set and enable **trace configurations for any application regardless of tenant ownership**, redirecting every message and response of a victim tenant''s application to an attacker-controlled trace provider: a persistent exfiltration channel built out of the telemetry plane itself. Three of the four disclosed flaws carried cross-tenant impact.'
+fields:
+- organization_tenant_id
+- instrumentation_coverage_hook_status
+- authorization_decision_record
+- output_egress_destination
+- identities_used_per_hop
+- field: event_sequence_continuity
+  grounding: analogical
+components_text: Application, Identity
+atlas_text: '`AML.T0057` LLM Data Leakage; `AML.T0048` External Harms'
+atlas_notes: Telemetry plane repurposed as the exfiltration channel
+reference: DifyTap, four vulnerabilities in Dify enabling cross-tenant data exposure; **CVE-2026-41947** (CVSS 9.1) trace-configuration authorization bypass, with CVE-2026-41948/-41949/-41950. Zafran Security (Ido Shani, Gal Zaban), 22 June 2026; fixed in 1.14.2. <https://thehackernews.com/2026/06/researchers-detail-difytap-flaws-in.html>
+risks: [riskAuditTrailTampering, riskBrokenAuthorizationEnforcement, riskSensitiveDataDisclosure]

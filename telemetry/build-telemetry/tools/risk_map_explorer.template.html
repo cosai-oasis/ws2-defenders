@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoSAI Risk Map and Telemetry Explorer</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --ink: #1d1d1f; --mute: #6b6b70; --line: #d9d9de; --soft: #ececef;
+  --A: #b4372f; --R: #c26a11; --C: #2e62b5; --F: #1f8273; --P: #6a43a8;
+  --must: #1d1d1f; --should: #6b6b70; --may: #a7a7ad;
+  --wire: #9a9aa3; --hot: #1d1d1f;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17171a; --panel: #1f1f23; --ink: #ececef; --mute: #9a9aa3; --line: #34343a; --soft: #2a2a2f;
+    --A: #e0675e; --R: #e39444; --C: #6f9be6; --F: #4fb7a6; --P: #a585dc;
+    --must: #ececef; --should: #9a9aa3; --may: #5d5d64; --wire: #6b6b72; --hot: #ececef;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg);
+  display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr 420px; }
+header { grid-column: 1 / -1; display: flex; gap: 14px; align-items: center; padding: 8px 14px;
+  border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 14px; margin: 0; font-weight: 600; white-space: nowrap; }
+header h1 a { color: inherit; }
+.draft { font: 600 10.5px/1 ui-monospace, monospace; letter-spacing: .05em; padding: 3px 6px; border-radius: 4px;
+  background: var(--A); color: #fff; vertical-align: 2px; margin-left: 4px; }
+header input { flex: 0 1 280px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); font: inherit; }
+header button { font: inherit; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+header button:disabled { opacity: .4; cursor: default; }
+#crumb { color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+#crumb b { color: var(--ink); }
+#stage { overflow: auto; position: relative; }
+#inner { position: relative; min-height: 100%; padding: 0 16px 40px; }
+#wires { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+#wires path { fill: none; }
+#cols { position: relative; display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); column-gap: 88px; }
+.colhead { position: sticky; top: 0; z-index: 3; background: var(--bg); padding: 12px 0 8px; }
+.colhead h2 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+.colhead .sub { color: var(--mute); font-size: 11.5px; }
+.colhead .verb { position: absolute; left: calc(100% + 44px); transform: translateX(-50%); top: 13px; white-space: nowrap;
+  font-size: 11px; color: var(--mute); font-style: italic; }
+.col[data-t=A] h2 { color: var(--A); } .col[data-t=R] h2 { color: var(--R); } .col[data-t=C] h2 { color: var(--C); }
+.col[data-t=F] h2 { color: var(--F); } .col[data-t=P] h2 { color: var(--P); }
+.grp { position: relative; z-index: 1; margin: 0 0 10px; border: 1px solid var(--line); border-left: 4px solid var(--tc);
+  border-radius: 6px; background: var(--panel); }
+.col[data-t=A] { --tc: var(--A); } .col[data-t=R] { --tc: var(--R); } .col[data-t=C] { --tc: var(--C); }
+.col[data-t=F] { --tc: var(--F); } .col[data-t=P] { --tc: var(--P); }
+.gh { padding: 6px 8px; cursor: pointer; display: flex; gap: 6px; align-items: baseline; user-select: none; }
+.gh .tt { flex: 1; font-weight: 600; font-size: 12px; }
+.gh .ct { color: var(--mute); font-size: 11px; white-space: nowrap; }
+.gh .tw { color: var(--mute); width: 10px; }
+.focus .gh { cursor: default; }
+.focus .gh .tw { display: none; }
+.items { border-top: 1px solid var(--soft); padding: 3px 0; }
+.it { display: flex; gap: 6px; align-items: baseline; padding: 2px 8px; cursor: pointer; font-size: 12px; }
+.it:hover { background: var(--soft); }
+.it .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.it .cd { color: var(--mute); font: 11px ui-monospace, monospace; white-space: nowrap; }
+.it.d { opacity: .55; }
+.it.self { background: var(--tc); color: #fff; opacity: 1; }
+.it.self .cd { color: #fff; }
+.it.hit .nm { text-decoration: underline; text-decoration-color: var(--tc); text-decoration-thickness: 2px; }
+.it.none .nm { color: var(--mute); font-style: italic; }
+.tier { font: 600 8.5px/1 ui-monospace, monospace; padding: 2px 3px; min-width: 3.4em; text-align: center; border-radius: 3px; border: 1px solid; }
+.tier.MUST { background: var(--must); color: var(--panel); border-color: var(--must); }
+.tier.SHOULD { color: var(--should); border-color: var(--should); }
+.tier.MAY { color: var(--may); border-color: var(--may); border-style: dashed; }
+.bar { display: flex; height: 3px; margin: 0 8px 6px; border-radius: 2px; overflow: hidden; gap: 1px; }
+.bar span { display: block; }
+aside { grid-row: 2; grid-column: 2; overflow: auto; border-left: 1px solid var(--line); background: var(--panel); padding: 14px 18px 40px; }
+aside h3 { margin: 0 0 4px; font-size: 16px; }
+aside h4 { margin: 16px 0 5px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
+aside p { margin: 4px 0; }
+aside ul, aside ol { margin: 4px 0; padding-left: 18px; }
+aside code, .cd { font-family: ui-monospace, monospace; font-size: 11.5px; }
+aside a { color: var(--C); }
+.kind { font-size: 11px; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
+.kind code { text-transform: none; letter-spacing: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { display: inline-flex; gap: 4px; align-items: baseline; padding: 2px 7px; border-radius: 10px; font-size: 11.5px;
+  border: 1px solid var(--line); cursor: pointer; text-decoration: none; color: var(--ink); background: var(--bg); }
+.chip:hover { border-color: var(--ink); }
+.chip.an { border-style: dashed; color: var(--mute); }
+.chip .cd { font-size: 10.5px; }
+.chip.t-A { border-left: 3px solid var(--A); } .chip.t-R { border-left: 3px solid var(--R); }
+.chip.t-C { border-left: 3px solid var(--C); } .chip.t-F { border-left: 3px solid var(--F); }
+.chip.t-P { border-left: 3px solid var(--P); }
+.meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; font-size: 12px; margin: 6px 0; }
+.meta dt { color: var(--mute); }
+.meta dd { margin: 0; }
+.carrier { border-top: 1px solid var(--soft); padding: 5px 0; font-size: 12px; }
+.cov { font-size: 10.5px; padding: 1px 5px; border-radius: 3px; background: var(--soft); }
+.cov.covered { background: var(--F); color: #fff; } .cov.none { background: var(--A); color: #fff; }
+.step { border-left: 2px solid var(--line); padding: 2px 0 6px 10px; margin: 4px 0; }
+.ref { color: var(--C); cursor: help; }
+.legend { font-size: 12px; color: var(--mute); }
+.legend .sw { display: inline-block; width: 18px; border-top: 2px solid; vertical-align: middle; margin-right: 4px; }
+.note { color: var(--mute); font-size: 12px; }
+.flow { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 8px 0 12px; font-size: 12px; }
+.flow b { padding: 1px 6px; border-radius: 4px; color: #fff; }
+footer { color: var(--mute); font-size: 11px; margin-top: 24px; border-top: 1px solid var(--soft); padding-top: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a id="rfc" target="_blank" rel="noopener"></a> · Risk Map Explorer <span class="draft" id="ver"></span></h1>
+  <input id="q" type="search" placeholder="Search all (press /)" autocomplete="off">
+  <button id="back" title="Back (Backspace)" disabled>← Back</button>
+  <button id="reset" title="Overview (Esc)">Overview</button>
+  <div id="crumb"></div>
+</header>
+<div id="stage"><div id="inner"><svg id="wires"></svg><div id="cols"></div></div></div>
+<aside id="panel"></aside>
+<script>
+const D = /*DATA*/null;
+const TYPES = ['A', 'R', 'C', 'F', 'P'];
+const TIER = {MUST: 'MUST', SHOULD: 'SHLD', MAY: 'MAY'};
+const NAME = {A: 'Attacks', R: 'Risks', C: 'Controls', F: 'Telemetry', P: 'Detection patterns'};
+const ONE = {A: 'Attack', R: 'Risk', C: 'Control', F: 'Telemetry field', P: 'Detection pattern'};
+const VERB = {A: 'expose', R: 'mitigated by', C: 'produce', F: 'used by'};
+const PAIRS = [['A', 'R', 'AR'], ['R', 'C', 'RC'], ['C', 'F', 'CF'], ['F', 'P', 'FP']];
+const N = D.nodes;
+const T = id => id[0];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'})[c]);
+
+// adjacency: adj[id][otherType] = Set; meta[a|b] = edge attributes
+const adj = {}, emeta = {};
+for (const [k, es] of Object.entries(D.edges)) for (const e of es) {
+  const [a, b] = e;
+  ((adj[a] ??= {})[T(b)] ??= new Set()).add(b);
+  ((adj[b] ??= {})[T(a)] ??= new Set()).add(a);
+  emeta[a + '|' + b] = emeta[b + '|' + a] = e.slice(2);
+}
+const nb = (id, t) => adj[id]?.[t] ?? new Set();
+const U = (ids, t) => { const s = new Set(); for (const i of ids) for (const j of nb(i, t)) s.add(j); return s; };
+const I = (a, b) => new Set([...a].filter(x => b.has(x)));
+const or = (a, b) => a.size ? a : b;
+const grounding = (a, b) => (emeta[a + '|' + b] || [])[0];
+
+// What is connected to a selected item, by column: 's' direct link, 'd' derived along the chain.
+function connected(id) {
+  const m = new Map(), put = (set, v) => { for (const x of set) if (!m.has(x)) m.set(x, v); };
+  m.set(id, 'self');
+  const t = T(id);
+  if (t === 'A') {
+    const R = nb(id, 'R'), F = nb(id, 'F'), P = nb(id, 'P');
+    put(R, 's'); put(F, 's'); put(P, 's');
+    put(I(U(R, 'C'), U(F, 'C')), 'd');
+  } else if (t === 'R') {
+    const A = nb(id, 'A'), C = nb(id, 'C');
+    put(A, 's'); put(C, 's');
+    const F = or(I(U(C, 'F'), U(A, 'F')), U(C, 'F'));
+    put(F, 'd'); put(U(A, 'P'), 'd');
+  } else if (t === 'C') {
+    const R = nb(id, 'R'), F = nb(id, 'F');
+    put(R, 's'); put(F, 's');
+    put(or(I(U(R, 'A'), U(F, 'A')), U(R, 'A')), 'd');
+    put(U(F, 'P'), 'd');
+  } else if (t === 'F') {
+    const C = nb(id, 'C'), A = nb(id, 'A'), P = nb(id, 'P');
+    put(C, 's'); put(A, 's'); put(P, 's');
+    const rc = U(C, 'R'), ra = U(A, 'R');
+    put(or(I(rc, ra), new Set([...rc, ...ra])), 'd');
+  } else if (t === 'P') {
+    const F = nb(id, 'F'), A = nb(id, 'A');
+    put(F, 's'); put(A, 's');
+    const R = U(A, 'R');
+    put(R, 'd');
+    put(or(I(U(F, 'C'), U(R, 'C')), U(F, 'C')), 'd');
+  }
+  return m;
+}
+
+// ---------------------------------------------------------------- state
+const S = {sel: null, open: new Set(), q: '', hist: [], hover: null};
+
+function select(id, push = true) {
+  if (push && S.sel && S.sel !== id) S.hist.push(S.sel);
+  if (!id) S.hist = [];
+  S.sel = id; S.q = ''; $('#q').value = '';
+  render();
+  $('#stage').scrollTo({top: 0});
+}
+function back() { const id = S.hist.pop(); select(id ?? null, false); }
+
+// ---------------------------------------------------------------- columns
+function itemHTML(id, cls) {
+  const n = N[id];
+  const lead = n.t === 'F' ? `<span class="tier ${n.tier}">${TIER[n.tier]}</span>`
+    : n.t === 'A' ? `<span class="cd">${esc(n.code)}</span>` : '';
+  const none = (n.t === 'R' && !nb(id, 'A').size) || (n.t === 'C' && !nb(id, 'F').size) ? ' none' : '';
+  return `<div class="it ${cls}${none}" data-id="${id}" title="${esc(n.n + (n.tip ? ' — ' + n.tip : ''))}">${lead}<span class="nm">${esc(n.n)}</span></div>`;
+}
+
+function match(id) {
+  const n = N[id], q = S.q.toLowerCase();
+  return (n.n + ' ' + (n.code || '') + ' ' + (n.tip || '')).toLowerCase().includes(q);
+}
+
+function tierBar(items) {
+  const c = {MUST: 0, SHOULD: 0, MAY: 0};
+  for (const i of items) c[N[i].tier]++;
+  return `<div class="bar">${['MUST', 'SHOULD', 'MAY'].map(t => c[t] ? `<span style="flex:${c[t]};background:var(--${t.toLowerCase()})" title="${c[t]} ${t}"></span>` : '').join('')}</div>`;
+}
+
+function render() {
+  const vis = S.sel ? connected(S.sel) : null;
+  const cols = $('#cols');
+  cols.className = vis ? 'focus' : '';
+  let h = '';
+  for (const t of TYPES) {
+    const total = D.groups[t].reduce((n, g) => n + g.items.length, 0);
+    let shown = 0, body = '';
+    for (const g of D.groups[t]) {
+      let items, open;
+      if (vis) { items = g.items.filter(i => vis.has(i)); open = true;
+        const rank = i => ({self: 0, s: 1, d: 2})[vis.get(i)];
+        items.sort((a, b) => rank(a) - rank(b)); }
+      else if (S.q) { items = g.items.filter(match); open = true; }
+      else { items = g.items; open = S.open.has(g.id); }
+      if (!items.length && (vis || S.q)) continue;
+      shown += items.length;
+      const ct = vis || S.q ? `${items.length} of ${g.items.length}` : g.items.length;
+      body += `<div class="grp" data-g="${g.id}"><div class="gh"><span class="tw">${open ? '▾' : '▸'}</span><span class="tt">${esc(g.title)}</span><span class="ct">${ct}</span></div>`;
+      if (t === 'F' && !open) body += tierBar(g.items);
+      if (open) body += `<div class="items">${items.map(i => itemHTML(i, vis ? vis.get(i) : (S.q ? 'hit' : ''))).join('')}</div>`;
+      body += '</div>';
+    }
+    const sub = vis || S.q ? `${shown} of ${total}` : `${total} in ${D.groups[t].length} groups`;
+    h += `<div class="col" data-t="${t}"><div class="colhead"><h2>${NAME[t]}</h2><div class="sub">${sub}</div>${VERB[t] ? `<div class="verb">${VERB[t]} →</div>` : ''}</div>${body || '<div class="note">Nothing connected.</div>'}</div>`;
+  }
+  cols.innerHTML = h;
+  $('#back').disabled = !S.hist.length;
+  $('#crumb').innerHTML = S.sel ? `${ONE[T(S.sel)]}: <b>${esc(N[S.sel].n)}</b> — strong rows link directly; faded rows are reached through the chain` : '';
+  panel();
+  wires();
+}
+
+// ---------------------------------------------------------------- wires
+function anchor(el, inner, side) {
+  const r = el.getBoundingClientRect();
+  return {x: (side === 'r' ? r.right : r.left) - inner.left, y: r.top + Math.min(r.height, 28) / 2 - inner.top};
+}
+function curve(a, b) {
+  const dx = Math.max(24, (b.x - a.x) / 2);
+  return `M${a.x},${a.y} C${a.x + dx},${a.y} ${b.x - dx},${b.y} ${b.x},${b.y}`;
+}
+
+function wires() {
+  const svg = $('#wires'), innerEl = $('#inner'), inner = innerEl.getBoundingClientRect();
+  svg.setAttribute('width', innerEl.scrollWidth); svg.setAttribute('height', innerEl.scrollHeight);
+  let out = '';
+  if (S.sel || S.q) {
+    const els = {};
+    document.querySelectorAll('.it').forEach(e => els[e.dataset.id] = e);
+    for (const [, , k] of PAIRS) for (const [a, b] of D.edges[k]) {
+      if (!els[a] || !els[b]) continue;
+      if (S.q && !S.sel) continue;
+      const hot = [a, b].includes(S.sel) || [a, b].includes(S.hover);
+      const an = grounding(a, b) === 'analogical' || grounding(a, b) === 'enriches';
+      out += `<path d="${curve(anchor(els[a], inner, 'r'), anchor(els[b], inner, 'l'))}" stroke="${hot ? 'var(--hot)' : 'var(--wire)'}" stroke-width="${hot ? 1.6 : 1}" opacity="${hot ? .9 : .45}"${an ? ' stroke-dasharray="4 3"' : ''}/>`;
+    }
+  } else {
+    // overview: one ribbon per pair of groups, width by number of item links
+    const gEl = {}; document.querySelectorAll('.grp').forEach(e => gEl[e.dataset.g] = e.querySelector('.gh'));
+    for (const [, , k] of PAIRS) {
+      const cnt = {};
+      for (const [a, b] of D.edges[k]) { const key = N[a].g + '|' + N[b].g; cnt[key] = (cnt[key] || 0) + 1; }
+      for (const [key, n] of Object.entries(cnt)) {
+        const [ga, gb] = key.split('|');
+        const hot = S.hover && (S.hover === ga || S.hover === gb);
+        out += `<path data-k="${key}" d="${curve(anchor(gEl[ga], inner, 'r'), anchor(gEl[gb], inner, 'l'))}" stroke="${hot ? 'var(--hot)' : 'var(--wire)'}" stroke-width="${(1 + 1.6 * Math.sqrt(n)).toFixed(1)}" opacity="${hot ? .7 : S.hover ? .08 : .28}" stroke-linecap="round"><title>${n} links</title></path>`;
+      }
+    }
+  }
+  svg.innerHTML = out;
+}
+
+// ---------------------------------------------------------------- detail panel
+function chip(id, extra = '', an = false) {
+  const n = N[id]; if (!n) return `<span class="chip">${esc(id)}</span>`;
+  const lead = n.t === 'F' ? `<span class="tier ${n.tier}">${TIER[n.tier]}</span>` : n.t === 'A' ? `<span class="cd">${esc(n.code)}</span>` : '';
+  return `<a class="chip t-${n.t}${an ? ' an' : ''}" data-id="${id}" title="${esc(n.tip || '')}">${lead}${esc(n.n)}${extra ? ` <span class="note">${esc(extra)}</span>` : ''}</a>`;
+}
+const sortIds = ids => [...ids].sort((a, b) => (N[a].code || N[a].n).localeCompare(N[b].code || N[b].n, undefined, {numeric: true}));
+function chips(title, ids, opt = {}) {
+  ids = sortIds(ids);
+  if (!ids.length) return opt.empty ? `<h4>${title}</h4><p class="note">${opt.empty}</p>` : '';
+  if (opt.order) ids.sort((a, b) => opt.order(a) - opt.order(b));
+  return `<h4>${title} <span class="note">${ids.length}</span></h4><div class="chips">${ids.map(i => chip(i, opt.extra?.(i) || '', opt.an?.(i))).join('')}</div>`;
+}
+const meta = rows => `<dl class="meta">${rows.filter(r => r[1]).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const open = (url, text) => `<p><a href="${url}" target="_blank" rel="noopener">${text} ↗</a></p>`;
+const anA = (a, b) => grounding(a, b) === 'analogical';
+
+function panel() {
+  const p = $('#panel');
+  const id = S.sel;
+  if (!id) { p.innerHTML = intro(); return; }
+  const n = N[id];
+  let h = `<div class="kind" style="color:var(--${n.t})">${ONE[n.t]}${n.code && n.t !== 'A' ? ` · <code>${esc(n.code)}</code>` : ''}</div>`;
+  if (n.t === 'A') {
+    h += `<h3>${esc(n.code)} ${esc(n.n)}</h3><p>${n.label}</p>`;
+    h += meta([['Instance', esc(n.kind)], ['Same incident as', n.same.map(x => chip('A:' + x)).join(' ')], ['Components', esc(n.comp)]]);
+    h += `<h4>What happened</h4><p>${n.what}</p>`;
+    h += chips('Exposes risks', nb(id, 'R'));
+    h += chips('Telemetry that records it', nb(id, 'F'), {an: f => anA(id, f), extra: f => (emeta[id + '|' + f] || [])[1] || '',
+      order: f => anA(id, f) ? 1 : 0});
+    h += chips('Caught by patterns', nb(id, 'P'), {an: q => anA(id, q), empty: 'No pattern catches it.'});
+    if (n.noPattern) h += `<p class="note">${n.noPattern}</p>`;
+    h += chips('Controls on the path (risk and telemetry agree)', connectedOf(id, 'C'));
+    if (n.chain.length) h += `<h4>Attack chain</h4>` + n.chain.map((s, i) => `<div class="step"><b>${i + 1}.</b> ${s.step}<div class="chips" style="margin-top:3px">${s.fields.map(f => chip(f.id, '', f.g === 'analogical')).join('')}</div>${s.fields.filter(f => f.why).map(f => `<div class="note">${esc(N[f.id]?.n)}: ${f.why}</div>`).join('')}</div>`).join('');
+    if (n.atlas) h += `<h4>MITRE ATLAS</h4><p>${n.atlas}</p>${n.atlasNote ? `<p class="note">${n.atlasNote}</p>` : ''}`;
+    if (n.source) h += `<h4>Source${n.ref ? ` [${n.ref}]` : ''}</h4><p>${n.source}</p>`;
+    h += open(n.url, 'Attack Detection Addendum §3');
+  } else if (n.t === 'R') {
+    h += `<h3>${esc(n.n)}</h3>`;
+    if (n.dropped) h += `<p class="note">In the base Risk Map but not in the stacked layer, which retires or renames it.</p>`;
+    h += n.short;
+    h += meta([['Lifecycle', esc(n.life.join(', '))], ['Impact', esc(n.impact.join(', '))], ['ATLAS', n.atlas.map(x => `<code>${esc(x)}</code>`).join(' ')]]);
+    h += chips('Exposed by attacks', nb(id, 'A'), {empty: 'No corpus instance.'});
+    h += chips('Mitigated by controls', nb(id, 'C'));
+    h += `<p class="note">Assurance and governance controls apply to every risk and are not listed.</p>`;
+    h += chips('Telemetry those controls produce', connectedOf(id, 'F'), {empty: 'No mapped telemetry.'});
+    h += chips('Patterns that catch its attacks', connectedOf(id, 'P'));
+    h += `<details><summary class="note">Full description</summary>${n.long}</details>`;
+  } else if (n.t === 'C') {
+    h += `<h3>${esc(n.n)}</h3>`;
+    if (n.dropped) h += `<p class="note">In the base Risk Map but not in the stacked layer, which retires or renames it.</p>`;
+    h += n.desc;
+    h += meta([['Components', esc(n.comp.join(', '))]]);
+    h += n.u ? `<h4>Mitigates</h4><p>Every risk (assurance and governance control).</p>` : chips('Mitigates risks', nb(id, 'R'));
+    h += chips('Telemetry it produces', nb(id, 'F'), {empty: 'No field in the RFC is mapped to this control.'});
+    h += chips('Patterns reading that telemetry', connectedOf(id, 'P'));
+    h += chips('Attacks on its risks that this telemetry records', connectedOf(id, 'A'));
+  } else if (n.t === 'F') {
+    h += `<h3>${esc(n.n)} <span class="tier ${n.tier}">${n.tier}</span></h3><p>${n.records}</p>`;
+    h += meta([['Step', esc(n.step)], ['Role', esc(n.role)], ['Origin', esc(n.origin)], ['Record', esc(n.record)],
+      ['Modality', esc(n.modality)], ['Provider-gated', n.gated ? 'yes' : ''], ['Emitted by', esc(n.emit.join(', '))]]);
+    h += `<h4>What to capture</h4><p>${n.capture}</p>`;
+    if (n.why) h += `<h4>Why this tier</h4><p>${n.why}</p>`;
+    h += chips('Implements controls', nb(id, 'C'), {empty: 'No Risk Map control mapped.'});
+    h += chips('Read by patterns', nb(id, 'P'), {extra: q => (emeta[id + '|' + q] || [])[0], order: q => ({join: 0, requires: 1, enriches: 2})[(emeta[id + '|' + q] || [])[0]]});
+    h += chips('Grounding attacks', nb(id, 'A'), {an: a => anA(a, id), order: a => anA(a, id) ? 1 : 0, empty: 'None.'});
+    h += chips('Risks it addresses', connectedOf(id, 'R'));
+    if (n.carriers.length) h += `<h4>Carriers (XM)</h4>` + n.carriers.map(c => `<div class="carrier"><b>${esc(c.pub)}</b> <span class="cov ${esc(c.cov)}">${esc(c.cov)}</span> ${c.con.map(x => `<code>${esc(x)}</code>`).join(' ')}${c.gap ? `<div class="note">Gap: ${c.gap}</div>` : ''}${c.asks.map(a => `<div class="note">Ask <code>${esc(a.id)}</code> (${esc(a.st)}): ${a.s}</div>`).join('')}</div>`).join('');
+    h += open(n.url, 'Attack Detection Addendum §1');
+  } else if (n.t === 'P') {
+    h += `<h3>${esc(n.n)}</h3><p><b>Indicates:</b> ${n.ind}</p>`;
+    h += `<h4>Fires when ${n.match === 'any' ? 'any' : n.cond.length > 1 ? 'all' : 'this'} hold${n.cond.length > 1 ? '' : 's'}</h4><ol>${n.cond.map(c => `<li>${c}</li>`).join('')}</ol>`;
+    if (n.base) h += meta([['Baseline', n.base]]);
+    const kind = f => (emeta[f + '|' + id] || [])[0];
+    const reads = [...nb(id, 'F')];
+    h += chips('Joins on', reads.filter(f => kind(f) === 'join'));
+    h += chips('Requires', reads.filter(f => kind(f) === 'requires'));
+    h += chips('Enriched by', reads.filter(f => kind(f) === 'enriches'), {an: () => true});
+    h += chips('Catches attacks', nb(id, 'A'), {an: a => anA(id, a), order: a => anA(id, a) ? 1 : 0, empty: 'No corpus instance.'});
+    if (n.motive) h += `<p class="note">Motivation: ${n.motive}</p>`;
+    h += chips('Risks of those attacks', connectedOf(id, 'R'));
+    h += open(n.url, 'Attack Detection Addendum §2');
+  }
+  p.innerHTML = h;
+  p.scrollTop = 0;
+}
+function connectedOf(id, t) { return [...connected(id)].filter(([k, v]) => T(k) === t && v !== 'self').map(([k]) => k); }
+
+function intro() {
+  const c = t => Object.values(N).filter(n => n.t === t).length;
+  const tiers = ['MUST', 'SHOULD', 'MAY'].map(t => `${Object.values(N).filter(n => n.tier === t).length} ${t}`).join(' / ');
+  const m = D.meta;
+  return `<h3>How to read this</h3>
+  <div class="flow"><b style="background:var(--A)">Attacks</b> expose <b style="background:var(--R)">Risks</b> mitigated by <b style="background:var(--C)">Controls</b> which produce <b style="background:var(--F)">Telemetry</b> used by <b style="background:var(--P)">Detection patterns</b></div>
+  <p>Patterns close the loop: each one names the attacks it catches. The overview draws one ribbon per pair of groups, as wide as the number of links between them. Click a group to open it, and an item to focus on it.</p>
+  <p>Focusing keeps only what connects to the item. Strong rows link to it directly. Faded rows are reached through the chain and narrowed to those the corpus corroborates. For an attack, for example, the controls shown are those that mitigate its risks <i>and</i> are implemented by telemetry that records it. Dashed lines and chips mark analogical evidence or enrichment-only reads.</p>
+  <p class="legend"><span class="tier MUST">MUST</span> <span class="tier SHOULD">SHLD</span> <span class="tier MAY">MAY</span> · <i>italic</i> risks have no corpus instance; <i>italic</i> controls have no mapped field.</p>
+  <h4>In this build</h4>
+  <p>${c('A')} attacks, ${c('R')} risks, ${c('C')} controls, ${c('F')} fields (${tiers}), ${c('P')} patterns.</p>
+  <p><a href="${m.docs.rfc}" target="_blank" rel="noopener">RFC</a> · <a href="${m.docs.ad}" target="_blank" rel="noopener">Attack Detection Addendum</a> · <a href="${m.docs.xm}" target="_blank" rel="noopener">Cross-Mapping Addendum</a></p>
+  <p class="note">Keys: <code>/</code> search, <code>Esc</code> overview, <code>Backspace</code> back.</p>
+  <footer>Built from the data behind ${esc(m.title)} v${esc(m.version)}; Risk Map ${m.riskmap.map(esc).join(' + ')}; ATLAS ${esc(m.atlas)}.</footer>`;
+}
+
+// ---------------------------------------------------------------- events
+document.addEventListener('click', e => {
+  const it = e.target.closest('[data-id]');
+  if (it) { e.preventDefault(); select(it.dataset.id); return; }
+  const gh = e.target.closest('.gh');
+  if (gh && !S.sel && !S.q) {
+    const g = gh.parentElement.dataset.g;
+    S.open.has(g) ? S.open.delete(g) : S.open.add(g);
+    render(); return;
+  }
+  if (e.target.closest('#stage') && !e.target.closest('.grp') && S.sel) select(null);
+});
+$('#cols').addEventListener('mouseover', e => {
+  const it = e.target.closest('.it'), gh = e.target.closest('.grp');
+  const h = S.sel ? it?.dataset.id ?? null : (!S.q && gh ? gh.dataset.g : null);
+  if (h !== S.hover) { S.hover = h; wires(); }
+});
+$('#cols').addEventListener('mouseleave', () => { S.hover = null; wires(); });
+$('#q').addEventListener('input', e => { S.q = e.target.value.trim(); if (S.q) { S.sel = null; S.hist = []; } render(); });
+$('#back').onclick = back;
+$('#reset').onclick = () => { S.open.clear(); select(null); };
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') { if (e.key === 'Escape') { e.target.value = ''; S.q = ''; e.target.blur(); render(); } return; }
+  if (e.key === '/') { e.preventDefault(); $('#q').focus(); }
+  else if (e.key === 'Escape') select(null);
+  else if (e.key === 'Backspace' && S.hist.length) { e.preventDefault(); back(); }
+});
+$('#rfc').href = D.meta.docs.rfc; $('#rfc').textContent = D.meta.title;
+$('#ver').textContent = `DRAFT v${D.meta.version}`;
+document.title = `${D.meta.title} v${D.meta.version} (DRAFT) · Risk Map Explorer`;
+new ResizeObserver(() => wires()).observe($('#cols'));
+render();
+</script>
+</body>
+</html>

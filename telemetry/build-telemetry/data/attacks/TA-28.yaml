@@ -1,0 +1,13 @@
+# TA-28. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-28
+name: SesameOp
+label: '**SesameOp, provider API as command and control** (Microsoft DART, Jul 2025)'
+ref: 63
+what_happened: A backdoor used a **model provider's Assistants API as its C2 channel**, fetching commands and exfiltrating encrypted results through it for several months. The exfiltration destination is the same endpoint the application legitimately calls, so destination alone does not separate the two.
+fields: [output_egress_destination, provider_endpoint_identity, tool_call_io, identities_used_per_hop]
+components_text: ModelServing, ApplicationOutputHandling
+atlas_text: '`AML.T0086` Exfiltration via AI Agent Tool Invocation; `AML.T0040` AI Model Inference API Access'
+atlas_notes: Provider API as C2. ATLAS case study `AML.CS0042`
+reference: 'SesameOp: backdoor abusing the OpenAI Assistants API as a covert command-and-control and exfiltration channel over several months. Microsoft Incident Response (DART), 3 November 2025. MITRE ATLAS case study **`AML.CS0042`**. <https://www.microsoft.com/en-us/security/blog/2025/11/03/sesameop-novel-backdoor-uses-openai-assistants-api-for-command-and-control/>'
+risks: []
+no_pattern: 'Outside the deployment: the backdoor ran on a compromised host and used the provider API from there, so no instrumented AI system carries the activity. Detection belongs to endpoint and network monitoring of provider API use; within a deployment, Output Egress Destination records what its own calls send.'

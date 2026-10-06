@@ -1,0 +1,15 @@
+# AOC-13. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-13
+name: Email Spoofing request
+label: Email Spoofing request *(resisted)*
+cites: 2
+locator: 'Case Study #13'
+what_happened: SMTP sender-address forgery framed as a "challenge."
+fields:
+- field: tool_call_io
+  note: from-address
+- llm_refusal
+components_text: Tools, AgentOutputHandling
+atlas_text: '`AML.T0052` Phishing; `AML.T0053` Tool Invocation'
+atlas_notes: SMTP sender forgery *(resisted)*
+risks: [riskRogueActions]

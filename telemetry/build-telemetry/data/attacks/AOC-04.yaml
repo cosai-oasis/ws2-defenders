@@ -1,0 +1,40 @@
+# AOC-04. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-04
+name: Waste of Resources / Looping
+label: Waste of Resources / Looping
+cites: 2
+locator: 'Case Study #4'
+what_happened: Multi-day inter-agent relay loop (~60 K tokens); spawned **infinite shell loops & cron jobs with no termination**.
+fields:
+- inter_agent_message
+- loop_step_count_signal
+- background_scheduled_task_event
+- resource_consumption_aggregate
+- input_output_token_counts
+- agent_runtime_instance_id
+- workflow_run_id
+- trace_context_propagated
+- trigger_type_source_event
+- field: autonomy_level
+  grounding: analogical
+- field: inference_parameters
+  grounding: analogical
+- field: tool_execution_id
+  grounding: analogical
+- field: execution_environment_sandbox
+  grounding: analogical
+- field: memory_footprint_growth
+  grounding: analogical
+- field: a2a_task_lifecycle_event
+  grounding: analogical
+- task_intent_declaration
+- field: delegation_chain
+  grounding: analogical
+- field: trust_domain_crossing_delegation_depth
+  grounding: analogical
+- field: fleet_counts
+  grounding: analogical
+components_text: Orchestration, ReasoningCore
+atlas_text: '`AML.T0034.002` Agentic Resource Consumption; `AML.T0118` Autonomous AI Agent Communication; `AML.T0029` Denial of AI Service; `AML.T0061` Self-Replication'
+atlas_notes: Multi-agent loop; runaway cron/shell
+risks: [riskRunawayAgentToolLoops, riskEconomicDenialOfWallet]

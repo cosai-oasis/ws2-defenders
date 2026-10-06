@@ -1,0 +1,60 @@
+# AOC-10. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-10
+name: Agent Corruption
+label: Agent Corruption
+cites: 2
+locator: 'Case Study #10'
+what_happened: Indirect injection via an **externally editable Gist "constitution"** linked from memory; injected "holidays" → shut down peers, ban users, send unauthorized email.
+fields:
+- memory_provenance_source
+- memory_read_injection_event
+- tool_call_io
+- background_scheduled_task_event
+- field: agent_name
+  grounding: analogical
+- field: workflow_run_id
+  grounding: analogical
+- field: trigger_type_source_event
+  grounding: analogical
+- field: surface_app
+  grounding: analogical
+- system_prompt_instruction_config
+- input_source_channel
+- field: observation_thought_reasoning_trace
+  grounding: analogical
+- field: pre_forward_pass_state_digest_vector
+  grounding: analogical
+- tool_name
+- field: tool_id
+  grounding: analogical
+- tool_acl_required_scope
+- field: tool_selection_rationale
+  grounding: analogical
+- memory_write_event
+- field: memory_write_rationale
+  grounding: analogical
+- retrieval_event
+- task_intent_declaration
+- field: delegation_chain
+  grounding: analogical
+- field: granted_authorizations_scope
+  grounding: analogical
+- lifecycle_state
+- field: capability_set_change_event
+  grounding: analogical
+- field: repository_code_path_software_ref
+  grounding: analogical
+- field: agbom_inventory_snapshot
+  grounding: analogical
+- field: inventory_integrity_signature
+  grounding: analogical
+- field: instrumentation_coverage_hook_status
+  grounding: analogical
+- field: event_sequence_continuity
+  grounding: analogical
+- authorization_decision_record
+- attribute_source_trusted_provenance_marking
+components_text: Memory, Tools
+atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0070` RAG Poisoning; `AML.T0020` Training Data Poisoning'
+atlas_notes: Externally-editable memory-linked "constitution"
+risks: [riskAgentMemoryPoisoning, riskPromptInjection, riskRogueActions]

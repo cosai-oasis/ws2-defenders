@@ -1,0 +1,2223 @@
+# How the publications XM cross-references carry each field, the asks CoSAI makes of
+# them, and the Risk Map controls each field helps implement. Written by tools/apply.py
+# from decided candidates; record documented in tools/xm_propose.py. Constructs resolve
+# at the versions pinned in sources.yaml `publications:` (tools/validate.py checks).
+asks:
+- id: ocsf_ai_delegation_activity
+  publication: ocsf
+  summary: Ratify an AI Delegation Activity class (9002) for the delegation lifecycle.
+  proposes: ['class:9002']
+  tracking: [ocsf-schema#1640]
+  status: open
+- id: ocsf_ai_operation_identifiers
+  publication: ocsf
+  summary: Extend the ai_operation profile with run, turn and step identifiers, action type and trigger type.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_stop_reason
+  publication: ocsf
+  summary: Merge the ai_status object on the ai_operation profile; its stop_reason_id carries End of Turn, Token Limit, Tool Use, Session Stop and Content Filter.
+  proposes: ['object:ai_status', 'attribute:stop_reason_id']
+  tracking: [ocsf-schema#1704]
+  status: open
+- id: ocsf_trust_level
+  publication: ocsf
+  summary: Add a trust_level enum usable on content and message objects.
+  proposes: ['attribute:trust_level']
+  tracking: []
+  status: proposed
+- id: ocsf_autonomy_level
+  publication: ocsf
+  summary: Add an autonomy_level enum.
+  proposes: ['attribute:autonomy_level']
+  tracking: []
+  status: proposed
+- id: ocsf_egress_correlation
+  publication: ocsf
+  summary: Add an egress correlation attribute linking model output to its destination, recipient or URL.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_model_provenance
+  publication: ocsf
+  summary: Standardize model provider and provenance or signing attributes in ai_operation.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_ai_memory
+  publication: ocsf
+  summary: Add an ai_memory object (operation, provenance, footprint, poisoning score, isolation verified).
+  proposes: ['object:ai_memory']
+  tracking: []
+  status: proposed
+- id: ocsf_ai_retrieval
+  publication: ocsf
+  summary: Add an ai_retrieval object (query, items, source and provenance, integrity signal).
+  proposes: ['object:ai_retrieval']
+  tracking: []
+  status: proposed
+- id: ocsf_ai_approval
+  publication: ocsf
+  summary: Add an ai_approval object (correlation ID, status, identity-provider-verified approver, channel, scope-binding result).
+  proposes: ['object:ai_approval']
+  tracking: []
+  status: proposed
+- id: ocsf_attribute_source
+  publication: ocsf
+  summary: Add an attribute_source enum (idp, pdp, enforcement-state, platform, self-asserted) usable on identity, authorization and agent-state attributes.
+  proposes: ['attribute:attribute_source']
+  tracking: []
+  status: proposed
+- id: otel_trust_level
+  publication: otel_genai
+  summary: Add gen_ai.input.trust_level on message parts (trusted or untrusted, crossed with instruction or data).
+  proposes: [gen_ai.input.trust_level]
+  tracking: []
+  status: proposed
+  rationale: 'The four values are trusted-instruction, trusted-data, untrusted-instruction and untrusted-data. **`untrusted-instruction` is the attack state**: `TA-01` is untrusted email content promoted to instruction. The enum carries provenance only; detector verdicts belong on the **Guardrail (Input) Verdict** (AD §1.2). No current convention has an analogue, and the addition is one enum on an existing structure.'
+- id: otel_security_guardrail
+  publication: otel_genai
+  summary: Extend the evaluation event for security use (blocked or allowed, guardrail type, threat technique), or add gen_ai.guardrail.*.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).
+- id: otel_memory_provenance_footprint
+  publication: otel_genai
+  summary: Add provenance and footprint attributes to gen_ai.memory.*.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: '`gen_ai.memory.*` carries store and record identity, query text, record count, seven memory operations and a `gen_ai.memory.client` span ([§2.1](#21-what-it-is-and-the-version-mapped)). Operation and item identity are therefore covered; **provenance** and **footprint** are not, and neither appears anywhere in the `gen_ai` registry. Memory remains MUST here (AD §1.4), with `IR-02` and `IR-05` as direct grounding and `AOC-05` for footprint.'
+- id: otel_retrieval_provenance
+  publication: otel_genai
+  summary: Add per-document source, owner, trust level and last-modified attributes to retrieval documents.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: '`gen_ai.retrieval.documents` exists; per-document **source, owner, trust level, and last-modified** do not, and `TA-09` turns specifically on recently-modified retrievable content.'
+- id: otel_turn_step_ids
+  publication: otel_genai
+  summary: Add gen_ai.turn.id and gen_ai.step.id.
+  proposes: [gen_ai.turn.id, gen_ai.step.id]
+  tracking: []
+  status: proposed
+  rationale: '`gen_ai.conversation.id` and `gen_ai.workflow.name` exist; the intermediate levels do not. `TA-08` and `IR-01` are across-turn patterns (AD §1.1).'
+- id: otel_trigger
+  publication: otel_genai
+  summary: Add gen_ai.trigger.type (user_initiated or autonomous) and gen_ai.trigger.event; scheduled and self-triggered runs use it.
+  proposes: [gen_ai.trigger.type, gen_ai.trigger.event]
+  tracking: []
+  status: proposed
+  rationale: '`TA-01` is zero-click; this is the first filter of any injection hunt.'
+- id: otel_tool_digest_mcp_primitive
+  publication: otel_genai
+  summary: Add gen_ai.tool.definitions.hash and an mcp.primitive value set (tool, resource, prompt, sampling, elicitation, roots).
+  proposes: [gen_ai.tool.definitions.hash, mcp.primitive]
+  tracking: []
+  status: proposed
+  rationale: '`gen_ai.tool.definitions` and `mcp.method.name` already carry the raw material; a stable hash attribute and an explicit primitive value set make definition drift and non-tool MCP surfaces queryable (AD §1.3).'
+- id: otel_attachment_identity
+  publication: otel_genai
+  summary: Add attachment identity (name, size, hash) on message parts.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: '`AOC-12` is an image/OCR injection; `AOC-05` is attachment flooding.'
+- id: otel_model_provenance
+  publication: otel_genai
+  summary: Add gen_ai.model.hash, gen_ai.model.signature and gen_ai.model.source.
+  proposes: [gen_ai.model.hash, gen_ai.model.signature, gen_ai.model.source]
+  tracking: []
+  status: proposed
+  rationale: Together they complete the supply-chain record that `gen_ai.request.model` starts.
+- id: otel_citations
+  publication: otel_genai
+  summary: Add citation attributes on output messages with a resolution flag against retrieval.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_execution_environment
+  publication: otel_genai
+  summary: Add execution-environment attributes (sandbox, runtime, egress policy) for tool execution.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_inter_agent_messaging
+  publication: otel_genai
+  summary: Add inter-agent messaging attributes.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_run_budget
+  publication: otel_genai
+  summary: Add per-run budget and threshold semantics; document security use of the loop metrics.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_capability_change
+  publication: otel_genai
+  summary: Add a capability-change event; reference an external BOM by URI or digest.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_hook_coverage
+  publication: otel_genai
+  summary: Record instrumentation hook coverage as a resource attribute.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_egress_pattern
+  publication: otel_genai
+  summary: Document correlating model output to its destination through the HTTP and network conventions on the child span.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_entry_point
+  publication: ocsf
+  summary: 'Add an entry point to ai_operation: the surface an operation arrived through (CLI, web, IDE, email, chat, scheduler) and whether it is internal or external.'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_input_segment_source
+  publication: ocsf
+  summary: 'Add a per-segment source to message_context: the surface, tool, agent or document each input segment came from, beside the proposed trust_level.'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_obfuscation
+  publication: ocsf
+  summary: Add an obfuscation finding (detected, encodings, decoded form or its hash) to ai_guardrail or Detection Finding, aligned with AITF security.obfuscation.*.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_citations
+  publication: ocsf
+  summary: Add citations to message_context, each with its source and whether it resolves to an item an ai_retrieval record returned, aligned with AITF rag.citation.*.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_inference_parameters
+  publication: ocsf
+  summary: Add the decoding parameters in force for a call (temperature, top_p, max_tokens, stop sequences, seed) and the declared context window to ai_model or message_context.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_ai_error
+  publication: ocsf
+  summary: 'Add an AI error type to ai_operation beside status_id: provider error, context overflow, rate limit, content filter, silent truncation.'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_tool_execution_environment
+  publication: ocsf
+  summary: Add the execution environment of a tool call (isolation mode, runtime, timeout and egress policy) beside ai_capability, aligned with AITF supply_chain.runtime.*.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_identity_verification
+  publication: ocsf
+  summary: Record which identity authorized an operation (a verified identifier or a display name) and the verification outcome, on actor or ai_authorization.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_run_id
+  publication: otel_genai
+  summary: Add gen_ai.run.id, as AITF defines it; gen_ai.workflow.name names the workflow, not the run.
+  proposes: [gen_ai.run.id]
+  tracking: []
+  status: proposed
+- id: otel_entry_point
+  publication: otel_genai
+  summary: 'Add an entry-point attribute: the surface a request arrived through and whether it is internal or external.'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_input_part_source
+  publication: otel_genai
+  summary: Add a per-part source on input messages (the surface, tool, agent or document it came from), beside the proposed gen_ai.input.trust_level.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_obfuscation
+  publication: otel_genai
+  summary: Add obfuscation indicators on input (detected, encodings, decoded hash), aligned with AITF security.obfuscation.*.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_refusal
+  publication: otel_genai
+  summary: Add a refusal status and reason distinct from finish reasons, so a refusal that ends normally is still visible.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_tool_trust_boundary
+  publication: otel_genai
+  summary: Extend gen_ai.tool.type, or add a trust-boundary attribute, to distinguish MCP, internal, direct-storage and code-execution tools.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_chain_end
+  publication: ocsf
+  summary: Add an end-of-chain marker to attestation, so a verifier can tell a closed chain from a truncated one. The signature bytes on digital_signature, merged as ocsf-schema#1709 after 1.9.0, complete the signed chain head.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: The OpenTelemetry Audit Logging data model already carries the marker as `audit.sequence.end` [[88]](#other-sources).
+- id: otel_audit_sequence
+  publication: otel_semconv
+  summary: 'Adopt the Audit Logging data model for security records: `audit.record.id`, the `audit.sequence.*` chain (number, previous hash, previous record id, end) and `audit.integrity.*` with its canonicalization declaration. Referenced here at commit `3c5a0ff` (2026-09-18) of the `auditing` branch.'
+  proposes: []
+  tracking: [community#2409]
+  status: open
+  rationale: The draft is in the Audit Logging SIG proposal, not yet the specification [[88]](#other-sources). A crosswalk maps each attribute to and from OCSF `attestation` [[89]](#other-sources).
+- id: ocsf_ai_authorization
+  publication: ocsf
+  summary: Add an ai_authorization object (decision, reason, code, deciding authority, rule, obligations, budget accounting and the principal or subtree join key).
+  proposes: ['object:ai_authorization']
+  tracking: [ocsf-schema#1756]
+  status: open
+  rationale: The budget accounting is the consumption side of the `constraint` object ocsf-schema#1756 proposes on delegation.
+- id: ocsf_delegation_lineage
+  publication: ocsf
+  summary: Extend delegation with scope, constraints and lifecycle state; require parent_uid where a parent exists; add a root or subtree identifier.
+  proposes: []
+  tracking: [ocsf-schema#1739, ocsf-schema#1756]
+  status: open
+  rationale: ocsf-schema#1756 proposes the constraints as a `constraint` object. Enforcement points already hold per-hop subject, audience, granted scopes and TTL; the schema has no place for them.
+- id: ocsf_ai_taint
+  publication: ocsf
+  summary: 'Add an ai_taint object: the label set at entry and the final label set, so the labels an operation added are their difference; scope; origin; and taint-caused denial.'
+  proposes: ['object:ai_taint']
+  tracking: []
+  status: proposed
+  rationale: Records in the AID-EMIT-1 format [[87]](#other-sources) carry both sets today, outside the schema.
+- id: ocsf_ai_tool
+  publication: ocsf
+  summary: 'Land the ai_capability object: name, kind (type_id), serving system and transport, the transaction_uid join key, and fingerprints of the description and schemas with an approved baseline. At the pull request''s head (`b6e44ac`, 2026-09-29) type_id has Tool, Resource and Prompt Template: extend it to the client-side MCP primitives (sampling, elicitation, roots), and add a trust-boundary value set and a required-scope attribute.'
+  proposes: ['object:ai_capability', 'attribute:desc_fingerprint', 'attribute:baseline_fingerprint', 'attribute:tool_trust_boundary']
+  tracking: [ocsf-schema#1729]
+  status: open
+  rationale: Its fingerprints reuse the `fingerprint` object, which declares `serialization_id`, so this ask already meets the canonicalization rule stated after the asks.
+- id: ocsf_ai_bom
+  publication: ocsf
+  summary: Add an ai_bom object (BOM reference, format, signature, dependency edges) and a capability-change activity on Agent Activity.
+  proposes: ['object:ai_bom']
+  tracking: [ocsf-schema#1724]
+  status: open
+  rationale: 'A [draft class](https://github.com/Levaj2000/AI-Identity/tree/main/docs/ocsf-1724-class-draft) for #1724, AI Agent Trust Inventory, has `agent_artifact` with a `fingerprint`, `agent_config_declaration`, `agent_execution_params` and `agent_credential`. It carries Inventory Integrity Signature as `record_integrity` on the inventory event, with one `chain_uid` per instance, so a gap in the chain is an unrecorded change.'
+- id: ocsf_ai_asset
+  publication: ocsf
+  summary: Add an ai_asset object (version, software reference, ownership, status, instrumentation coverage).
+  proposes: ['object:ai_asset']
+  tracking: [ocsf-schema#1724]
+  status: open
+  rationale: 'Shape it against the #1724 draft class under [`ocsf_ai_bom`](#ask-ocsf-ai-bom).'
+- id: ocsf_runtime_attestation
+  publication: ocsf
+  summary: Add a runtime_attestation object carrying independently issued evidence objects and an explicit not-available status with a reason.
+  proposes: ['object:runtime_attestation']
+  tracking: []
+  status: proposed
+  rationale: 'The field needs both halves, each its own evidence object: the runtime workload credential with its attestor and freshness, and the software evidence of what ran. The #1724 draft class under [`ocsf_ai_bom`](#ask-ocsf-ai-bom) carries the second as `agent_artifact.fingerprint`.'
+- id: ocsf_message_context_content
+  publication: ocsf
+  summary: Extend message_context with prompt and response hashes, a redaction flag, the system prompt and its hash, and attachment identity. Each hash declares its canonicalization and may be a keyed digest with a key identifier; an absent hash means not digested, never unchanged.
+  proposes: ['attribute:prompt_hash', 'attribute:response_hash', 'attribute:is_redacted', 'attribute:system_prompt']
+  tracking: []
+  status: proposed
+  rationale: The AID-EMIT-1 record format [[87]](#other-sources) carries digests in that form today, `hmac-sha256:<key_id>:<hex>` or `sha256:<hex>`, taken at pipeline entry and at emission. Equal digests under one key identifier mean the content passed unchanged.
+- id: otel_hash_only_capture
+  publication: otel_genai
+  summary: Ensure a hash-only content-capture mode exists for message content. The digest declares its canonicalization and may be keyed with a key identifier; an absent digest means not captured.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: The digest form under [`ocsf_message_context_content`](#ask-ocsf-message-context-content) is a worked example.
+- id: ocsf_ai_guardrail
+  publication: ocsf
+  summary: Add an ai_guardrail object (type, verdict, score, blocked flag, threat reference), with enforcement availability and failure-mode attributes.
+  proposes: ['object:ai_guardrail']
+  tracking: []
+  status: proposed
+  rationale: 'A Guardrail Modification Record needs no content. Three facts on one record carry it: a modifying step naming the enforcement point, an allow-after-modification verdict, and entry and emission digests that differ under one key. The AID-EMIT-1 record format [[87]](#other-sources) carries that composition, and codes a fail-closed failure as a deny distinct from a policy deny. Whether the enforcement point was reached at all has no carrier yet.'
+- id: otel_authorization_reference
+  publication: otel_genai
+  summary: Let a span reference an authorization decision by the decision record's stable identifier (OCSF `metadata.uid`), so OpenTelemetry and OCSF records join at query time.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_ai_agent_activity
+  publication: ocsf
+  summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
+  proposes: ['class:9001']
+  tracking: [ocsf-schema#1640]
+  status: open
+  rationale: 'Draft ocsf-schema#1754 adds an AI Agent Activity class as 6009 in Application Activity, not 9001. Its nine activities follow agent hook points, and it carries none of the five fields: Subagent Start and Stop have no attributes, so they record no sender, receiver, content, channel or step count, and no activity covers scheduled tasks, resource totals or capability changes.'
+- id: ocsf_training_provenance
+  publication: ocsf
+  summary: 'Add training-time records: a training-data item with its digest and its source or provenance (origin, license, acquisition time), and a compute job submission (submitter, entrypoint, image, requested resources).'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_tenant_scopes
+  publication: ocsf
+  summary: Carry the tenant of the agent, of the session and of the invoking user as separate attributes, beside metadata.tenant_uid.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_backend_route
+  publication: ocsf
+  summary: Add the routing constraint in force, the candidate backends and the backend chosen to ai_operation.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_mediation_coverage
+  publication: ocsf
+  summary: Record whether a reference monitor mediated an operation and, where none did, the path that bypassed it.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_task_intent
+  publication: ocsf
+  summary: Add the purpose declared for a run to ai_operation, distinct from the agent charter on ai_agent.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: ocsf_peer_agent_descriptor
+  publication: ocsf
+  summary: 'Record a counterparty agent descriptor at contact: its digest, whether it changed since the last contact, and the verification outcome.'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_autonomy_level
+  publication: otel_genai
+  summary: Add gen_ai.agent.autonomy_level, the level of action an agent may take without human approval.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_task_intent
+  publication: otel_genai
+  summary: Add the purpose declared for an invoke_agent or invoke_workflow run.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_a2a
+  publication: otel_genai
+  summary: 'Add A2A conventions: task lifecycle events, including push-notification callback registration, and the counterparty agent card (URL, digest, change, verification outcome).'
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_tool_code_ref
+  publication: otel_genai
+  summary: Add the tool and framework version and the code reference (repository, commit) on execute_tool and invoke_agent spans.
+  proposes: []
+  tracking: []
+  status: proposed
+- id: otel_training_provenance
+  publication: otel_semconv
+  summary: 'Add training-time conventions: a dataset item digest and its source, and a compute job submission (submitter, entrypoint, image, requested resources).'
+  proposes: []
+  tracking: []
+  status: proposed
+fields:
+  agent_name:
+    ocsf:
+      coverage: covered
+      constructs: ['profile:ai_operation', 'object:ai_agent']
+    otel:
+      coverage: covered
+      constructs: [gen_ai.agent.name]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.name, asset.*]
+    odis:
+      coverage: covered
+      constructs: [agent_id, owner_ref]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  agent_runtime_instance_id:
+    ocsf:
+      coverage: covered
+      constructs: ['object:ai_agent', 'attribute:instance_uid']
+    otel:
+      coverage: covered
+      constructs: [gen_ai.agent.id]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.id]
+    odis:
+      coverage: covered
+      constructs: [runtime_instance_id]
+      note: ODIS §6.2.
+      sections: ['6.2']
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  workflow_run_id:
+    ocsf:
+      coverage: none
+      gap: No workflow or run identifier
+      asks: [ocsf_ai_operation_identifiers]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.workflow.name]
+      gap: A workflow name, not a run identifier; the run maps to the trace ID
+      asks: [otel_run_id]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.run.id]
+    odis:
+      coverage: covered
+      constructs: [request_trace_id]
+      note: ODIS §6.4.
+      sections: ['6.4']
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  session_turn_step_ids:
+    ocsf:
+      coverage: partial
+      constructs: ['object:message_context']
+      gap: A session identifier only; no turn or step
+      asks: [ocsf_ai_operation_identifiers]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.conversation.id]
+      gap: No turn or step identifier
+      asks: [otel_turn_step_ids]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.conversation.id, gen_ai.turn.id, gen_ai.step.id, gen_ai.agent.step.index]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  trigger_type_source_event:
+    ocsf:
+      coverage: none
+      gap: No trigger type
+      asks: [ocsf_ai_operation_identifiers]
+    otel:
+      coverage: none
+      gap: No trigger type or source event
+      asks: [otel_trigger]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.trigger.*, gen_ai.agent.*]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  action_type:
+    ocsf:
+      coverage: none
+      gap: No action type
+      asks: [ocsf_ai_operation_identifiers]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.operation.name]
+      gap: Operations include chat, execute_tool, invoke_agent and the memory operations; no inter-agent message send
+      asks: [otel_inter_agent_messaging]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.step.type]
+    odis:
+      coverage: covered
+      constructs: [action]
+      note: '`action.{tool,method}` (6.4)'
+      sections: ['6.4']
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  execution_status:
+    ocsf:
+      coverage: covered
+      constructs: ['attribute:status_id', 'attribute:duration']
+      note: Outcome and duration on the base event.
+    otel:
+      coverage: covered
+      constructs: [error.type]
+      note: With the span status.
+    aitf:
+      coverage: covered
+      constructs: [error.type]
+      note: span status + `error.type`
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  surface_app:
+    ocsf:
+      coverage: partial
+      constructs: ['object:actor', 'attribute:app_name']
+      gap: An application name; no entry-point type and no internal or external flag
+      asks: [ocsf_entry_point]
+    otel:
+      coverage: none
+      gap: No surface attribute
+      asks: [otel_entry_point]
+    aitf:
+      coverage: partial
+      constructs: [gen_ai.*]
+      gap: AITF names a namespace but defines no attribute for this field at the pin
+    odis:
+      coverage: out_of_scope
+      note: n/a (policy input)
+    controls: []
+  system_prompt_instruction_config:
+    ocsf:
+      coverage: none
+      gap: No system prompt in message_context
+      asks: [ocsf_message_context_content]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.system_instructions]
+      asks: [otel_hash_only_capture]
+      note: Gated behind content-capture opt-in.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.*]
+      note: '`gen_ai.*` (system message / request)'
+    odis:
+      coverage: out_of_scope
+      note: n/a (see note)
+    controls: []
+  model_name_version:
+    ocsf:
+      coverage: covered
+      constructs: ['profile:ai_operation', 'object:ai_model']
+    otel:
+      coverage: covered
+      constructs: [gen_ai.request.model, gen_ai.response.model]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.request.model, gen_ai.provider.name]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  inference_parameters:
+    ocsf:
+      coverage: none
+      gap: No decoding parameters or context window on ai_model or message_context
+      asks: [ocsf_inference_parameters]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.request.temperature, gen_ai.request.top_p, gen_ai.request.max_tokens, gen_ai.request.stop_sequences, gen_ai.request.seed]
+    odis:
+      coverage: out_of_scope
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  input_output_token_counts:
+    ocsf:
+      coverage: covered
+      constructs: ['object:message_context']
+    otel:
+      coverage: covered
+      constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.client.token.usage]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, cost.*]
+    odis:
+      coverage: out_of_scope
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  llm_error_exception:
+    ocsf:
+      coverage: partial
+      constructs: ['attribute:status_id', 'attribute:status_detail']
+      gap: A generic outcome; no AI-specific error type
+      asks: [ocsf_ai_error]
+    otel:
+      coverage: covered
+      constructs: [error.type]
+    aitf:
+      coverage: partial
+      constructs: [gen_ai.*, security.*]
+      gap: AITF names a namespace but defines no attribute for this field at the pin
+    odis:
+      coverage: out_of_scope
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  trace_context_propagated:
+    ocsf:
+      coverage: covered
+      constructs: ['profile:trace', 'object:trace']
+      note: The trace profile carries the trace and span identifiers.
+    otel:
+      coverage: covered
+      note: OpenTelemetry trace context (W3C traceparent) is core to the specification.
+    aitf:
+      coverage: covered
+      constructs: []
+      note: OTel `trace_id` and `span_id`, propagated as W3C `traceparent`.
+    odis:
+      coverage: covered
+      constructs: [request_trace_id]
+      note: ODIS §6.4.
+      sections: ['6.4']
+    controls: []
+  stop_reason:
+    ocsf:
+      coverage: none
+      gap: ai_status.stop_reason_id is proposed in
+      asks: [ocsf_stop_reason]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.response.finish_reasons]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.response.finish_reasons]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  autonomy_level:
+    ocsf:
+      coverage: none
+      gap: No autonomy level
+      asks: [ocsf_autonomy_level]
+    otel:
+      coverage: none
+      gap: No autonomy level
+      asks: [otel_autonomy_level]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.state]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentInventoryManagement, controlAgentObservability]
+  model_provenance_signing_hash:
+    ocsf:
+      coverage: none
+      gap: Provenance and signing not standardized in the profile
+      asks: [ocsf_model_provenance]
+    otel:
+      coverage: none
+      gap: No model provenance or signing
+      asks: [otel_model_provenance]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.model.hash, supply_chain.model.signed, supply_chain.model.source, supply_chain.ai_bom.*]
+    odis:
+      coverage: covered
+      constructs: [software_hash, approved_software_refs]
+      note: ODIS §6.2, §6.1.
+      sections: ['6.2', '6.1']
+    controls: [controlModelAndDataIntegrityManagement, controlModelRegistryIntegrity, controlMessageAndPayloadResourceLimits]
+  organization_tenant_id:
+    ocsf:
+      coverage: partial
+      constructs: ['object:metadata', 'attribute:tenant_uid']
+      gap: One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately
+      asks: [ocsf_tenant_scopes]
+    otel:
+      coverage: none
+      gap: No tenant attribute in the GenAI conventions
+      note: XM recommends adopting existing tenant and resource attributes rather than an ask.
+    aitf:
+      coverage: covered
+      constructs: [asset.tenant.*, security.tenant.*, asset.*]
+    odis:
+      coverage: covered
+      constructs: [trust_domain]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: []
+  provider_endpoint_identity:
+    ocsf:
+      coverage: covered
+      constructs: ['object:ai_model', 'attribute:ai_provider']
+    otel:
+      coverage: covered
+      constructs: [gen_ai.provider.name]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.provider.name]
+    odis:
+      coverage: out_of_scope
+    controls: [controlModelAndDataIntegrityManagement, controlMessageAndPayloadResourceLimits]
+  pre_forward_pass_state_digest_vector:
+    ocsf:
+      coverage: none
+      gap: No forward-pass digest
+      note: A MAY research-grade signal; no ask.
+    otel:
+      coverage: none
+      gap: No forward-pass digest
+      note: A MAY research-grade signal; no ask.
+    aitf:
+      coverage: covered
+      constructs: [drift.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  token_malformation_context_corruption_indicator:
+    ocsf:
+      coverage: none
+      gap: No token-entropy signal
+      note: A MAY research-grade signal; no ask.
+    otel:
+      coverage: none
+      gap: No token-entropy signal
+      note: A MAY research-grade signal; no ask.
+    aitf:
+      coverage: covered
+      constructs: [drift.*, quality.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  model_input:
+    ocsf:
+      coverage: partial
+      constructs: ['object:message_context', 'attribute:prompt_text']
+      gap: No content hash or redaction flag
+      asks: [ocsf_message_context_content]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.input.messages]
+      asks: [otel_hash_only_capture]
+      note: Gated behind content-capture opt-in.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.prompt]
+      note: '`gen_ai.prompt` / input events'
+    odis:
+      coverage: covered
+      constructs: [action]
+      note: '`action.parameters` (6.4)'
+      sections: ['6.4']
+    controls: [controlInputValidationAndSanitization]
+  input_source_channel:
+    ocsf:
+      coverage: none
+      gap: No per-segment input source on message_context
+      asks: [ocsf_input_segment_source]
+    otel:
+      coverage: none
+      gap: No per-part input source
+      asks: [otel_input_part_source]
+    aitf:
+      coverage: partial
+      constructs: [gen_ai.*, rag.*, mcp.*]
+      gap: AITF names a namespace but defines no attribute for this field at the pin
+    odis:
+      coverage: covered
+      constructs: [delegation_chain]
+      note: '`delegation_chain` origin (6.3)'
+      sections: ['6.3']
+    controls: [controlInputValidationAndSanitization]
+  input_trust_classification:
+    ocsf:
+      coverage: partial
+      constructs: ['class:2004']
+      gap: No trust-provenance enum
+      asks: [ocsf_trust_level]
+    otel:
+      coverage: none
+      gap: No trust-provenance concept
+      asks: [otel_trust_level]
+    aitf:
+      coverage: covered
+      constructs: [security.*]
+      note: '`security.*` (trust/threat)'
+    odis:
+      coverage: covered
+      constructs: [constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlInputValidationAndSanitization]
+  source_host_ip_request_metadata:
+    ocsf:
+      coverage: covered
+      constructs: ['attribute:src_endpoint']
+    otel:
+      coverage: covered
+      constructs: [client.address, network.peer.address, user_agent.original]
+    aitf:
+      coverage: covered
+      constructs: [security.*]
+      note: '`security.*` / resource attrs'
+    odis:
+      coverage: out_of_scope
+      note: n/a (policy input)
+    controls: [controlInputValidationAndSanitization]
+  guardrail_input_verdict:
+    ocsf:
+      coverage: partial
+      constructs: ['class:2004']
+      gap: No guardrail-verdict object
+      asks: [ocsf_ai_guardrail]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.evaluation.score.value]
+      gap: 'The evaluation event is quality-oriented: no blocked flag, guardrail type or threat technique'
+      asks: [otel_security_guardrail]
+    aitf:
+      coverage: covered
+      constructs: [security.guardrail.type, security.blocked, security.threat_type]
+    odis:
+      coverage: out_of_scope
+    controls: [controlInputValidationAndSanitization]
+  response_model_output:
+    ocsf:
+      coverage: partial
+      constructs: ['object:message_context', 'attribute:response_text']
+      gap: No content hash or redaction flag
+      asks: [ocsf_message_context_content]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.output.messages]
+      asks: [otel_hash_only_capture]
+      note: Gated behind content-capture opt-in.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.completion]
+    odis:
+      coverage: out_of_scope
+    controls: [controlOutputValidationAndSanitization]
+  output_egress_destination:
+    ocsf:
+      coverage: partial
+      constructs: ['class:http_activity', 'class:network_activity']
+      gap: No link from model output to the egress channel or recipient
+      asks: [ocsf_egress_correlation]
+    otel:
+      coverage: none
+      gap: No link from model output to its destination
+      asks: [otel_egress_pattern]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.tool.call.arguments, security.pii.*]
+    odis:
+      coverage: covered
+      constructs: [resource_indicators]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlOutputValidationAndSanitization]
+  citations_source_attribution:
+    ocsf:
+      coverage: none
+      gap: No citation, and no resolution of a citation against retrieval
+      asks: [ocsf_citations]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.retrieval.documents]
+      gap: Output-side citations are not linked to retrieved items
+      asks: [otel_citations]
+    aitf:
+      coverage: covered
+      constructs: [rag.citation.*, rag.*]
+    odis:
+      coverage: out_of_scope
+    controls: [controlOutputValidationAndSanitization]
+  guardrail_output_verdict:
+    ocsf:
+      coverage: partial
+      constructs: ['class:2004']
+      gap: No guardrail-verdict object
+      asks: [ocsf_ai_guardrail]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.evaluation.score.value]
+      gap: The evaluation event is quality-oriented
+      asks: [otel_security_guardrail]
+    aitf:
+      coverage: covered
+      constructs: [security.guardrail.*, security.pii.*]
+    odis:
+      coverage: covered
+      constructs: [constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlOutputValidationAndSanitization]
+  llm_refusal:
+    ocsf:
+      coverage: none
+      gap: No refusal status or reason; the Content Filter stop reason proposed in
+      asks: [ocsf_stop_reason]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.response.finish_reasons]
+      gap: A content-filter finish reason where the provider returns one; no refusal status or reason
+      asks: [otel_refusal]
+    aitf:
+      coverage: partial
+      constructs: [gen_ai.response.finish_reasons, security.*]
+      gap: AITF names a namespace but defines no attribute for this field at the pin
+    odis:
+      coverage: out_of_scope
+    controls: [controlOutputValidationAndSanitization]
+  content_modality_attachment_identity:
+    ocsf:
+      coverage: none
+      gap: No attachment identity
+      asks: [ocsf_message_context_content]
+    otel:
+      coverage: partial
+      gap: Message parts carry types; no attachment name, size or hash
+      asks: [otel_attachment_identity]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.content.*, gen_ai.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  attribute_source_trusted_provenance_marking:
+    ocsf:
+      coverage: none
+      gap: No attribute-provenance marking
+      asks: [ocsf_attribute_source]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.attribute_source.*]
+    odis:
+      coverage: partial
+      constructs: [attestation_evidence]
+      note: '`attestation_evidence` (6.2, partial)'
+      sections: ['6.2']
+    controls: []
+  instrumentation_coverage_hook_status:
+    ocsf:
+      coverage: none
+      gap: No hook-coverage representation
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: none
+      gap: No instrumentation-coverage representation
+      asks: [otel_hook_coverage]
+    aitf:
+      coverage: covered
+      constructs: [asset.instrumentation.*, asset.*]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAuditTrailCompleteness]
+  enforcement_point_availability_failure_mode:
+    ocsf:
+      coverage: none
+      gap: No enforcement availability or fail-open representation
+      asks: [ocsf_ai_guardrail]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.enforcement.*, security.guardrail.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  guardrail_modification_record:
+    ocsf:
+      coverage: none
+      gap: No record that an enforcement point rewrote a payload
+      asks: [ocsf_ai_guardrail, ocsf_message_context_content]
+    otel:
+      coverage: none
+      gap: No record that an enforcement point rewrote a payload
+      asks: [otel_security_guardrail]
+    aitf:
+      coverage: covered
+      constructs: [security.guardrail.modification.*, security.guardrail.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  encoded_obfuscated_payload_indicator:
+    ocsf:
+      coverage: none
+      gap: No obfuscation flag or decoded form
+      asks: [ocsf_obfuscation]
+    otel:
+      coverage: none
+      gap: No obfuscation flag or decoded form
+      asks: [otel_obfuscation]
+    aitf:
+      coverage: covered
+      constructs: [security.obfuscation.*, security.*]
+    odis:
+      coverage: out_of_scope
+    controls: [controlInputValidationAndSanitization]
+  observation_thought_reasoning_trace:
+    ocsf:
+      coverage: none
+      gap: No reasoning trace
+      note: No ask proposed.
+    otel:
+      coverage: partial
+      constructs: [gen_ai.usage.reasoning.output_tokens]
+      gap: A count of reasoning tokens, not the trace
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.step.thought]
+    odis:
+      coverage: out_of_scope
+    controls: [controlNetworkEgressControl]
+  threat_classification_atlas_technique_tag:
+    ocsf:
+      coverage: covered
+      constructs: ['class:2004', 'attribute:attacks']
+      note: 'No schema change: populate attacks[].technique.uid with AML.Txxxx, the tactic, and attacks[].version with the ATLAS matrix version.'
+    otel:
+      coverage: none
+      gap: No threat-technique reference
+      asks: [otel_security_guardrail]
+    aitf:
+      coverage: covered
+      constructs: [security.threat_type, compliance.framework, compliance.control_id]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  execution_environment_sandbox:
+    ocsf:
+      coverage: partial
+      constructs: ['object:process', 'attribute:sandbox', 'object:container']
+      gap: A sandbox name on a process, and container identity; no isolation mode, timeout or egress policy for a tool execution
+      asks: [ocsf_tool_execution_environment]
+    otel:
+      coverage: none
+      gap: No sandbox or isolation attributes
+      asks: [otel_execution_environment]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.runtime.*, supply_chain.*]
+    odis:
+      coverage: partial
+      constructs: [attestation_evidence]
+      note: Runtime/workload evidence in `attestation_evidence` (6.2); ODIS has no normalized sandbox field.
+      sections: ['6.2']
+    controls: [controlRuntimeHostIsolation]
+  tool_call_io:
+    ocsf:
+      coverage: partial
+      constructs: ['class:6003']
+      gap: No tool object
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.tool.call.arguments, gen_ai.tool.call.result, mcp.tool.name]
+    odis:
+      coverage: covered
+      constructs: [action]
+      note: ODIS §6.4.
+      sections: ['6.4']
+    controls:
+    - controlToolServerVetting
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  tool_name:
+    ocsf:
+      coverage: none
+      gap: No tool object
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.tool.name]
+    aitf:
+      coverage: covered
+      constructs: [mcp.tool.name]
+    odis:
+      coverage: out_of_scope
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  tool_type_trust_boundary:
+    ocsf:
+      coverage: none
+      gap: No tool trust-boundary enum
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.tool.type]
+      gap: function, extension or datastore; no MCP, direct-storage or code-execution boundary
+      asks: [otel_tool_trust_boundary]
+    aitf:
+      coverage: partial
+      constructs: [mcp.*]
+      gap: AITF names a namespace but defines no attribute for this field at the pin
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  tool_execution_id:
+    ocsf:
+      coverage: none
+      gap: No tool-call join key
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.tool.call.id]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.tool.call.id]
+    odis:
+      coverage: out_of_scope
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  tool_definition_digest:
+    ocsf:
+      coverage: none
+      gap: No tool-definition digest
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.tool.definitions]
+      gap: The definitions, not a stable digest of them
+      asks: [otel_tool_digest_mcp_primitive]
+    aitf:
+      coverage: covered
+      constructs: [mcp.tool.definition.*, mcp.tool.*]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  mcp_server_identity_primitive:
+    ocsf:
+      coverage: none
+      gap: No MCP object or primitive axis
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: partial
+      constructs: [mcp.method.name, mcp.protocol.version, mcp.session.id]
+      gap: No primitive discriminator; mcp.method.name partly serves
+      asks: [otel_tool_digest_mcp_primitive]
+    aitf:
+      coverage: covered
+      constructs: [mcp.primitive, mcp.server.name, mcp.server.version]
+    odis:
+      coverage: out_of_scope
+    controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
+  authorization_decision_record:
+    ocsf:
+      coverage: partial
+      constructs: ['class:3003']
+      gap: No authorization-decision object for AI operations
+      asks: [ocsf_ai_authorization]
+    otel:
+      coverage: out_of_scope
+      asks: [otel_authorization_reference]
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.authorization.*, security.*, compliance.control_id]
+    odis:
+      coverage: out_of_scope
+      note: n/a (see note)
+    controls:
+    - controlTrustedPolicyEnforcementPoint
+    - controlExternalizedAuthorizationDecisioning
+    - controlResourceAuthorizationEnforcement
+  tool_selection_rationale:
+    ocsf:
+      coverage: none
+      gap: No self-asserted rationale
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No self-asserted rationale
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.step.thought]
+      note: '`gen_ai.agent.step.thought` (per-step)'
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentPluginPermissions]
+  human_approval_elicitation_event:
+    ocsf:
+      coverage: none
+      gap: No human-approval lifecycle
+      asks: [ocsf_ai_approval]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.approval.*, identity.*]
+    odis:
+      coverage: partial
+      constructs: [originating_principal]
+      note: '`originating_principal` (6.3, partial)'
+      sections: ['6.3']
+    controls: [controlInformedAgentConsentSurface]
+  tool_acl_required_scope:
+    ocsf:
+      coverage: none
+      gap: No tool scope attribute
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.auth.scope_granted]
+    odis:
+      coverage: covered
+      constructs: [granted_authorizations]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: []
+  session_taint_labels_information_flow_decisions:
+    ocsf:
+      coverage: none
+      gap: No information-flow or taint labels
+      asks: [ocsf_ai_taint]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.taint.*, security.*]
+    odis:
+      coverage: covered
+      constructs: [constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: []
+  backend_route_restriction_decision:
+    ocsf:
+      coverage: none
+      gap: No routing constraint or candidate backends
+      asks: [ocsf_backend_route]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.route.*, gen_ai.provider.name]
+    odis:
+      coverage: covered
+      constructs: [resource_indicators, constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: []
+  mediation_coverage_bypass_path:
+    ocsf:
+      coverage: none
+      gap: No mediation-coverage representation
+      asks: [ocsf_mediation_coverage]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.mediation.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  tool_error_exception:
+    ocsf:
+      coverage: partial
+      constructs: ['attribute:status_id', 'attribute:status_detail']
+      gap: An outcome on API Activity, not tied to a tool call
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: covered
+      constructs: [error.type]
+    aitf:
+      coverage: covered
+      constructs: [mcp.*, security.*]
+      note: '`mcp.*` error, `security.*`'
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlToolServerVetting
+    - controlToolServerSupplyChainIntegrity
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+  tool_id:
+    ocsf:
+      coverage: none
+      gap: No tool object
+      asks: [ocsf_ai_tool]
+    otel:
+      coverage: none
+      gap: Tool name and call ID only; no implementation ID across servers
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [mcp.server.name]
+      note: '`mcp.server.name` + tool id'
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  tool_privacy_classification:
+    ocsf:
+      coverage: partial
+      constructs: ['profile:data_classification', 'object:data_classification', 'attribute:confidentiality']
+      gap: Classification attaches to data, not to the tool that touches it
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No data classification for a tool
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [security.pii.*, compliance.*]
+    odis:
+      coverage: covered
+      constructs: [constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls:
+    - controlToolServerSupplyChainIntegrity
+    - controlRuntimeHostIsolation
+    - controlToolArgumentValidationAndSanitization
+    - controlAgentPluginPermissions
+    - controlInterComponentTransportSecurity
+  policy_reason_code:
+    ocsf:
+      coverage: none
+      gap: No machine-readable enforcement reason code
+      asks: [ocsf_ai_authorization]
+    otel:
+      coverage: out_of_scope
+      note: An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [security.*, compliance.control_id]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  memory_write_event:
+    ocsf:
+      coverage: partial
+      constructs: ['class:6005']
+      gap: Datastore Activity fits loosely; no memory-operation object
+      asks: [ocsf_ai_memory]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.memory.store.id, gen_ai.memory.record.id, gen_ai.operation.name]
+    aitf:
+      coverage: covered
+      constructs: [memory.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  memory_read_injection_event:
+    ocsf:
+      coverage: partial
+      constructs: ['class:6005']
+      gap: Datastore Activity fits loosely; no memory-operation object
+      asks: [ocsf_ai_memory]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.memory.query.text, gen_ai.memory.records]
+    aitf:
+      coverage: covered
+      constructs: [memory.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  memory_provenance_source:
+    ocsf:
+      coverage: none
+      gap: No memory provenance
+      asks: [ocsf_ai_memory]
+    otel:
+      coverage: none
+      gap: No provenance attribute in the gen_ai registry
+      asks: [otel_memory_provenance_footprint]
+    aitf:
+      coverage: covered
+      constructs: [memory.provenance]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  memory_footprint_growth:
+    ocsf:
+      coverage: none
+      gap: No memory footprint
+      asks: [ocsf_ai_memory]
+    otel:
+      coverage: none
+      gap: No footprint attribute in the gen_ai registry
+      asks: [otel_memory_provenance_footprint]
+    aitf:
+      coverage: covered
+      constructs: [memory.*, cost.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  retrieval_event:
+    ocsf:
+      coverage: partial
+      constructs: ['class:6005']
+      gap: No retrieval object
+      asks: [ocsf_ai_retrieval]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.retrieval.query.text, gen_ai.retrieval.documents, gen_ai.data_source.id]
+    aitf:
+      coverage: covered
+      constructs: [rag.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  retrieved_content_source_provenance:
+    ocsf:
+      coverage: none
+      gap: No retrieved-content source or provenance
+      asks: [ocsf_ai_retrieval]
+    otel:
+      coverage: none
+      gap: No per-item source or provenance
+      asks: [otel_retrieval_provenance]
+    aitf:
+      coverage: covered
+      constructs: [rag.*]
+      note: '`rag.*` (source)'
+    odis:
+      coverage: covered
+      constructs: [delegation_chain, constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  memory_integrity_poisoning_signal:
+    ocsf:
+      coverage: none
+      gap: No poisoning or isolation signal
+      asks: [ocsf_ai_memory]
+    otel:
+      coverage: none
+      gap: No integrity or poisoning signal
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [memory.security.poisoning_score, memory.security.isolation_verified, memory.security.cross_session]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  memory_write_rationale:
+    ocsf:
+      coverage: none
+      gap: No self-asserted rationale
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No self-asserted rationale
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.step.thought]
+      note: '`gen_ai.agent.step.thought` (per-step)'
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  retrieved_content_metadata_integrity_signal:
+    ocsf:
+      coverage: none
+      gap: No retrieved-content integrity signal
+      asks: [ocsf_ai_retrieval]
+    otel:
+      coverage: none
+      gap: No per-item integrity signal or freshness
+      asks: [otel_retrieval_provenance]
+    aitf:
+      coverage: covered
+      constructs: [rag.*, security.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  declared_memory_configuration:
+    ocsf:
+      coverage: none
+      gap: No memory-store declaration
+      note: No ask proposed.
+    otel:
+      coverage: partial
+      constructs: [gen_ai.memory.store.id]
+      gap: Store identity only; no limits or retrieval settings
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [memory.config.*, memory.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlMemoryReferentRevalidation
+    - controlUntrustedContextContainment
+    - controlRetrievalAndVectorSystemIntegrity
+  declared_knowledge_source_configuration:
+    ocsf:
+      coverage: none
+      gap: No knowledge-source declaration
+      note: No ask proposed.
+    otel:
+      coverage: partial
+      constructs: [gen_ai.data_source.id]
+      gap: Data-source identity only; no schema or search parameters
+      note: No ask proposed.
+    aitf:
+      coverage: covered
+      constructs: [rag.source.*, rag.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlRetrievalAndVectorSystemIntegrity
+  inter_agent_message:
+    ocsf:
+      coverage: none
+      gap: No inter-agent message
+      asks: [ocsf_ai_agent_activity]
+    otel:
+      coverage: none
+      gap: No inter-agent message attributes
+      asks: [otel_inter_agent_messaging]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.*]
+      note: '`gen_ai.agent.*`, delegation activity (OCSF 9002)'
+    odis:
+      coverage: covered
+      constructs: [delegation_chain]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  background_scheduled_task_event:
+    ocsf:
+      coverage: none
+      gap: No background-task event
+      asks: [ocsf_ai_agent_activity]
+    otel:
+      coverage: none
+      gap: No background-task or termination-condition signal
+      asks: [otel_trigger]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.next_action]
+      note: '`gen_ai.agent.next_action` / step events'
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  loop_step_count_signal:
+    ocsf:
+      coverage: none
+      gap: No loop or step signal
+      asks: [ocsf_ai_agent_activity]
+    otel:
+      coverage: partial
+      gap: Agent metrics count calls; no limit or termination semantics
+      asks: [otel_run_budget]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.session.turn_count, gen_ai.agent.step.index, agent.steps_per_session]
+    odis:
+      coverage: out_of_scope
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  resource_consumption_aggregate:
+    ocsf:
+      coverage: none
+      gap: No resource aggregate, and no budget accounting on the consuming action
+      asks: [ocsf_ai_agent_activity, ocsf_ai_authorization]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.client.token.usage]
+      gap: No per-run budget or threshold
+      asks: [otel_run_budget]
+    aitf:
+      coverage: covered
+      constructs: [cost.*, gen_ai.usage.*]
+    odis:
+      coverage: covered
+      constructs: [constraints]
+      note: '`constraints` (rate) (6.3)'
+      sections: ['6.3']
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  task_intent_declaration:
+    ocsf:
+      coverage: partial
+      constructs: ['object:ai_agent', 'attribute:charter']
+      gap: A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run
+      asks: [ocsf_task_intent]
+    otel:
+      coverage: none
+      gap: No declared purpose for the run
+      asks: [otel_task_intent]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.next_action]
+    odis:
+      coverage: covered
+      constructs: [task_id, task_description]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  a2a_task_lifecycle_event:
+    ocsf:
+      coverage: none
+      gap: No delegated-task lifecycle
+      asks: [ocsf_ai_delegation_activity]
+    otel:
+      coverage: none
+      gap: No A2A conventions
+      asks: [otel_a2a]
+    aitf:
+      coverage: covered
+      constructs: [a2a.task.lifecycle.*, a2a.push.config.*]
+    odis:
+      coverage: covered
+      constructs: [delegation_id, parent_delegation_ref]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  peer_agent_card_descriptor:
+    ocsf:
+      coverage: partial
+      constructs: ['object:ai_agent']
+      gap: ai_agent can describe a counterparty; no descriptor change or verification outcome
+      asks: [ocsf_peer_agent_descriptor]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.agent.name, gen_ai.agent.id, gen_ai.agent.description, gen_ai.agent.version]
+      gap: Describes the agent a span is about; no counterparty descriptor, change or verification
+      asks: [otel_a2a]
+    aitf:
+      coverage: covered
+      constructs: [gen_ai.agent.peer.*, gen_ai.agent.*]
+    odis:
+      coverage: covered
+      constructs: [agent_id, approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: [controlAgentExecutionBounds, controlAgentCapabilityNegotiation]
+  protocol_envelope_capture:
+    ocsf:
+      coverage: partial
+      constructs: ['attribute:raw_data']
+      gap: raw_data holds the source record before normalization, not the envelope of each MCP or A2A message
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: No raw protocol envelope
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [mcp.envelope.*, mcp.*]
+    odis:
+      coverage: out_of_scope
+    controls: []
+  capability_set_change_event:
+    ocsf:
+      coverage: none
+      gap: No capability-change event
+      asks: [ocsf_ai_bom, ocsf_ai_agent_activity]
+    otel:
+      coverage: none
+      gap: No capability-change event
+      asks: [otel_capability_change]
+    aitf:
+      coverage: covered
+      constructs: [asset.capability.*, asset.*]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls: [controlAgentInventoryManagement, controlThirdPartyCapabilityAdmission]
+  identities_used_per_hop:
+    ocsf:
+      coverage: partial
+      constructs: ['class:3002', 'object:delegation']
+      gap: Credential events and the delegation context exist; per-hop identity is not tied to the AI operation
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.*]
+      note: '`identity.*` (OCSF Authentication 3002)'
+    odis:
+      coverage: covered
+      constructs: [actor]
+      note: '`actor`, chain (6.3)'
+      sections: ['6.3']
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  verified_vs_displayed_identity:
+    ocsf:
+      coverage: partial
+      constructs: ['object:actor', 'object:user']
+      gap: A user identifier and name both exist; no record of which one authorized
+      asks: [ocsf_identity_verification]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.auth.method, identity.auth.result]
+    odis:
+      coverage: covered
+      constructs: [originating_principal, actor]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  originating_principal_on_behalf_of:
+    ocsf:
+      coverage: none
+      gap: delegation records its issuer and lineage, not the originating principal
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.*]
+    odis:
+      coverage: covered
+      constructs: [originating_principal]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+    - controlAgentCredentialIsolation
+  delegation_chain:
+    ocsf:
+      coverage: partial
+      constructs: ['object:delegation', 'attribute:parent_uid']
+      gap: parent_uid is optional, so one record without it breaks the walk; no root or subtree identifier
+      asks: [ocsf_delegation_lineage, ocsf_ai_delegation_activity]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      note: delegation activity (OCSF 9002)
+    odis:
+      coverage: covered
+      constructs: [delegation_chain, delegation_id, parent_delegation_ref]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  granted_authorizations_scope:
+    ocsf:
+      coverage: none
+      gap: No granted scope on delegation
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.auth.scope_granted]
+    odis:
+      coverage: covered
+      constructs: [granted_authorizations, attenuation_profile_ref]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  resource_indicators_constraints:
+    ocsf:
+      coverage: none
+      gap: No constraints on delegation
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.*, compliance.*]
+    odis:
+      coverage: covered
+      constructs: [resource_indicators, constraints]
+      note: ODIS §6.3.
+      sections: ['6.3']
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  token_exchange_scope_narrowing_check:
+    ocsf:
+      coverage: partial
+      constructs: ['class:3002']
+      gap: No requested-versus-granted scope
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.credential.mint.*, identity.auth.scope_granted]
+    odis:
+      coverage: covered
+      constructs: [granted_authorizations, binding_profile]
+      note: '`granted_authorizations`, `binding_profile` (6.2/6.3)'
+      sections: [6.2/6.3]
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+    - controlAgentCredentialIsolation
+  trust_domain_crossing_delegation_depth:
+    ocsf:
+      coverage: none
+      gap: No trust-domain crossing; depth derivable only if every hop carries parent_uid
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.boundary.*, identity.*]
+    odis:
+      coverage: covered
+      constructs: [trust_domain, max_depth]
+      note: ODIS §6.1, 6.2, §6.3.
+      sections: ['6.1, 6.2', '6.3']
+    controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
+  runtime_credential_attestation:
+    ocsf:
+      coverage: none
+      gap: No runtime attestation (OCSF attestation means record integrity)
+      asks: [ocsf_runtime_attestation]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.auth.method, identity.trust.method]
+      note: '`identity.auth.method` (mTLS/SPIFFE/OAuth/DID-VC), `identity.trust.method`'
+    odis:
+      coverage: covered
+      constructs: [attestation_evidence, issuer, holder_key_ref, expires_at, binding_profile]
+      note: ODIS §6.2.
+      sections: ['6.2']
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  lifecycle_state:
+    ocsf:
+      coverage: none
+      gap: No lifecycle state on delegation
+      asks: [ocsf_delegation_lineage]
+    otel:
+      coverage: out_of_scope
+      note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
+    aitf:
+      coverage: covered
+      constructs: [identity.lifecycle.operation]
+    odis:
+      coverage: covered
+      constructs: [lifecycle_state]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlComponentIdentityAuthentication
+    - controlComponentIdentityRegistration
+    - controlDelegatedAuthorizationIntegrity
+    - controlDelegatedAuthorityConfinement
+    - controlSenderConstrainedCredentials
+    - controlSessionCredentialBindingAndLifecycle
+  tool_agent_version:
+    ocsf:
+      coverage: partial
+      constructs: ['class:inventory_info']
+      gap: No AI-asset object
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: partial
+      constructs: [gen_ai.agent.version]
+      gap: Agent version only; no tool or framework version
+      asks: [otel_tool_code_ref]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.*, asset.*]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  repository_code_path_software_ref:
+    ocsf:
+      coverage: partial
+      constructs: ['class:inventory_info']
+      gap: No AI-asset object
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: partial
+      constructs: [vcs.repository.url.full, vcs.ref.head.revision]
+      gap: Version-control attributes exist for CI/CD telemetry, not for tool and agent code
+      asks: [otel_tool_code_ref]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.*, asset.*]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  agbom_inventory_snapshot:
+    ocsf:
+      coverage: none
+      gap: No agent-composition BOM
+      asks: [ocsf_ai_bom]
+    otel:
+      coverage: none
+      gap: No BOM reference
+      asks: [otel_capability_change]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.ai_bom.*]
+    odis:
+      coverage: covered
+      constructs: [approved_software_refs]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  component_dependency_graph:
+    ocsf:
+      coverage: none
+      gap: No dependency graph
+      asks: [ocsf_ai_bom]
+    otel:
+      coverage: none
+      gap: No dependency graph
+      asks: [otel_capability_change]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.ai_bom.*]
+      note: '`supply_chain.ai_bom.*` (dependency edges)'
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  inventory_integrity_signature:
+    ocsf:
+      coverage: none
+      gap: No BOM signature
+      asks: [ocsf_ai_bom]
+    otel:
+      coverage: none
+      gap: No inventory signature
+      asks: [otel_capability_change]
+    aitf:
+      coverage: covered
+      constructs: [supply_chain.*]
+      note: '`supply_chain.*` signature attrs'
+    odis:
+      coverage: covered
+      constructs: [software_hash, attestation_evidence]
+      note: ODIS §6.2.
+      sections: ['6.2']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  event_sequence_continuity:
+    ocsf:
+      coverage: partial
+      constructs: ['profile:record_integrity', 'object:attestation', 'attribute:prev_event', 'attribute:chain_uid', 'attribute:sequence']
+      gap: No end-of-chain marker, so a truncated chain reads as an open one
+      note: '`attestation.prev_event` and `chain_uid` link the records and `metadata.sequence` counts them. Scoping the count to a producer epoch and stream is a producer convention, not schema (AID-EMIT-1 section 7 [[87]](#other-sources)).'
+      asks: [ocsf_chain_end]
+    otel:
+      coverage: none
+      gap: No sequence number or hash chain in the GenAI or core conventions at the pin
+      asks: [otel_audit_sequence]
+    aitf:
+      coverage: covered
+      constructs: [observability.sequence.*]
+    odis:
+      coverage: out_of_scope
+    controls:
+    - controlAuditTrailCompleteness
+    - controlAuditTrailIntegrityVerification
+    - controlAuditRecordRepositoryIndependence
+  tool_description:
+    ocsf:
+      coverage: partial
+      constructs: ['class:inventory_info']
+      gap: No AI-asset object
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: covered
+      constructs: [gen_ai.tool.description]
+    aitf:
+      coverage: covered
+      constructs: [asset.*]
+    odis:
+      coverage: covered
+      constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  tool_status:
+    ocsf:
+      coverage: partial
+      constructs: ['class:inventory_info']
+      gap: No AI-asset object
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: none
+      gap: No reachability status for a tool
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [asset.*]
+    odis:
+      coverage: covered
+      constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  creator_id_oncall_creation_update_dates:
+    ocsf:
+      coverage: partial
+      constructs: ['class:inventory_info']
+      gap: No AI-asset object
+      asks: [ocsf_ai_asset]
+    otel:
+      coverage: none
+      gap: No ownership or change dates
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [asset.*]
+    odis:
+      coverage: covered
+      constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  surfaces_supported:
+    ocsf:
+      coverage: none
+      gap: No per-tool exposure map
+      note: A MAY field; no ask.
+    otel:
+      coverage: none
+      gap: No per-tool exposure map
+      note: A MAY field; no ask.
+    aitf:
+      coverage: covered
+      constructs: [asset.*]
+    odis:
+      coverage: covered
+      constructs: [sponsor_ref, owner_ref, created_at, updated_at]
+      note: ODIS §6.1.
+      sections: ['6.1']
+    controls:
+    - controlToolRegistryAndDiscoveryIntegrity
+  fleet_counts:
+    ocsf:
+      coverage: none
+      gap: Fleet aggregates are derived
+      note: No ask proposed.
+    otel:
+      coverage: none
+      gap: Fleet aggregates are derived
+      note: No ask proposed.
+    aitf:
+      coverage: none
+      note: (derived)
+    odis:
+      coverage: out_of_scope
+    controls: []
+  training_data_item_digest:
+    ocsf:
+      coverage: none
+      gap: No training-time objects
+      asks: [ocsf_training_provenance]
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      asks: [otel_training_provenance]
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.dataset.version]
+      gap: A dataset version hash, not a digest per item checked at fetch
+    odis:
+      coverage: out_of_scope
+    controls: [controlTrainingDataManagement, controlModelAndDataIntegrityManagement]
+  training_data_source_provenance:
+    ocsf:
+      coverage: none
+      gap: No training-time objects
+      asks: [ocsf_training_provenance]
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      asks: [otel_training_provenance]
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.dataset.id, supply_chain.model.training_data]
+      gap: Dataset identity and a free-text description, not per-document source
+    odis:
+      coverage: out_of_scope
+    controls: [controlTrainingDataManagement, controlTrainingDataSanitization]
+  compute_job_submission_event:
+    ocsf:
+      coverage: partial
+      constructs: ['class:api_activity', 'attribute:actor', 'attribute:src_endpoint']
+      gap: Generic API activity carries the caller and source; no job entrypoint or resources
+      asks: [ocsf_training_provenance]
+    otel:
+      coverage: none
+      gap: No training-time conventions
+      asks: [otel_training_provenance]
+    aitf:
+      coverage: partial
+      constructs: [model_ops.training.*]
+      gap: Records a training run, not its submission or submitter
+    odis:
+      coverage: out_of_scope
+    controls: [controlSecureByDefaultMLTooling, controlModelAndDataAccessControls]

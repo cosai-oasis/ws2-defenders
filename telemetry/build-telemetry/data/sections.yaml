@@ -1,0 +1,184 @@
+# Field steps (RFC §6 and AD §1 share them) and the layout of the other generated regions.
+field_steps:
+- number: '6.1'
+  ad_number: '1.1'
+  title: Identifiers, trace context and model identity
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields:
+  - agent_name
+  - agent_runtime_instance_id
+  - workflow_run_id
+  - session_turn_step_ids
+  - trigger_type_source_event
+  - action_type
+  - execution_status
+  - surface_app
+  - system_prompt_instruction_config
+  - model_name_version
+  - inference_parameters
+  - input_output_token_counts
+  - llm_error_exception
+  - trace_context_propagated
+  - stop_reason
+  - autonomy_level
+  - model_provenance_signing_hash
+  - organization_tenant_id
+  - provider_endpoint_identity
+  - pre_forward_pass_state_digest_vector
+  - token_malformation_context_corruption_indicator
+- number: '6.2'
+  ad_number: '1.2'
+  title: Content, trust, verdicts and their availability
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields:
+  - model_input
+  - input_source_channel
+  - input_trust_classification
+  - source_host_ip_request_metadata
+  - guardrail_input_verdict
+  - response_model_output
+  - output_egress_destination
+  - citations_source_attribution
+  - guardrail_output_verdict
+  - llm_refusal
+  - content_modality_attachment_identity
+  - attribute_source_trusted_provenance_marking
+  - instrumentation_coverage_hook_status
+  - enforcement_point_availability_failure_mode
+  - guardrail_modification_record
+  - encoded_obfuscated_payload_indicator
+  - observation_thought_reasoning_trace
+  - threat_classification_atlas_technique_tag
+- number: '6.3'
+  ad_number: '1.3'
+  title: Tool calls and policy decisions
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields:
+  - execution_environment_sandbox
+  - tool_call_io
+  - tool_name
+  - tool_type_trust_boundary
+  - tool_execution_id
+  - tool_definition_digest
+  - mcp_server_identity_primitive
+  - authorization_decision_record
+  - tool_selection_rationale
+  - human_approval_elicitation_event
+  - tool_acl_required_scope
+  - session_taint_labels_information_flow_decisions
+  - backend_route_restriction_decision
+  - mediation_coverage_bypass_path
+  - tool_error_exception
+  - tool_id
+  - tool_privacy_classification
+  - policy_reason_code
+- number: '6.4'
+  ad_number: '1.4'
+  title: Memory and retrieval
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields:
+  - memory_write_event
+  - memory_read_injection_event
+  - memory_provenance_source
+  - memory_footprint_growth
+  - retrieval_event
+  - retrieved_content_source_provenance
+  - memory_integrity_poisoning_signal
+  - memory_write_rationale
+  - retrieved_content_metadata_integrity_signal
+  - declared_memory_configuration
+  - declared_knowledge_source_configuration
+- number: '6.5'
+  ad_number: '1.5'
+  title: Orchestration
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields: [inter_agent_message, background_scheduled_task_event, loop_step_count_signal, resource_consumption_aggregate, task_intent_declaration, a2a_task_lifecycle_event, peer_agent_card_descriptor, protocol_envelope_capture]
+- number: '6.6'
+  ad_number: '1.6'
+  title: Identity, provenance and inventory
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields:
+  - capability_set_change_event
+  - identities_used_per_hop
+  - verified_vs_displayed_identity
+  - originating_principal_on_behalf_of
+  - delegation_chain
+  - granted_authorizations_scope
+  - resource_indicators_constraints
+  - token_exchange_scope_narrowing_check
+  - trust_domain_crossing_delegation_depth
+  - runtime_credential_attestation
+  - lifecycle_state
+  - tool_agent_version
+  - repository_code_path_software_ref
+  - agbom_inventory_snapshot
+  - component_dependency_graph
+  - inventory_integrity_signature
+  - event_sequence_continuity
+  - tool_description
+  - tool_status
+  - creator_id_oncall_creation_update_dates
+  - surfaces_supported
+  - fleet_counts
+- number: '6.7'
+  ad_number: '1.7'
+  title: Training data and training infrastructure
+  rfc_header:
+  - '| Field | Tier | What it records | Emitted by |'
+  - '| :------------------ | :---- | :--------------------------------------------- | :-------------------- |'
+  fields: [training_data_item_digest, training_data_source_provenance, compute_job_submission_event]
+ad_field_header:
+- '| Field | Tier | Role | Origin | What it records | Emitted by | Grounding attacks |'
+- '| :------------ | :---- | :---------- | :-------- | :------------------------------------- | :-------------------- | :------------ |'
+pattern_stages:
+- stage: entry
+  title: 'Entry: input arrives'
+- stage: decision
+  title: 'Decision: model, authorization and identity'
+- stage: action
+  title: 'Action: tool calls and execution'
+- stage: persistence
+  title: 'Persistence: memory, background tasks and configuration'
+- stage: egress
+  title: 'Egress: data leaves'
+- stage: plane
+  title: Telemetry plane
+ad_inventory_tables:
+- number: '3.2'
+  title: Real-world attack vectors
+  header:
+  - '| ID | Name (date) | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
+  - '| :---- | :---------------- | :------------------------------------------- | :-------------------------------- | :-------- | :------------ |'
+  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32, TA-33, TA-34, TA-35, TA-36, TA-37, TA-38, TA-39, TA-40]
+- number: '3.3'
+  title: 'CoSAI WS2: AI Incident Response case studies'
+  header:
+  - '| ID | Name | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
+  - '| :---- | :--------- | :----------------------------- | :-------------------- | :------------ | :------------ |'
+  attacks: [IR-01, IR-02, IR-03, IR-04, IR-05]
+- number: '3.4'
+  title: 'Agents of Chaos (arXiv:2602.20021): live red-team case studies'
+  header:
+  - '| ID | Name | What happened | Detecting fields | Primary component(s) | Risk Map risks |'
+  - '| :---- | :------------------ | :--------------------------------------------- | :----------------------- | :----------- | :------------ |'
+  attacks: [AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
+ad_atlas_table:
+  number: '3.6'
+  title: Attack inventory → MITRE ATLAS technique mapping
+  header:
+  - '| Attack | MITRE ATLAS technique(s) | Notes |'
+  - '| :-------------------- | :--------------------------------------------------------- | :----------------------- |'
+  attacks: [TA-01, TA-02, TA-03, TA-04, TA-05, TA-06, TA-07, TA-08, TA-09, TA-10, TA-11, TA-12, TA-13, TA-14, TA-15, TA-16, TA-17, TA-18, TA-19, TA-20, TA-21, TA-22, TA-23, TA-24, TA-25, TA-26, TA-27, TA-28, TA-29, TA-30, TA-31, TA-32, TA-33, TA-34, TA-35, TA-36, TA-37, TA-38, TA-39, TA-40, IR-01, IR-02, IR-03, IR-04, IR-05, AOC-01, AOC-02, AOC-03, AOC-04, AOC-05, AOC-06, AOC-07, AOC-08, AOC-09, AOC-10, AOC-11, AOC-12, AOC-13, AOC-14, AOC-15, AOC-16]
+ad_attack_references_intro: One source per real-world attack vector in [§3.2](#32-real-world-attack-vectors) and per incident-response case study in [§3.3](#33-cosai-ws2-ai-incident-response-case-studies), each marked with its ID. Ref 4 is the lead case study; refs 5 to 13 are the source citations for `TA-02` to `TA-10`.

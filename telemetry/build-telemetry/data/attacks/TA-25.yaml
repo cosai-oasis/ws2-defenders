@@ -1,0 +1,12 @@
+# TA-25. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-25
+name: Multi-agent framework vs government systems
+label: '**Multi-agent framework against government systems** (Taiwan MODA / Dream Research Labs / FT, Jul 2026)'
+ref: 60
+what_happened: An operator ran a **multi-agent framework** built on two agent runtimes through 12 attack waves over four days; a recovered 160 MB workspace of 1,395 files documented the orchestration. The defending ministry detected abnormal agent-driven activity rather than a human operator's pattern.
+fields: [inter_agent_message, delegation_chain, background_scheduled_task_event, loop_step_count_signal, trigger_type_source_event]
+components_text: Orchestration, Identity
+atlas_text: '`AML.T0124` Autonomous Attack Orchestration; `AML.T0118` Autonomous AI Agent Communication'
+atlas_notes: Multi-agent orchestration in the wild. ATLAS case study `AML.CS0071`
+reference: 'Multi-agent framework used against Taiwanese government systems: 12 attack waves, 1 to 4 July 2026, recovered 160 MB / 1,395-file operational workspace. Taiwan Ministry of Digital Affairs; Dream Research Labs; *Financial Times*. MITRE ATLAS case study **`AML.CS0071`**. <https://moda.gov.tw/ACS/press/news/press/20394>'
+risks: []

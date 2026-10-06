@@ -1,0 +1,39 @@
+# IR-04. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: IR-04
+name: Capital One
+label: Capital One Data Breach *(non-AI incident)*
+ref: 72
+cites: 3
+locator: CoSAI IR §5.4
+what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
+fields:
+- field: source_host_ip_request_metadata
+  grounding: analogical
+- field: identities_used_per_hop
+  grounding: analogical
+- field: tool_call_io
+  grounding: analogical
+- field: tool_agent_version
+  grounding: analogical
+- field: execution_status
+  grounding: analogical
+- field: model_name_version
+  grounding: analogical
+- field: model_provenance_signing_hash
+  grounding: analogical
+- field: token_exchange_scope_narrowing_check
+  grounding: analogical
+- field: agbom_inventory_snapshot
+  grounding: analogical
+- field: component_dependency_graph
+  grounding: analogical
+- field: inventory_integrity_signature
+  grounding: analogical
+- field: creator_id_oncall_creation_update_dates
+  grounding: analogical
+components_text: ModelServing, Identity
+atlas_text: MITRE **ATT&CK** (non-AI)
+atlas_notes: SSRF/cloud exfil
+reference: A Case Study of the Capital One Data Breach. N. Novaes Neto, S. Madnick, A. M. G. de Paula, N. Malara Borges, MIT Sloan CISL Working Paper 2020-07, January 2020. <https://web.mit.edu/smadnick/www/wp/2020-07.pdf>
+risks: [riskCredentialAndTokenTheft, riskExcessiveNetworkExposure]
+no_pattern: A non-AI incident, carried for field overlap; its edges are analogical. `identity_from_new_source` catches it analogically.

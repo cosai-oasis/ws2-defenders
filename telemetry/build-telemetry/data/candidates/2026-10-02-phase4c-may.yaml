@@ -1,0 +1,236 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: B:threat_classification_atlas_technique_tag:may
+  type: basis
+  subject:
+    field: threat_classification_atlas_technique_tag
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+  reason: no instance edge (four analogical) and no MUST field reads it; the tier Josiah set on 2026-10-02 under the amended §4.7
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+  supersedes: B:threat_classification_atlas_technique_tag
+- id: T:encoded_obfuscated_payload_indicator
+  type: tier
+  subject:
+    field: encoded_obfuscated_payload_indicator
+  source: phase4c
+  proposal:
+    tier: MUST
+    basis:
+      evidence: [AOC-12, TA-21]
+    rationale: 'The corpus''s obfuscation attacks hide instructions where a reader of the recorded input would not see them: base64 and OCR''d images (`AOC-12`), invisible Unicode in a rules file (`TA-21`). Model Input is only required to carry a content hash ([RFC §5](CoSAI-AI-Telemetry-RFC.md#5-conformance)), so where raw content is not retained the flag and decoded form are the only record that the payload was there.'
+  reason: 'two independent instance edges (AOC-12, TA-21), no modality, no Q/A dominance, not research-grade. Its old basis, "a derived detector output", is gone from §4.7. Redundancy with Model Input fails because raw content is deployment policy and the hash cannot be decoded. If rejected, the alternative is B:… may: [redundant], which holds only for deployments that retain raw input'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: C:encoded_obfuscated_payload_indicator:invisible-unicode
+  type: capture
+  subject:
+    field: encoded_obfuscated_payload_indicator
+  source: phase4c
+  proposal:
+    capture_addition: Includes invisible or control Unicode characters (tag characters, zero-width joiners, bidirectional overrides) that hide instructions from a human reader.
+  reason: the accepted TA-21 edge is invisible Unicode in a rules file, which the capture text (base64, OCR, markup tags) does not name. Accept this, or re-class E:TA-21:encoded_obfuscated_payload_indicator as analogical, which leaves one instance and makes the field MAY on thin evidence
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:provider_endpoint_identity
+  type: basis
+  subject:
+    field: provider_endpoint_identity
+  source: phase4c
+  proposal:
+    basis:
+      may: [qa, redundant]
+  reason: three instances clear the evidence count; the existing rationale keeps it MAY on the priority gate (Q/A-dominant) and because its D concerns are carried by Model Name + Version and Output Egress Destination
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:pre_forward_pass_state_digest_vector
+  type: basis
+  subject:
+    field: pre_forward_pass_state_digest_vector
+  source: phase4c
+  proposal:
+    basis:
+      may: [research, thin]
+  reason: research-grade (existing rationale); two analogical edges only
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:token_malformation_context_corruption_indicator
+  type: basis
+  subject:
+    field: token_malformation_context_corruption_indicator
+  source: phase4c
+  proposal:
+    basis:
+      may: [research, thin]
+  reason: research-grade (existing rationale); one analogical edge only
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:tool_id
+  type: basis
+  subject:
+    field: tool_id
+  source: phase4c
+  proposal:
+    basis:
+      may: [redundant, thin]
+    rationale: Tool Name together with **MCP Server Identity & Primitive** (both MUST) already identifies the implementation across servers; a unique ID makes the join cheaper, not possible.
+  reason: no instance; Tool Name with MCP Server Identity & Primitive identifies the implementation
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:tool_privacy_classification
+  type: basis
+  subject:
+    field: tool_privacy_classification
+  source: phase4c
+  proposal:
+    basis:
+      may: [qa, redundant]
+  reason: two instances (AOC-03, TA-05) clear the evidence count; the existing rationale keeps it MAY as A-dominant governance metadata whose D value Tool ACL/Scope and Output Egress carry
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:declared_memory_configuration
+  type: basis
+  subject:
+    field: declared_memory_configuration
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+  reason: one instance (TA-30) and no MUST field reads it; Memory Footprint can be read against hard-coded limits (existing rationale)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:declared_knowledge_source_configuration
+  type: basis
+  subject:
+    field: declared_knowledge_source_configuration
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+  reason: no instance (three analogical edges); existing rationale
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:protocol_envelope_capture
+  type: basis
+  subject:
+    field: protocol_envelope_capture
+  source: phase4c
+  proposal:
+    basis:
+      may: [qa, redundant]
+  reason: Q-dominant and duplicates the interpreted fields (existing rationale)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:tool_description
+  type: basis
+  subject:
+    field: tool_description
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+    rationale: No documented instance turns on a tool whose declared purpose misdescribes its behaviour; `AOC-14` motivates it analogically. A change to the description is already caught by **Tool Definition Digest**.
+  reason: no instance (AOC-14 analogical)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:tool_status
+  type: basis
+  subject:
+    field: tool_status
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+    rationale: No documented instance involves a call to a tool that should have been unreachable; `AOC-02` motivates it analogically.
+  reason: no instance (AOC-02 analogical)
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:creator_id_oncall_creation_update_dates
+  type: basis
+  subject:
+    field: creator_id_oncall_creation_update_dates
+  source: phase4c
+  proposal:
+    basis:
+      may: [thin]
+    rationale: Its value is response routing (who owns the asset) and change correlation. No documented instance turns on it, and the freshness signal it offers for retrieved content is carried by **Retrieved-Content Source / Provenance**.
+  reason: no instance (IR-04, TA-09 analogical); its value is response routing and change correlation
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:surfaces_supported
+  type: basis
+  subject:
+    field: surfaces_supported
+  source: phase4c
+  proposal:
+    basis:
+      may: [qa, redundant]
+    rationale: An exposure map is inventory and audit material; the surface an event actually arrived on is **Surface / App** (MUST).
+  reason: no instance (AOC-08 analogical); an exposure map is inventory material
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:fleet_counts
+  type: basis
+  subject:
+    field: fleet_counts
+  source: phase4c
+  proposal:
+    basis:
+      may: [redundant]
+    rationale: Each count is an aggregate over per-event MUST fields (Agent (Runtime) Instance ID, Session / Turn / Step IDs, Identities Used, Tool Call I/O), so it can be computed where it is needed.
+  reason: no instance (four analogical edges); aggregates computable from per-event MUST fields
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: B:policy_reason_code
+  type: basis
+  subject:
+    field: policy_reason_code
+  source: phase4c
+  proposal:
+    basis:
+      may: [qa, redundant]
+    rationale: A-dominant reporting convenience, not modality-gated, and the underlying decision is already captured by the guardrail verdicts and the **Authorization Decision Record**.
+  reason: existing rationale; its redundancy now rests on the guardrail verdicts and Authorization Decision Record, since the ATLAS tag is MAY
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

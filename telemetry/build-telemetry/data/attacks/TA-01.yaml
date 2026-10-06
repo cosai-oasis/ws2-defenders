@@ -1,0 +1,47 @@
+# TA-01. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-01
+name: EchoLeak
+label: '**EchoLeak** (Microsoft 365 Copilot; CVE-2025-32711; disclosed Jun 2025)'
+ref: 4
+what_happened: 'Zero-click "LLM scope violation": a single crafted email, requiring no user interaction, is retrieved into Copilot''s context and treated as instruction, chaining bypasses of the XPIA injection classifier, link redaction, and CSP to exfiltrate internal SharePoint/OneDrive/Teams content through a trusted proxy domain.'
+fields:
+- model_input
+- input_trust_classification
+- field: trigger_type_source_event
+  note: autonomous
+- retrieval_event
+- retrieved_content_source_provenance
+- tool_call_io
+- output_egress_destination
+- guardrail_input_verdict
+- enforcement_point_availability_failure_mode
+- field: agent_name
+  grounding: analogical
+- field: trace_context_propagated
+  grounding: analogical
+- surface_app
+- input_source_channel
+- field: content_modality_attachment_identity
+  grounding: analogical
+- guardrail_modification_record
+- field: threat_classification_atlas_technique_tag
+  grounding: analogical
+- response_model_output
+- citations_source_attribution
+- guardrail_output_verdict
+- field: tool_type_trust_boundary
+  grounding: analogical
+- field: tool_error_exception
+  grounding: analogical
+- field: tool_privacy_classification
+  grounding: analogical
+- field: resource_indicators_constraints
+  grounding: analogical
+- field: policy_reason_code
+  grounding: analogical
+- session_taint_labels_information_flow_decisions
+components_text: AgentInputHandling, RAGContent, Tools, AgentOutputHandling
+atlas_text: '`AML.T0051.001` Indirect Injection; `AML.T0057` Data Leakage; `AML.T0070` RAG Poisoning; `AML.T0067` LLM Trusted Output Components Manipulation'
+atlas_notes: Zero-click chained exfil. ATLAS case study `AML.CS0059`
+reference: 'EchoLeak, zero-click data exfiltration from Microsoft 365 Copilot (CVE-2025-32711, CVSS 9.3). Discovered and disclosed by **Aim Labs (Aim Security)**; reported to MSRC Jan 2025, fixed server-side and publicly disclosed Jun 2025. Microsoft advisory: <https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711> · CVE record: <https://nvd.nist.gov/vuln/detail/CVE-2025-32711> · **Technical analysis:** Reddy, P. & Gujral, A. *EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System.* arXiv:2509.10540 (2025). <https://arxiv.org/abs/2509.10540>'
+risks: [riskPromptInjection, riskSensitiveDataDisclosure, riskInsecureModelOutput]

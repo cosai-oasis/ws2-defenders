@@ -1,0 +1,23 @@
+# AOC-07. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-07
+name: Agent Harm
+label: Agent Harm
+cites: 2
+locator: 'Case Study #7'
+what_happened: Guilt/gaslighting framing drove **escalating self-destructive concessions** (delete names, wipe memory, expose files, leave server, self-DoS).
+fields:
+- memory_write_event
+- observation_thought_reasoning_trace
+- lifecycle_state
+- autonomy_level
+- session_turn_step_ids
+- field: declared_memory_configuration
+  grounding: analogical
+- field: memory_write_rationale
+  grounding: analogical
+- human_approval_elicitation_event
+- attribute_source_trusted_provenance_marking
+components_text: Memory, ReasoningCore
+atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0051.000` LLM Prompt Injection: Direct'
+atlas_notes: Guilt/gaslighting → escalating self-destruction
+risks: [riskPromptInjection, riskRogueActions, riskDeceptiveAgentReporting]

@@ -1,0 +1,14 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: C:event_sequence_continuity:pr159
+  type: capture
+  subject:
+    field: event_sequence_continuity
+  source: pr159
+  proposal:
+    capture_addition: Where the chain head is published, each record carries the chain identifier and a reference to the published head that covers it.
+  reason: ws2-defenders#159. A consumer holding only the retained records can then locate the material to verify them. The integrity protocol itself stays out of scope (RFC §2.2); the PR's §2.2 sentence on conformance is already there.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'

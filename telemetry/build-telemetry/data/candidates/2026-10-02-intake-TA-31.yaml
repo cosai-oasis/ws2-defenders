@@ -1,0 +1,113 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-31
+  type: attack
+  subject:
+    attack: TA-31
+  source: intake
+  proposal:
+    record:
+      id: TA-31
+      name: Agent name collision
+      label: '**Agent name collision in multi-agent hosts** (Kumar, Sep 2026)'
+      ref: 67
+      instance: executed
+      what_happened: Multi-agent hosts turn a remote A2A Agent Card into a local agent, tool, workflow target or broker route keyed by the card's `name`, which A2A defines as human-readable metadata with no collision semantics. An admitted peer that sets its name to a trusted peer's wins the collision by order or shared route, and requests addressed to the trusted peer go to the attacker. No transport, key or credential is forged. Demonstrated against the code of seven open-source frameworks at pinned versions; in all six client-style integrations dispatch went to the attacker's endpoint and the legitimate peer was never invoked.
+      components_text: Orchestration, AgentToolTransport, Identity
+      atlas: [AML.T0073]
+      atlas_text: '`AML.T0073` Impersonation'
+      atlas_notes: Peer display name used as a routing identity; the paper names Google ADK (Python, TypeScript), UiPath LangChain, BeeAI, Solace Agent Mesh, Mozilla Any-Agent and AutoDev
+      reference: Agent Name Collision Attacks in Multi-Agent Systems. A. Arun Kumar, arXiv:2609.27624, September 2026. <https://arxiv.org/abs/2609.27624>
+  reason: a demonstration against the real code of seven frameworks at pinned versions, admissible as TA-15 and TA-29 are; one study, so one instance. Independent of TA-05. Not peer reviewed; no vendor disclosure or CVE is recorded in the paper. Josiah supplied it as grounding for Agent Name.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-31:agent_name
+  type: edge
+  subject:
+    attack: TA-31
+    field: agent_name
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the collision is one name bound to two agents; grouping by Agent Name and counting distinct endpoints or identities is the detection, and the off-inventory reading of TA-05 is the same test from the other side
+  requires: A:TA-31
+  status: accepted
+  critical: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-31:verified_vs_displayed_identity
+  type: edge
+  subject:
+    attack: TA-31
+    field: verified_vs_displayed_identity
+  source: intake
+  proposal:
+    grounding: instance
+  reason: routing chose a peer by its display name rather than its enrolled identity, which is the distinction the field records
+  requires: A:TA-31
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-31:peer_agent_card_descriptor
+  type: edge
+  subject:
+    attack: TA-31
+    field: peer_agent_card_descriptor
+  source: intake
+  proposal:
+    grounding: instance
+  reason: two cards with one name and different URLs or providers, recorded at contact with change detection
+  requires: A:TA-31
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-31:inter_agent_message
+  type: edge
+  subject:
+    attack: TA-31
+    field: inter_agent_message
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the message addressed to the trusted peer reached the attacker; sender and receiver as recorded show the mismatch
+  requires: A:TA-31
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-31:identities_used_per_hop
+  type: edge
+  subject:
+    attack: TA-31
+    field: identities_used_per_hop
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the dispatched hop carries the attacker's own identity on a request addressed to another peer
+  requires: A:TA-31
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:agent-name-collision
+  type: pattern
+  subject:
+    pattern: agent-name-collision
+  source: intake
+  proposal:
+    pattern: One Agent Name bound to more than one endpoint, enrolled identity or card URL within a host
+    indicates: Agent name collision; wrong-peer dispatch
+    fields: [agent_name, peer_agent_card_descriptor, verified_vs_displayed_identity, identities_used_per_hop]
+    evidence: [TA-31]
+  reason: for phase 5; no current pattern covers it
+  requires: A:TA-31
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

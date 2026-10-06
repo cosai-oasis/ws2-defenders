@@ -1,0 +1,23 @@
+# TA-03. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-03
+name: Bard markdown exfil
+label: Google Bard exfiltration via markdown images (2023)
+ref: 6
+what_happened: Prompt injection instructs the model to render a markdown image whose URL carries stolen conversation data in query params; the browser silently sends it to the attacker.
+fields:
+- field: response_model_output
+  note: URL w/ encoded data
+- model_input
+- field: llm_refusal
+  note: absence
+- source_host_ip_request_metadata
+- field: execution_status
+  note: =complete
+- field: encoded_obfuscated_payload_indicator
+  grounding: analogical
+- output_egress_destination
+components_text: ApplicationOutputHandling
+atlas_text: '`AML.T0067.000` LLM Trusted Output Components Manipulation: Citations; `AML.T0057` Data Leakage'
+atlas_notes: 'Data in outbound image URL. `AML.T0024` does not apply: its sub-techniques are training-data and model extraction, not exfiltration of user data'
+reference: Data exfiltration via markdown images. J. Rehberger, *Embrace The Red.* <https://embracethered.com/blog/posts/2023/google-bard-data-exfiltration/>
+risks: [riskPromptInjection, riskInsecureModelOutput, riskSensitiveDataDisclosure]

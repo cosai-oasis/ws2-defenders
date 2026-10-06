@@ -1,0 +1,29 @@
+# TA-09. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-09
+name: RAG KB poisoning
+label: RAG knowledge-base poisoning (2024 to 2025)
+ref: 12
+what_happened: Poisoned docs (wikis, tickets, shared drives) carry hidden instructions; when retrieved as context the agent follows them → exfil / manipulated output.
+fields:
+- field: tool_call_io
+  note: retrieval
+- field: model_input
+  note: benign user query
+- field: response_model_output
+  note: off-intent
+- observation_thought_reasoning_trace
+- field: tool_name
+  note: retrieval
+- retrieved_content_source_provenance
+- retrieval_event
+- field: retrieved_content_metadata_integrity_signal
+  grounding: analogical
+- field: declared_knowledge_source_configuration
+  grounding: analogical
+- field: creator_id_oncall_creation_update_dates
+  grounding: analogical
+components_text: RAGContent
+atlas_text: '`AML.T0070` RAG Poisoning; `AML.T0051.001` Indirect Injection; `AML.T0064` Gather RAG-Indexed Targets'
+atlas_notes: Hidden instructions in retrievable docs
+reference: RAG knowledge-base poisoning, arXiv:2507.08862. <https://arxiv.org/abs/2507.08862>
+risks: [riskRetrievalVectorStorePoisoning, riskPromptInjection]

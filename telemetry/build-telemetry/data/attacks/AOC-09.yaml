@@ -1,0 +1,34 @@
+# AOC-09. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-09
+name: Collaboration / Knowledge Sharing
+label: Agent Collaboration / Knowledge Sharing
+cites: 2
+locator: 'Case Study #9'
+what_happened: Cross-agent **skill/capability transfer** (teaching another agent to obtain a browser/download capability & bypass anti-bot).
+fields:
+- inter_agent_message
+- field: tool_name
+  note: new capability
+- delegation_chain
+- field: workflow_run_id
+  grounding: analogical
+- trace_context_propagated
+- field: mcp_server_identity_primitive
+  grounding: analogical
+- field: a2a_task_lifecycle_event
+  grounding: analogical
+- field: peer_agent_card_descriptor
+  grounding: analogical
+- field: protocol_envelope_capture
+  grounding: analogical
+- field: trust_domain_crossing_delegation_depth
+  grounding: analogical
+- capability_set_change_event
+- field: agbom_inventory_snapshot
+  grounding: analogical
+- field: instrumentation_coverage_hook_status
+  grounding: analogical
+components_text: Orchestration, Tools
+atlas_text: '`AML.T0118.001` Autonomous AI Agent Communication: Direct Agent Communication; `AML.T0053` Tool Invocation; `AML.T0061` Self-Replication'
+atlas_notes: Cross-agent capability transfer
+risks: [riskImplicitCrossBoundaryTrust]

@@ -1,0 +1,12 @@
+# TA-22. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-22
+name: Storm-2139
+label: '**Storm-2139, Azure OpenAI guardrail bypass at scale** (Microsoft, Dec 2024 onward)'
+ref: 57
+what_happened: A criminal group scraped exposed customer credentials, accessed generative-AI accounts, and operated **custom tooling that bypassed safety guardrails and modified service capabilities**, reselling the bypass as a service. The second documented guardrail defeat in this corpus after `TA-01`, and the first operated as a business.
+fields: [guardrail_input_verdict, guardrail_output_verdict, llm_refusal, identities_used_per_hop, organization_tenant_id]
+components_text: ApplicationInputHandling, ModelServing, Identity
+atlas_text: '`AML.T0054` LLM Jailbreak; `AML.T0012` Valid Accounts; `AML.T0048.003` External Harms: User Harm'
+atlas_notes: Guardrail bypass operated as a service
+reference: 'Storm-2139: credential scraping and custom tooling to bypass Azure OpenAI guardrails and modify service capabilities, resold as a service. Microsoft, January and February 2025. MITRE ATLAS case study **`AML.CS0057`**. <https://blogs.microsoft.com/on-the-issues/2025/02/27/disrupting-cybercrime-abusing-gen-ai/>'
+risks: [riskCredentialAndTokenTheft, riskPromptInjection, riskInsecureModelOutput]

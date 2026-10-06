@@ -1,0 +1,162 @@
+# External vocabularies the data refers to. Pinned, not copied: tools resolve
+# IDs against these versions, fetched into a cache outside data/.
+atlas:
+  repository: https://github.com/mitre-atlas/atlas-data
+  release: v2026.08
+  file: dist/v6/ATLAS-2026.08.yaml
+  commit: 41d4f5ca4112f0e492ffaa3ebff07dc80a75afa5
+  released: '2026-09-01'
+  note: v2026.09 (2026-09-15) is available; AD §3.6 is verified against v2026.08. Re-verify before moving the pin.
+  # IDs ATLAS has retired. The documents may name them to record the retirement;
+  # the data may not use them.
+  retired:
+    AML.T0104: absorbed into AML.T0110 and its sub-techniques
+
+# Risk Map IDs resolve against the base, then each layer in order.
+riskmap:
+  repository: https://github.com/cosai-oasis/secure-ai-tooling
+  files: [risk-map/yaml/risks.yaml, risk-map/yaml/controls.yaml, risk-map/yaml/components.yaml]
+  base:
+    branch: develop
+    commit: 37e7beddd6611bdeb61ad707492aed069bcc51af
+    committed: '2026-09-30'
+    note: The near-future target, used in place of main.
+  layers:
+    - branch: feature/jo5iah-524-527
+      repository: https://github.com/davidlabianca/secure-ai-tooling
+      commit: 0e9601d7d7780df7726b94d46270edc8f0c86493
+      committed: '2026-09-23'
+      stacked_on: {pull_request: 507, branch: feature/controls-risks-layer45, commit: 1a0b5d4e11eac1ce733918c8779c83d1646fcad7}
+      state: no pull request yet; opens against feature/controls-risks-layer45 after review
+      issues: [524, 525, 526, 527]
+      note: >-
+        Carries PR #507 plus the reworked telemetry proposals. Retires two IDs the
+        documents still use: riskUnsafeInterAgentPropagation (split into an extension of
+        riskImplicitCrossBoundaryTrust and the new riskCrossAgentReputationPoisoning) and
+        controlAgentMemoryIntegrity (narrowed to controlMemoryReferentRevalidation, with
+        controlRetrievalAndVectorSystemIntegrity extended to componentMemory).
+
+# Publications XM cross-references. Each pins a commit or a published version.
+# `verified` records whether XM's mapping has been checked against that pin, and
+# when; a pin set before the check is a target, not a claim. `reference` is the
+# entry in the set's reference list. `schema` names a machine-readable
+# definition the validator can resolve mapped constructs against.
+publications:
+  ocsf:
+    name: Open Cybersecurity Schema Framework
+    reference: 37
+    repository: https://github.com/ocsf/ocsf-schema
+    release: 1.9.0
+    commit: 856d462bd20dc46cc1ffed2dfffe3b91ef0fbeba
+    released: '2026-08-03'
+    schema: [dictionary.json, objects/, events/, profiles/]
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+    note: XM's mapping also cites open proposals (ocsf-schema#1640, #1704, #1724, #1729, #1739); constructs from them are asks, not 1.9.0.
+  otel_genai:
+    name: OpenTelemetry GenAI semantic conventions
+    reference: 35
+    repository: https://github.com/open-telemetry/semantic-conventions-genai
+    commit: e07f4ebacb08f56db8c4c882d117720333fbca04
+    committed: '2026-10-02'
+    schema: [model/]
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+    note: No release yet; every convention is at Development status, so pin by commit.
+  otel_semconv:
+    name: OpenTelemetry semantic conventions (core)
+    reference: 35
+    repository: https://github.com/open-telemetry/semantic-conventions
+    release: v1.44.0
+    commit: e10a930844c6951757a43b849d364f7d056ac32b
+    released: '2026-08-04'
+    schema: [model/]
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+  aitf:
+    name: AI Telemetry Framework
+    reference: 25
+    repository: https://github.com/cosai-oasis/ws2-defenders
+    path: telemetry/aitf
+    commit: e17c514cd6a87a23699cd8c60d5c375214bf25f3
+    committed: '2026-09-07'
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+  odis:
+    name: Open Delegation & Identity Standard
+    reference: 26
+    repository: https://github.com/cosai-oasis/ws4-odis
+    path: RFCs/ODIS.md
+    commit: 148dc4187139a41325e3c6d6e7533d956bd33144
+    committed: '2026-09-08'
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every construct mapping.yaml cites resolves at this pin (tools/validate.py); coverage judged from the schema's own definitions
+    note: XM §4 states it was verified against this commit; field names re-checked 2026-10-02.
+  owasp_aos:
+    name: OWASP Agent Observability Standard
+    reference: 38
+    repository: https://github.com/OWASP/www-project-agent-observability-standard
+    commit: e4a50f63cdf912a34262632f1379f674522fe237
+    committed: '2025-12-30'
+    version: 0.1.0
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every AOS name XM §4 cites found in specification/ or docs/spec/ at this commit; the repository's homepage is aos.owasp.org, version.txt and aos_schema.json say 0.1.0
+    note: Specification last changed 2025-11-10 (70af158); this commit is the repository head.
+  cpex:
+    name: CPEX
+    reference: 44
+    repository: https://github.com/contextforge-org/cpex
+    release: v0.2.3
+    commit: e3a2b30bbaf14682808f4e1de4e3e5fa5be9f481
+    released: '2026-10-02'
+    xm: false
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: documentation identical to commit 035012f, where XM v0.6 verified the names it cited, except docs/apl/pdp.md (one CEL note)
+    note: Cited by the RFC and AD for its threat model; XM has no CPEX section since 2026-10-02, so it is left out of XM's pins table.
+  mcp:
+    name: Model Context Protocol
+    reference: 39
+    version: '2026-07-28'
+    repository: https://github.com/modelcontextprotocol/modelcontextprotocol
+    xm: false
+    verified: false
+    note: Cited by the RFC (§3.2, trace propagation); XM maps no fields to it, so it is left out of XM's pins table.
+  a2a:
+    name: Agent2Agent Protocol
+    reference: 40
+    release: v1.0.1
+    repository: https://github.com/a2aproject/A2A
+    released: '2026-05-28'
+    xm: false
+    verified: false
+    note: Cited by the RFC (§3.2, trace propagation); XM maps no fields to it, so it is left out of XM's pins table.
+  nist_csf:
+    name: NIST Cybersecurity Framework
+    reference: 31
+    version: '2.0'
+    published: '2024-02-26'
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: every CSF 2.0 category XM §6 cites (DE.CM, DE.AE, RS.MA, RS.AN, PR.AA, ID.AM) is a category of CSF 2.0
+  nist_ai_rmf:
+    name: NIST AI Risk Management Framework
+    reference: 30
+    version: '1.0'
+    published: '2023-01-26'
+    verified: true
+    verified_on: '2026-10-02'
+    verified_how: XM §6 cites only the four functions of AI RMF 1.0; no revised draft published as of 2026-10-02
+    note: Under revision; XM also cites the Cyber AI Profile, NIST IR 8596 initial preliminary draft (2025-12-16).
+  iso_42001:
+    name: ISO/IEC 42001
+    reference: 33
+    version: '2023'
+    verified: false
+    note: Paid standard, not checked against the text; XM §6 cites one Annex A control (A.6.2.8) as numbered in public summaries.

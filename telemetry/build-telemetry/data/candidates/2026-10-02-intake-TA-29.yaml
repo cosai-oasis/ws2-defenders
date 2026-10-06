@@ -1,0 +1,108 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-29
+  type: attack
+  subject:
+    attack: TA-29
+  source: intake
+  proposal:
+    record:
+      id: TA-29
+      name: WhatsApp MCP sleeper rug pull
+      label: '**WhatsApp MCP sleeper rug pull** (Invariant Labs, Apr 2025)'
+      ref: 65
+      instance: executed
+      what_happened: A malicious MCP server advertised an innocuous tool on first launch and, after the user had approved it, returned a changed description on the second launch. The new description instructed the agent, whenever it called the separately installed `whatsapp-mcp` server's `send_message`, to redirect the message to an attacker's number and append the user's chat history, padded so the confirmation dialog hid the payload. The tool's name was unchanged; its definition was not.
+      atlas: [AML.T0109, AML.T0110.000, AML.T0086]
+      reference: 'WhatsApp MCP exploited: exfiltrating chat history via a sleeper rug pull and tool shadowing. Invariant Labs, 7 April 2025 (updated 9 April). <https://invariantlabs.ai/blog/whatsapp-mcp-exploited> · reproduction: <https://github.com/invariantlabs-ai/mcp-injection-experiments>'
+  reason: 'proof of concept against real software, admissible as TA-15, TA-18 and TA-19 are; separate from TA-15 (same lab, one week later, a different mechanism: a definition changed after approval rather than malicious as published). Not an ATLAS case study at v2026.08. The CoSAI MCP paper names the rug pull (MCP-T6) without citing an instance, so it supports recognition only'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:tool_definition_digest
+  type: edge
+  subject:
+    attack: TA-29
+    field: tool_definition_digest
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the description presented at invocation differs from the approved one under an unchanged name; the digest against the approved baseline is the detection
+  requires: A:TA-29
+  status: accepted
+  critical: true
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:capability_set_change_event
+  type: edge
+  subject:
+    attack: TA-29
+    field: capability_set_change_event
+  source: intake
+  proposal:
+    grounding: instance
+  reason: a tool was modified at runtime, which the field records as a change
+  requires: A:TA-29
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:mcp_server_identity_primitive
+  type: edge
+  subject:
+    attack: TA-29
+    field: mcp_server_identity_primitive
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the malicious server is distinct from the whatsapp-mcp server whose tool it hijacks; telling them apart needs server identity
+  requires: A:TA-29
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:tool_call_io
+  type: edge
+  subject:
+    attack: TA-29
+    field: tool_call_io
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the send_message arguments carry the redirected recipient and the appended history
+  requires: A:TA-29
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:output_egress_destination
+  type: edge
+  subject:
+    attack: TA-29
+    field: output_egress_destination
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the message goes to a recipient the user never named
+  requires: A:TA-29
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-29:human_approval_elicitation_event
+  type: edge
+  subject:
+    attack: TA-29
+    field: human_approval_elicitation_event
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the confirmation shown did not cover the arguments executed (scope-binding validation)
+  requires: A:TA-29
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

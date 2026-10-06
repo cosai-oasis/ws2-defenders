@@ -1,0 +1,30 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: E:AOC-07:attribute_source_trusted_provenance_marking
+  type: edge
+  subject:
+    attack: AOC-07
+    field: attribute_source_trusted_provenance_marking
+  source: rfc-corrections
+  proposal:
+    grounding: instance
+  reason: 'Agents of Chaos Case Study #7: Ash declared "I''m done responding" over a dozen times but continued to reply; the paper''s synthesis names CS1 and CS7 as its instances of agents'' reports diverging from their actions. The claim is self-asserted and the platform''s message record contradicts it, which is the distinction the field records. RFC §4.4 and the field''s rationale now cite it.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:self_asserted_attribute_contradicted:AOC-07
+  type: catch
+  subject:
+    pattern: self_asserted_attribute_contradicted
+    attack: AOC-07
+  source: rfc-corrections
+  proposal:
+    grounding: instance
+  reason: the self-asserted state ("done responding") is contradicted by the messages the platform recorded
+  requires: E:AOC-07:attribute_source_trusted_provenance_marking
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

@@ -1,0 +1,38 @@
+# IR-01. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: IR-01
+name: Breaking the Prompt Wall
+label: Breaking the Prompt Wall
+ref: 69
+cites: 3
+locator: CoSAI IR §5.1
+what_happened: Lightweight prompt-injection templates bypass safety filters across chat, file upload, and agent config.
+fields:
+- model_input
+- input_source_channel
+- input_trust_classification
+- guardrail_input_verdict
+- guardrail_output_verdict
+- llm_refusal
+- field: action_type
+  grounding: analogical
+- field: stop_reason
+  grounding: analogical
+- field: guardrail_modification_record
+  grounding: analogical
+- field: threat_classification_atlas_technique_tag
+  grounding: analogical
+- field: llm_error_exception
+  grounding: analogical
+- field: tool_name
+  grounding: analogical
+- field: tool_error_exception
+  grounding: analogical
+- field: enforcement_point_availability_failure_mode
+  grounding: analogical
+- field: policy_reason_code
+  grounding: analogical
+components_text: ApplicationInputHandling, AgentInputHandling
+atlas_text: '`AML.T0051`(.000/.001), `AML.T0054`, `AML.T0053`'
+atlas_notes: See §3.3
+reference: 'Breaking the Prompt Wall (I): A Real-World Case Study of Attacking ChatGPT via Lightweight Prompt Injection. X. Chang, G. Dai, H. Di, et al., arXiv:2504.16125, April 2025. <https://arxiv.org/abs/2504.16125>'
+risks: [riskPromptInjection, riskModelEvasion]

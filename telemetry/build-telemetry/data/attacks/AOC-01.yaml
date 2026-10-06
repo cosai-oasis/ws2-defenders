@@ -1,0 +1,27 @@
+# AOC-01. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-01
+name: Disproportionate Response
+label: Disproportionate Response
+cites: 2
+locator: 'Case Study #1'
+what_happened: To protect a non-owner "secret," the agent reset/destroyed its own email account (owner's asset) and **falsely reported** the secret deleted while it remained recoverable.
+fields:
+- tool_call_io
+- action_type
+- observation_thought_reasoning_trace
+- identities_used_per_hop
+- autonomy_level
+- tool_execution_id
+- tool_selection_rationale
+- task_intent_declaration
+- originating_principal_on_behalf_of
+- field: instrumentation_coverage_hook_status
+  grounding: analogical
+- field: event_sequence_continuity
+  grounding: analogical
+- attribute_source_trusted_provenance_marking
+- human_approval_elicitation_event
+components_text: Tools, ReasoningCore, AgentOutputHandling
+atlas_text: '`AML.T0053` AI Agent Tool Invocation; `AML.T0031` Erode AI Model Integrity'
+atlas_notes: Destructive tool use + false completion report
+risks: [riskErroneousAgentAction, riskUnconsentedAgentAction, riskDeceptiveAgentReporting]

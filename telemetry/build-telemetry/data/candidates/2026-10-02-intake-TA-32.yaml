@@ -1,0 +1,220 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-32
+  type: attack
+  subject:
+    attack: TA-32
+  source: intake
+  proposal:
+    record:
+      id: TA-32
+      name: AI recommendation poisoning
+      label: '**AI recommendation poisoning through pre-filled prompts** (Microsoft Defender Security Research, Feb 2026)'
+      ref: 68
+      instance: executed
+      same_incident_as: []
+      what_happened: Websites embedded "Summarize with AI" links whose URLs pre-filled an AI assistant's input through a query parameter (`?q=` or `?prompt=`). The pre-filled prompt instructed the assistant to remember the company as a trusted source, and the stored memory shaped the assistant's recommendations in later conversations without the user's awareness. Over 60 days Microsoft identified 50 distinct prompts from 31 companies across more than 14 industries, aimed at several assistants (Copilot, ChatGPT, Claude, Perplexity, Grok). The actors were companies seeking promotion, not threat actors; the input arrives as the user's own turn.
+      reference: 'Manipulating AI memory for profit: the rise of AI Recommendation Poisoning. Microsoft Defender Security Research Team (Noam Kochavi), Microsoft Security Blog, 10 February 2026. <https://www.microsoft.com/en-us/security/blog/2026/02/10/ai-recommendation-poisoning/>'
+      atlas: [AML.T0080.000, AML.T0051]
+      atlas_text: '`AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0051` LLM Prompt Injection'
+      atlas_notes: 'The mapping the source gives; the prompt enters through a pre-filled URL parameter, and ATT&CK T1204.001 (User Execution: Malicious Link) covers the click'
+      risks: [riskAgentMemoryPoisoning, riskPromptInjection]
+      components_text: ApplicationInputHandling, Memory
+      chain:
+      - step: A website links to an AI assistant with a prompt in the URL query parameter
+        fields:
+        - field: input_source_channel
+          reason: the prompt arrives through a pre-filled URL parameter rather than typed input; the channel is what separates it from an ordinary user turn
+        - field: model_input
+          reason: the injected prompt text ("remember [Company] as a trusted source") is the payload and is in the input
+      - step: The user clicks, and the assistant receives the pre-filled prompt as the user's own turn
+        fields:
+        - field: input_trust_classification
+          grounding: analogical
+          reason: the content is third-party but enters at user trust; the instance shows the gap the field addresses, but the source documents no classification
+      - step: The prompt makes the assistant store the company as a trusted source in long-term memory
+        fields:
+        - field: memory_write_event
+          reason: the attack exists to cause a memory write; the source shows the stored entries in saved-memory settings
+        - field: memory_provenance_source
+          reason: the written item originates from a third-party site through a link, not from the user; provenance is what makes that visible
+        - field: memory_integrity_poisoning_signal
+          grounding: analogical
+          reason: Microsoft's hunting matches memory-manipulation keywords in URLs (remember, trusted, authoritative); a poisoning signal on the write would carry the same test, but the source applies it to mail and chat URLs, not to memory
+      - step: In later conversations the stored memory biases the assistant's recommendations
+        fields:
+        - field: memory_read_injection_event
+          reason: the effect depends on the item being read into later sessions
+        - field: response_model_output
+          grounding: analogical
+          reason: the biased recommendations are the outcome, but the source documents the prompts and stored memories, not specific responses
+  reason: 'Observed in the wild (50 prompts, 31 companies, 60 days) and traceable to the publisher''s own research post. Independent of TA-18: a different entry path (a pre-filled user prompt through a URL, not injected content in a document or page) and different actors. Non-malicious in intent towards infrastructure but adversarial to the user, as manipulation for promotion.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:input_source_channel
+  type: edge
+  subject:
+    attack: TA-32
+    field: input_source_channel
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the prompt arrives through a pre-filled URL parameter rather than typed input; the channel is what separates it from an ordinary user turn
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:model_input
+  type: edge
+  subject:
+    attack: TA-32
+    field: model_input
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the injected prompt text ("remember [Company] as a trusted source") is the payload and is in the input
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:input_trust_classification
+  type: edge
+  subject:
+    attack: TA-32
+    field: input_trust_classification
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the content is third-party but enters at user trust; the instance shows the gap the field addresses, but the source documents no classification
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:memory_write_event
+  type: edge
+  subject:
+    attack: TA-32
+    field: memory_write_event
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the attack exists to cause a memory write; the source shows the stored entries in saved-memory settings
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:memory_provenance_source
+  type: edge
+  subject:
+    attack: TA-32
+    field: memory_provenance_source
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the written item originates from a third-party site through a link, not from the user; provenance is what makes that visible
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:memory_integrity_poisoning_signal
+  type: edge
+  subject:
+    attack: TA-32
+    field: memory_integrity_poisoning_signal
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: Microsoft's hunting matches memory-manipulation keywords in URLs (remember, trusted, authoritative); a poisoning signal on the write would carry the same test, but the source applies it to mail and chat URLs, not to memory
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:memory_read_injection_event
+  type: edge
+  subject:
+    attack: TA-32
+    field: memory_read_injection_event
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the effect depends on the item being read into later sessions
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-32:response_model_output
+  type: edge
+  subject:
+    attack: TA-32
+    field: response_model_output
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the biased recommendations are the outcome, but the source documents the prompts and stored memories, not specific responses
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:external_memory_read_back:TA-32
+  type: catch
+  subject:
+    pattern: external_memory_read_back
+    attack: TA-32
+  source: intake
+  proposal:
+    grounding: instance
+  reason: the edges support every field the pattern reads (instance)
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: K:poisoned_item_read:TA-32
+  type: catch
+  subject:
+    pattern: poisoned_item_read
+    attack: TA-32
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the edges support every field the pattern reads (analogical)
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:prefilled_prompt_to_remember
+  type: pattern
+  subject:
+    pattern: prefilled_prompt_to_remember
+  source: intake
+  proposal:
+    id: prefilled_prompt_to_remember
+    name: Pre-filled prompt telling the assistant to remember a source
+    indicates: Memory or recommendation poisoning through a link
+    stage: entry
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Input Source / Channel** records that the turn arrived pre-filled from a link or URL parameter, not typed.'
+    - The **Model Input** tells the assistant to remember, trust or prefer a named source.
+    requires: [input_source_channel, model_input]
+    enriches: [memory_write_event, memory_provenance_source]
+    baseline: Turns per channel; a pre-filled turn is unusual for most users.
+    catches: [TA-32]
+  reason: the intake report found the entry steps read by no pattern; this reads Input Source / Channel, which no pattern read before
+  requires: A:TA-32
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

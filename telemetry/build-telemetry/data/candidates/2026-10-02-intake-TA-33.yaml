@@ -1,0 +1,82 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: A:TA-33
+  type: attack
+  subject:
+    attack: TA-33
+  source: intake
+  proposal:
+    record:
+      id: TA-33
+      name: Split-view dataset poisoning
+      label: '**Split-view poisoning of web-scale training datasets** (Carlini et al., Feb 2023)'
+      ref: 77
+      instance: executed
+      same_incident_as: []
+      what_happened: 'Web-scale datasets such as LAION-400M and COYO-700M are distributed as lists of URLs, and every downloader fetches the content anew. The authors bought expired domains still named in these lists and logged requests for 12 months from August 2022; downloads continued even for the oldest datasets. For $60 an attacker could control 0.01% of LAION-400M or COYO-700M. The authors returned 404 to every request and poisoned nothing: the control step was executed and the poison withheld. A second attack, frontrunning, times malicious Wikipedia edits to land in a snapshot before moderators revert them. The defense the paper proposes is a cryptographic hash per item, checked at download; several LAION datasets now publish SHA-256 hashes.'
+      reference: Poisoning Web-Scale Training Datasets is Practical. N. Carlini, M. Jagielski, C. A. Choquette-Choo, D. Paleka, W. Pearce, H. Anderson, A. Terzis, K. Thomas, F. Tramèr, arXiv:2302.10149, February 2023. MITRE ATLAS case study **`AML.CS0025`**. <https://arxiv.org/abs/2302.10149>
+      atlas: [AML.T0020, AML.T0010.002]
+      atlas_text: '`AML.T0020` Training Data Poisoning; `AML.T0010.002` AI Supply Chain Compromise: Data'
+      atlas_notes: ATLAS case study `AML.CS0025` (Exercise); content at a URL changes after the dataset indexed it
+      risks: [riskDataPoisoning]
+      components_text: DataSources, TrainingData
+      chain:
+      - step: An expired domain named in a dataset index is bought
+        fields: []
+      - step: A downloader fetches the URL and receives content other than what was indexed
+        fields:
+        - field: retrieved_content_metadata_integrity_signal
+          grounding: analogical
+          reason: the same split view applies to a RAG source that changes after indexing; the instance is a training download, not a retrieval
+        - field: retrieved_content_source_provenance
+          grounding: analogical
+          reason: owner and freshness of the source are what changed when the domain expired; the instance records them for training data, which no field covers
+      - step: The fetched content enters training
+        fields: []
+  reason: 'A measured exercise traceable to the primary paper and to ATLAS `AML.CS0025`: the authors acquired control of content that downloaders fetched, and observed the downloads. It is the corpus entry on training-data integrity; nothing like it is in the corpus.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: V:TA-33
+  type: coverage
+  subject:
+    attack: TA-33
+  source: intake
+  proposal:
+    no_pattern: 'Training time: the attack acts on dataset download, and the catalog defines no training-time fields. Its edges are analogical, to retrieval at inference time, where the same split view applies.'
+  reason: no pattern catches it as an instance
+  requires: A:TA-33
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-33:retrieved_content_metadata_integrity_signal
+  type: edge
+  subject:
+    attack: TA-33
+    field: retrieved_content_metadata_integrity_signal
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: the same split view applies to a RAG source that changes after indexing; the instance is a training download, not a retrieval
+  requires: A:TA-33
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-33:retrieved_content_source_provenance
+  type: edge
+  subject:
+    attack: TA-33
+    field: retrieved_content_source_provenance
+  source: intake
+  proposal:
+    grounding: analogical
+  reason: owner and freshness of the source are what changed when the domain expired; the instance records them for training data, which no field covers
+  requires: A:TA-33
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

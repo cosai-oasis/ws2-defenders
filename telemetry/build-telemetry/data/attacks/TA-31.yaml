@@ -1,0 +1,14 @@
+# TA-31. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-31
+name: Agent name collision
+label: '**Agent name collision in multi-agent hosts** (Kumar, Sep 2026)'
+ref: 67
+instance: executed
+what_happened: Multi-agent hosts turn a remote A2A Agent Card into a local agent, tool, workflow target or broker route keyed by the card's `name`, which A2A defines as human-readable metadata with no collision semantics. An admitted peer that sets its name to a trusted peer's wins the collision by order or shared route, and requests addressed to the trusted peer go to the attacker. No transport, key or credential is forged. Demonstrated against the code of seven open-source frameworks at pinned versions; in all six client-style integrations dispatch went to the attacker's endpoint and the legitimate peer was never invoked.
+components_text: Orchestration, AgentToolTransport, Identity
+atlas: [AML.T0073]
+atlas_text: '`AML.T0073` Impersonation'
+atlas_notes: Peer display name used as a routing identity; the paper names Google ADK (Python, TypeScript), UiPath LangChain, BeeAI, Solace Agent Mesh, Mozilla Any-Agent and AutoDev
+reference: Agent Name Collision Attacks in Multi-Agent Systems. A. Arun Kumar, arXiv:2609.27624, September 2026. <https://arxiv.org/abs/2609.27624>
+fields: [agent_name, verified_vs_displayed_identity, peer_agent_card_descriptor, inter_agent_message, identities_used_per_hop]
+risks: [riskOrchestratorRouteHijacking, riskImplicitCrossBoundaryTrust, riskAgentIdentitySpoofing]

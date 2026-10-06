@@ -1,0 +1,18 @@
+# TA-30. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-30
+name: OpenClaw memory index unbounded growth
+label: '**OpenClaw memory index, unbounded growth** (openclaw/openclaw#114612, Jul 2026)'
+ref: 66
+instance: failure
+what_happened: The memory index of the OpenClaw agent runtime (`memory_index_chunks`, `memory_embedding_cache`) had no retention or eviction policy and grew on every memory-extraction cycle. The disk budget enforced on session tables did not measure the memory tables. Production installs reported 1.5 to 3.3 GB agent databases (38,985 rows in one), growing heap and GC pauses, and four-minute gateway start-ups; credential rotation re-embedded the whole corpus. No adversary was involved. A cache cap shipped in 2026.9.7; retention for still-present sources remained open.
+atlas: [AML.T0029]
+atlas_notes: Store growth and degraded service with no adversary; **no adversary technique applies**, and AML.T0029 names the impact only
+reference: 'OpenClaw memory-core: SQLite unbounded growth, `memory_index_chunks` and `memory_embedding_cache` have no retention policy. GitHub issue openclaw/openclaw#114612, opened 27 July 2026, with independent field confirmations from further production installs. <https://github.com/openclaw/openclaw/issues/114612>'
+components_text: Memory
+atlas_text: '`AML.T0029` Denial of AI Service'
+fields:
+- memory_footprint_growth
+- declared_memory_configuration
+- field: resource_consumption_aggregate
+  grounding: analogical
+risks: [riskLongLivedSessionStateWeakness]

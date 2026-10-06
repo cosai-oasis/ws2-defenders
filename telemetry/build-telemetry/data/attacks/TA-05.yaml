@@ -1,0 +1,29 @@
+# TA-05. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-05
+name: Samsung leak
+label: Samsung source-code leak (Mar 2023)
+ref: 8
+what_happened: Engineers pasted proprietary code / notes / specs into ChatGPT; data was retained externally.
+fields:
+- field: model_input
+  note: large code payload
+- identities_used_per_hop
+- field: surface_app
+  note: external service
+- tool_privacy_classification
+- field: agent_name
+  note: off-inventory
+- field: organization_tenant_id
+  grounding: analogical
+- guardrail_input_verdict
+- field: content_modality_attachment_identity
+  grounding: analogical
+- field: session_taint_labels_information_flow_decisions
+  grounding: analogical
+components_text: ApplicationInputHandling, Identity
+atlas_text: '`AML.T0057` Data Leakage (self-inflicted)'
+atlas_notes: Sensitive data pasted to external service
+reference: Samsung proprietary-data leak via ChatGPT. AI Incident Database, cite 768. <https://incidentdatabase.ai/cite/768/>
+risks:
+- riskExcessiveDataHandlingDuringInference
+- riskSensitiveDataDisclosure

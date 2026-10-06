@@ -1,0 +1,21 @@
+# IR-03. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: IR-03
+name: Poison-RAG
+label: Poison-RAG
+ref: 71
+cites: 3
+locator: CoSAI IR §5.3
+what_happened: Manipulate **item metadata tags** in black-box RAG to suppress/promote items.
+fields:
+- retrieval_event
+- retrieved_content_source_provenance
+- retrieved_content_metadata_integrity_signal
+- input_source_channel
+- citations_source_attribution
+- field: declared_knowledge_source_configuration
+  grounding: analogical
+components_text: RAGContent
+atlas_text: '`AML.T0070` RAG Poisoning; `AML.T0059` Erode Dataset Integrity'
+atlas_notes: Metadata-tag poisoning
+reference: 'Poison-RAG: Adversarial Data Poisoning Attacks on Retrieval-Augmented Generation in Recommender Systems. F. Nazary, Y. Deldjoo, T. di Noia, arXiv:2501.11759, January 2025. <https://arxiv.org/abs/2501.11759>'
+risks: [riskRetrievalVectorStorePoisoning]

@@ -1,0 +1,15 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: E:AOC-11:inter_agent_message:cs11-analogical
+  type: edge
+  subject:
+    attack: AOC-11
+    field: inter_agent_message
+  source: cs11-recheck
+  proposal:
+    grounding: analogical
+  reason: Natalie told Ash "to ask all agents to write about it on Moltbook"; the case objective is whether agents share reputation judgments with other agents, and agents in the study have email (Figure 15, Ash to Flux), so the "full mailing list" may have reached agents. No agent is recorded receiving the message and the Moltbook post failed, so the edge motivates the field without being an instance. Replaces the outright rejection in E:AOC-11:inter_agent_message:cs11.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'

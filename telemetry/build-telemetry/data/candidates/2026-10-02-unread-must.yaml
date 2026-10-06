@@ -1,0 +1,71 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: E:TA-06:tool_error_exception:regrade
+  type: edge
+  supersedes: E:TA-06:tool_error_exception
+  subject:
+    attack: TA-06
+    field: tool_error_exception
+  source: unread-must
+  proposal:
+    grounding: analogical
+  reason: Liu et al. (arXiv:2309.02926) report runtime exceptions only as a reason some exploitation attempts failed against the apps tested, not as a step of the attack. The instance does not contain a tool error.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: E:TA-13:tool_error_exception:regrade
+  type: edge
+  supersedes: E:TA-13:tool_error_exception
+  subject:
+    attack: TA-13
+    field: tool_error_exception
+  source: unread-must
+  proposal:
+    grounding: analogical
+  reason: 'CVE-2025-5071: a missing capability check let a subscriber run privileged MCP commands. The calls succeeded; the record contains no failed or blocked call. Privileged MCP tool invoked by a low-privilege identity already catches TA-13 on the authorization record.'
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: T:tool_error_exception
+  type: tier
+  subject:
+    field: tool_error_exception
+  source: unread-must
+  proposal:
+    tier: MAY
+    basis:
+      may: [thin]
+    rationale: 'No documented instance records a failed or blocked tool call: `TA-06` reports exceptions only where exploitation failed, and the privileged calls in `TA-13` succeeded. The probing that precedes exploitation is the case the field serves, and the corpus has none. No MUST field depends on it, because **Execution Status** records each operation''s outcome.'
+  reason: with both edges analogical it has no instance edge, and no MUST field lists it in required_to_read; MAY on thin under RFC §4.7. Totals move from 53/30/15 to 52/30/16.
+  requires: E:TA-06:tool_error_exception:regrade
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'
+- id: P:duration_per_token_off_baseline
+  type: pattern
+  subject:
+    pattern: duration_per_token_off_baseline
+  source: unread-must
+  proposal:
+    id: duration_per_token_off_baseline
+    name: Operation duration off baseline for its token count
+    indicates: Sponge input or compute exhaustion
+    stage: decision
+    join: [session_turn_step_ids]
+    conditions:
+    - '**Execution Status** records a duration far above the model''s baseline for the **Input / Output Token Counts** of the call.'
+    requires: [execution_status, input_output_token_counts]
+    enriches: [model_name_version, inference_parameters, source_host_ip_request_metadata, resource_consumption_aggregate]
+    baseline: Duration per token, per model.
+    catches: [TA-10]
+  reason: Execution Status is MUST and read by no pattern. TA-10's sponge inputs maximize compute per token; its instance edges include both required fields. context_limit_abuse reads the stop reason and token counts, not duration, so it does not catch this.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-02'
+  applied: '2026-10-02'

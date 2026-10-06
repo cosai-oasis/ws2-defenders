@@ -1,0 +1,35 @@
+# AOC-08. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-08
+name: Owner Identity Spoofing
+label: Owner Identity Spoofing
+cites: 2
+locator: 'Case Study #8'
+what_happened: Display-name spoof; same-channel detected (checked user ID) but **cross-channel spoof succeeded** → shutdown, file deletion, admin reassignment.
+fields:
+- verified_vs_displayed_identity
+- surface_app
+- granted_authorizations_scope
+- identities_used_per_hop
+- field: agent_name
+  grounding: analogical
+- field: agent_runtime_instance_id
+  grounding: analogical
+- field: system_prompt_instruction_config
+  grounding: analogical
+- input_trust_classification
+- field: source_host_ip_request_metadata
+  grounding: analogical
+- tool_acl_required_scope
+- originating_principal_on_behalf_of
+- field: token_exchange_scope_narrowing_check
+  grounding: analogical
+- field: runtime_credential_attestation
+  grounding: analogical
+- field: surfaces_supported
+  grounding: analogical
+- authorization_decision_record
+- attribute_source_trusted_provenance_marking
+components_text: Identity, AgentSystemInstruction
+atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation'
+atlas_notes: Cross-channel display-name spoof → privileged action
+risks: [riskAgentIdentitySpoofing, riskBrokenAuthorizationEnforcement]

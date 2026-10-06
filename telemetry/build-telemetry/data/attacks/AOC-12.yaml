@@ -1,0 +1,31 @@
+# AOC-12. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: AOC-12
+name: Prompt Injection via Broadcast
+label: Prompt Injection via Broadcast *(resisted)*
+cites: 2
+locator: 'Case Study #12'
+what_happened: base64 payloads, image/OCR instructions, fake config overrides, XML/JSON privilege-escalation tags.
+fields:
+- model_input
+- encoded_obfuscated_payload_indicator
+- guardrail_input_verdict
+- field: trigger_type_source_event
+  grounding: analogical
+- input_source_channel
+- input_trust_classification
+- content_modality_attachment_identity
+- field: guardrail_modification_record
+  grounding: analogical
+- field: threat_classification_atlas_technique_tag
+  grounding: analogical
+- llm_refusal
+- field: protocol_envelope_capture
+  grounding: analogical
+- field: enforcement_point_availability_failure_mode
+  grounding: analogical
+- field: policy_reason_code
+  grounding: analogical
+components_text: AgentInputHandling
+atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0068` LLM Prompt Obfuscation'
+atlas_notes: base64/image/OCR/markup tags *(resisted)*
+risks: [riskPromptInjection]

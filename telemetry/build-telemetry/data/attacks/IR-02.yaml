@@ -1,0 +1,28 @@
+# IR-02. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: IR-02
+name: MINJA
+label: MINJA (Memory Injection Attack)
+ref: 70
+cites: 3
+locator: CoSAI IR §5.2
+what_happened: Benign queries induce the agent to autonomously generate & persist malicious reasoning in memory.
+fields:
+- memory_write_event
+- memory_read_injection_event
+- memory_provenance_source
+- loop_step_count_signal
+- observation_thought_reasoning_trace
+- model_input
+- field: pre_forward_pass_state_digest_vector
+  grounding: analogical
+- field: token_malformation_context_corruption_indicator
+  grounding: analogical
+- memory_integrity_poisoning_signal
+- field: declared_memory_configuration
+  grounding: analogical
+- memory_write_rationale
+components_text: Memory
+atlas_text: '`AML.T0051.000` Direct and `AML.T0051.002` Triggered; `AML.T0080.000` AI Agent Context Poisoning: Memory; `AML.T0070`, `AML.T0059`, `AML.T0061`, `AML.T0067`'
+atlas_notes: 'Memory injection/feedback: injected as a user, activated by a victim''s query'
+reference: Memory Injection Attacks on LLM Agents via Query-Only Interaction (MINJA; first posted as *A Practical Memory Injection Attack against LLM Agents*). S. Dong, S. Xu, P. He, et al., arXiv:2503.03704, March 2025. <https://arxiv.org/abs/2503.03704>
+risks: [riskAgentMemoryPoisoning]

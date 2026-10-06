@@ -1,0 +1,40 @@
+# TA-06. Data for AD §3; `fields:` lists its edges (grounding instance unless marked).
+id: TA-06
+name: LangChain RCE
+label: LangChain remote code execution (2023, multiple CVEs)
+instance: executed
+ref: 9
+what_happened: Prompt injection makes the LLM emit malicious Python that LangChain executes unsandboxed (CVE-2023-36095/-29374/-34540) → server compromise.
+fields:
+- tool_call_io
+- field: tool_name
+  note: '`code_interpreter`,`PALChain`,`PandasQueryEngine`'
+- tool_type_trust_boundary
+- field: tool_error_exception
+  grounding: analogical
+- observation_thought_reasoning_trace
+- action_type
+- tool_acl_required_scope
+- field: model_name_version
+  grounding: analogical
+- execution_environment_sandbox
+- field: runtime_credential_attestation
+  grounding: analogical
+- field: capability_set_change_event
+  grounding: analogical
+- tool_agent_version
+- field: repository_code_path_software_ref
+  grounding: analogical
+- agbom_inventory_snapshot
+- component_dependency_graph
+- field: inventory_integrity_signature
+  grounding: analogical
+- field: fleet_counts
+  grounding: analogical
+- field: mediation_coverage_bypass_path
+  grounding: analogical
+components_text: Tools, ModelFrameworksAndCode
+atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0053` Tool Invocation; `AML.T0102` Generate Malicious Commands'
+atlas_notes: Injection → unsandboxed code exec
+reference: LangChain prompt-injection → RCE (CVE-2023-36095, CVE-2023-29374, CVE-2023-34540). Liu et al., arXiv:2309.02926. <https://arxiv.org/abs/2309.02926>
+risks: [riskPromptInjection, riskUnsandboxedCodeExecution, riskInsecureIntegratedComponent]
