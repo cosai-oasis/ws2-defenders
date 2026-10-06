@@ -113,11 +113,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:AOC-01:instrumentation_coverage_hook_attestation
+- id: E:AOC-01:instrumentation_coverage_hook_status
   type: edge
   subject:
     attack: AOC-01
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: field
   proposal:
     grounding: analogical
@@ -309,11 +309,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:AOC-02:credential_minting_scope_narrowing_check
+- id: E:AOC-02:token_exchange_scope_narrowing_check
   type: edge
   subject:
     attack: AOC-02
-    field: credential_minting_scope_narrowing_check
+    field: token_exchange_scope_narrowing_check
   source: field
   proposal:
     grounding: analogical
@@ -1314,11 +1314,11 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: E:AOC-08:credential_minting_scope_narrowing_check
+- id: E:AOC-08:token_exchange_scope_narrowing_check
   type: edge
   subject:
     attack: AOC-08
-    field: credential_minting_scope_narrowing_check
+    field: token_exchange_scope_narrowing_check
   source: field
   proposal:
     grounding: analogical
@@ -1556,11 +1556,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:AOC-09:instrumentation_coverage_hook_attestation
+- id: E:AOC-09:instrumentation_coverage_hook_status
   type: edge
   subject:
     attack: AOC-09
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: field
   proposal:
     grounding: analogical
@@ -1946,11 +1946,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:AOC-10:inventory_attestation_signature
+- id: E:AOC-10:inventory_integrity_signature
   type: edge
   subject:
     attack: AOC-10
-    field: inventory_attestation_signature
+    field: inventory_integrity_signature
   source: field
   proposal:
     grounding: analogical
@@ -1960,11 +1960,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:AOC-10:instrumentation_coverage_hook_attestation
+- id: E:AOC-10:instrumentation_coverage_hook_status
   type: edge
   subject:
     attack: AOC-10
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: field
   proposal:
     grounding: analogical
@@ -3031,11 +3031,11 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: E:IR-04:credential_minting_scope_narrowing_check
+- id: E:IR-04:token_exchange_scope_narrowing_check
   type: edge
   subject:
     attack: IR-04
-    field: credential_minting_scope_narrowing_check
+    field: token_exchange_scope_narrowing_check
   source: field
   proposal:
     grounding: analogical
@@ -3086,11 +3086,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:IR-04:inventory_attestation_signature
+- id: E:IR-04:inventory_integrity_signature
   type: edge
   subject:
     attack: IR-04
-    field: inventory_attestation_signature
+    field: inventory_integrity_signature
   source: field
   proposal:
     grounding: analogical
@@ -4268,11 +4268,11 @@
   decided_on: '2026-10-02'
   note: reviewed against the attack descriptions at jo5iah instruction 2026-10-02; spot-check with curate.py list --source field
   applied: '2026-10-02'
-- id: E:TA-06:inventory_attestation_signature
+- id: E:TA-06:inventory_integrity_signature
   type: edge
   subject:
     attack: TA-06
-    field: inventory_attestation_signature
+    field: inventory_integrity_signature
   source: field
   proposal:
     grounding: analogical
@@ -4535,11 +4535,11 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: E:TA-08:credential_minting_scope_narrowing_check
+- id: E:TA-08:token_exchange_scope_narrowing_check
   type: edge
   subject:
     attack: TA-08
-    field: credential_minting_scope_narrowing_check
+    field: token_exchange_scope_narrowing_check
   source: field
   proposal:
     grounding: instance
@@ -5243,11 +5243,11 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: E:TA-17:instrumentation_coverage_hook_attestation
+- id: E:TA-17:instrumentation_coverage_hook_status
   type: edge
   subject:
     attack: TA-17
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: both
   proposal:
     grounding: instance
@@ -6094,7 +6094,7 @@
       - identities_used_per_hop
       - source_host_ip_request_metadata
       - capability_set_change_event
-      - instrumentation_coverage_hook_attestation
+      - instrumentation_coverage_hook_status
   reason: one identity across a fleet is ambiguous between sibling instances and a stolen credential (CP-15); capability sets and hook state are per process, so acquisition and coverage drops cannot be joined to the acting workload without it; one instance (AOC-04)
   critical: true
   status: accepted
@@ -6157,10 +6157,10 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: B:instrumentation_coverage_hook_attestation
+- id: B:instrumentation_coverage_hook_status
   type: basis
   subject:
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: tier
   proposal:
     basis:

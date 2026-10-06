@@ -967,10 +967,10 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: R:credential_minting_scope_narrowing_check
+- id: R:token_exchange_scope_narrowing_check
   type: facets
   subject:
-    field: credential_minting_scope_narrowing_check
+    field: token_exchange_scope_narrowing_check
   source: phase3
   proposal:
     role: outcome
@@ -1086,10 +1086,10 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: R:inventory_attestation_signature
+- id: R:inventory_integrity_signature
   type: facets
   subject:
-    field: inventory_attestation_signature
+    field: inventory_integrity_signature
   source: phase3
   proposal:
     role: provenance
@@ -1177,10 +1177,10 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: R:instrumentation_coverage_hook_attestation
+- id: R:instrumentation_coverage_hook_status
   type: facets
   subject:
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: phase3
   proposal:
     role: descriptor

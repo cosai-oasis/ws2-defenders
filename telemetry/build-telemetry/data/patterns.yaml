@@ -196,7 +196,7 @@
   conditions:
   - A **Token Exchange & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
   requires:
-  - credential_minting_scope_narrowing_check
+  - token_exchange_scope_narrowing_check
   enriches: [granted_authorizations_scope]
   catches: [TA-08]
   catches_analogical: [AOC-02, AOC-08]
@@ -577,7 +577,7 @@
   conditions:
   - '**Instrumentation Coverage / Hook Status** records a hook disabled, or reporting to a new destination, during a run.'
   requires:
-  - instrumentation_coverage_hook_attestation
+  - instrumentation_coverage_hook_status
   enriches: [event_sequence_continuity, action_type]
   catches: [TA-17, TA-37]
 - id: self_asserted_attribute_contradicted
@@ -603,7 +603,7 @@
   - '**Event Sequence Continuity** shows a gap or reordering in a session.'
   requires: [event_sequence_continuity]
   enriches:
-  - instrumentation_coverage_hook_attestation
+  - instrumentation_coverage_hook_status
   catches: []
   catches_analogical: [TA-17, AOC-01, AOC-10]
 - id: prefilled_prompt_to_remember

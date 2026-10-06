@@ -46,9 +46,9 @@ fields:
   grounding: analogical
 - field: agbom_inventory_snapshot
   grounding: analogical
-- field: inventory_attestation_signature
+- field: inventory_integrity_signature
   grounding: analogical
-- field: instrumentation_coverage_hook_attestation
+- field: instrumentation_coverage_hook_status
   grounding: analogical
 - field: event_sequence_continuity
   grounding: analogical

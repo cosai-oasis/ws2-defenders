@@ -30,7 +30,7 @@
           reason: the origin of the request carrying the header; the advisory names no requester
       - step: The SDK adds the replica as a trace destination for the run
         fields:
-        - field: instrumentation_coverage_hook_attestation
+        - field: instrumentation_coverage_hook_status
           reason: the field records where each hook reports; here the destinations changed per request, which is what separates the attack from configured tracing
       - step: Run data, with prompts and completions, is posted to the attacker's endpoint
         fields:
@@ -70,11 +70,11 @@
   decided_by: jo5iah
   decided_on: '2026-10-02'
   applied: '2026-10-02'
-- id: E:TA-37:instrumentation_coverage_hook_attestation
+- id: E:TA-37:instrumentation_coverage_hook_status
   type: edge
   subject:
     attack: TA-37
-    field: instrumentation_coverage_hook_attestation
+    field: instrumentation_coverage_hook_status
   source: intake
   proposal:
     grounding: instance

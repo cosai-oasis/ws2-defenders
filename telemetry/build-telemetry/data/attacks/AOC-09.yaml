@@ -26,7 +26,7 @@ fields:
 - capability_set_change_event
 - field: agbom_inventory_snapshot
   grounding: analogical
-- field: instrumentation_coverage_hook_attestation
+- field: instrumentation_coverage_hook_status
   grounding: analogical
 components_text: Orchestration, Tools
 atlas_text: '`AML.T0118.001` Autonomous AI Agent Communication: Direct Agent Communication; `AML.T0053` Tool Invocation; `AML.T0061` Self-Replication'

@@ -70,7 +70,7 @@ These fields establish what is running and where: the asset inventory of the AI 
 
 <a id="f-agent-runtime-instance-id"></a>**Agent (Runtime) Instance ID.** UUID pinning an event to one running instance, not just the type. Enables per-instance kill/quarantine.
 
-*Tier:* MUST, needed to read [Identities Used (per hop)](#f-identities-used-per-hop), [Source host / IP + request metadata](#f-source-host-ip-request-metadata), [Capability-Set Change Event](#f-capability-set-change-event) and [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-attestation). One identity across a fleet is otherwise ambiguous between sibling instances and a stolen credential, and capability sets and hook state are per process. *Read by:* [Obfuscated content in the instruction configuration](#p-obfuscated-instruction-config), [New tool name with a rise in tool calls](#p-new-tool-with-call-spike), [Background task with no end condition](#p-background-task-without-end), [Capability added soon after an inter-agent message](#p-capability-after-inter-agent-message), [Capability or configuration change with no approval](#p-unapproved-capability-change) and [Hook coverage or destination changes mid-run](#p-hook-coverage-changed). *Risk Map controls:* `controlAgentInventoryManagement`, `controlAgentObservability`.
+*Tier:* MUST, needed to read [Identities Used (per hop)](#f-identities-used-per-hop), [Source host / IP + request metadata](#f-source-host-ip-request-metadata), [Capability-Set Change Event](#f-capability-set-change-event) and [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-status). One identity across a fleet is otherwise ambiguous between sibling instances and a stolen credential, and capability sets and hook state are per process. *Read by:* [Obfuscated content in the instruction configuration](#p-obfuscated-instruction-config), [New tool name with a rise in tool calls](#p-new-tool-with-call-spike), [Background task with no end condition](#p-background-task-without-end), [Capability added soon after an inter-agent message](#p-capability-after-inter-agent-message), [Capability or configuration change with no approval](#p-unapproved-capability-change) and [Hook coverage or destination changes mid-run](#p-hook-coverage-changed). *Risk Map controls:* `controlAgentInventoryManagement`, `controlAgentObservability`.
 
 <a id="f-workflow-run-id"></a>**Workflow / Run ID.** Groups all activity of one multi-step run or sub-agent tree into a single traceable execution.
 
@@ -227,7 +227,7 @@ This step also records whether the telemetry plane worked. Every other field ass
 
 *Tier:* MUST, on 6 documented instances. The zero-trust principle applied to telemetry itself: it determines whether the rest of the field set can be believed. The document already applies the idea once (Verified vs Displayed Identity, §1.6) and the generalization is that identity is not the only attribute an agent can assert. Autonomy Level, Task / Intent Declaration, System Prompt / Instruction Config, and every reasoning field are agent-supplied, and the corpus shows that agents *do* report falsely ([RFC §4.4](CoSAI-AI-Telemetry-RFC.md#44-the-agent-might-be-lying)). Cost is an enum per attribute group, not per event. *Read by:* [Self-asserted attribute contradicts the authority](#p-self-asserted-attribute-contradicted).
 
-<a id="f-instrumentation-coverage-hook-attestation"></a>**Instrumentation Coverage / Hook Status.** Which lifecycle hooks are instrumented and active for this agent/run, the instrumentation version, and **where each hook reports**, the difference between "no events", "not observed", and "observed by someone else."
+<a id="f-instrumentation-coverage-hook-status"></a>**Instrumentation Coverage / Hook Status.** Which lifecycle hooks are instrumented and active for this agent/run, the instrumentation version, and **where each hook reports**, the difference between "no events", "not observed", and "observed by someone else."
 
 *Tier:* MUST, needed to read [LLM Refusal](#f-llm-refusal), [Tool Execution ID](#f-tool-execution-id) and [Guardrail (Input) Verdict](#f-guardrail-input-verdict). Grounded by [`TA-17`](#a-ta-17), where the telemetry plane was redirected ([§4.2](#42-the-telemetry-plane)). Under sampling, an absent refusal, tool result or verdict cannot be read without the coverage and sampling record ([RFC §5.2](CoSAI-AI-Telemetry-RFC.md#52-sampling)). More generally it resolves the ambiguity undermining every absence-based detection in the document: no refusal, no termination condition, no matching request are each only interpretable if the relevant hook was instrumented. It is D-dominant, it is not modality-gated (every deployment has an instrumentation configuration), and recording *where each hook reports* is what separates a hijacked plane from a healthy one. *Read by:* [Hook coverage or destination changes mid-run](#p-hook-coverage-changed). *Risk Map controls:* `controlAuditTrailCompleteness`.
 
@@ -542,7 +542,7 @@ The inventory fields describe posture rather than per-request activity. Most are
 
 *Tier:* SHOULD, modality: delegated authority. *Risk Map controls:* `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, `controlAgentCredentialIsolation`.
 
-<a id="f-credential-minting-scope-narrowing-check"></a>**Token Exchange & Scope-Narrowing Check.** The token-exchange event at each hop: grant type (token exchange / client assertion / client credentials), whose identity the issued token represents (**end user / client application / calling workload / the enforcement point itself**), target **audience**, issuer, lifetime, and the **requested-vs-granted scope delta** verified after issuance. Detects both over-broad tokens and forwarded inbound tokens that were never narrowed.
+<a id="f-token-exchange-scope-narrowing-check"></a>**Token Exchange & Scope-Narrowing Check.** The token-exchange event at each hop: grant type (token exchange / client assertion / client credentials), whose identity the issued token represents (**end user / client application / calling workload / the enforcement point itself**), target **audience**, issuer, lifetime, and the **requested-vs-granted scope delta** verified after issuance. Detects both over-broad tokens and forwarded inbound tokens that were never narrowed.
 
 *Tier:* SHOULD, modality: token exchange. Adds the *event* the surrounding fields only describe the state of. Forwarding a caller's inbound token is usually wrong (it is scoped for the agent, not the backend) so the **requested-vs-granted delta** is what makes a silently over-broad grant visible ([`TA-08`](#a-ta-08)). *Read by:* [Credential minted wider than requested](#p-credential-wider-than-requested). *Risk Map controls:* `controlComponentIdentityAuthentication`, `controlComponentIdentityRegistration`, `controlDelegatedAuthorizationIntegrity`, `controlDelegatedAuthorityConfinement`, `controlSenderConstrainedCredentials`, `controlSessionCredentialBindingAndLifecycle`, `controlAgentCredentialIsolation`.
 
@@ -574,7 +574,7 @@ The inventory fields describe posture rather than per-request activity. Most are
 
 *Tier:* SHOULD, modality: supply-chain provenance. The complete answer to CVE blast radius: [`TA-06`](#a-ta-06) is a vulnerability in a *framework* beneath the agent, and reaching it requires transitive edges. *Risk Map controls:* `controlToolRegistryAndDiscoveryIntegrity`.
 
-<a id="f-inventory-attestation-signature"></a>**Inventory Integrity Signature.** Cryptographic signature over the emitted inventory (signature value + key identifier), binding the declared composition to a signer.
+<a id="f-inventory-integrity-signature"></a>**Inventory Integrity Signature.** Cryptographic signature over the emitted inventory (signature value + key identifier), binding the declared composition to a signer.
 
 *Tier:* SHOULD, modality: supply-chain provenance. An inventory a compromised agent can rewrite is worth little. The limit: a signature proves who asserted the inventory, not that the assertion is true, which is the subject of Attribute Source / Trusted-Provenance Marking (§1.2). *Risk Map controls:* `controlToolRegistryAndDiscoveryIntegrity`.
 
@@ -830,7 +830,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 
 1. A **Token Exchange & Scope-Narrowing Check** records a granted scope wider than requested, or an inbound token forwarded unnarrowed.
 
-*Joins on* [Identities Used (per hop)](#f-identities-used-per-hop). *Reads* [Token Exchange & Scope-Narrowing Check](#f-credential-minting-scope-narrowing-check). *Enriched by* [Granted Authorizations / Scope](#f-granted-authorizations-scope). *Catches* [`TA-08`](#a-ta-08); analogically [`AOC-02`](#a-aoc-02), [`AOC-08`](#a-aoc-08).
+*Joins on* [Identities Used (per hop)](#f-identities-used-per-hop). *Reads* [Token Exchange & Scope-Narrowing Check](#f-token-exchange-scope-narrowing-check). *Enriched by* [Granted Authorizations / Scope](#f-granted-authorizations-scope). *Catches* [`TA-08`](#a-ta-08); analogically [`AOC-02`](#a-aoc-02), [`AOC-08`](#a-aoc-08).
 
 <a id="p-cross-tenant-access"></a>**Data or access across a tenant boundary.** Cross-tenant bleed. Minimum tier SHOULD. Fires on any of:
 
@@ -1055,7 +1055,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 
 1. **Instrumentation Coverage / Hook Status** records a hook disabled, or reporting to a new destination, during a run.
 
-*Joins on* [Agent (Runtime) Instance ID](#f-agent-runtime-instance-id). *Reads* [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-attestation). *Enriched by* [Event Sequence Continuity](#f-event-sequence-continuity) and [Action Type](#f-action-type). *Catches* [`TA-17`](#a-ta-17), [`TA-37`](#a-ta-37).
+*Joins on* [Agent (Runtime) Instance ID](#f-agent-runtime-instance-id). *Reads* [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-status). *Enriched by* [Event Sequence Continuity](#f-event-sequence-continuity) and [Action Type](#f-action-type). *Catches* [`TA-17`](#a-ta-17), [`TA-37`](#a-ta-37).
 
 <a id="p-self-asserted-attribute-contradicted"></a>**Self-asserted attribute contradicts the authority.** Agent falsifying its own state or claims. Minimum tier MUST. Fires when:
 
@@ -1068,7 +1068,7 @@ Each pattern is placed at the **stage** where it can first fire, the stage at wh
 
 1. **Event Sequence Continuity** shows a gap or reordering in a session.
 
-*Joins on* [Session / Turn / Step IDs](#f-session-turn-step-ids). *Reads* [Event Sequence Continuity](#f-event-sequence-continuity). *Enriched by* [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-attestation). *Catches* analogically [`TA-17`](#a-ta-17), [`AOC-01`](#a-aoc-01), [`AOC-10`](#a-aoc-10).
+*Joins on* [Session / Turn / Step IDs](#f-session-turn-step-ids). *Reads* [Event Sequence Continuity](#f-event-sequence-continuity). *Enriched by* [Instrumentation Coverage / Hook Status](#f-instrumentation-coverage-hook-status). *Catches* analogically [`TA-17`](#a-ta-17), [`AOC-01`](#a-aoc-01), [`AOC-10`](#a-aoc-10).
 
 ### 2.7 Coverage
 

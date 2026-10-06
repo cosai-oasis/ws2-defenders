@@ -18,7 +18,7 @@ fields:
   grounding: analogical
 - originating_principal_on_behalf_of
 - granted_authorizations_scope
-- field: credential_minting_scope_narrowing_check
+- field: token_exchange_scope_narrowing_check
   grounding: analogical
 - field: tool_status
   grounding: analogical

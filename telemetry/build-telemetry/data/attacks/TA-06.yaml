@@ -27,7 +27,7 @@ fields:
   grounding: analogical
 - agbom_inventory_snapshot
 - component_dependency_graph
-- field: inventory_attestation_signature
+- field: inventory_integrity_signature
   grounding: analogical
 - field: fleet_counts
   grounding: analogical

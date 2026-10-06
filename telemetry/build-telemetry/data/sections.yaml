@@ -47,7 +47,7 @@ field_steps:
   - llm_refusal
   - content_modality_attachment_identity
   - attribute_source_trusted_provenance_marking
-  - instrumentation_coverage_hook_attestation
+  - instrumentation_coverage_hook_status
   - enforcement_point_availability_failure_mode
   - guardrail_modification_record
   - encoded_obfuscated_payload_indicator
@@ -117,7 +117,7 @@ field_steps:
   - delegation_chain
   - granted_authorizations_scope
   - resource_indicators_constraints
-  - credential_minting_scope_narrowing_check
+  - token_exchange_scope_narrowing_check
   - trust_domain_crossing_delegation_depth
   - runtime_credential_attestation
   - lifecycle_state
@@ -125,7 +125,7 @@ field_steps:
   - repository_code_path_software_ref
   - agbom_inventory_snapshot
   - component_dependency_graph
-  - inventory_attestation_signature
+  - inventory_integrity_signature
   - event_sequence_continuity
   - tool_description
   - tool_status

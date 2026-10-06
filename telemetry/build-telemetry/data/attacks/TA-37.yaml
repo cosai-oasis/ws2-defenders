@@ -22,7 +22,7 @@ chain:
     reason: the origin of the request carrying the header; the advisory names no requester
 - step: The SDK adds the replica as a trace destination for the run
   fields:
-  - field: instrumentation_coverage_hook_attestation
+  - field: instrumentation_coverage_hook_status
     reason: the field records where each hook reports; here the destinations changed per request, which is what separates the attack from configured tracing
 - step: Run data, with prompts and completions, is posted to the attacker's endpoint
   fields:
@@ -32,5 +32,5 @@ fields:
 - trace_context_propagated
 - field: source_host_ip_request_metadata
   grounding: analogical
-- instrumentation_coverage_hook_attestation
+- instrumentation_coverage_hook_status
 - output_egress_destination

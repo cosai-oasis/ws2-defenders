@@ -22,7 +22,7 @@
     - identities_used_per_hop
     - source_host_ip_request_metadata
     - capability_set_change_event
-    - instrumentation_coverage_hook_attestation
+    - instrumentation_coverage_hook_status
   records: The running instance an event belongs to, for per-instance quarantine.
   emitted_by: [componentReasoningCore]
   capture: UUID pinning an event to one running instance, not just the type. Enables per-instance kill/quarantine.
@@ -794,7 +794,7 @@
   modality: delegated authority
   emitted_by: [componentFederationProxy]
   capture: Target resource audience + time/purpose/rate/locality/`data_classification` narrowing.
-- id: credential_minting_scope_narrowing_check
+- id: token_exchange_scope_narrowing_check
   name: Token Exchange & Scope-Narrowing Check
   tags: [CPEX]
   tier: SHOULD
@@ -895,7 +895,7 @@
   emitted_by: [componentApplication, componentToolRegistry]
   capture: Dependency edges between inventoried components, including transitive ones; which agent depends on which tool, which tool on which package or MCP server.
   rationale: 'The complete answer to CVE blast radius: `TA-06` is a vulnerability in a *framework* beneath the agent, and reaching it requires transitive edges.'
-- id: inventory_attestation_signature
+- id: inventory_integrity_signature
   name: Inventory Integrity Signature
   tags: [AOS]
   tier: SHOULD
@@ -980,7 +980,7 @@
   emitted_by_text: enforcement points
   capture: 'For each enforcement callout (guardrail, policy engine, external guardian): whether it was reached, its latency, and on failure whether the system **failed open or failed closed**, plus the action that was taken anyway.'
   rationale: A verdict that never arrived and a verdict of `allow` are indistinguishable in the log, so without it the guardrail verdicts and the **Authorization Decision Record** cannot be read, and the control plane is a single point of silent failure. Deployments choose fail-open or fail-closed for availability reasons; **the field records the choice and the outcome**, and neither posture is recommended.
-- id: instrumentation_coverage_hook_attestation
+- id: instrumentation_coverage_hook_status
   name: Instrumentation Coverage / Hook Status
   tier: MUST
   role: descriptor

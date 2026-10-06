@@ -22,7 +22,7 @@ fields:
 - tool_execution_id
 - field: tool_selection_rationale
   grounding: analogical
-- credential_minting_scope_narrowing_check
+- token_exchange_scope_narrowing_check
 - authorization_decision_record
 components_text: Tools, Identity, ReasoningCore
 atlas_text: '`AML.T0053` AI Agent Tool Invocation'

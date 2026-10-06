@@ -15,7 +15,7 @@ fields:
 - tool_selection_rationale
 - task_intent_declaration
 - originating_principal_on_behalf_of
-- field: instrumentation_coverage_hook_attestation
+- field: instrumentation_coverage_hook_status
   grounding: analogical
 - field: event_sequence_continuity
   grounding: analogical

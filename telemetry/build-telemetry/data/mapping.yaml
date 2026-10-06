@@ -975,7 +975,7 @@ fields:
       note: '`attestation_evidence` (6.2, partial)'
       sections: ['6.2']
     controls: []
-  instrumentation_coverage_hook_attestation:
+  instrumentation_coverage_hook_status:
     ocsf:
       coverage: none
       gap: No hook-coverage representation
@@ -1872,7 +1872,7 @@ fields:
       note: ODIS §6.3.
       sections: ['6.3']
     controls: [controlDelegatedAuthorizationIntegrity, controlDelegatedAuthorityConfinement, controlAgentCredentialIsolation]
-  credential_minting_scope_narrowing_check:
+  token_exchange_scope_narrowing_check:
     ocsf:
       coverage: partial
       constructs: ['class:3002']
@@ -2039,7 +2039,7 @@ fields:
       coverage: out_of_scope
     controls:
     - controlToolRegistryAndDiscoveryIntegrity
-  inventory_attestation_signature:
+  inventory_integrity_signature:
     ocsf:
       coverage: none
       gap: No BOM signature

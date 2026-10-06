@@ -21,7 +21,7 @@ fields:
   grounding: analogical
 - tool_acl_required_scope
 - originating_principal_on_behalf_of
-- field: credential_minting_scope_narrowing_check
+- field: token_exchange_scope_narrowing_check
   grounding: analogical
 - field: runtime_credential_attestation
   grounding: analogical

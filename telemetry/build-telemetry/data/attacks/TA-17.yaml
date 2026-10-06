@@ -7,7 +7,7 @@ ref: 20
 what_happened: 'An authenticated editor could set and enable **trace configurations for any application regardless of tenant ownership**, redirecting every message and response of a victim tenant''s application to an attacker-controlled trace provider: a persistent exfiltration channel built out of the telemetry plane itself. Three of the four disclosed flaws carried cross-tenant impact.'
 fields:
 - organization_tenant_id
-- instrumentation_coverage_hook_attestation
+- instrumentation_coverage_hook_status
 - authorization_decision_record
 - output_egress_destination
 - identities_used_per_hop
