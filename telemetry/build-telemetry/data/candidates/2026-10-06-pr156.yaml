@@ -1,0 +1,18 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: M:execution_environment_sandbox:odis:pr156
+  type: mapping
+  subject:
+    field: execution_environment_sandbox
+    publication: odis
+  source: pr156
+  proposal:
+    coverage: partial
+    constructs: [attestation_evidence]
+    note: Runtime/workload evidence in `attestation_evidence` (6.2); ODIS has no normalized sandbox field.
+    sections: ['6.2']
+  reason: ws2-defenders#156. ODIS `binding_profile` (6.2) is holder-key binding and presentation; `attestation_evidence` (6.2) requires runtime/workload evidence objects. Neither records isolation posture, so coverage stays partial.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'

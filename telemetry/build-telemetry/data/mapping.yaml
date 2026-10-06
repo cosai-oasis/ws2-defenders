@@ -1080,8 +1080,8 @@ fields:
       constructs: [supply_chain.runtime.*, supply_chain.*]
     odis:
       coverage: partial
-      constructs: [binding_profile]
-      note: '`binding_profile` (6.2, partial)'
+      constructs: [attestation_evidence]
+      note: Runtime/workload evidence in `attestation_evidence` (6.2); ODIS has no normalized sandbox field.
       sections: ['6.2']
     controls: [controlRuntimeHostIsolation]
   tool_call_io:

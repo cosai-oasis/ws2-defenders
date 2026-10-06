@@ -842,7 +842,7 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
-| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | partial | `binding_profile` | `binding_profile` (6.2, partial) |
+| [Execution Environment / Sandbox](Telemetry-Attack-Detection-Addendum.md#f-execution-environment-sandbox) | MUST | partial | `attestation_evidence` | Runtime/workload evidence in `attestation_evidence` (6.2); ODIS has no normalized sandbox field. |
 | [Tool Call I/O](Telemetry-Attack-Detection-Addendum.md#f-tool-call-io) | MUST | covered | `action` | ODIS §6.4. |
 | [Tool Name](Telemetry-Attack-Detection-Addendum.md#f-tool-name) | MUST | out of scope |  |  |
 | [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) | MUST | out of scope |  |  |
