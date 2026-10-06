@@ -12,6 +12,8 @@ fields:
 - response_model_output
 - identities_used_per_hop
 - human_approval_elicitation_event
+- field: inter_agent_message
+  grounding: analogical
 components_text: Identity, AgentOutputHandling
 atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0052.000` Spearphishing via LLM'
 atlas_notes: Impersonation → mass defamatory broadcast
