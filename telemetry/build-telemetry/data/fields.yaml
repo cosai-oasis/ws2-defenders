@@ -653,7 +653,7 @@
   records: 'Agent-to-agent messages: sender, receiver, content, channel.'
   emitted_by: [componentReasoningCore]
   capture: 'Agent→agent messages: sender, receiver, content, channel, including capability/skill transfer.'
-  rationale: 'The substrate of cross-agent propagation: `AOC-04` (nine-day mutual-relay loop), `AOC-09` (capability transfer), `AOC-11` (mass broadcast), and `AOC-16`: the positive case, agents sharing risk signals.'
+  rationale: 'The substrate of cross-agent propagation: `AOC-04` (nine-day mutual-relay loop), `AOC-09` (capability transfer), and `AOC-16`: the positive case, agents sharing risk signals.'
 - id: a2a_task_lifecycle_event
   name: A2A Task Lifecycle Event
   tags: [AOS]
@@ -665,7 +665,7 @@
   modality: A2A
   emitted_by: [componentReasoningCore, componentAgentToolTransport]
   capture: 'Delegated-task state transitions across the A2A surface: task submitted, streamed, polled, **canceled**, resubscribed, and **push-notification config set or changed**, which registers an outbound callback destination.'
-  rationale: 'Held by the modality gate. Its evidence is generic multi-agent incidents, not A2A-protocol incidents: `AOC-04`, `AOC-09` and `AOC-11` did not use A2A. **MUST the moment A2A is in play**; push-notification configuration in particular registers an attacker-settable egress channel.'
+  rationale: 'Held by the modality gate. Its evidence is generic multi-agent incidents, not A2A-protocol incidents: `AOC-04` and `AOC-09` did not use A2A. **MUST the moment A2A is in play**; push-notification configuration in particular registers an attacker-settable egress channel.'
 - id: peer_agent_card_descriptor
   name: Peer Agent Card / Descriptor
   tags: [AOS]
@@ -1063,7 +1063,7 @@
   modality: out-of-band human approval
   emitted_by: [componentAgentConsentSurface, componentApplicationConsentSurface]
   capture: 'Out-of-band approval lifecycle for high-impact actions: correlation ID, status (pending / resolved / expired), outcome, **approver identity as verified by the identity provider** (not as reported by the agent), channel, and the **scope-binding validation result**: whether the approval still covers the arguments actually presented at execution time.'
-  rationale: 'Covers the control the corpus most often shows *missing*: `AOC-01`, `AOC-07`, and `AOC-11` are all irreversible actions taken without human authorization. `TA-23` is the sharper case, because the gate was present and was **switched off as configuration** rather than argued past: the record that matters is not only the approval but the change to whether approval was required at all, which is why **Capability-Set Change Event** (§1.6, MUST) and this field are read together. **MUST wherever the deployment gates actions on human approval.** Two sub-signals matter: approver identity must come from the identity provider, not the agent''s claim; and approval scope must be re-validated against the arguments actually presented, or one sign-off can be replayed against a larger action.'
+  rationale: 'Covers the control the corpus most often shows *missing*: `AOC-01` and `AOC-07` are irreversible actions taken without human authorization. `TA-23` is the sharper case, because the gate was present and was **switched off as configuration** rather than argued past: the record that matters is not only the approval but the change to whether approval was required at all, which is why **Capability-Set Change Event** (§1.6, MUST) and this field are read together. **MUST wherever the deployment gates actions on human approval.** Two sub-signals matter: approver identity must come from the identity provider, not the agent''s claim; and approval scope must be re-validated against the arguments actually presented, or one sign-off can be replayed against a larger action.'
 - id: backend_route_restriction_decision
   name: Backend / Route Restriction Decision
   tags: [CPEX]

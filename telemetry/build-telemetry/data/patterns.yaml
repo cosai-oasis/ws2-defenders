@@ -540,19 +540,6 @@
   - output_egress_destination
   enriches: [authorization_decision_record]
   catches: [TA-01, AOC-03]
-- id: callback_to_undeclared_destination
-  former_id: CP-20
-  name: Task callback registered to an undeclared destination
-  indicates: Covert egress through delegated-task callbacks
-  stage: egress
-  join: [workflow_run_id]
-  conditions:
-  - An **A2A Task Lifecycle Event** registers a push-notification callback.
-  - Its destination (**Output Egress Destination**) is not among the peer's declared endpoints or the agent's egress history.
-  requires: [a2a_task_lifecycle_event, output_egress_destination]
-  enriches: [peer_agent_card_descriptor]
-  catches: []
-  catches_analogical: [AOC-11]
 - id: route_outside_restriction
   former_id: CP-32
   name: Call routed outside the restriction in force
@@ -653,3 +640,29 @@
   requires: [input_trust_classification, response_model_output]
   enriches: [input_source_channel, model_input, guardrail_input_verdict]
   catches: [TA-01, TA-39, TA-40]
+- id: claimed_failure_unrecorded
+  name: Claimed failure with no recorded failure
+  indicates: Injected content that fakes an error or limit to make the model stop, truncate or refuse
+  stage: decision
+  join: [session_turn_step_ids]
+  conditions:
+  - '**LLM Refusal** or **Stop Reason** shows the turn ending early, and the response attributes it to a failure: an expired token, exhausted memory or disk, a failed operation.'
+  - '**LLM Error / Exception** records no error for the turn.'
+  requires: [llm_refusal, stop_reason, llm_error_exception]
+  enriches: [input_output_token_counts, model_input, encoded_obfuscated_payload_indicator, response_model_output]
+  catches: []
+  catches_analogical: [TA-38]
+  motivation: '`TA-38` plants fabricated system messages (token expiry, out-of-memory kills, disk exhaustion) so that an analysis model aborts; no test against a model is reported. It applies RFC §4.4 ("The agent might be lying") to a misreport an attacker planted.'
+- id: callback_to_undeclared_destination
+  former_id: CP-20
+  name: Task callback registered to an undeclared destination
+  indicates: Covert egress through delegated-task callbacks
+  stage: egress
+  join: [workflow_run_id]
+  conditions:
+  - An **A2A Task Lifecycle Event** registers a push-notification callback.
+  - Its destination (**Output Egress Destination**) is not among the peer's declared endpoints or the agent's egress history.
+  requires: [a2a_task_lifecycle_event, output_egress_destination]
+  enriches: [peer_agent_card_descriptor]
+  catches: []
+  motivation: A2A push-notification configuration registers an egress channel the peer sets; no corpus entry uses one.

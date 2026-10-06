@@ -3,12 +3,6 @@
 # from decided candidates; record documented in tools/xm_propose.py. Constructs resolve
 # at the versions pinned in sources.yaml `publications:` (tools/validate.py checks).
 asks:
-- id: ocsf_ai_agent_activity
-  publication: ocsf
-  summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
-  proposes: ['class:9001']
-  tracking: [ocsf-schema#1640]
-  status: open
 - id: ocsf_ai_delegation_activity
   publication: ocsf
   summary: Ratify an AI Delegation Activity class (9002) for the delegation lifecycle.
@@ -354,6 +348,13 @@ asks:
   proposes: []
   tracking: []
   status: proposed
+- id: ocsf_ai_agent_activity
+  publication: ocsf
+  summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
+  proposes: ['class:9001']
+  tracking: [ocsf-schema#1640]
+  status: open
+  rationale: 'Draft ocsf-schema#1754 adds an AI Agent Activity class as 6009 in Application Activity, not 9001. Its nine activities follow agent hook points, and it carries none of the five fields: Subagent Start and Stop have no attributes, so they record no sender, receiver, content, channel or step count, and no activity covers scheduled tasks, resource totals or capability changes.'
 fields:
   agent_name:
     ocsf:

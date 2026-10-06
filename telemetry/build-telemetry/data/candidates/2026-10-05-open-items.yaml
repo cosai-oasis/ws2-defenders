@@ -1,0 +1,120 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: P:claimed_failure_unrecorded
+  type: pattern
+  subject:
+    pattern: claimed_failure_unrecorded
+  source: open-items
+  proposal:
+    id: claimed_failure_unrecorded
+    name: Claimed failure with no recorded failure
+    indicates: Injected content that fakes an error or limit to make the model stop, truncate or refuse
+    stage: decision
+    join: [session_turn_step_ids]
+    conditions:
+    - '**LLM Refusal** or **Stop Reason** shows the turn ending early, and the response attributes it to a failure: an expired token, exhausted memory or disk, a failed operation.'
+    - '**LLM Error / Exception** records no error for the turn.'
+    requires: [llm_refusal, stop_reason, llm_error_exception]
+    enriches: [input_output_token_counts, model_input, encoded_obfuscated_payload_indicator, response_model_output]
+    catches: []
+    catches_analogical: [TA-38]
+    motivation: '`TA-38` plants fabricated system messages (token expiry, out-of-memory kills, disk exhaustion) so that an analysis model aborts; no test against a model is reported. It applies RFC §4.4 ("The agent might be lying") to a misreport an attacker planted.'
+  reason: decided 2026-10-05 to propose. Every TA-38 edge is analogical, so the pattern is motivation-only; it reads LLM Refusal and Stop Reason, not Response / Model Output.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: E:AOC-11:inter_agent_message:cs11
+  type: edge
+  subject:
+    attack: AOC-11
+    field: inter_agent_message
+  source: open-items
+  proposal:
+    grounding: reject
+  reason: CS11 (arXiv:2602.20021, pp. 33-34) records a human impersonating the owner and Ash emailing its contacts; the Moltbook post failed and the recipients shown are lab members. No second agent receives or acts on a relay. Inter-Agent Message stays MUST on 6 instances.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: E:AOC-11:a2a_task_lifecycle_event:cs11
+  type: edge
+  subject:
+    attack: AOC-11
+    field: a2a_task_lifecycle_event
+  source: open-items
+  proposal:
+    grounding: reject
+  reason: CS11 has no delegated task and no callback.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: E:AOC-11:peer_agent_card_descriptor:cs11
+  type: edge
+  subject:
+    attack: AOC-11
+    field: peer_agent_card_descriptor
+  source: open-items
+  proposal:
+    grounding: reject
+  reason: No peer agent appears in CS11.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: E:AOC-11:trust_domain_crossing_delegation_depth:cs11
+  type: edge
+  subject:
+    attack: AOC-11
+    field: trust_domain_crossing_delegation_depth
+  source: open-items
+  proposal:
+    grounding: reject
+  reason: Ash delegated to nothing in CS11.
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: P:callback_to_undeclared_destination:cs11
+  type: pattern
+  subject:
+    pattern: callback_to_undeclared_destination
+  source: open-items
+  proposal:
+    id: callback_to_undeclared_destination
+    former_id: CP-20
+    name: Task callback registered to an undeclared destination
+    indicates: Covert egress through delegated-task callbacks
+    stage: egress
+    join: [workflow_run_id]
+    conditions:
+    - An **A2A Task Lifecycle Event** registers a push-notification callback.
+    - Its destination (**Output Egress Destination**) is not among the peer's declared endpoints or the agent's egress history.
+    requires: [a2a_task_lifecycle_event, output_egress_destination]
+    enriches: [peer_agent_card_descriptor]
+    catches: []
+    motivation: A2A push-notification configuration registers an egress channel the peer sets; no corpus entry uses one.
+  reason: its only catch, AOC-11 (analogical), has no delegated task or callback in CS11
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'
+- id: Q:ocsf_ai_agent_activity:xm26
+  type: ask
+  subject:
+    ask: ocsf_ai_agent_activity
+  source: open-items
+  proposal:
+    id: ocsf_ai_agent_activity
+    publication: ocsf
+    summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
+    proposes: ['class:9001']
+    tracking: [ocsf-schema#1640]
+    status: open
+    rationale: 'Draft ocsf-schema#1754 adds an AI Agent Activity class as 6009 in Application Activity, not 9001. Its nine activities follow agent hook points, and it carries none of the five fields: Subagent Start and Stop have no attributes, so they record no sender, receiver, content, channel or step count, and no activity covers scheduled tasks, resource totals or capability changes.'
+  reason: 'XM 26. #1754 checked 2026-10-05 at head 3a72052 (draft, open, updated 2026-09-22): class uid 9 under application (6009); activities Session Start/End, Subagent Start/Stop, User Prompt Submit, Permission Request, Tool Use, Stop, Compact; only ai_agent_stop_info and ai_agent_tool_use_info have attributes. Tracking stays #1640 per the XM 26 plan.'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-05'
+  applied: '2026-10-05'

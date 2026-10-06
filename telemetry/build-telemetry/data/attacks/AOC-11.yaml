@@ -9,17 +9,10 @@ fields:
 - verified_vs_displayed_identity
 - field: output_egress_destination
   note: broadcast scope
-- inter_agent_message
 - response_model_output
-- field: a2a_task_lifecycle_event
-  grounding: analogical
-- field: peer_agent_card_descriptor
-  grounding: analogical
 - identities_used_per_hop
-- field: trust_domain_crossing_delegation_depth
-  grounding: analogical
 - human_approval_elicitation_event
 components_text: Identity, AgentOutputHandling
-atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0061` Self-Replication; `AML.T0052.000` Spearphishing via LLM'
+atlas_text: '`AML.T0051.000` LLM Prompt Injection: Direct; `AML.T0052.000` Spearphishing via LLM'
 atlas_notes: Impersonation → mass defamatory broadcast
 risks: [riskAgentIdentitySpoofing, riskRogueActions]
