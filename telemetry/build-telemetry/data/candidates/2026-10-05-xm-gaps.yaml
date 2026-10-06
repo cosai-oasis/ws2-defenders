@@ -1,0 +1,463 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: Q:ocsf_training_provenance
+  type: ask
+  subject:
+    ask: ocsf_training_provenance
+  source: xm-gaps
+  proposal:
+    id: ocsf_training_provenance
+    publication: ocsf
+    summary: 'Add training-time records: a training-data item with its digest and its source or provenance (origin, license, acquisition time), and a compute job submission (submitter, entrypoint, image, requested resources).'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:training_data_item_digest:ocsf:ask
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No training-time objects
+    asks: [ocsf_training_provenance]
+  reason: replaces "No ask proposed." with ocsf_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:training_data_source_provenance:ocsf:ask
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No training-time objects
+    asks: [ocsf_training_provenance]
+  reason: replaces "No ask proposed." with ocsf_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:compute_job_submission_event:ocsf:ask
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: ['class:api_activity', 'attribute:actor', 'attribute:src_endpoint']
+    gap: Generic API activity carries the caller and source; no job entrypoint or resources
+    asks: [ocsf_training_provenance]
+  reason: replaces "No ask proposed." with ocsf_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:ocsf_tenant_scopes
+  type: ask
+  subject:
+    ask: ocsf_tenant_scopes
+  source: xm-gaps
+  proposal:
+    id: ocsf_tenant_scopes
+    publication: ocsf
+    summary: Carry the tenant of the agent, of the session and of the invoking user as separate attributes, beside metadata.tenant_uid.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:organization_tenant_id:ocsf:ask
+  type: mapping
+  subject:
+    field: organization_tenant_id
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: ['object:metadata', 'attribute:tenant_uid']
+    gap: One tenant per event (metadata.tenant_uid), not the tenant of the agent, the session and the invoking user separately
+    asks: [ocsf_tenant_scopes]
+  reason: replaces "No ask proposed." with ocsf_tenant_scopes
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:ocsf_backend_route
+  type: ask
+  subject:
+    ask: ocsf_backend_route
+  source: xm-gaps
+  proposal:
+    id: ocsf_backend_route
+    publication: ocsf
+    summary: Add the routing constraint in force, the candidate backends and the backend chosen to ai_operation.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:backend_route_restriction_decision:ocsf:ask
+  type: mapping
+  subject:
+    field: backend_route_restriction_decision
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No routing constraint or candidate backends
+    asks: [ocsf_backend_route]
+  reason: replaces "No ask proposed." with ocsf_backend_route
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:ocsf_mediation_coverage
+  type: ask
+  subject:
+    ask: ocsf_mediation_coverage
+  source: xm-gaps
+  proposal:
+    id: ocsf_mediation_coverage
+    publication: ocsf
+    summary: Record whether a reference monitor mediated an operation and, where none did, the path that bypassed it.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:mediation_coverage_bypass_path:ocsf:ask
+  type: mapping
+  subject:
+    field: mediation_coverage_bypass_path
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No mediation-coverage representation
+    asks: [ocsf_mediation_coverage]
+  reason: replaces "No ask proposed." with ocsf_mediation_coverage
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:ocsf_task_intent
+  type: ask
+  subject:
+    ask: ocsf_task_intent
+  source: xm-gaps
+  proposal:
+    id: ocsf_task_intent
+    publication: ocsf
+    summary: Add the purpose declared for a run to ai_operation, distinct from the agent charter on ai_agent.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:task_intent_declaration:ocsf:ask
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: ['object:ai_agent', 'attribute:charter']
+    gap: A charter defines the agent's role, scope and operating bounds, not the purpose declared for this run
+    asks: [ocsf_task_intent]
+  reason: replaces "No ask proposed." with ocsf_task_intent
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:ocsf_peer_agent_descriptor
+  type: ask
+  subject:
+    ask: ocsf_peer_agent_descriptor
+  source: xm-gaps
+  proposal:
+    id: ocsf_peer_agent_descriptor
+    publication: ocsf
+    summary: 'Record a counterparty agent descriptor at contact: its digest, whether it changed since the last contact, and the verification outcome.'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:peer_agent_card_descriptor:ocsf:ask
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: ocsf
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: ['object:ai_agent']
+    gap: ai_agent can describe a counterparty; no descriptor change or verification outcome
+    asks: [ocsf_peer_agent_descriptor]
+  reason: replaces "No ask proposed." with ocsf_peer_agent_descriptor
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:otel_autonomy_level
+  type: ask
+  subject:
+    ask: otel_autonomy_level
+  source: xm-gaps
+  proposal:
+    id: otel_autonomy_level
+    publication: otel_genai
+    summary: Add gen_ai.agent.autonomy_level, the level of action an agent may take without human approval.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:autonomy_level:otel:ask
+  type: mapping
+  subject:
+    field: autonomy_level
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No autonomy level
+    asks: [otel_autonomy_level]
+  reason: replaces "No ask proposed." with otel_autonomy_level
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:otel_task_intent
+  type: ask
+  subject:
+    ask: otel_task_intent
+  source: xm-gaps
+  proposal:
+    id: otel_task_intent
+    publication: otel_genai
+    summary: Add the purpose declared for an invoke_agent or invoke_workflow run.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:task_intent_declaration:otel:ask
+  type: mapping
+  subject:
+    field: task_intent_declaration
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No declared purpose for the run
+    asks: [otel_task_intent]
+  reason: replaces "No ask proposed." with otel_task_intent
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:otel_a2a
+  type: ask
+  subject:
+    ask: otel_a2a
+  source: xm-gaps
+  proposal:
+    id: otel_a2a
+    publication: otel_genai
+    summary: 'Add A2A conventions: task lifecycle events, including push-notification callback registration, and the counterparty agent card (URL, digest, change, verification outcome).'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:a2a_task_lifecycle_event:otel:ask
+  type: mapping
+  subject:
+    field: a2a_task_lifecycle_event
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No A2A conventions
+    asks: [otel_a2a]
+  reason: replaces "No ask proposed." with otel_a2a
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:peer_agent_card_descriptor:otel:ask
+  type: mapping
+  subject:
+    field: peer_agent_card_descriptor
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.agent.name, gen_ai.agent.id, gen_ai.agent.description, gen_ai.agent.version]
+    gap: Describes the agent a span is about; no counterparty descriptor, change or verification
+    asks: [otel_a2a]
+  reason: replaces "No ask proposed." with otel_a2a
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:otel_tool_code_ref
+  type: ask
+  subject:
+    ask: otel_tool_code_ref
+  source: xm-gaps
+  proposal:
+    id: otel_tool_code_ref
+    publication: otel_genai
+    summary: Add the tool and framework version and the code reference (repository, commit) on execute_tool and invoke_agent spans.
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:tool_agent_version:otel:ask
+  type: mapping
+  subject:
+    field: tool_agent_version
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.agent.version]
+    gap: Agent version only; no tool or framework version
+    asks: [otel_tool_code_ref]
+  reason: replaces "No ask proposed." with otel_tool_code_ref
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:repository_code_path_software_ref:otel:ask
+  type: mapping
+  subject:
+    field: repository_code_path_software_ref
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: partial
+    constructs: [vcs.repository.url.full, vcs.ref.head.revision]
+    gap: Version-control attributes exist for CI/CD telemetry, not for tool and agent code
+    asks: [otel_tool_code_ref]
+  reason: replaces "No ask proposed." with otel_tool_code_ref
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: Q:otel_training_provenance
+  type: ask
+  subject:
+    ask: otel_training_provenance
+  source: xm-gaps
+  proposal:
+    id: otel_training_provenance
+    publication: otel_semconv
+    summary: 'Add training-time conventions: a dataset item digest and its source, and a compute job submission (submitter, entrypoint, image, requested resources).'
+    proposes: []
+    tracking: []
+    status: proposed
+  reason: 'XM ask rule: a SHOULD field gets an ask where a deployment running its modality would need the publication to carry it'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:training_data_item_digest:otel:ask
+  type: mapping
+  subject:
+    field: training_data_item_digest
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    asks: [otel_training_provenance]
+  reason: replaces "No ask proposed." with otel_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:training_data_source_provenance:otel:ask
+  type: mapping
+  subject:
+    field: training_data_source_provenance
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    asks: [otel_training_provenance]
+  reason: replaces "No ask proposed." with otel_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: M:compute_job_submission_event:otel:ask
+  type: mapping
+  subject:
+    field: compute_job_submission_event
+    publication: otel
+  source: xm-gaps
+  proposal:
+    coverage: none
+    gap: No training-time conventions
+    asks: [otel_training_provenance]
+  reason: replaces "No ask proposed." with otel_training_provenance
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'
+- id: C:input_source_channel:turn-origin
+  type: capture
+  subject:
+    field: input_source_channel
+  source: xm-gaps
+  proposal:
+    capture_addition: For the principal's own turn, whether the principal typed the content or another party supplied it and the principal submitted it (a link's pre-filled parameter, a paste, a share target), with the supplying origin where known.
+  reason: 'TA-32: a pre-filled prompt arrives as the user''s turn, so Input Trust Classification sees user trust. The supplying origin is a channel, so this refines Input Source / Channel rather than adding a field; TA-32 already has an instance edge to it.'
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-10-06'
+  applied: '2026-10-06'

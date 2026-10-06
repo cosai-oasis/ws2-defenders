@@ -161,7 +161,7 @@
   origin: observed
   records: Which surface, tool, agent or document each input segment came from.
   emitted_by: [componentApplicationInputHandling, componentAgentInputHandling]
-  capture: 'Provenance label for each input segment: which surface/tool/agent/document it came from. Telemetry placed in a model''s context for analysis (log records, alerts, malware samples) is a channel of its own: its fields carry text an attacker wrote.'
+  capture: 'Provenance label for each input segment: which surface/tool/agent/document it came from. Telemetry placed in a model''s context for analysis (log records, alerts, malware samples) is a channel of its own: its fields carry text an attacker wrote. For the principal''s own turn, whether the principal typed the content or another party supplied it and the principal submitted it (a link''s pre-filled parameter, a paste, a share target), with the supplying origin where known.'
 - id: input_trust_classification
   name: Input Trust Classification
   tier: MUST
