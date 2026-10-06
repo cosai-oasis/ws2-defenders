@@ -5,7 +5,7 @@
 >
 > This is a proposal for discussion and feedback — not a final standard.
 
-The Attack Detection Addendum (AD) and the field catalog in RFC §6 are built from `data/`. Edit the data, not the generated regions of the documents; `tools/build.py` regenerates them and `tools/validate.py` checks the result. `tools/build_explorer.py` writes `telemetry/risk-map-explorer.html`, a self-contained page for browsing the attacks, Risk Map risks and controls, fields and patterns together; rebuild it when the data changes. The documents live one level up, in `telemetry/`. Run the commands below from this directory; the tools find the data and the documents from their own location, so they also work from anywhere else.
+The Attack Detection Addendum (AD) and the field catalog in RFC §6 are built from `data/`. Edit the data, not the generated regions of the documents; `tools/build.py` regenerates them and `tools/validate.py` checks the result. `tools/build.py` also writes `telemetry/risk-map-explorer.html` (through `tools/build_explorer.py`), a self-contained page for browsing the attacks, Risk Map risks and controls, fields and patterns together. The documents live one level up, in `telemetry/`. Run the commands below from this directory; the tools find the data and the documents from their own location, so they also work from anywhere else.
 
 ## Files
 

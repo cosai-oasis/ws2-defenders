@@ -5,17 +5,17 @@ Attacks -> Risks -> Controls -> Telemetry -> Detection patterns.
 Reads data/ and the three documents, and the CoSAI Risk Map at the commits
 pinned in data/sources.yaml from the validator's cache (~/.cache/cosai-telemetry;
 run tools/validate.py once to fill it). Writes telemetry/risk-map-explorer.html
-from tools/risk_map_explorer.template.html.
+from tools/risk_map_explorer.template.html. tools/build.py runs it after the
+documents, and its --check reports a page that differs from what this builds.
+The page depends only on those inputs, so it carries no build date or commit.
 
     python3 tools/build_explorer.py [-o PATH]
 """
 import argparse
-import datetime
 import glob
 import html
 import json
 import re
-import subprocess
 from pathlib import Path
 
 import yaml
@@ -23,6 +23,7 @@ import yaml
 HERE = Path(__file__).resolve().parent
 WS = HERE.parents[2]
 DATA = HERE.parent / 'data'
+OUT = WS / 'telemetry/risk-map-explorer.html'
 CACHE = Path.home() / '.cache/cosai-telemetry'
 DOCS = 'https://github.com/cosai-oasis/ws2-defenders/blob/edits/telemetry/'
 AD = DOCS + 'Telemetry-Attack-Detection-Addendum.md'
@@ -309,35 +310,33 @@ def build():
                 if n not in nodes:
                     raise SystemExit(f'{k} edge {e[:2]}: {n} unknown')
 
-    def rev(path):
-        try:
-            return subprocess.run(['git', '-C', str(WS), 'rev-parse', '--short', 'HEAD'],
-                                  capture_output=True, text=True, check=True).stdout.strip()
-        except Exception:
-            return '?'
     rfc_h1 = (WS / 'telemetry/CoSAI-AI-Telemetry-RFC.md').read_text().split('\n', 1)[0]
     m = re.match(r'# (.+?) \{\*\*Working Draft v([\d.]+)\*\*\}', rfc_h1)
     if not m:
         raise SystemExit(f'RFC H1 not recognized: {rfc_h1}')
     meta = {
         'title': m[1], 'version': m[2],
-        'ws2': f'ws2-defenders edits@{rev(WS)}',
         'riskmap': rm_labels,
         'atlas': src['atlas']['release'],
-        'built': datetime.date.today().isoformat(),
         'docs': {'rfc': RFC, 'ad': AD, 'xm': DOCS + 'Telemetry-Cross-Mapping-Addendum.md'},
     }
     return {'nodes': nodes, 'groups': groups, 'edges': edges, 'meta': meta}
 
 
+def render():
+    """The page text, and the data it embeds."""
+    data = build()
+    page = (HERE / 'risk_map_explorer.template.html').read_text(encoding='utf-8')
+    blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+    return page.replace('/*DATA*/null', blob), data
+
+
 def main():
     ap = argparse.ArgumentParser(allow_abbrev=False)
-    ap.add_argument('-o', '--output', default=str(WS / 'telemetry/risk-map-explorer.html'))
+    ap.add_argument('-o', '--output', default=str(OUT))
     args = ap.parse_args()
-    data = build()
-    page = (HERE / 'risk_map_explorer.template.html').read_text()
-    blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-    Path(args.output).write_text(page.replace('/*DATA*/null', blob))
+    page, data = render()
+    Path(args.output).write_text(page, encoding='utf-8')
     n = data['nodes']
     count = {t: sum(1 for v in n.values() if v['t'] == t) for t in 'ARCFP'}
     print(f"wrote {args.output}: {count}, edges {{{', '.join(f'{k}: {len(v)}' for k, v in data['edges'].items())}}}")

@@ -375,6 +375,10 @@ def main():
         with open(os.path.join(DIR, name), encoding='utf-8') as f:
             text = f.read()
         check(f'{name}: generated regions match data/ (tools/build.py)', fn(text) == text)
+    import build_explorer
+    out = build_explorer.OUT
+    check(f'{out.name}: matches data/ (tools/build.py)',
+          out.exists() and build_explorer.render()[0] == out.read_text(encoding='utf-8'))
 
     print('5. documents')
     document_checks(T, sorted(attacks), tiers)

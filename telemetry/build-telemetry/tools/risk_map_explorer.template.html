@@ -384,7 +384,7 @@ function intro() {
   <p>${c('A')} attacks, ${c('R')} risks, ${c('C')} controls, ${c('F')} fields (${tiers}), ${c('P')} patterns.</p>
   <p><a href="${m.docs.rfc}" target="_blank" rel="noopener">RFC</a> · <a href="${m.docs.ad}" target="_blank" rel="noopener">Attack Detection Addendum</a> · <a href="${m.docs.xm}" target="_blank" rel="noopener">Cross-Mapping Addendum</a></p>
   <p class="note">Keys: <code>/</code> search, <code>Esc</code> overview, <code>Backspace</code> back.</p>
-  <footer>Built ${esc(m.built)} from ${esc(m.ws2)}; Risk Map ${m.riskmap.map(esc).join(' + ')}; ATLAS ${esc(m.atlas)}.</footer>`;
+  <footer>Built from the data behind ${esc(m.title)} v${esc(m.version)}; Risk Map ${m.riskmap.map(esc).join(' + ')}; ATLAS ${esc(m.atlas)}.</footer>`;
 }
 
 // ---------------------------------------------------------------- events
@@ -415,7 +415,6 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Backspace' && S.hist.length) { e.preventDefault(); back(); }
 });
 $('#rfc').href = D.meta.docs.rfc; $('#rfc').textContent = D.meta.title;
-$('#rfc').title = `Built from ${D.meta.ws2}`;
 $('#ver').textContent = `DRAFT v${D.meta.version}`;
 document.title = `${D.meta.title} v${D.meta.version} (DRAFT) · Risk Map Explorer`;
 new ResizeObserver(() => wires()).observe($('#cols'));

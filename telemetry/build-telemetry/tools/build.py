@@ -9,7 +9,8 @@ between GENERATED markers), §3.2 to §3.4 inventory
 tables, §3.6 ATLAS table and the attack-source reference list; RFC §6 field
 tables, which link to each field's AD entry, and the tier totals the RFC states; XM's
 pins table, asks summary, per-step correspondence tables and ask lists, from
-data/mapping.yaml and data/sources.yaml.
+data/mapping.yaml and data/sources.yaml. Then the explorer page,
+telemetry/risk-map-explorer.html (tools/build_explorer.py).
 Everything else in both documents is hand-written and left untouched.
 
 Usage:
@@ -493,6 +494,19 @@ def main():
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(new)
             print(f'{name}: rewritten')
+    # The explorer reads the documents too, so it is built after them.
+    import build_explorer
+    page = build_explorer.render()[0]
+    name = os.path.relpath(build_explorer.OUT, DIR)
+    old = build_explorer.OUT.read_text(encoding='utf-8') if build_explorer.OUT.exists() else None
+    if page == old:
+        print(f'{name}: up to date')
+    elif check:
+        drift = True
+        print(f'{name}: differs from data/ (one generated page; no diff shown)')
+    else:
+        build_explorer.OUT.write_text(page, encoding='utf-8')
+        print(f'{name}: rewritten')
     sys.exit(1 if drift else 0)
 
 
