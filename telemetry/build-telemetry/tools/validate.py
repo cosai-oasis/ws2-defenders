@@ -225,6 +225,18 @@ def document_checks(T, corpus, tiers):
                        T['RFC'])
     check('RFC: corpus summary counts match the data (entries, TA, IR, AOC: %d, %d, %d, %d)' % want,
           [] if found and all(tuple(map(int, f)) == want for f in found) else (found or ['summary sentence not found']))
+    # Hand-written ID ranges ("`TA-01` to `TA-40`", linked or not). A range opening at
+    # 01 claims the whole family, so it must close at the family's last ID; any range
+    # must run forward within one family.
+    last = {k: max(int(a.split('-')[1]) for a in corpus if a.startswith(k + '-')) for k in by_kind}
+    stale = []
+    for k, t in T.items():
+        plain = re.sub(r'\]\(#[^)]*\)', ']', t)
+        for m in re.finditer(r'`(TA|IR|AOC)-(\d+)`\]? to \[?`(TA|IR|AOC)-(\d+)`', plain):
+            fam, lo, fam2, hi = m.group(1), int(m.group(2)), m.group(3), int(m.group(4))
+            if fam != fam2 or lo >= hi or (lo == 1 and hi != last[fam]):
+                stale.append(f'{k}: {m.group(0)}')
+    check('hand-written ID ranges are well formed; a range from 01 runs to the last ID', stale)
 
     def ref_section(t):
         m = re.search(r'^## (?:\d+\. )?References\s*$', t, re.M)
