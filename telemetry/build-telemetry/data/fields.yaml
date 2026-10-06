@@ -1001,7 +1001,7 @@
   records: Per-session sequence number, hash-chained, for gap and reordering detection.
   modality: hash-chained event streams
   emitted_by: [componentAuditRecordRepository]
-  capture: Per-session monotonic sequence number enabling gap and reordering detection. The stream **SHOULD be hash-chained**, and where chained the **chain head SHOULD be periodically signed and published outside the emitter's trust domain**. That is the minimum that lets a verifier distinguish a gap from a suppression.
+  capture: Per-session monotonic sequence number enabling gap and reordering detection. The stream **SHOULD be hash-chained**, and where chained the **chain head SHOULD be periodically signed and published outside the emitter's trust domain**. That is the minimum that lets a verifier distinguish a gap from a suppression. Where the chain head is published, each record carries the chain identifier and a reference to the published head that covers it.
   rationale: 'The minimum defense against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence. Grounded analogically ([§4.2](#42-the-telemetry-plane)).'
 - id: policy_reason_code
   name: Policy Reason Code
