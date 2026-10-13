@@ -27,12 +27,6 @@ with one change.
 - **Lifecycle:** land as `Draft`; a maintainer flips it to `Accepted`; a replaced ADR
   becomes `Superseded by ADR-WS2-XXX` and links forward. Amendments may live inside an ADR
   as a dated section rather than forcing a new number.
-- **A Draft can carry a date it becomes binding.** ADR-WS2-001 and -002 both do: Fall week
-  1, the week of **2026-09-28**. Before that date they are a first specification nobody has
-  approved and argument is free. After it the D-numbers are the contract the cohort builds
-  against, so a change is a dated amendment rather than an edit, and a reversal needs a
-  superseding ADR. The date is stated in each ADR's Status line and again above its
-  Context, because a reader who skips the header is exactly the reader who needs it.
 
 ## Where a decision belongs
 
@@ -40,26 +34,20 @@ with one change.
 | --- | --- |
 | **ADRs** (here) | WS2 tooling, infrastructure, method, and the invariants that govern them |
 | **Whitepapers and RFCs** (repo root, `telemetry/`, …) | Guidance published to the coalition |
-| **Project plans** | Delivery sequencing. These two ADRs carry theirs inline, below the Consequences section, because the plan *is* how the decision gets discharged |
-
-That last row diverges from upstream, which keeps implementation plans local and untracked.
-Here the plan is part of the record: these decisions are being taken by a cohort that turns
-over, so the sequencing needs to outlive the people who agreed it.
 
 ## Index
 
 | # | Title | Status | Date |
 | --- | --- | --- | --- |
-| [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft — binding 2026-09-28 | 2026-09-21 |
-| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft — binding 2026-09-28 | 2026-09-21 |
+| [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft - Pending Review | 2026-09-21 |
+| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft - Pending Review | 2026-09-21 |
 
 ### Reserved
 
-Claimed by ADR-WS2-001 D12 and taken during Fall week 2; listed here so the numbers are not
-reused.
+Claimed by ADR-WS2-001 D12; listed here so the numbers are not reused.
 
-| # | Expected title | Taken by |
-| --- | --- | --- |
-| ADR-WS2-003 | Critical user journeys and the MCP tool surface | ADR-WS2-001 §3 week 2 |
-| ADR-WS2-004 | Graph store and reasoning profile | ADR-WS2-001 §3 week 2 |
-| ADR-WS2-005 | Hosting the MCP server — conditional | ADR-WS2-001 §6, only if its preconditions hold |
+| # | Expected title |
+| --- | --- |
+| ADR-WS2-003 | Critical user journeys and the MCP tool surface |
+| ADR-WS2-004 | Graph store and reasoning profile |
+| ADR-WS2-005 | Hosting the MCP server — conditional, only if the server is hosted |
