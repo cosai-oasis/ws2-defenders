@@ -47,14 +47,6 @@ Work this decision implies but does not itself perform — later ADRs, issues, P
 
 ---
 
-# Project plan
-
-*Optional, and a divergence from upstream.* Where the decision is discharged by a cohort that
-turns over, the sequencing belongs in the record: team, cadence, milestones with committed and
-stretch scope, gates, artifacts, risks. Omit for decisions that are simply true once taken.
-
----
-
 ### Authoring notes — delete before merging
 
 - Filename `NNN-slug.md`, zero-padded sequential, kebab-case slug. The qualified `ADR-WS2-NNN`
