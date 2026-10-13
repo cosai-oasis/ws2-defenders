@@ -1,4 +1,4 @@
-# ADR-WS2-001: A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP
+# ADR-WS2-001: bubo-graphrag-mcp (Backed Up By Ontology): every answerable question about CoSAI, grounded in its own publications and data, served over MCP
 
 **Status:** Draft - Pending Review
 **Date:** 2026-09-21
@@ -8,7 +8,7 @@
 
 ## Context
 
-This project builds a GraphRAG MCP server that serves as a CoSAI Oracle. Its primary
+This project builds a GraphRAG MCP server called bubo-graphrag-mcp (bubo), Backed Up By Ontology. Its primary
 benefit is a tool that answers every answerable question about CoSAI from ground truth,
 independent of any one model. An OWL/RDF representation supports lexical, semantic and
 named-entity disambiguation, expresses the relationships between entities, indexes all of
@@ -16,7 +16,7 @@ CoSAI's knowledge content, and supports reasoning over the logic it represents. 
 D3FEND and SPDX 3.1 both use this representation, and the Risk Map should adopt it,
 because its YAML is not expressive enough
 ([secure-ai-tooling#388](https://github.com/cosai-oasis/secure-ai-tooling/issues/388)).
-Exposing the ontology through GraphRAG gives CoSAI's users a security oracle that answers
+Exposing the ontology through GraphRAG gives CoSAI's users a security tool that answers
 truthfully what the CoSAI Risk Map implies for their specific needs. Along the way to the
 full structured representation, the same graph answers other questions about CoSAI, such
 as which groups are meeting and what they are doing, which delivers value immediately.
@@ -54,7 +54,7 @@ including the contributor email addresses published in them, and its open groups
 mailing lists and their archives are public repositories of **TLP:CLEAR** information.
 Every source this ADR ingests is one of these, so no data here is restricted by its
 classification. That includes workstream and SIG minutes once a group commits them to
-its public repository: the Oracle reads the committed folder, never Drive, so it holds
+its public repository: bubo reads the committed folder, never Drive, so it holds
 no member-only source and no Drive credential.
 
 ## Decision
@@ -141,7 +141,7 @@ The critical user journeys and the MCP tool surface land as **ADR-WS2-003**, ahe
 graph-store choice in **ADR-WS2-004**, because "which reasoning profile do we need" is a
 question about which queries must work. Hosting, if it happens, is **ADR-WS2-005**.
 
-### D13. The Oracle is maintained, not only built
+### D13. bubo is maintained, not only built
 
 The graph, its OWL/RDF (the `cosaic:` ontology, its shapes and alignments, and the
 `cosai:` Risk Map catalog) and the MCP server are kept current and correct after they
@@ -162,7 +162,7 @@ response:
   both.
 
 The Lead owns maintenance and holds merge authority for it. Handing it to another named
-maintainer is a change to this decision, recorded as an amendment, so the Oracle always
+maintainer is a change to this decision, recorded as an amendment, so bubo always
 has one.
 
 ### D14. Ontologies are versioned by SemVer, and the Risk Map's OWL/RDF form is `2.0.0`

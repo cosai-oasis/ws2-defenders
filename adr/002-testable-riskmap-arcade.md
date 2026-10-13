@@ -1,4 +1,4 @@
-# ADR-WS2-002: Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk
+# ADR-WS2-002: ARCADE (Assessing Risks and Control through Attack Detection Evaluations): executed evidence that a CoSAI control mitigates a CoSAI risk
 
 **Status:** Draft - Pending Review
 **Date:** 2026-09-21
@@ -34,7 +34,7 @@ evidence, anywhere, that a CoSAI control mitigates a CoSAI risk.
 
 **Boundaries.** [#491](https://github.com/cosai-oasis/secure-ai-tooling/issues/491) is canonical
 for *what is being asked for* — where it and this ADR disagree on scope, the issue and the TSC
-win. [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) is canonical for the CoSAI-RM ontology, which
+win. [ADR-WS2-001](001-bubo-graphrag-mcp.md) is canonical for the CoSAI-RM ontology, which
 the run records join through the Risk Map's own ids (D4). The conventions the two share, such as
 absence-is-a-finding, are deliberate, so two cohorts that work the same way can review each
 other.

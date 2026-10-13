@@ -39,8 +39,8 @@ with one change.
 
 | # | Title | Status | Date |
 | --- | --- | --- | --- |
-| [ADR-WS2-001](001-cosai-oracle-graph-and-mcp-server.md) | A CoSAI Oracle — every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft - Pending Review | 2026-09-21 |
-| [ADR-WS2-002](002-testable-rm-executed-evidence.md) | Testable RM — executed evidence that a CoSAI control mitigates a CoSAI risk | Draft - Pending Review | 2026-09-21 |
+| [ADR-WS2-001](001-bubo-graphrag-mcp.md) | bubo-graphrag-mcp (Backed Up By Ontology): every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft - Pending Review | 2026-09-21 |
+| [ADR-WS2-002](002-testable-riskmap-arcade.md) | ARCADE (Assessing Risks and Control through Attack Detection Evaluations): executed evidence that a CoSAI control mitigates a CoSAI risk | Draft - Pending Review | 2026-09-21 |
 
 ### Reserved
 
