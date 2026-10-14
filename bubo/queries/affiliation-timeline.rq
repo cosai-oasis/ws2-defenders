@@ -1,0 +1,14 @@
+# Affiliation as attested, with the open-bounds flag. A row says "credited under this
+# organization in documents published between these dates" -- NOT "employed from/to".
+SELECT ?person ?organization ?earliestEvidence ?latestEvidence ?boundsKnown
+WHERE {
+  ?role a cosaic:AffiliationRole ;
+        obo:BFO_0000197 ?p ;
+        obo:BFO_0000199 ?interval .     # occupies temporal region
+  ?p rdfs:label ?person .
+  ?interval cosaic:earliestEvidence ?earliestEvidence ;
+            cosaic:latestEvidence   ?latestEvidence ;
+            cosaic:boundsKnown      ?boundsKnown .
+  OPTIONAL { ?role cosaic:withOrganization ?o . ?o rdfs:label ?organization }
+}
+ORDER BY ?person ?earliestEvidence

@@ -1,0 +1,12 @@
+# Employer changes the corpus implies but never states. Each carries the window it must
+# have happened in, not a date.
+SELECT ?event ?notBefore ?notAfter ?inferred
+WHERE {
+  ?e a ?kind ;
+     rdfs:label ?event ;
+     cosaic:inferred ?inferred ;
+     obo:BFO_0000199 ?window .
+  ?window cosaic:notBefore ?notBefore ; cosaic:notAfter ?notAfter .
+  VALUES ?kind { cosaic:AffiliationLoss cosaic:AffiliationGain }
+}
+ORDER BY ?notBefore

@@ -1,0 +1,907 @@
+@prefix cosaic: <https://cosai-oasis.github.io/ontology/cosai-contrib#> .
+@prefix cco:    <https://www.commoncoreontologies.org/> .
+@prefix obo:    <http://purl.obolibrary.org/obo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+<https://cosai-oasis.github.io/ontology/cosai-contrib>
+    a owl:Ontology ;
+    owl:versionIRI <https://cosai-oasis.github.io/ontology/cosai-contrib/0.6.1> ;
+    owl:versionInfo "0.6.1" ;
+    owl:priorVersion <https://cosai-oasis.github.io/ontology/cosai-contrib/0.6.0> ;
+    dcterms:title "CoSAI Contribution Ontology"@en ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    vann:preferredNamespacePrefix "cosaic" ;
+    vann:preferredNamespaceUri "https://cosai-oasis.github.io/ontology/cosai-contrib#" ;
+    rdfs:comment """Who has done what work in CoSAI: people, organizations,
+workstreams, publications, credited editorial roles, and citations. Grounded in BFO
+2020 via a MIREOT subset of Common Core Ontologies v2.2 in alignments/cco.ttl.
+
+The model is time-aware throughout. Nothing that can change over time is a bare edge:
+a publication is brought about by a publication EVENT occupying an instant, and an
+affiliation is a ROLE borne over an interval. The corpus makes this necessary rather
+than ornamental -- three contributors change employer across the twelve documents, and
+one document carries a revision whose credit list was not refreshed.
+
+Matching to external vocabularies uses SKOS only; see alignments/bridges.ttl. There is
+no owl:equivalentClass, no owl:sameAs, and no owl:imports of CCO, BFO, SPDX or
+D3FEND."""@en .
+
+
+#################################################################
+#  Continuants -- things that persist through time
+#################################################################
+
+cosaic:Person a owl:Class ;
+    rdfs:subClassOf cco:ont00001262 ;          # Person
+    rdfs:label "person"@en ;
+    rdfs:comment "A human credited in, or committing to, a CoSAI publication."@en .
+
+cosaic:Organization a owl:Class ;
+    rdfs:subClassOf cco:ont00001180 ;          # Organization (an object aggregate)
+    rdfs:label "organization"@en ;
+    rdfs:comment """An employer or member company a contributor is credited under.
+Canonical naming, confirmed spelling variants, and the email domains that imply
+affiliation are curated in registry/organizations.yaml, because deciding two strings
+name one organization is a judgment rather than a string operation."""@en .
+
+cosaic:Workstream a owl:Class ;
+    rdfs:subClassOf cco:ont00000300 ;          # Group of Agents
+    rdfs:label "workstream"@en ;
+    rdfs:comment """A CoSAI workstream, which produces publications. A group of
+agents rather than an organization: its members are affiliated with many different
+employers."""@en .
+
+cosaic:Publication a owl:Class ;
+    rdfs:subClassOf cco:ont00002039 ;          # Document Content Entity
+    rdfs:label "publication"@en ;
+    rdfs:comment """The work itself -- "Signing ML Artifacts" as a thing that can be
+cited -- as distinct from any file carrying it. A generically dependent continuant."""@en .
+
+cosaic:Manifestation a owl:Class ;
+    rdfs:subClassOf cco:ont00001298 ;          # Material Copy of a Document
+    rdfs:label "manifestation"@en ;
+    rdfs:comment """A file carrying a publication: the markdown at a pinned commit, or
+the derived PDF. Separated from cosaic:Publication so that "the paper" and "the PDF at
+this URL" are distinguishable, which is what lets a citation of either resolve to the
+same work."""@en .
+
+cosaic:ExternalPublication a owl:Class ;
+    rdfs:subClassOf cco:ont00002039 ;
+    rdfs:label "external publication"@en ;
+    rdfs:comment "A work published outside CoSAI that cites a CoSAI publication."@en .
+
+cosaic:CoSAIWorkStub a owl:Class ;
+    rdfs:subClassOf cco:ont00002039 ;
+    rdfs:label "CoSAI work stub"@en ;
+    rdfs:comment """A CoSAI work that the citation dataset references but which is
+outside this project's document scope, such as the Risk Map or Project CodeGuard. Held
+as a stub so citation counts stay correct rather than being silently dropped."""@en .
+
+
+#################################################################
+#  Designators -- names and addresses that DESIGNATE a person
+#################################################################
+#  Modeled as information content entities rather than literals, so each carries the
+#  document and date that asserted it. An address is evidence about a moment, not a
+#  standing fact: a work address stops appearing when someone changes employer, and
+#  that absence is data.
+
+cosaic:EmailAddress a owl:Class ;
+    rdfs:subClassOf cco:ont00002070 ;          # Email Address
+    rdfs:label "email address"@en ;
+    rdfs:comment """An address published in a credit list. Retained in full: these are
+printed deliberately in Apache-2.0 licensed standards documents so readers can contact
+the person responsible for a claim, and the domain is the strongest organization signal
+in the corpus. A person may have several -- Jason Garman is credited under two Amazon
+addresses."""@en .
+
+cosaic:PersonName a owl:Class ;
+    rdfs:subClassOf cco:ont00000003 ;          # Designative Name
+    rdfs:label "person name"@en ;
+    rdfs:comment """A name string designating a person. Distinguishing the proper from
+the abbreviated form is what lets "J.R. Rao" and "Josyula R. Rao" designate one person
+without an ad-hoc alias field."""@en .
+
+cosaic:ProperName a owl:Class ;
+    rdfs:subClassOf cosaic:PersonName , cco:ont00001014 ;
+    rdfs:label "proper name"@en .
+
+cosaic:AbbreviatedName a owl:Class ;
+    rdfs:subClassOf cosaic:PersonName , cco:ont00000605 ;
+    rdfs:label "abbreviated name"@en ;
+    rdfs:comment "An initialised form, such as 'J.R. Rao'."@en .
+
+
+#################################################################
+#  Roles -- specifically dependent continuants, borne over time
+#################################################################
+
+cosaic:CreditedRole a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000023 ;          # role
+    rdfs:label "credited role"@en ;
+    rdfs:comment """A role a person is credited with on one publication. Reified rather
+than edged, so one person can hold several roles on one document -- Akila Srinivasan is
+both Reviewer and TSC Co-Chair on the Shared Responsibility Framework -- and so each
+credit carries the verbatim label it came from."""@en .
+
+cosaic:WorkstreamLeadRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "workstream lead role"@en .
+cosaic:EditorRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "editor role"@en .
+cosaic:ContributorRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "contributor role"@en .
+cosaic:ReviewerRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "reviewer role"@en .
+cosaic:TSCCoChairRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "TSC co-chair role"@en .
+cosaic:TSCReviewerRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "TSC reviewer role"@en ;
+    rdfs:comment "A review role, distinct from co-chairing the TSC."@en .
+cosaic:AuthorRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ; rdfs:label "author role"@en ;
+    rdfs:comment "Front-matter authorship, as ODIS declares it."@en .
+
+cosaic:OrganizationalAuthorRole a owl:Class ;
+    rdfs:subClassOf cosaic:CreditedRole ;
+    rdfs:label "organizational author role"@en ;
+    rdfs:comment """Authorship borne by an ORGANIZATION rather than a person. Some CoSAI
+outputs are attributed corporately with no named contributors -- the Principles for
+Secure-by-Design Agentic Systems is authored by CoSAI itself -- and recording no author
+for those would misrepresent them as uncredited.
+
+BFO permits this without strain: a role inheres in an independent continuant, and an
+organization is an object aggregate, which is one. So the bearer of this role is a
+cosaic:Organization while the bearer of every other credited role is a cosaic:Person.
+
+This is the third of three attribution modes in the corpus, alongside named credited
+individuals and (step 6) GitHub commit history."""@en .
+
+cosaic:AffiliationRole a owl:Class ;
+    rdfs:subClassOf cco:ont00000175 ;          # Organization Member Role
+    rdfs:label "affiliation role"@en ;
+    rdfs:comment """A person's membership of an organization, borne over a temporal
+interval. Evidence-anchored with OPEN bounds: the corpus records that someone held an
+affiliation at certain publication dates, never when it began or ended. An instance
+therefore carries earliestEvidence and latestEvidence with boundsKnown false, and never
+a fabricated start or end date."""@en .
+
+cosaic:GitHubContributorRole a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000023 ;
+    rdfs:label "GitHub contributor role"@en ;
+    rdfs:comment """Step 6. Deliberately NOT a subclass of cosaic:CreditedRole:
+committing to a document and being credited in it are different claims, and conflating
+a typo fix with authorship of a section would misattribute work."""@en .
+
+
+#################################################################
+#  Occurrents -- events, each occupying a temporal region
+#################################################################
+
+cosaic:PublicationEvent a owl:Class ;
+    rdfs:subClassOf cco:ont00002077 ;          # Act of Publishing
+    rdfs:label "publication event"@en ;
+    rdfs:comment """The publishing of a work at an instant. A document is not a static
+record but the output of a datable event, which is what makes "who had done what by
+when" answerable."""@en .
+
+cosaic:RevisionEvent a owl:Class ;
+    rdfs:subClassOf cco:ont00002077 ;
+    rdfs:label "revision event"@en ;
+    rdfs:comment """A later republication of an existing work. Separate from the
+original publication event because credits do not necessarily travel with it: MCP
+Security was revised to v2.0 on 2026-08-12 carrying its January credit list, so those
+credits are evidence about 2026-01-08. Dating them to the revision would read as two
+contributors returning to employers they had left."""@en .
+
+cosaic:AffiliationGain a owl:Class ;
+    rdfs:subClassOf cco:ont00001194 ;          # Gain of Role
+    rdfs:label "affiliation gain"@en ;
+    rdfs:comment "A person taking up membership of an organization."@en .
+
+cosaic:AffiliationLoss a owl:Class ;
+    rdfs:subClassOf cco:ont00000613 ;          # Loss of Role
+    rdfs:label "affiliation loss"@en ;
+    rdfs:comment """A person ceasing membership of an organization. Always inferred
+here, never stated: the corpus shows an employer present at one date and absent at a
+later one, so an instance carries notBefore, notAfter and inferred true rather than a
+date."""@en .
+
+cosaic:CitationEvent a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;          # process
+    rdfs:label "citation event"@en ;
+    rdfs:comment """An external work citing a CoSAI work. Reified because the useful
+facts are properties of the citing act -- whether it is a formal reference or a
+substantive use, and how the claim was verified -- not of either work alone."""@en .
+
+
+#################################################################
+#  Temporal regions
+#################################################################
+
+cosaic:Instant a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000148 ;          # zero-dimensional temporal region
+    rdfs:label "instant"@en ;
+    rdfs:comment "A calendar date, as a zero-dimensional temporal region."@en .
+
+cosaic:EvidenceInterval a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000038 ;          # one-dimensional temporal region
+    rdfs:label "evidence interval"@en ;
+    rdfs:comment """An interval known only through the evidence falling inside it. Its
+bounds are open: earliestEvidence and latestEvidence mark dates the claim is attested,
+not when it started or stopped holding."""@en .
+
+cosaic:UncertaintyWindow a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000038 ;
+    rdfs:label "uncertainty window"@en ;
+    rdfs:comment """The interval within which an inferred change must have happened,
+bounded by notBefore and notAfter. Used for affiliation changes, where the corpus fixes
+a window but not a date."""@en .
+
+
+#################################################################
+#  Object properties
+#################################################################
+
+cosaic:producedBy a owl:ObjectProperty ;
+    rdfs:label "produced by"@en ;
+    rdfs:domain cosaic:Publication ; rdfs:range cosaic:Workstream ;
+    rdfs:comment """Taken from the repository the document lives in, which is
+authoritative. The Shared Responsibility Framework's own front matter declares
+Workstream 2 while the document is Workstream 3 work; the claim is retained separately
+via cosaic:declaredAuthorField rather than being reconciled away."""@en .
+
+cosaic:manifestedAs a owl:ObjectProperty ;
+    rdfs:label "manifested as"@en ;
+    rdfs:domain cosaic:Publication ; rdfs:range cosaic:Manifestation .
+
+cosaic:derivedFrom a owl:ObjectProperty ;
+    rdfs:label "derived from"@en ;
+    rdfs:domain cosaic:Manifestation ; rdfs:range cosaic:Manifestation ;
+    rdfs:comment "A PDF generated by automated conversion from authoritative markdown."@en .
+
+cosaic:onPublication a owl:ObjectProperty ;
+    rdfs:label "on publication"@en ;
+    rdfs:domain cosaic:CreditedRole ; rdfs:range cosaic:Publication .
+
+cosaic:withOrganization a owl:ObjectProperty ;
+    rdfs:label "with organization"@en ;
+    rdfs:domain cosaic:AffiliationRole ; rdfs:range cosaic:Organization .
+
+cosaic:impliesOrganization a owl:ObjectProperty ;
+    rdfs:label "implies organization"@en ;
+    rdfs:domain cosaic:EmailAddress ; rdfs:range cosaic:Organization ;
+    rdfs:comment """Affiliation implied by an address domain. Evidence, not assertion:
+domains belonging to an individual rather than an employer are excluded via
+registry/organizations.yaml."""@en .
+
+cosaic:assertedIn a owl:ObjectProperty ;
+    rdfs:label "asserted in"@en ;
+    rdfs:range cosaic:Publication ;
+    rdfs:comment "The document that states this claim. Every credit, address, name and affiliation carries one."@en .
+
+cosaic:assertedAt a owl:ObjectProperty ;
+    rdfs:label "asserted at"@en ;
+    rdfs:range cosaic:Instant ;
+    rdfs:comment """The date the asserting document makes the claim *about*. For credits
+carried across a revision this is the original publication date, not the revision's."""@en .
+
+cosaic:evidencedBy a owl:ObjectProperty ;
+    rdfs:label "evidenced by"@en ;
+    rdfs:comment "Links an interval or inferred event to the assertions supporting it."@en .
+
+cosaic:citedWork a owl:ObjectProperty ;
+    rdfs:label "cited work"@en ;
+    rdfs:domain cosaic:CitationEvent .
+
+cosaic:citingPublication a owl:ObjectProperty ;
+    rdfs:label "citing publication"@en ;
+    rdfs:domain cosaic:CitationEvent ; rdfs:range cosaic:ExternalPublication .
+
+cosaic:publishedBy a owl:ObjectProperty ;
+    rdfs:label "published by"@en ;
+    rdfs:domain cosaic:ExternalPublication ; rdfs:range cosaic:Organization .
+
+
+#################################################################
+#  Datatype properties
+#################################################################
+
+cosaic:date a owl:DatatypeProperty ;
+    rdfs:label "date"@en ; rdfs:domain cosaic:Instant ; rdfs:range xsd:date .
+
+cosaic:earliestEvidence a owl:DatatypeProperty ;
+    rdfs:label "earliest evidence"@en ; rdfs:range xsd:date .
+cosaic:latestEvidence a owl:DatatypeProperty ;
+    rdfs:label "latest evidence"@en ; rdfs:range xsd:date .
+cosaic:notBefore a owl:DatatypeProperty ;
+    rdfs:label "not before"@en ; rdfs:range xsd:date .
+cosaic:notAfter a owl:DatatypeProperty ;
+    rdfs:label "not after"@en ; rdfs:range xsd:date .
+
+cosaic:boundsKnown a owl:DatatypeProperty ;
+    rdfs:label "bounds known"@en ; rdfs:range xsd:boolean ;
+    rdfs:comment "False on every evidence interval in this corpus. Consumers must not read an evidence date as a start or end date."@en .
+
+cosaic:inferred a owl:DatatypeProperty ;
+    rdfs:label "inferred"@en ; rdfs:range xsd:boolean ;
+    rdfs:comment "True on events derived from comparing assertions rather than stated by a document."@en .
+
+cosaic:sourceLabel a owl:DatatypeProperty ;
+    rdfs:label "source label"@en ; rdfs:domain cosaic:CreditedRole ;
+    rdfs:comment """The verbatim credit heading, e.g. "TSC reviewers" or "Editor". Kept
+so role normalization stays auditable: if the mapping in role-vocabulary.yaml is wrong,
+the original is still in the graph."""@en .
+
+cosaic:statedOrganization a owl:DatatypeProperty ;
+    rdfs:label "stated organization"@en ;
+    rdfs:comment "The verbatim employer spelling from the credit line, before canonicalisation."@en .
+
+cosaic:equalContribution a owl:DatatypeProperty ;
+    rdfs:label "equal contribution"@en ; rdfs:range xsd:boolean ;
+    rdfs:comment "From the dagger marker used in the Shared Responsibility Framework."@en .
+
+cosaic:scopeNote a owl:DatatypeProperty ;
+    rdfs:label "scope note"@en ;
+    rdfs:comment """A parenthetical qualifier on a credit, such as a section reference
+or a naming date."""@en .
+
+cosaic:approvalStatus a owl:DatatypeProperty ;
+    rdfs:label "approval status"@en ;
+    rdfs:comment """approved, working-draft, or unapproved-draft. Tools must expose this
+so a draft's credits are never presented as approved ones."""@en .
+
+cosaic:addressValue a owl:DatatypeProperty ;
+    rdfs:subPropertyOf cco:ont00001768 ;       # has URI value
+    rdfs:label "address value"@en ; rdfs:domain cosaic:EmailAddress ; rdfs:range xsd:string .
+
+cosaic:nameValue a owl:DatatypeProperty ;
+    rdfs:label "name value"@en ; rdfs:domain cosaic:PersonName ; rdfs:range xsd:string .
+
+cosaic:githubLogin a owl:DatatypeProperty ;
+    rdfs:label "GitHub login"@en ; rdfs:domain cosaic:Person ; rdfs:range xsd:string .
+
+cosaic:repo a owl:DatatypeProperty ;
+    rdfs:label "repository"@en ; rdfs:domain cosaic:Manifestation ; rdfs:range xsd:string .
+cosaic:path a owl:DatatypeProperty ;
+    rdfs:label "path"@en ; rdfs:domain cosaic:Manifestation ; rdfs:range xsd:string .
+cosaic:commitSha a owl:DatatypeProperty ;
+    rdfs:label "commit sha"@en ; rdfs:domain cosaic:Manifestation ; rdfs:range xsd:string .
+cosaic:mediaType a owl:DatatypeProperty ;
+    rdfs:label "media type"@en ; rdfs:domain cosaic:Manifestation ; rdfs:range xsd:string .
+cosaic:sourceUrl a owl:DatatypeProperty ;
+    rdfs:label "source URL"@en ; rdfs:range xsd:anyURI .
+
+cosaic:declaredAuthorField a owl:DatatypeProperty ;
+    rdfs:label "declared author field"@en ; rdfs:domain cosaic:Publication ;
+    rdfs:comment "A document's own author declaration, retained verbatim even where it disagrees with the repository."@en .
+
+cosaic:citationCategory a owl:DatatypeProperty ;
+    rdfs:label "citation category"@en ; rdfs:domain cosaic:CitationEvent ;
+    rdfs:comment "'Formal reference' or 'Substantive work citation', from the CoSAI TSC citation-impact dataset."@en .
+
+cosaic:verification a owl:DatatypeProperty ;
+    rdfs:label "verification"@en ; rdfs:domain cosaic:CitationEvent ;
+    rdfs:comment "'Directly inspected' or 'Search-index excerpt verified'. A citation tool must report which."@en .
+
+cosaic:publisherRelationship a owl:DatatypeProperty ;
+    rdfs:label "publisher relationship"@en ; rdfs:domain cosaic:CitationEvent ;
+    rdfs:comment "Whether the citing publisher is CoSAI-affiliated, which bears on how independent the citation is."@en .
+
+cosaic:evidenceSignal a owl:DatatypeProperty ;
+    rdfs:label "evidence signal"@en ; rdfs:domain cosaic:CitationEvent ;
+    rdfs:comment "The quoted basis for counting the citation."@en .
+
+
+#################################################################
+#  Annotation properties -- provenance of curation decisions
+#################################################################
+
+cosaic:mergeBasis a owl:AnnotationProperty ;
+    rdfs:label "merge basis"@en ;
+    rdfs:comment """Why two strings were treated as one entity: observed-variant,
+email-domain, or maintainer-confirmed. "Trend AI" is merged into Trend Micro on
+maintainer-confirmed grounds -- a rebranding of a subcompany of the same parent -- which
+nothing in the corpus establishes."""@en .
+
+cosaic:reviewNote a owl:AnnotationProperty ;
+    rdfs:label "review note"@en .
+
+cosaic:hasParticipantWork a owl:ObjectProperty ;
+    rdfs:subPropertyOf obo:BFO_0000057 ;
+    rdfs:label "has participant work"@en ;
+    rdfs:comment "Publication event to the work it published. A convenience subproperty of BFO has participant."@en .
+
+cosaic:version a owl:DatatypeProperty ;
+    rdfs:label "version"@en ; rdfs:domain cosaic:Publication .
+
+cosaic:creditsRefreshed a owl:DatatypeProperty ;
+    rdfs:label "credits refreshed"@en ; rdfs:domain cosaic:RevisionEvent ; rdfs:range xsd:boolean ;
+    rdfs:comment "Whether a revision updated the credit list. False means the credits are evidence about the original date."@en .
+
+cosaic:creditedWithoutEmployer a owl:DatatypeProperty ;
+    rdfs:label "credited without employer"@en ; rdfs:range xsd:boolean .
+
+cosaic:emailDomain a owl:DatatypeProperty ;
+    rdfs:label "email domain"@en ; rdfs:domain cosaic:Organization .
+
+# ---------------------------------------------------------------------------------
+# Meetings (v1.x). Built from list mail; see src/bubo_graphrag/ingest/maillist.py.
+#
+# A recurring meeting is not one occurrent. In BFO each occurrence is its own process,
+# and the recurrence is a *schedule* -- a directive that prescribes them. Modeling
+# "the weekly WS3 SIG" as a single process would conflate a plan with the events that
+# realize it, and would leave no way to say a scheduled occurrence did not happen.
+# ---------------------------------------------------------------------------------
+
+cosaic:MeetingSeries a owl:Class ;
+    rdfs:subClassOf cco:ont00000965 ;          # Prescriptive ICE ("Directive ICE")
+    rdfs:label "meeting series"@en ;
+    rdfs:comment """A standing meeting: its schedule, not its occurrences. A directive
+prescriptive information content entity -- CCO's "prescribes some Entity" -- because it
+prescribes meetings rather than being one. The
+iCalendar UID is the stable identifier where a calendar part exists; names drift across
+notices for a single series, so cosaic:seriesNameVariant keeps every observed spelling
+and the canonical choice is a curated registry decision."""@en .
+
+cosaic:Meeting a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;          # process
+    rdfs:label "meeting"@en ;
+    rdfs:comment """One occurrence. A process occupying a temporal region, linked to its
+series by cosaic:inSeries. A canceled occurrence is still an instance: it was scheduled
+and is evidence about the series, so it is retained with cosaic:canceled true rather
+than omitted."""@en .
+
+cosaic:SpecialInterestGroup a owl:Class ;
+    rdfs:subClassOf cco:ont00000300 ;          # Group of Agents
+    rdfs:label "special interest group"@en ;
+    rdfs:comment """A SIG convening under a workstream, related to it by obo:BFO_0000050
+(part of). Distinct from cosaic:Workstream because a SIG's scope is narrower than the
+workstream that contains it, and a workstream runs several concurrently."""@en .
+
+cosaic:GoverningBody a owl:Class ;
+    rdfs:subClassOf cco:ont00000300 ;          # Group of Agents
+    rdfs:label "governing body"@en ;
+    rdfs:comment """A body that governs the project rather than doing technical work, such
+as the Project Governing Board. Distinct from cosaic:Workstream, which produces
+publications: a governing body convenes meetings and approves, but authors nothing."""@en .
+
+cosaic:Committee a owl:Class ;
+    rdfs:subClassOf cco:ont00000300 ;          # Group of Agents
+    rdfs:label "committee"@en ;
+    rdfs:comment """A standing group doing project work that is neither technical nor
+governance, such as the Marketing Committee. Distinct from cosaic:GoverningBody because
+it approves nothing, and from cosaic:Workstream because it produces no publications."""@en .
+
+cosaic:MeetingSummary a owl:Class ;
+    rdfs:subClassOf cco:ont00002039 ;          # Document Content Entity
+    rdfs:label "meeting summary"@en ;
+    rdfs:comment """A record of a meeting, held outside this graph. The list mail that
+announces it carries only a link: the document itself returned HTTP 401 to an anonymous
+fetch, so it is restricted to CoSAI members and is flagged cosaic:accessRestricted. The
+node asserts that a record exists and where, never what it says -- and in particular
+never who attended, which is not available from mail at all."""@en .
+
+cosaic:AttendanceRole a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000023 ;          # role
+    rdfs:label "attendance role"@en ;
+    rdfs:comment """Held by a person at one meeting. Reserved and deliberately unused:
+no attendee data exists in the mail source (no summary body names attendees, and every
+iCalendar VEVENT carries zero ATTENDEE lines). Kept distinct from cosaic:CreditedRole so
+that attending a meeting can never be reported as authorship credit, the same separation
+step 6 keeps for GitHub activity."""@en .
+
+cosaic:MeetingCancellation a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;          # process
+    rdfs:label "meeting cancellation"@en ;
+    rdfs:comment """The act of canceling a scheduled occurrence, announced on a list.
+Separate from the meeting it cancels, because the announcement is itself dated evidence
+and may arrive on a different day."""@en .
+
+cosaic:GovernanceEvent a owl:Class ;
+    rdfs:subClassOf cco:ont00000402 ;          # Act of Communication
+    rdfs:label "governance event"@en ;
+    rdfs:comment """A call for consensus, a review period, a nomination call, a vote, or
+an approval announcement. These record *why* a publication reached its approval status,
+which the publication catalog otherwise carries as a bare string."""@en .
+
+cosaic:CoverageWindow a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000038 ;          # one-dimensional temporal region
+    rdfs:label "coverage window"@en ;
+    rdfs:comment """The interval a source is known to cover. A list archive omits
+anything deleted, and nothing after the fetch, so outside this window the absence of a
+meeting is not evidence it did not happen. The same open-bounds discipline
+the affiliation model uses, applied to source coverage."""@en .
+
+cosaic:inSeries a owl:ObjectProperty ;
+    rdfs:label "in series"@en ;
+    rdfs:domain cosaic:Meeting ; rdfs:range cosaic:MeetingSeries .
+
+cosaic:convenedBy a owl:ObjectProperty ;
+    rdfs:label "convened by"@en ;
+    rdfs:domain cosaic:MeetingSeries ;
+    rdfs:comment """The workstream, governing body, committee or SIG whose series this
+is. Taken from the curated series registry where the series is curated, and otherwise
+from the List-Id of the mail that announced it, never from the meeting name."""@en .
+
+cosaic:activityStatus a owl:DatatypeProperty ;
+    rdfs:label "activity status"@en ;
+    rdfs:domain cco:ont00000300 ;              # Group of Agents
+    rdfs:comment """A curator's statement that a group has stopped meeting, as
+"inactive", dated by cosaic:statusAsOf. Mail cannot establish this: a group whose
+announcements stop may have ended or may only have stopped announcing. So the status is
+asserted only where a person has stated it, never inferred from a quiet period."""@en .
+
+cosaic:statusAsOf a owl:DatatypeProperty ;
+    rdfs:label "status as of"@en ;
+    rdfs:range xsd:date ;
+    rdfs:comment "The date a cosaic:activityStatus was stated."@en .
+
+cosaic:succeededBy a owl:ObjectProperty ;
+    rdfs:label "succeeded by"@en ;
+    rdfs:domain cco:ont00000300 ; rdfs:range cco:ont00000300 ;
+    rdfs:comment """The group that continues this one's work under another name or
+another parent, as the WS2 Shared Responsibility Model SIG continued in WS3 as the SRF &
+GRC SIG. Two nodes rather than one, because each is part of the workstream it met under,
+and a single node would place a WS3 SIG in 2025."""@en .
+
+cosaic:summarizedBy a owl:ObjectProperty ;
+    rdfs:label "summarized by"@en ;
+    rdfs:domain cosaic:Meeting ; rdfs:range cosaic:MeetingSummary .
+
+cosaic:announcedOn a owl:ObjectProperty ;
+    rdfs:label "announced on"@en ;
+    rdfs:comment """The mailing list an event was announced on, as a workstream or SIG
+group. The provenance of every meeting assertion in this graph."""@en .
+
+cosaic:cancels a owl:ObjectProperty ;
+    rdfs:label "cancels"@en ;
+    rdfs:domain cosaic:MeetingCancellation ; rdfs:range cosaic:Meeting .
+
+cosaic:coverage a owl:ObjectProperty ;
+    rdfs:label "coverage"@en ; rdfs:range cosaic:CoverageWindow .
+
+cosaic:cadence a owl:DatatypeProperty ;
+    rdfs:label "cadence"@en ; rdfs:domain cosaic:MeetingSeries ;
+    rdfs:comment """An iCalendar RRULE, taken verbatim from the calendar part where one
+exists and otherwise inferred from a cadence word in the subject. An established
+vocabulary rather than a coined one."""@en .
+
+cosaic:icsUid a owl:DatatypeProperty ;
+    rdfs:label "iCalendar UID"@en ; rdfs:domain cosaic:MeetingSeries .
+
+cosaic:seriesNameVariant a owl:DatatypeProperty ;
+    rdfs:label "series name variant"@en ; rdfs:domain cosaic:MeetingSeries ;
+    rdfs:comment """Every observed spelling, verbatim. The audit trail for series
+identity, as cosaic:sourceLabel is for credited roles."""@en .
+
+cosaic:canceled a owl:DatatypeProperty ;
+    rdfs:label "canceled"@en ; rdfs:domain cosaic:Meeting ; rdfs:range xsd:boolean ;
+    rdfs:comment """Whether a cosaic:MeetingCancellation cancels the meeting. One value per
+meeting: the cancellation is its own event, carrying the message and date that announced
+it, so a meeting announced by one notice and called off by another is canceled, not
+both canceled and not."""@en .
+
+cosaic:accessRestricted a owl:DatatypeProperty ;
+    rdfs:label "access restricted"@en ; rdfs:range xsd:boolean ;
+    rdfs:comment """True when the referenced document is not publicly readable. Verified
+by fetch, not assumed: three summary documents from three different workstream lists all
+returned HTTP 401 to an anonymous request."""@en .
+
+cosaic:dateEvidence a owl:DatatypeProperty ;
+    rdfs:label "date evidence"@en ; rdfs:domain cosaic:Meeting ;
+    rdfs:comment """How the date was established: "ics" from a calendar part,
+"body-when" from the notice body's "When:" line (start and end with a UTC offset, but no
+series UID), "subject" from a date in the subject line, or "subject-sent-date" where
+only the day the notice was sent is known. The last is weaker and must not be presented
+as a scheduled start time."""@en .
+
+cosaic:sourceMessageId a owl:DatatypeProperty ;
+    rdfs:label "source message id"@en ;
+    rdfs:comment """RFC 5322 Message-ID of the announcing mail. Exact provenance, which
+is why raw mail is a better source than the web archive -- an archive page has no stable
+identifier beyond its URL."""@en .
+
+cosaic:sourceList a owl:DatatypeProperty ;
+    rdfs:label "source list"@en .
+
+cosaic:earliestMessage a owl:DatatypeProperty ;
+    rdfs:label "earliest message"@en ; rdfs:domain cosaic:CoverageWindow ;
+    rdfs:range xsd:date .
+
+cosaic:latestMessage a owl:DatatypeProperty ;
+    rdfs:label "latest message"@en ; rdfs:domain cosaic:CoverageWindow ;
+    rdfs:range xsd:date .
+
+# ---------------------------------------------------------------------------------
+# Website (v0.3). Built from the RSS feed of coalitionforsecureai.org; see
+# src/bubo_graphrag/ingest/website.py.
+#
+# The feed is provenance, as list mail is: no feed or item node exists, only the posts
+# it reports, each carrying the feed it came from and the site's own post ID. Unlike
+# mail, the feed shows the site as it stands at fetch time -- an edited or deleted post
+# leaves no trace -- so its window records when it was fetched.
+# ---------------------------------------------------------------------------------
+
+cosaic:WebsitePost a owl:Class ;
+    rdfs:subClassOf cco:ont00002039 ;          # Document Content Entity
+    rdfs:label "website post"@en ;
+    rdfs:comment """An item published on coalitionforsecureai.org, as the site's RSS feed
+lists it. It records that CoSAI's site carried the item and when, not who wrote it.
+
+No authorship is credited. The feed's dc:creator names the account that posted the
+item -- one OASIS staff account for 59 of 60 posts -- and a byline in the body is prose,
+not a credit list. Until a direct rule says how a post's authorship is established, no
+Person, CreditedRole or AuthorRole is linked to a post, and the website graph's shape
+admits none."""@en .
+
+cosaic:BlogPost a owl:Class ;
+    rdfs:subClassOf cosaic:WebsitePost ;
+    rdfs:label "blog post"@en ;
+    rdfs:comment """A website post in the site's own "Blog Post" category. The category
+is the site's, and it includes partner posts the site reposted, so being a BlogPost says
+where an item was published, not that CoSAI authored it."""@en .
+
+cosaic:PressRelease a owl:Class ;
+    rdfs:subClassOf cosaic:WebsitePost ;
+    rdfs:label "press release"@en ;
+    rdfs:comment "A website post in the site's own \"Press Release\" category."@en .
+
+cosaic:FeedCoverageWindow a owl:Class ;
+    rdfs:subClassOf cosaic:CoverageWindow ;
+    rdfs:label "feed coverage window"@en ;
+    rdfs:comment """What one fetch of a feed covers: its oldest and newest items, and the
+day it was fetched. A post published after the fetch is not in it, and one deleted
+before it has gone without trace, so the window's bounds are never known."""@en .
+
+cosaic:linksTo a owl:ObjectProperty ;
+    rdfs:label "links to"@en ;
+    rdfs:domain cosaic:WebsitePost ;
+    rdfs:comment """The post's body links to a file or landing page of a CoSAI work, matched
+against the work's registered URL forms. A link, not a claim: it does not say the post
+announces the work, and it credits no one with either."""@en .
+
+cosaic:linksToUnregistered a owl:DatatypeProperty ;
+    rdfs:label "links to unregistered"@en ;
+    rdfs:domain cosaic:WebsitePost ; rdfs:range xsd:anyURI ;
+    rdfs:comment """A CoSAI-hosted file the post's body links to -- a file in a cosai-oasis
+repository, or a PDF the site hosts -- that matches no registered work. Evidence that
+a work may exist the registry does not hold, or a registered work has a copy it does
+not list; never itself a claim that the file is a publication."""@en .
+
+cosaic:sourceFeed a owl:DatatypeProperty ;
+    rdfs:label "source feed"@en ; rdfs:range xsd:anyURI ;
+    rdfs:comment "The feed an assertion came from. The counterpart of cosaic:sourceList."@en .
+
+cosaic:sourcePostId a owl:DatatypeProperty ;
+    rdfs:label "source post id"@en ; rdfs:domain cosaic:WebsitePost ; rdfs:range xsd:string ;
+    rdfs:comment """The site's own post ID, taken from the feed item's guid. The stable
+identifier, as cosaic:sourceMessageId is for mail. The guid's host is not used: it names
+the site's staging server, not the public site."""@en .
+
+cosaic:siteCategory a owl:DatatypeProperty ;
+    rdfs:label "site category"@en ; rdfs:domain cosaic:WebsitePost ;
+    rdfs:comment "A category the site files the post under, verbatim."@en .
+
+cosaic:publishedAt a owl:DatatypeProperty ;
+    rdfs:label "published at"@en ; rdfs:domain cosaic:WebsitePost ; rdfs:range xsd:dateTime ;
+    rdfs:comment """The feed's publication timestamp, in UTC. Exact, where a mail send date
+is only when an announcement went out."""@en .
+
+cosaic:earliestItem a owl:DatatypeProperty ;
+    rdfs:label "earliest item"@en ; rdfs:domain cosaic:CoverageWindow ;
+    rdfs:range xsd:date .
+
+cosaic:latestItem a owl:DatatypeProperty ;
+    rdfs:label "latest item"@en ; rdfs:domain cosaic:CoverageWindow ;
+    rdfs:range xsd:date .
+
+cosaic:fetchedOn a owl:DatatypeProperty ;
+    rdfs:label "fetched on"@en ; rdfs:domain cosaic:CoverageWindow ;
+    rdfs:range xsd:date ;
+    rdfs:comment """The day a feed or calendar was read. Nothing published after it is in
+a feed window; for a calendar it is also the day a scheduled meeting's future is judged
+from."""@en .
+
+
+# ---------------------------------------------------------------------------------
+# Calendar (v0.4). Built from the groups.io calendar of the project-wide cosai-op list,
+# which the CoSAI site links as "the CoSAI meeting calendar"; see
+# src/bubo_graphrag/ingest/calendar.py.
+#
+# A calendar entry is not a meeting. In BFO a meeting is a process, and a process that
+# has not happened does not exist, so a meeting scheduled for next week cannot be a
+# cosaic:Meeting. What exists now is the entry: an information entity prescribing a
+# meeting at a time, like the series it belongs to. It exists whether or not the
+# meeting it schedules is ever held.
+# ---------------------------------------------------------------------------------
+
+cosaic:ScheduledMeeting a owl:Class ;
+    rdfs:subClassOf cco:ont00000965 ;          # Prescriptive ICE ("Directive ICE")
+    rdfs:label "scheduled meeting"@en ;
+    rdfs:comment """A calendar entry: one meeting scheduled for a time. Its times are what
+was prescribed, not what happened. A past entry may correspond to a Meeting the mail
+records; the entry alone is no evidence the meeting was held, and a calendar may simply
+delete a canceled one, so its absence is no evidence either way."""@en .
+
+cosaic:PlannedMeeting a owl:Class ;
+    rdfs:subClassOf cosaic:ScheduledMeeting ;
+    rdfs:label "planned meeting"@en ;
+    rdfs:comment """A scheduled meeting for a future date: its scheduled start falls on a
+later day than the calendar was read. "Future" is judged from the calendar window's
+cosaic:fetchedOn,
+not from the moment a query runs, so the classification stays true of the graph as
+built; a refetch reclassifies entries whose date has passed."""@en .
+
+cosaic:CalendarCoverageWindow a owl:Class ;
+    rdfs:subClassOf cosaic:CoverageWindow ;
+    rdfs:label "calendar coverage window"@en ;
+    rdfs:comment """What one read of a calendar covers: the range asked for, the entries
+found in it, and the day it was read. An entry deleted before the read has gone without
+trace, and one added after it is not there, so the bounds are never known."""@en .
+
+cosaic:scheduleOf a owl:ObjectProperty ;
+    rdfs:label "schedule of"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range cosaic:MeetingSeries ;
+    rdfs:comment """The series an entry schedules a meeting of, resolved from the entry's
+name through the curated series registry, never guessed. The counterpart of
+cosaic:inSeries, which relates an occurrence to its series."""@en .
+
+cosaic:correspondsTo a owl:ObjectProperty ;
+    rdfs:label "corresponds to"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range cosaic:Meeting ;
+    rdfs:comment """The meeting the list mail records for the same series on the same day
+(UTC). A correspondence, not a claim that the meeting was held: the mail's meeting may
+be a cancellation."""@en .
+
+cosaic:scheduledStart a owl:DatatypeProperty ;
+    rdfs:label "scheduled start"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range xsd:dateTime ;
+    rdfs:comment "The prescribed start, in UTC."@en .
+
+cosaic:scheduledEnd a owl:DatatypeProperty ;
+    rdfs:label "scheduled end"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range xsd:dateTime ;
+    rdfs:comment "The prescribed end, in UTC."@en .
+
+cosaic:scheduledTimeZone a owl:DatatypeProperty ;
+    rdfs:label "scheduled time zone"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range xsd:string ;
+    rdfs:comment "The IANA time zone the entry was scheduled in, such as America/New_York."@en .
+
+cosaic:sourceEventId a owl:DatatypeProperty ;
+    rdfs:label "source event id"@en ;
+    rdfs:domain cosaic:ScheduledMeeting ; rdfs:range xsd:string ;
+    rdfs:comment """The groups.io event ID. The stable identifier, as cosaic:sourceMessageId
+is for mail. The calendar carries no iCalendar UID or repeat rule: each occurrence is
+its own event."""@en .
+
+cosaic:sourceCalendar a owl:DatatypeProperty ;
+    rdfs:label "source calendar"@en ; rdfs:range xsd:string ;
+    rdfs:comment "The calendar an assertion came from, as the API names its group."@en .
+
+cosaic:rangeStart a owl:DatatypeProperty ;
+    rdfs:label "range start"@en ; rdfs:domain cosaic:CalendarCoverageWindow ;
+    rdfs:range xsd:date ;
+    rdfs:comment "The first day the calendar was asked for."@en .
+
+cosaic:rangeEnd a owl:DatatypeProperty ;
+    rdfs:label "range end"@en ; rdfs:domain cosaic:CalendarCoverageWindow ;
+    rdfs:range xsd:date ;
+    rdfs:comment "The last day the calendar was asked for."@en .
+
+# Declared here, having been used by the meetings build since 0.2.0 without a declaration.
+cosaic:startsAt a owl:DatatypeProperty ;
+    rdfs:label "starts at"@en ; rdfs:domain cosaic:Meeting ; rdfs:range xsd:dateTime ;
+    rdfs:comment "A meeting's start, in UTC, where the mail states a time."@en .
+
+cosaic:endsAt a owl:DatatypeProperty ;
+    rdfs:label "ends at"@en ; rdfs:domain cosaic:Meeting ; rdfs:range xsd:dateTime ;
+    rdfs:comment "A meeting's end, in UTC, where the mail states a time."@en .
+
+
+# ---------------------------------------------------------------------------------
+# Approval links (v0.5). Built into the maillist graph from the governance mail and
+# registry/approvals.yaml; see src/bubo_graphrag/ingest/approvals.py.
+#
+# A GovernanceEvent is one message. A call -- a call for consensus, a ballot, a review
+# period -- is announced, reminded, forwarded and closed across several, so the call is
+# its own node and each message is part of it. What a call seeks approval of is a
+# curated link, because subjects name works inconsistently and one call can concern two
+# works in different roles. Whether it succeeded is cosaic:closedOn, read from the mail.
+# ---------------------------------------------------------------------------------
+
+cosaic:GovernanceCall a owl:Class ;
+    rdfs:subClassOf cosaic:GovernanceEvent ;
+    rdfs:label "governance call"@en ;
+    rdfs:comment """One call a governing body puts to its members -- a call for consensus,
+a ballot, a review period -- or one notice reporting a decision, grouping every message
+about it. A TSC call and a PGB call with the same subject are two calls: each body
+decides separately, and on its own date."""@en .
+
+cosaic:partOfCall a owl:ObjectProperty ;
+    rdfs:label "part of call"@en ;
+    rdfs:domain cosaic:GovernanceEvent ; rdfs:range cosaic:GovernanceCall ;
+    rdfs:comment "A message to the call it opens, reminds, forwards or closes."@en .
+
+cosaic:decidedBy a owl:ObjectProperty ;
+    rdfs:label "decided by"@en ;
+    rdfs:domain cosaic:GovernanceCall ; rdfs:range cosaic:GoverningBody ;
+    rdfs:comment """The body whose decision the call is: the TSC or the PGB, from the list
+the call is sent to. An approval notice names both. A call only relayed on a workstream
+list has none."""@en .
+
+cosaic:callStage a owl:DatatypeProperty ;
+    rdfs:label "call stage"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:comment """"call-for-consensus", "ballot", "review-period", "approval-notice",
+"nomination" or "other", from the subject."""@en .
+
+cosaic:subjectMatter a owl:DatatypeProperty ;
+    rdfs:label "subject matter"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:comment """What the call decides, as curated: "publication", "blog", "people",
+"governance" or "other"."""@en .
+
+cosaic:openedOn a owl:DatatypeProperty ;
+    rdfs:label "opened on"@en ; rdfs:domain cosaic:GovernanceCall ; rdfs:range xsd:date ;
+    rdfs:comment "The date of the call's first message in the archive."@en .
+
+cosaic:objectionDeadline a owl:DatatypeProperty ;
+    rdfs:label "objection deadline"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:range xsd:date ;
+    rdfs:comment """The deadline the call states, in its own time zone. Consent is assumed
+when it passes without objection, so this is when an approval takes effect."""@en .
+
+cosaic:closedOn a owl:DatatypeProperty ;
+    rdfs:label "closed on"@en ; rdfs:domain cosaic:GovernanceCall ; rdfs:range xsd:date ;
+    rdfs:comment """The date of the message reporting the call closed with no objection
+registered. Absent where no such message is in the archive, which is not evidence the
+call failed."""@en .
+
+cosaic:restatesTscApproval a owl:DatatypeProperty ;
+    rdfs:label "restates TSC approval"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment """A PGB call states the TSC has already approved the work. The only record
+of a TSC ballot's result, which has no closing message of its own."""@en .
+
+cosaic:callsToApprove a owl:ObjectProperty ;
+    rdfs:label "calls to approve"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:comment """A work the call seeks approval of, as curated. The sought approval, not
+its outcome: read cosaic:closedOn for that. Use a subproperty, which says the role."""@en .
+
+cosaic:callsToApproveNew a owl:ObjectProperty ;
+    rdfs:subPropertyOf cosaic:callsToApprove ;
+    rdfs:label "calls to approve, new"@en ;
+    rdfs:comment "Approval of the work itself, for the first time."@en .
+
+cosaic:callsToApproveRevision a owl:ObjectProperty ;
+    rdfs:subPropertyOf cosaic:callsToApprove ;
+    rdfs:label "calls to approve, revision"@en ;
+    rdfs:comment """Approval of a revision to an already approved work. A revision is not a
+new work item, needs only TSC consensus, and never stands in for the original
+approval."""@en .
+
+cosaic:callsToApproveAddition a owl:ObjectProperty ;
+    rdfs:subPropertyOf cosaic:callsToApprove ;
+    rdfs:label "calls to approve, addition"@en ;
+    rdfs:comment """Approval of a work as an addition to another approved work, named by
+cosaic:isAdditionTo, which it takes its standing from: a revision by addition, needing
+only TSC consensus."""@en .
+
+cosaic:callsToReview a owl:ObjectProperty ;
+    rdfs:label "calls to review"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:comment "A work a review period opens for comment. Review, not approval."@en .
+
+cosaic:isAdditionTo a owl:ObjectProperty ;
+    rdfs:label "is addition to"@en ;
+    rdfs:comment """A work approved as an addition to another, as the PQC Addendum is to MCP
+Security."""@en .
+
+cosaic:concernsTitle a owl:DatatypeProperty ;
+    rdfs:label "concerns title"@en ; rdfs:domain cosaic:GovernanceCall ;
+    rdfs:comment """The title of a work or post the call concerns that the graph holds no
+node for: a paper approved but not yet released, or a blog post."""@en .

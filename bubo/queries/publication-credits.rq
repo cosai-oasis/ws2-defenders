@@ -1,0 +1,16 @@
+# Credits on one publication. `statedOrganization` is the employer verbatim as printed,
+# including spelling variants and the 'indepedent' typo in Zero Trust -- the audit trail
+# rather than the canonical name.
+SELECT ?role ?person ?statedOrganization ?sourceLabel ?equalContribution ?scopeNote
+WHERE {
+  ?credit cosaic:onPublication cosaic:pub-zero-trust-for-ai-systems ;
+          a ?roleClass ;
+          cosaic:sourceLabel ?sourceLabel .
+  OPTIONAL { ?credit obo:BFO_0000197 ?p . ?p rdfs:label ?person }
+  OPTIONAL { ?credit cosaic:statedOrganization ?statedOrganization }
+  OPTIONAL { ?credit cosaic:equalContribution ?equalContribution }
+  OPTIONAL { ?credit cosaic:scopeNote ?scopeNote }
+  BIND(REPLACE(STR(?roleClass), "^.*#", "") AS ?role)
+  FILTER(?roleClass != cosaic:CreditedRole)
+}
+ORDER BY ?role ?person

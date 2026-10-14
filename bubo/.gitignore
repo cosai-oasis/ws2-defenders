@@ -1,0 +1,55 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# Editor backups, Emacs autosaves and Emacs lock symlinks. Never wanted, and the
+# backup of set-keys.sh is a real one, so any of these left untracked is a secret
+# one `git add -A` away from being committed.
+*~
+\#*\#
+.\#*
+
+# Build artifacts. The registries in registry/ are the source of truth; everything
+# under data/ and the generated graph are reproducible from them.
+data/raw/
+data/*.db
+data/*.ttl
+ontology/catalog.ttl
+reports/discovered-candidates.json
+ontology/citations.ttl
+data/vendor/
+
+# Harness adaptation is the consumer's (ADR-033 D3). The canonical, vendor-neutral
+# skills are scripts/skills/**; .claude/skills is an untracked symlink to them.
+.claude/
+
+# Jupyter checkpoints -- a shadow copy of the notebook, outputs and all.
+.ipynb_checkpoints/
+
+# JupyterLab's mirror of the notebook source, regenerated whenever it is opened.
+.virtual_documents/
+
+# Downloaded list archives, one mbox per group, plus the fetch manifest. Never
+# committed: a group archive carries every member's address in plaintext, which is
+# precisely what ingest/maillist.py hashes rather than propagates. Reproducible by
+# anyone with a groups.io key -- see ingest/groupsio.py.
+data/mail/
+
+# Generated from the list archives (see data/mail/), like ontology/catalog.ttl.
+ontology/maillist.ttl
+
+# Merged ontology export for inspection in an editor. Disposable: regenerate with
+# scripts/protege_export.py. Never the source of truth -- ontology/ is.
+data/protege/
+
+# Local model-provider keys for the demo notebook. Copy set-keys.example.sh to this
+# and fill it in; it reaches real secrets and is never committed.
+set-keys.sh
+
+# Generated from the coalitionforsecureai.org feed, cached under data/vendor/.
+ontology/website.ttl
+
+# Generated from the groups.io calendar, cached under data/mail/ with the archives.
+ontology/calendar.ttl

@@ -1,0 +1,156 @@
+# Every surface form by which a document might be cited.
+#
+# Citations in the wild do not use one canonical URL. The TSC dataset shows references
+# via GitHub blob links (some pinned to a sha), raw links, the PDF, the repository root,
+# the OASIS or coalitionforsecureai.org announcement, and bare titles or short titles in
+# prose. A search for only the blob URL would miss most of them.
+#
+# `url_patterns` below are generated per document from publications.yaml, so only the
+# forms that cannot be derived are listed here: short titles, off-GitHub landing pages,
+# `website_pdfs` (copies the CoSAI website hosts, and the staging host's copies the mail
+# circulated), and `former_urls` (where a file was before it was renamed or moved, or on
+# a branch since deleted). Website PDFs are reported as pdf-url forms and former URLs
+# as blob-url forms, which is what they are.
+
+# Derived automatically for every publication; listed for documentation.
+derived_url_forms:
+  - https://github.com/{repo}/blob/main/{md_path}
+  - https://github.com/{repo}/blob/{commit_sha}/{md_path}
+  - https://github.com/{repo}/blob/main/{pdf_path}
+  - https://raw.githubusercontent.com/{repo}/main/{md_path}
+  - https://github.com/{repo}
+  - https://github.com/{repo}/tree/main/{dirname}
+
+# Short titles and alternative names actually used in citing works, plus landing pages
+# outside GitHub. Titles are matched case-insensitively as whole phrases.
+publications:
+  model-context-protocol-security:
+    titles:
+      - Model Context Protocol (MCP) Security
+      - CoSAI MCP Security
+      - MCP Security
+      - "Model Context Protocol (MCP): Security Design Considerations"
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/09/model-context-protocol-security-v2.0.pdf
+      - https://secureaistg.wpenginepowered.com/wp-content/uploads/2026/03/model-context-protocol-security-1.pdf
+    former_urls:
+      # At the repo root until 592627e (2026-06-24) moved it under whitepapers/; and on
+      # the mcp branch, deleted after its merge, which the approval mail linked.
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/main/model-context-protocol-security.md
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/main/model-context-protocol-security.pdf
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/mcp/model-context-protocol-security.md
+    landing_pages:
+      - https://www.coalitionforsecureai.org/coalition-for-secure-ai-releases-extensive-taxonomy-for-model-context-protocol-security/
+      - https://www.oasis-open.org/2026/01/27/coalition-for-secure-ai-releases-extensive-taxonomy-for-model-context-protocol-security/
+
+  agentic-identity-and-access-management:
+    titles:
+      - Agentic Identity and Access Management
+      - Agentic IAM
+      - CoSAI Agentic Identity
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/agentic-identity-and-access-control.pdf
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/04/agentic-identity-and-access-control.pdf
+    former_urls:
+      # At the repo root before the whitepapers/ move, and on the feat/agentidentity
+      # branch the PGB call linked.
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/main/agentic-identity-and-access-control.md
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/main/agentic-identity-and-access-control.pdf
+      - https://github.com/cosai-oasis/ws4-secure-design-agentic-systems/blob/feat/agentidentity/agentic-identity-and-access-control.md
+    landing_pages:
+      - https://www.oasis-open.org/2026/05/06/coalition-for-secure-ai-unveils-new-agentic-identity-and-security-research-following-high-profile-sessions-at-rsac-2026/
+
+  ai-incident-response:
+    titles:
+      - AI Incident Response Framework
+      - AI Incident Response Framework V1.0
+      - CoSAI AI Incident Response
+    landing_pages:
+      - https://www.oasis-open.org/2025/11/18/coalition-for-secure-ai-releases-two-actionable-frameworks-for-ai-model-signing-and-incident-response/
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/AI-Incident-Response-1.pdf
+      - https://secureaistg.wpenginepowered.com/wp-content/uploads/2026/03/AI-Incident-Response-1.pdf
+    former_urls:
+      # The markdown's filename before 24fecc8 (2026-03-05) removed the spaces. The
+      # derived blob URL follows the current md_path, so works citing the paper between
+      # approval and the rename are only found through this form.
+      - https://github.com/cosai-oasis/ws2-defenders/blob/main/incident-response/AI%20Incident%20Response.md
+
+  signing-ml-artifacts:
+    titles:
+      - Signing ML Artifacts
+      - "Signing ML Artifacts: Building towards tamper-proof ML metadata records"
+    landing_pages:
+      - https://www.oasis-open.org/2025/11/18/coalition-for-secure-ai-releases-two-actionable-frameworks-for-ai-model-signing-and-incident-response/
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/signing-ml-artifacts-1.pdf
+      - https://secureaistg.wpenginepowered.com/wp-content/uploads/2026/03/signing-ml-artifacts-1.pdf
+
+  ai-shared-responsibility-framework:
+    titles:
+      - AI Shared Responsibility Framework
+      - CoSAI Shared Responsibility Framework
+      - Shared Responsibility Framework
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/05/CoSAI-Shared-Responsibility-Framework.pdf
+      - https://secureaistg.wpenginepowered.com/wp-content/uploads/2026/05/CoSAI-Shared-Responsibility-Framework.pdf
+
+  preparing-defenders-of-ai-systems:
+    titles:
+      - Preparing Defenders of AI Systems
+      - "Preparing Defenders of AI Systems: Review of Frameworks and Identification of Gaps"
+    former_urls:
+      # The file's name while it was in review, linked from the WS2 list in 2025.
+      - https://github.com/cosai-oasis/ws2-defenders/blob/main/Preparing%20Defenders%20of%20AI%20Systems%20-%20Review%20of%20Frameworks%20and%20Identification%20of%20Gaps.md
+    landing_pages:
+      - https://www.oasis-open.org/2025/07/17/coalition-for-secure-ai-marks-first-anniversary/
+
+  risks-and-controls-ai-supply-chain-v1:
+    titles:
+      - Establish Risks and Controls for the AI Supply Chain
+      - Risks and Controls for the AI Supply Chain
+
+  zero-trust-for-ai-systems:
+    titles:
+      - Zero Trust for AI Systems
+      - CoSAI Zero Trust
+    former_urls:
+      # The markdown's filename before a733bdb (2026-09-16) hyphenated it, for the same
+      # reason as the Incident Response entry.
+      - https://github.com/cosai-oasis/ws2-defenders/blob/main/zero-trust/Zero%20Trust%20for%20AI%20Systems.md
+
+  agent-containment:
+    titles:
+      - "Agent Containment: From Sandboxing to Bounded Authority"
+      - Agent Containment
+
+  addendum-mcp-and-pqc:
+    titles:
+      - "Addendum: Post-Quantum Cryptography Considerations for MCP"
+      - MCP and PQC
+    website_pdfs:
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/09/Addendum-MCP-and-PQC.pdf
+
+  odis:
+    titles:
+      - ODIS
+      - Open Delegation & Identity Standard
+      - Open Delegation and Identity Standard
+
+  cosai-ai-telemetry-rfc:
+    titles:
+      - Telemetry for AI Security
+      - "Secure by Design: Telemetry Field Selection for AI Systems"
+      - CoSAI AI Telemetry RFC
+
+# Short titles too generic to search on alone. Matching these without a nearby "CoSAI"
+# mention produces mostly false positives, so discovery requires the co-occurrence.
+requires_cosai_context:
+  - MCP Security
+  - Agentic IAM
+  - ODIS
+  - Zero Trust for AI Systems
+  - Agent Containment
+  - Shared Responsibility Framework
+  - Telemetry for AI Security

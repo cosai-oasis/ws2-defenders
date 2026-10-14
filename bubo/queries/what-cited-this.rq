@@ -1,0 +1,14 @@
+# Citations of one work, with the two distinctions that must not be flattened:
+# category (formal reference vs substantive use) and verification strength.
+SELECT ?publisher ?citingPublication ?category ?verification ?url
+WHERE {
+  ?e a cosaic:CitationEvent ;
+     cosaic:citedWork cosaic:pub-model-context-protocol-security ;
+     cosaic:citingPublication ?c .
+  ?c rdfs:label ?citingPublication .
+  OPTIONAL { ?c cosaic:publishedBy ?p . ?p rdfs:label ?publisher }
+  OPTIONAL { ?c cosaic:sourceUrl ?url }
+  OPTIONAL { ?e cosaic:citationCategory ?category }
+  OPTIONAL { ?e cosaic:verification ?verification }
+}
+ORDER BY ?publisher

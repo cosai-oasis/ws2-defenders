@@ -1,0 +1,13 @@
+# conda env create -f environment.yml && conda activate cosai
+#
+# Python and pip come from conda; everything else from pyproject.toml, installed
+# editable with the dev and notebooks extras, so this file declares no package twice.
+name: cosai
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - ipykernel
+  - pip:
+      - -e .[dev,notebooks]

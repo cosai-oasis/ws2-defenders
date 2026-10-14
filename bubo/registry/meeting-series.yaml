@@ -1,0 +1,545 @@
+# Curated meeting series. Reviewed once; thereafter every build is deterministic.
+#
+# Series names drift, so identity cannot be derived from a title. This registry is the
+# same human-review gate registry/people.yaml and organizations.yaml pass through, for
+# the same reason: a wrong merge is a wrong fact, and here it would silently combine
+# two groups' meeting histories.
+#
+# Two evidence sources are kept separate on purpose:
+#
+#   name_variants      Observed verbatim in list-mail subjects. The audit trail.
+#   drive_title_forms  Declared by cosai-tsc scripts/fetch_meeting_minutes.py, which
+#                      resolves the same drift independently -- it documents WS1 as
+#                      "renamed from CoSAI WS1 Weekly Meeting to CoSAI WS1 Meeting
+#                      (updated)". Corroboration for a merge, and the match key for
+#                      the Drive minutes of B-double-prime.
+#
+# Where the two disagree, neither is overwritten. `review` records what a human still
+# has to confirm.
+#
+# What a merge rests on. Every entry was reviewed against the full list archives
+# (2,886 messages, 2024-06-20 to 2026-09-24) by list, weekday and first and last date:
+#
+#   * Same group, same weekday, overlapping dates, the name differing only in prefix,
+#     word order or case: one series.
+#   * A rename in sequence with no overlap, where the group's main meeting ends under
+#     one name and begins under the next: one series. `meeting_rhythm` detects the
+#     cadence change inside a series, so merging loses nothing, and "how often does
+#     WS3 meet" is answered across the whole history instead of per name.
+#   * Two series running in the same weeks: kept apart, whatever the names share.
+#
+# `workstream`, `kind` and `cadence` here override what the mail implies. A series'
+# convener would otherwise be taken from whichever message arrived first, and for a
+# series first seen on the project-wide `cosai-op` list that is no group at all. A
+# series whose `kind` is `sig` gets a SIG node; any other kind does not, whatever its
+# title says. `cadence` is the current one: a merged series carries every era's RRULE.
+#
+# `lists` is where the group announces, and its first entry is the series' source list,
+# the one `how_to_get_involved` tells a newcomer to join. It never names `cosai-op`: that
+# list is project-wide and carries cross-posted cancellations, so a series seen there
+# was not announced there.
+#
+# `status` and `succeeded_by` are curator statements, not evidence from mail: a group
+# whose announcements stop may have ended or may only have stopped announcing, and
+# the mail cannot tell the two apart. `status: inactive` carries `status_as_of`, the
+# date it was stated. `succeeded_by` names the series whose group continues this one.
+#
+# `workstream: general` marks a project-wide event cross-posted to every list, which
+# no single group convenes. It is left without a convener rather than given a guess.
+
+meeting_series:
+
+  # --- Workstream 1 -------------------------------------------------------------
+  - id: ws1-meeting
+    label: CoSAI WS1 Meeting
+    kind: workstream-meeting
+    workstream: ws1
+    lists: [cosai-supply-chain]
+    # Three names in sequence, all on Wednesdays: "recurring weekly" from 2024-11-06
+    # to 2025-04-02, "normal meeting - bi-weekly" from 2025-04-09 to 2025-06-18
+    # (alternating with the two SIGs below), then "WS1 Meeting" from 2025-06-25.
+    # Upstream's pattern covers the last two spellings explicitly --
+    # "(?:Weekly )?Meeting(?: \(updated\))?" -- which corroborates that part. "WS1
+    # Meeting" is the bare form used in cancellation notices ("No WS1 Meeting today"),
+    # and "WS1 Weekly Meeting" arrived once, as a cosai-op cancellation on 2026-03-25.
+    name_variants:
+      - CoSAI WS1 Meeting (updated link)
+      - CoSAI WS1 Weekly Meeting
+      - WS1 Meeting
+      - WS1 Weekly Meeting
+      - CoSAI WS1 recurring weekly meeting
+      - CoSAI WS1 normal meeting - bi-weekly
+    drive_title_forms:
+      - CoSAI WS1 Weekly Meeting
+      - CoSAI WS1 Meeting (updated)
+    drive_folder_id: 1L7A46unF12D3Tk68_QVP53M9cGjJUMA3
+    cadence: FREQ=WEEKLY
+    ics_uids: 1
+
+  - id: ws1-model-cards-sig
+    label: CoSAI WS1 Model Cards SIG
+    kind: sig
+    workstream: ws1
+    lists: [cosai-supply-chain]
+    name_variants:
+      - CoSAI WS1 Model Cards SIG
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    review: >-
+      Wednesdays from 2025-04-02 to 2025-06-11, in the weeks the bi-weekly WS1 meeting
+      did not meet, and on five of the same days as the Model Signing SIG. No
+      occurrence after June 2025.
+
+  - id: ws1-model-signing-sig
+    label: CoSAI WS1 Model Signing SIG meeting
+    kind: sig
+    workstream: ws1
+    lists: [cosai-supply-chain]
+    # The observed title repeats "WS1"; the label drops the stutter, and the verbatim
+    # form stays a variant so it still resolves.
+    name_variants:
+      - CoSAI WS1 WS1 Model Signing SIG meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    review: >-
+      Wednesdays from 2025-04-16 to 2025-06-11, as for the Model Cards SIG.
+
+  - id: ws1-kick-off
+    label: CoSAI WS1 Kick-off meeting
+    kind: one-off
+    workstream: ws1
+    lists: [cosai-supply-chain]
+    name_variants:
+      - CoSAI WS1 Kick-off meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  # --- Workstream 2 -------------------------------------------------------------
+  - id: ws2-defenders-meeting
+    label: CoSAI WS2 regular meeting, bi-weekly
+    kind: workstream-meeting
+    workstream: ws2
+    lists: [cosai-defenders]
+    # "WS2 Defenders Bi-Weekly Meeting" is the calendar's name for it: Tuesdays at 14:00
+    # ET every 14 days, and each of its 14 past dates is a mail meeting of this series.
+    name_variants:
+      - CoSAI WS2 regular meeting, bi-weekly
+      - WS2 Defenders Bi-Weekly Meeting
+    drive_title_forms:
+      - CoSAI WS2 Defenders Bi-Weekly Meeting
+      - CoSAI WS2 Defenders meeting
+    drive_folder_id: 1zmeLjxAp8UJdu99LM3qAhHf-CH9JGR32
+    cadence: FREQ=WEEKLY;INTERVAL=2
+    ics_uids: 0
+    review: >-
+      The mail title and the Drive title share no substring, so the two forms are
+      matched by workstream and cadence rather than by name. Almost certainly one
+      series -- WS2 runs a single regular meeting -- but confirm before relying on the
+      Drive folder for this series' minutes. The calendar's "WS2 Defenders Bi-Weekly
+      Meeting" (added 2026-09-26) is the Drive title without its "CoSAI" prefix, on the
+      mail series' Tuesdays, which bridges the two forms.
+
+  - id: ws2-zero-trust-sig
+    label: CoSAI WS2 - Zero Trust SIG
+    kind: sig
+    workstream: ws2
+    lists: [cosai-defenders]
+    # Thursdays from 2025-06-05 to 2026-06-18. The short form arrived once, on
+    # cosai-op, on 2026-06-18: the SIG's last date and its weekday.
+    name_variants:
+      - CoSAI WS2 - Zero Trust SIG
+      - WS2 Zero Trust SIG
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    status: inactive
+    status_as_of: 2026-09-24
+
+  - id: ws2-shared-responsibility-model-sig
+    label: WS2 Shared Responsibility Model SIG
+    kind: sig
+    workstream: ws2
+    lists: [cosai-defenders]
+    # Both spellings on Wednesdays; the prefixed one (2026-01-07 to 2026-03-25) falls
+    # inside the unprefixed one's range (2025-08-27 to 2026-06-03).
+    name_variants:
+      - WS2 Shared Responsibility Model SIG
+      - CoSAI WS2 - Shared Responsibility Model SIG
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    # Moved to WS3 as the SRF & GRC SIG. Its last meeting under WS2 was Wednesday
+    # 2026-06-03; the SRF & GRC SIG's first was Monday 2026-06-08. Two series and two
+    # SIG nodes, each part of the workstream it met under, linked by succession.
+    succeeded_by: ws3-srf-grc-sig
+
+  - id: ws2-ai-incident-response-wg
+    label: CoSAI WS2 AI Incident Response WG
+    kind: sig
+    workstream: ws2
+    lists: [cosai-defenders]
+    # A working group rather than a SIG by name, but the same thing by the class
+    # definition: a standing group under the workstream with a narrower scope, meeting
+    # on Thursdays from 2025-04-17 to 2025-07-31 alongside the regular meeting.
+    name_variants:
+      - CoSAI WS2 AI Incident Response WG
+      - CoSAI WS2 - AI Incident Response WG
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  - id: ws2-defenders-telemetry
+    label: WS2 Telemetry SIG
+    kind: sig
+    workstream: ws2
+    lists: [cosai-defenders]
+    # The calendar title is "WS2 Defenders – Telemetry", on Thursdays from its kick-off
+    # on 2025-12-04. The summaries of those Thursday meetings name the group: "CoSAI
+    # WS2 Telemetry SIG summary & recording" (2026-06-25), "WS2 Telemetry SIG meeting"
+    # (2026-09-10, 2026-09-17). The working sessions (Friday 2026-07-24, and a Monday
+    # in August) are the same SIG's extra sessions, so they belong to its series.
+    # Summaries exist for March to August, when no "Now:" notice was sent, so a gap
+    # in held meetings over that span is a gap in announcements. Weekly by curation.
+    # The calendar (read 2026-09-26) names it "WS2 Defenders – Telemetry SIG": Thursdays
+    # at 13:00 ET, weekly, 83 entries.
+    name_variants:
+      - WS2 Defenders – Telemetry
+      - WS2 Telemetry SIG Working Session
+      - WS2 Defenders – Telemetry SIG
+    drive_title_forms: []
+    drive_folder_id: 1vREf5eZ5VbwS8sCSXljKC8QEhzOTirlv
+    cadence: FREQ=WEEKLY;BYDAY=TH
+    ics_uids: 0
+    review: >-
+      Its Drive source is in the cosai-tsc copy of the minutes fetcher only, as subdir
+      `telemetry-sig`. The Telemetry RFC is pending scope in publications.yaml.
+
+  - id: ws2-shared-responsibility-model-workshop
+    label: Shared Responsibility Model Workshop
+    kind: one-off
+    workstream: ws2
+    lists: [cosai-defenders]
+    name_variants:
+      - Shared Responsibility Model Workshop
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  - id: ws2-kick-off
+    label: COSAI WS2 kick-off meeting
+    kind: one-off
+    workstream: ws2
+    lists: [cosai-defenders]
+    name_variants:
+      - COSAI WS2 kick-off meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  # --- Workstream 3 -------------------------------------------------------------
+  - id: ws3-meeting
+    label: WS3 Bi-weekly Meeting
+    kind: workstream-meeting
+    workstream: ws3
+    lists: [cosai-risk-governance]
+    # Thursdays throughout: "recurring weekly" from 2024-11-21 to 2025-12-18, then
+    # "Bi-weekly" from 2025-12-05. The bare "WS3 meeting" and "WS3 Meeting this
+    # Thursday - EOM" are cancellation notices, which fall in one era each and belong
+    # to the plenary in both.
+    name_variants:
+      - WS3 Bi-weekly Meeting
+      - WS3 Bi-weekly Meeting (updated)
+      - CoSAI WS3 recurring weekly meeting
+      - WS3 meeting
+      - WS3 Meeting this Thursday - EOM
+    drive_title_forms:
+      - WS3 bi-weekly meeting
+    drive_folder_id: 1NFk_-2Plyi3qYr2qtrvt42AQhzJZB0Wf
+    cadence: FREQ=WEEKLY;INTERVAL=2;BYDAY=TH
+    ics_uids: 1
+
+  - id: ws3-srf-grc-sig
+    label: CoSAI WS3 SRF & GRC SIG
+    kind: sig
+    workstream: ws3
+    lists: [cosai-risk-governance]
+    name_variants:
+      - CoSAI WS3 SRF & GRC SIG
+    drive_title_forms: []
+    cadence: FREQ=WEEKLY;INTERVAL=2;BYDAY=MO
+    ics_uids: 2
+    review: >-
+      Neither copy of the minutes fetcher has a source for this SIG, so step 2 cannot
+      cover it until one is added or the SIG is found to keep no notes.
+
+  - id: ws3-sig-ai-assisted-code-development
+    label: "WS3 SIG: Security of AI-Assisted Code Development"
+    kind: sig
+    workstream: ws3
+    lists: [cosai-risk-governance]
+    # The short form appears in cancellation notices ("No Security of AI-Assisted Code
+    # Development this week"); upstream's pattern carries the long form. The calendar
+    # uses two more, both Tuesdays at 11:00 ET: "SIG: ..." weekly since 2026-03-31, and
+    # once, on 2026-03-03, the Drive title itself.
+    name_variants:
+      - "WS3 SIG: Security of AI-Assisted Code Development"
+      - Security of AI-Assisted Code Development
+      - "SIG: Security of AI-Assisted Code Development"
+      - "CoSAI WS3 SIG: Security of AI-Assisted Code Development"
+    drive_title_forms:
+      - "CoSAI WS3 SIG: Security of AI-Assisted Code Development"
+    drive_folder_id: 1yKk-Mbbpowsk3gfRwGIT7UpMOJ-fDzdo
+    cadence: FREQ=WEEKLY;INTERVAL=1;BYDAY=TU
+    ics_uids: 2
+
+  - id: ws3-cosai-rm-sig
+    label: CoSAI-RM SIG weekly meeting
+    kind: sig
+    workstream: ws3
+    lists: [cosai-risk-governance, cosai-tsc]
+    # "WS3 CoSAI-RM SIG weekly meeting" is the calendar's: Wednesdays at 12:30 ET, and 25
+    # of its 26 past dates are mail meetings of this series.
+    name_variants:
+      - CoSAI-RM SIG weekly meeting
+      - CoSAI-RM meeting
+      - WS3 CoSAI-RM SIG weekly meeting
+    drive_title_forms:
+      - CoSAI WS3 CoSAI-RM SIG weekly meeting
+    drive_folder_id: 1tboOFAyYHnJRlXqMO3Kdh6KrcAVVIpiB
+    cadence: FREQ=WEEKLY
+    ics_uids: 1
+
+  - id: ws3-agentic-coding-threat-modeling-sync
+    label: WS3 Agentic Coding Threat Modeling Sync
+    kind: workstream-meeting
+    workstream: ws3
+    lists: [cosai-risk-governance]
+    # Known from the calendar, where it runs Fridays at 11:00 ET weekly from 2026-05-22,
+    # and from the meeting records WS3 posts for it ("the summary from today's Agentic
+    # Coding Threat Modeling Sync", 2026-06-26 onward). No occurrence notice for it is
+    # in the archive. Never called a SIG, so a WS3 meeting rather than a SIG's.
+    name_variants:
+      - WS3 Agentic Coding Threat Modeling Sync
+      - Agentic Coding Threat Modeling Sync
+    drive_title_forms: []
+    cadence: FREQ=WEEKLY;BYDAY=FR
+    ics_uids: 0
+
+  - id: ws3-kick-off
+    label: CoSAI WS3 kick-off meeting
+    kind: one-off
+    workstream: ws3
+    lists: [cosai-risk-governance]
+    name_variants:
+      - CoSAI WS3 kick-off meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  # --- Workstream 4 -------------------------------------------------------------
+  - id: ws4-recurring-meeting
+    label: CoSAI WS4 recurring meeting
+    kind: workstream-meeting
+    workstream: ws4
+    lists: [cosai-agentic-systems]
+    # "WS4 meeting" appears only in three Thursday cancellation notices. The
+    # "(updated invite)" form is the 2026-09-24 Thursday notice, whose meeting record
+    # follows this series' naming.
+    name_variants:
+      - CoSAI WS4 recurring meeting
+      - WS4 meeting
+      - CoSAI WS4 weekly meeting (updated invite)
+    drive_title_forms:
+      - CoSAI WS4 recurring meeting
+    drive_folder_id: 1TJl4yqWIdfPc8fKWiTO0CsmsmuecGxWa
+    # No calendar part carries an RRULE. Curated from the occurrences: 76 of 77 fall on
+    # a Thursday, and 74 of 76 gaps are exactly seven days (2025-04-10 to 2026-09-17).
+    cadence: FREQ=WEEKLY;BYDAY=TH
+    ics_uids: 0
+
+  - id: ws4-sig-agent-development-lifecycle
+    label: WS4 SIG Security of Agent Development Lifecycle
+    kind: sig
+    workstream: ws4
+    lists: [cosai-agentic-systems]
+    name_variants:
+      - WS4 SIG Security of Agent Development Lifecycle
+    drive_title_forms:
+      - WS4 SIG Security of Agent Development Lifecycle
+    drive_folder_id: 1EkoOpMCtYahLu-sEhYrgNDmvPyTtgpit
+    cadence: null
+    ics_uids: 1
+
+  - id: ws4-multimodal-agentic-security
+    label: WS4 Multimodal Agentic Security Weekly Meeting
+    kind: sig
+    workstream: ws4
+    lists: [cosai-agentic-systems]
+    name_variants:
+      - WS4 Multimodal Agentic Security Weekly Meeting
+      - WS4 Multimodal Agentic Security Meeting
+    drive_title_forms: []
+    drive_folder_id: 1JI89V3NrSQnEzcE6nlNUed2Huv114FD4
+    cadence: FREQ=WEEKLY
+    ics_uids: 1
+    review: >-
+      Its Drive source is in the WS4 copy of the minutes fetcher only, added by
+      ws4-secure-design-agentic-systems#182, as subdir `multimodal`. One occurrence in
+      the full archives, a cancellation on 2026-08-31.
+
+  - id: ws4-agent-credentials
+    label: "CoSAI WS4: Agent Credentials"
+    kind: sig
+    workstream: ws4
+    lists: [cosai-agentic-systems]
+    # Declared upstream with a Drive folder. The mail shows it once, as a cosai-op
+    # cancellation of the "Agent Credentials RFC Meeting" on 2026-07-23; the
+    # cosai-agentic-systems list carries its meeting info and summaries only.
+    name_variants:
+      - "CoSAI WS4: Agent Credentials RFC Meeting"
+    drive_title_forms:
+      - "CoSAI WS4: Agent Credentials"
+    drive_folder_id: 1Telz7CDwCgPNUyHlMwu9cBGl-keqP9z3
+    cadence: null
+    ics_uids: 0
+    review: >-
+      One observed occurrence, which reflects what the mail announces and is not
+      evidence of how often the group meets.
+
+  - id: agentic-identity-working-session
+    label: CoSAI Agentic Identity Standard Working Session
+    kind: one-off
+    workstream: ws4
+    lists: [cosai-agentic-systems, cosai-defenders, cosai-marketing, cosai-pgb, cosai-tsc]
+    name_variants:
+      - Coalition for Secure AI (CoSAI) Agentic Identity Standard Working Session at NVIDIA & Online - RSVP
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    review: >-
+      A single working session rather than a standing series, so it has no cadence by
+      nature. Kept as a series of one so its occurrences have a home.
+
+  # --- Governance ---------------------------------------------------------------
+  - id: tsc-meeting
+    label: CoSAI TSC meeting
+    kind: governance-meeting
+    workstream: tsc
+    lists: [cosai-tsc]
+    name_variants:
+      - CoSAI TSC meeting
+      - TSC meeting
+    drive_title_forms: []
+    # Minutes are committed markdown in public git, not Drive -- the A-double-prime
+    # source, and the only series whose records need no authentication.
+    minutes_repo: cosai-oasis/cosai-tsc
+    minutes_path: tsc-meeting-minutes
+    cadence: null
+    ics_uids: 0
+
+  - id: pgb-meeting
+    label: CoSAI PGB Monthly Meeting
+    kind: governance-meeting
+    workstream: pgb
+    lists: [cosai-pgb]
+    # Mondays throughout: "Weekly" from 2024-07-15 to 2024-12-02, then "Monthly" from
+    # 2025-01-06. "CoSAI Monthly PGB Meeting" is a word-order variant, Monday
+    # 2025-08-11 to 2025-10-14, inside the monthly range.
+    name_variants:
+      - CoSAI PGB Monthly Meeting
+      - CoSAI Monthly PGB Meeting
+      - CoSAI PGB Weekly Meeting
+    drive_title_forms: []
+    minutes_repo: cosai-oasis/oasis-open-project
+    minutes_path: pgb-meeting-minutes
+    cadence: FREQ=MONTHLY
+    ics_uids: 0
+
+  - id: pgb-first-meeting
+    label: First CoSAI Project Governing Board Meeting
+    kind: one-off
+    workstream: pgb
+    lists: [cosai-pgb]
+    name_variants:
+      - First CoSAI Project Governing Board Meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  - id: pgb-working-meeting
+    label: CoSAI PGB Working Meeting
+    kind: one-off
+    workstream: pgb
+    lists: [cosai-pgb]
+    # Every notice is for 2024-07-15. "Omar Santos" is an "Updated Event:" for the
+    # same meeting on the same day, a calendar entry titled with a person's name.
+    name_variants:
+      - CoSAI PGB Working Meeting
+      - Omar Santos
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  # --- Marketing Committee ------------------------------------------------------
+  - id: marketing-committee-meeting
+    label: CoSAI Marketing Committee Meeting
+    kind: committee-meeting
+    workstream: marketing
+    lists: [cosai-marketing]
+    # Wednesdays throughout, under three names in sequence: "Marketing Group meeting"
+    # from 2024-07-31 to 2024-09-04, "Marketing Committee Meeting" from 2024-09-18 to
+    # 2025-03-12, and "Marketing Group - Biweekly meeting" from 2025-04-09 at the same
+    # two-week rhythm. The Committee name recurs only on 2026-09-09 and 2026-09-24,
+    # both days the Biweekly meeting was also announced: one meeting, two titles.
+    name_variants:
+      - CoSAI Marketing Committee Meeting
+      - CoSAI Marketing Committee (updated meeting info)
+      - CoSAI Marketing Group meeting
+      - CoSAI Marketing Group - Biweekly meeting
+    drive_title_forms: []
+    cadence: FREQ=WEEKLY;INTERVAL=2
+    ics_uids: 0
+
+  - id: marketing-content-subcommittee
+    label: CoSAI Content Subcommittee Meeting
+    kind: committee-meeting
+    workstream: marketing
+    lists: [cosai-marketing]
+    # The invitation reads "Every 2 weeks ... from Wed Feb 19 to Fri Jun 27"; the
+    # prefixed form covers 2025-02-19 and the bare one 2025-04-10 to 2025-06-19.
+    name_variants:
+      - CoSAI Content Subcommittee Meeting
+      - Content Subcommittee Meeting
+    drive_title_forms: []
+    cadence: FREQ=WEEKLY;INTERVAL=2
+    ics_uids: 0
+
+  - id: marketing-events-subcommittee
+    label: CoSAI Events Subcommittee Bi-Meeting
+    kind: committee-meeting
+    workstream: marketing
+    lists: [cosai-marketing]
+    name_variants:
+      - CoSAI Events Subcommittee Bi-Meeting
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+
+  # --- Project-wide -------------------------------------------------------------
+  - id: rsac-2026-breakfast-panel
+    label: CoSAI Breakfast Panel at Anthropic RSAC 2026
+    kind: one-off
+    workstream: general
+    lists: [cosai-agentic-systems, cosai-defenders, cosai-marketing, cosai-pgb,
+            cosai-risk-governance, cosai-supply-chain, cosai-tsc]
+    name_variants:
+      - Coalition for Secure AI (CoSAI) Breakfast Panel at Anthropic RSAC 2026 - RSVP
+    drive_title_forms: []
+    cadence: null
+    ics_uids: 0
+    review: >-
+      An RSVP event cross-posted to seven lists, so no convener is inferred from any
+      one of them.

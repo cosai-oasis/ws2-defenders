@@ -1,0 +1,196 @@
+{
+  "skill_name": "cosai-orientation",
+  "grounding": {
+    "note": "Meeting data is built from CoSAI's list archives, whose coverage window is recorded per list in the graph, so every count is coverage-bounded by construction. Per ADR-033 D7a these cases are therefore written so the graded assertion is the reporting behaviour — which caveat is stated, which handoff is made, which question is refused — and never an exact count. Figures in expected_output are the values at the recorded ingest, for orientation only; a changed count is not a failure. Cases that name a group, series or publication record it in depends_on, so a future failure is a one-line diagnosis rather than an open question.",
+    "coverage_at_ingest": "Per list, from its earliest to its latest fetched message: 2024-06-20..2026-09-24 across eight lists at the 2026-09-24 ingest, with WS2's list starting 2024-10-18",
+    "depends_on_registry": ["registry/meeting-series.yaml", "registry/publications.yaml"]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What is CoSAI working on right now?",
+      "expected_output": "An overview from cosai_overview: the workstreams and their SIGs, what each has recently published, current governance activity, and corpus scale (12 publications, 90 people, 30 organisations at the recorded ingest). Meeting activity is qualified as what the covered window saw.",
+      "expectations": [
+        "Calls cosai_overview rather than assembling the answer from publication data alone",
+        "Names workstreams and distinguishes SIGs from them",
+        "States once that meeting figures cover a limited window rather than being totals",
+        "Does not present the meeting counts as CoSAI's full meeting history"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": 2,
+      "prompt": "I work on AI supply chain security. Which CoSAI group should I join, and how?",
+      "expected_output": "Workstream 1, Software Supply Chain Security for AI Systems. Gives its mailing list (cosai-supply-chain-ws), and not the project-wide cosai-op list, offers the derived subscribe link as the likely address rather than asserting it, and says what its meeting rhythm is.",
+      "expectations": [
+        "Identifies WS1 specifically rather than listing every group",
+        "Names the mailing list to subscribe to",
+        "Names cosai-supply-chain-ws as the list, and does not name cosai-op as a WS1 list",
+        "Presents the subscribe URL as derived and worth confirming, not as a recorded fact",
+        "Explains that joining means subscribing to the list and attending the meeting"
+      ],
+      "depends_on": ["group:ws1", "list:cosai-supply-chain-ws"]
+    },
+    {
+      "id": 3,
+      "prompt": "Is there a CoSAI group working on AI-assisted code development, and when do they meet?",
+      "expected_output": "Yes — a WS3 SIG on Security of AI-Assisted Code Development, meeting weekly on Tuesdays (FREQ=WEEKLY;INTERVAL=1;BYDAY=TU), announced on the cosai-risk-governance list. Reports the cadence as the rhythm, not as the next date.",
+      "expectations": [
+        "Finds the SIG by topic rather than reporting that nothing matched",
+        "Identifies it as a SIG and names its parent workstream",
+        "Reports the cadence as a recurring rhythm",
+        "Does not state a specific upcoming meeting date"
+      ],
+      "depends_on": ["group:ws3-sig-security-of-ai-assisted-code-development"]
+    },
+    {
+      "id": 4,
+      "prompt": "When is the next WS3 meeting?",
+      "expected_output": "Not recorded. The graph holds meetings that were announced, not a forward calendar. Gives WS3's cadence and the date it last met, and says the next date is not held — noting that schedule changes do occur, so extrapolating from the cadence would be a guess.",
+      "expectations": [
+        "States that no future schedule is recorded",
+        "Offers cadence and last-met date instead",
+        "Does not compute or predict a next date from the RRULE",
+        "Does not present an extrapolated date as a fact"
+      ],
+      "depends_on": ["group:ws3"]
+    },
+    {
+      "id": 5,
+      "prompt": "Which CoSAI groups have been cancelling the most meetings?",
+      "expected_output": "By count, WS1 and WS3, 25 cancellations each at the recorded ingest, against 93 and 80 meetings announced. By rate, the Marketing Committee (22 of 68) stands out among the busy groups, while two WS4 SIGs show 1 of 1, too few to rank. Qualified as what the covered window saw.",
+      "expectations": [
+        "Ranks groups by cancellations",
+        "Gives cancellations against the number scheduled, so two of four is not read as two of forty",
+        "Bounds the claim to the covered window",
+        "Does not rank a group seen once above groups seen dozens of times"
+      ],
+      "depends_on": ["group:ws1", "group:ws3", "group:marketing"]
+    },
+    {
+      "id": 6,
+      "prompt": "Did WS2 meet in July 2024?",
+      "expected_output": "Not asserted. July 2024 falls before the WS2 list's covered window, which starts 18 October 2024, so the graph records nothing either way — it is not evidence that WS2 did not meet.",
+      "expectations": [
+        "Answers not-asserted rather than no",
+        "Identifies the question as falling outside the coverage window",
+        "States explicitly that absence outside coverage is not evidence of absence"
+      ],
+      "depends_on": ["group:ws2"]
+    },
+    {
+      "id": 7,
+      "prompt": "What is the attendance rate at TSC meetings by sponsor?",
+      "expected_output": "Not available. No source in this graph names attendees, so no attendance rate can be computed. Says where it would come from: TSC and PGB minutes are committed markdown in public GitHub and carry Present, Regrets and Guests, and ingesting them is planned work.",
+      "expectations": [
+        "States that attendance is not held, rather than attempting a figure",
+        "Does not infer attendance from meeting counts or from credited roles",
+        "Names the minutes as the source that would answer it",
+        "Does not describe the absence as nobody attending"
+      ],
+      "depends_on": ["group:tsc"]
+    },
+    {
+      "id": 8,
+      "prompt": "Who attended the WS4 meeting on 3 September 2026?",
+      "expected_output": "Not asserted. The meeting is recorded and a summary exists for it, but the summary is access-restricted to CoSAI members and the graph holds no attendee data.",
+      "expectations": [
+        "Answers not-asserted for attendance",
+        "Confirms the meeting itself is recorded, so the gap is attendance and not the meeting",
+        "Mentions that a record exists and is access-restricted",
+        "Does not name any attendee"
+      ],
+      "depends_on": ["group:ws4"]
+    },
+    {
+      "id": 9,
+      "prompt": "What did CoSAI decide about telemetry?",
+      "expected_output": "Not held. Meeting discussion and decisions are not in this graph; a meeting's record is stored as a pointer and most are restricted to members. Offers what is recorded instead — governance steps and the relevant publication — and says where the discussion itself lives.",
+      "expectations": [
+        "States that discussion content is not held",
+        "Does not summarise or invent what was discussed",
+        "Redirects to governance events and publications as what is available"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": 10,
+      "prompt": "How does a CoSAI paper actually get approved?",
+      "expected_output": "Describes the process from the governance record: a review period opens on the TSC list, the TSC and PGB review, a ballot or call for consensus runs, and an approval is announced — illustrated with the Zero Trust paper, whose review period opened 18 August 2026 and whose approval was announced 7 September 2026. Notes that the record captures that each step happened, not how a vote resolved.",
+      "expectations": [
+        "Uses governance_timeline rather than describing a generic process",
+        "Gives a dated worked example",
+        "States that vote outcomes are not recorded, only that the step occurred",
+        "Distinguishes an announcement's own wording from a recorded outcome"
+      ],
+      "depends_on": ["publication:zero-trust-for-ai-systems"]
+    },
+    {
+      "id": 11,
+      "prompt": "Who leads the group working on code security, and when do they meet?",
+      "expected_output": "Answers the meeting half — the WS3 SIG on Security of AI-Assisted Code Development, weekly on Tuesdays — and states that leadership is not recorded here. Does not offer an editor or contributor of a WS3 paper as the group's lead; governance roles live in meeting minutes the graph does not yet hold.",
+      "expectations": [
+        "Answers the meeting half fully",
+        "States that group leadership is not recorded in this graph",
+        "Does not substitute a credited role on a publication for a leadership role",
+        "Names where leadership information would come from"
+      ],
+      "depends_on": ["group:ws3-sig-security-of-ai-assisted-code-development"]
+    },
+    {
+      "id": 12,
+      "prompt": "Which CoSAI workstream has no regular meeting?",
+      "expected_output": "None can be concluded. Several groups carry no cadence, but that means no calendar notice in the covered window stated their schedule — not that they lack a regular meeting. Some of those groups are among the most active by meeting count.",
+      "expectations": [
+        "Refuses to read a missing cadence as an absent meeting",
+        "Explains that cadence is only present where a calendar notice stated it",
+        "Points out that groups without a recorded cadence still show meeting activity"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": 13,
+      "prompt": "Who edited the Zero Trust for AI Systems paper?",
+      "expected_output": "Hands off to the contribution skill, which answers credited roles on publications. This skill covers groups, meetings and governance process.",
+      "expectations": [
+        "Recognises the question as contribution credit rather than orientation",
+        "Defers to the contribution skill instead of answering from meeting data",
+        "Does not answer from governance or meeting records"
+      ],
+      "depends_on": ["publication:zero-trust-for-ai-systems"]
+    },
+    {
+      "id": 14,
+      "prompt": "Is the WS2 Zero Trust SIG still active?",
+      "expected_output": "No. It is recorded as inactive, a curator's statement dated 2026-09-24, and it last met on 2026-06-18. The status is reported as stated, not inferred from the dates.",
+      "expectations": [
+        "Reports the SIG as inactive",
+        "Gives the date the status was stated, and the date it last met",
+        "Attributes the status to a curator's statement rather than to the absence of meetings"
+      ],
+      "depends_on": ["group:cosai-ws2-zero-trust-sig"]
+    },
+    {
+      "id": 15,
+      "prompt": "I wanted to join the Shared Responsibility Model SIG. Is it still running?",
+      "expected_output": "Its work continues in WS3 as the SRF & GRC SIG. The WS2 SIG last met on 2026-06-03 and the SRF & GRC SIG first met on 2026-06-08; it meets every other Monday and announces on cosai-risk-governance-ws, which is the list to join.",
+      "expectations": [
+        "Follows succeeded_by to the SRF & GRC SIG rather than reporting the SIG as ended",
+        "Points the person to the successor's list, not the WS2 list",
+        "Keeps the two groups distinct: does not merge their meeting counts or dates"
+      ],
+      "depends_on": ["group:ws2-shared-responsibility-model-sig", "group:cosai-ws3-srf-grc-sig"]
+    },
+    {
+      "id": 16,
+      "prompt": "The WS1 Model Cards SIG hasn't met since June 2025. Is it dead?",
+      "expected_output": "Not established. No meeting has been announced since 2025-06-11 and no status is stated, so the graph cannot say whether it ended, merged into the WS1 meeting, or stopped announcing. Suggests asking on cosai-supply-chain-ws.",
+      "expectations": [
+        "Does not call the SIG inactive or ended",
+        "States that no status is recorded, and when it last met",
+        "Explains that a quiet period is not evidence that a group has ended"
+      ],
+      "depends_on": ["group:cosai-ws1-model-cards-sig"]
+    }
+  ]
+}

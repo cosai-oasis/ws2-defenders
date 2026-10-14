@@ -1,0 +1,47 @@
+{
+  "skill_name": "technical-writing-review",
+  "grounding": {
+    "note": "Every case rests on text that ships inside this skill: either the prompt itself or the pinned fixture evals/fixtures/sample-spec.md, whose violations are planted deliberately and listed per case. Nothing depends on a corpus or an external document, so a failure means the skill's instructions or its checker changed, never that data moved. Case 1's line numbers are the checker's output on the fixture as committed; editing the fixture requires updating them.",
+    "fixtures": ["evals/fixtures/sample-spec.md"],
+    "depends_on_script": "scripts/check_prose.py"
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review evals/fixtures/sample-spec.md against the editorial conventions. The ISO/IEC 42001 title in it is quoted verbatim.",
+      "expected_output": "Runs the checker with --rfc2119 and the ISO title passed to --allow, then reports in document order: P5 lone 2.1 (line 10); P1 'Frankly' and P2 'used to be' and 'This revision' (line 12); P4 warning for lowercase 'must' on a normative sentence (line 13); P3 TODO and 'before publication' (line 17); P6 em dash (line 21); S5 reference to a nonexistent §4 (line 21); S4 table with a stray column (line 23); S1 broken #transport anchor (line 28). Does not report the ISO title or anything inside the fenced code block.",
+      "expectations": [
+        "Runs the bundled checker rather than relying only on reading",
+        "Exempts the verbatim ISO/IEC 42001 title and says it did so",
+        "Reports every planted failure with its rule ID and line",
+        "Treats the lowercase 'must' on line 13 as a normative requirement that needs capitals, not as prose to leave alone",
+        "Does not flag the contents of the fenced code block",
+        "Does not edit the file, because the prompt asks only for a review"
+      ],
+      "depends_on": ["evals/fixtures/sample-spec.md", "scripts/check_prose.py"]
+    },
+    {
+      "id": 2,
+      "prompt": "Does this paragraph follow the conventions? \"Clearly, operators will want this field. We believe in good faith that omitting it would be reckless, and implementers should adopt it.\"",
+      "expected_output": "Reports that the checker's word list finds nothing, then identifies by reading the appeals it misses: 'Clearly' asks for trust, 'we believe in good faith' is an appeal to ethos, 'reckless' is an appeal to pathos, and the claim has no evidence or reasoning behind it. Flags the lowercase 'should' as ambiguous and asks whether the sentence is normative.",
+      "expectations": [
+        "Does not declare the paragraph compliant because a checker run is clean",
+        "Identifies 'Clearly' and 'in good faith' as appeals the word list misses",
+        "Identifies 'reckless' as an appeal to feeling rather than evidence",
+        "Flags lowercase 'should' and asks whether the sentence is meant to be normative instead of assuming"
+      ],
+      "depends_on": ["SKILL.md#2-read-for-what-the-checker-cannot-see"]
+    },
+    {
+      "id": 3,
+      "prompt": "Review this changelog entry for style: \"## Changelog\\n\\n### 0.5\\n\\nPreviously treated as optional, Stop Reason is now a MUST field.\\n\\n### 0.4\\n\\nAdded the sampling appendix.\"",
+      "expected_output": "Recognizes that a changelog exists to describe change, so the retrospective phrasing the checker flags as P2 is exempt here. Reports no P2 violation and says why.",
+      "expectations": [
+        "Does not ask for 'Previously treated as optional' to be removed from a changelog",
+        "Explains that P2 does not apply inside a changelog or revision history",
+        "Does not report 0.5 and 0.4 as lone subsections, because they are siblings"
+      ],
+      "depends_on": ["SKILL.md#2-read-for-what-the-checker-cannot-see"]
+    }
+  ]
+}
