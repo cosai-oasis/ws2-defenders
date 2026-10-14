@@ -8,8 +8,9 @@
 
 ## Context
 
-This project builds a harness that turns the CoSAI Risk Map from a set of *asserted* relationships
-into a set of *tested* ones — the ask in
+This project builds ARCADE (Assessing Risks and Control through Attack Detection Evaluations),
+arcade for short, a harness that turns the CoSAI Risk Map from a set of *asserted* relationships
+into a set of *tested* ones, the ask in
 [`secure-ai-tooling#491`](https://github.com/cosai-oasis/secure-ai-tooling/issues/491). The Risk
 Map says that a control addresses a risk, 37 controls against 36 risks, reciprocally linked; no
 executed evidence exists anywhere that any one of those edges holds. The harness runs a documented
@@ -23,8 +24,8 @@ evidence is a finding about the RFC, not a gap to paper over.
 
 **Four inputs already exist**, so the work is integration rather than new research: the Risk Map on
 `develop` (36 risks, 37 controls, 42 components, 10 personas, reciprocal `risk.controls` ↔
-`control.risks` edges) as the claim under test; Telemetry RFC v0.5 with 98 fields and **49
-documented attacks**, serving as both attack corpus and observation contract; `secure-ai-tooling`
+`control.risks` edges) as the claim under test; the [Telemetry RFC](../telemetry/CoSAI-AI-Telemetry-RFC.md) v0.6
+with 101 fields and **61 documented attacks**, serving as both attack corpus and observation contract; `secure-ai-tooling`
 validator infrastructure and its ADR-025 / ADR-034 / ADR-037 rules; and a scoped first-slice
 proposal already public on #491.
 
@@ -33,14 +34,12 @@ produces an inspectable verdict; a target with enough surface to attack; and any
 evidence, anywhere, that a CoSAI control mitigates a CoSAI risk.
 
 **Boundaries.** [#491](https://github.com/cosai-oasis/secure-ai-tooling/issues/491) is canonical
-for *what is being asked for* — where it and this ADR disagree on scope, the issue and the TSC
+for *what is being asked for*: where it and this ADR disagree on scope, the issue and the TSC
 win. [ADR-WS2-001](001-bubo-graphrag-mcp.md) is canonical for the CoSAI-RM ontology, which
 the run records join through the Risk Map's own ids (D4). The conventions the two share, such as
 absence-is-a-finding, are deliberate, so two cohorts that work the same way can review each
-other.
-
-> Hosted in `cosai-graphrag-mcp` for now; moves to its own repository later, at which point the
-> link above and the pointer in that repository's `README.md` both become cross-repository URLs.
+other. The source for arcade lives in this repository under `arcade/`, beside bubo's under
+`bubo/`.
 
 ## Decision
 
@@ -54,13 +53,13 @@ state. The harness **fails closed** on a pair whose positive control did not fir
 
 ### D2. Nobody scores their own run
 
-Red writes the attack, Blue writes the control, Harness writes the scorer — and the scorer exists
+Red writes the attack, Blue writes the control, Harness writes the scorer, and the scorer exists
 before either. No verdict is countersigned by the author of the attack or the control.
 
 ### D3. No invented attacks
 
 Every attack traces to a documented instance in the RFC corpus with its primary source. Taxonomies
-establish recognition, not occurrence — the RFC's own evidence rule, and it binds us too. A novel
+establish recognition, not occurrence. That is the RFC's own evidence rule, and it binds us too. A novel
 attack is a proposal to the corpus, not a coverage number.
 
 ### D4. One run record per `(risk, control, attack, tier)`, keyed on upstream ids, never invented
@@ -70,7 +69,7 @@ Missing concept → file upstream and wait. This is ADR-WS2-001 D7 seen from the
 ### D5. The verdict derives from emitted telemetry, not from bespoke assertions
 
 If a field the RFC marks MUST cannot evidence the outcome, that is a finding against the RFC or
-the harness — not a license to assert the outcome directly.
+the harness, not a license to assert the outcome directly.
 
 ### D6. Claim strength is the weakest tier demonstrated, and the tier is printed
 
@@ -87,7 +86,7 @@ terms. No credentials, no live secrets, no network egress from Tier A or B.
 ### D9. Absence is the finding
 
 A risk with no executable control, an attack nobody could reproduce, a control nobody could make
-fail — reported in the coverage report, never omitted from it.
+fail: each is reported in the coverage report, never omitted from it.
 
 ### D10. Every control ships with a known-bad mutant its pair must kill
 
@@ -101,21 +100,21 @@ not say what it ran against is not evidence.
 
 ### D12. A pair lands whole or not at all
 
-Attack, control, mutant, benign case, fixtures, run record, countersigned verdict — one PR.
+Attack, control, mutant, benign case, fixtures, run record, countersigned verdict: one PR.
 
 ## Alternatives Considered
 
-- **Expert assertion, as today** — rejected. It is what the Risk Map already does, and it leaves
+- **Expert assertion, as today**: rejected. It is what the Risk Map already does, and it leaves
   every risk↔control edge unfalsifiable. No way to be wrong in public is no way to be trusted.
-- **Unit-test-style assertions against the control implementation** — rejected. It tests that the
+- **Unit-test-style assertions against the control implementation**: rejected. It tests that the
   code does what its author meant, not that the attack stops. D1 and D5 exist to close exactly
   that gap.
-- **Adopting Atomic Red Team directly** — rejected as the whole answer, retained as prior art.
-  Its tests are not keyed to CoSAI ids and its corpus is not the RFC's 49 documented AI attacks,
+- **Adopting Atomic Red Team directly**: rejected as the whole answer, retained as prior art.
+  Its tests are not keyed to CoSAI ids and its corpus is not the RFC's 61 documented AI attacks,
   so it cannot satisfy D3 or D4.
-- **A red-team narrative report** — rejected. Not reproducible, not re-runnable against a new
+- **A red-team narrative report**: rejected. Not reproducible, not re-runnable against a new
   model version, and it cannot produce a coverage denominator.
-- **Waiting for the Risk Map to stabilize** — rejected. `develop` grows during the term; D11's
+- **Waiting for the Risk Map to stabilize**: rejected. `develop` grows during the term; D11's
   pinning makes a moving target workable, and a first executed pair is worth more now than a
   complete one later.
 
@@ -134,9 +133,9 @@ passing result is indistinguishable from a non-functioning test. D1 therefore fa
 pair whose positive control did not fire.
 
 **2. One experiment tests two artifacts.** Because the verdict derives from emitted telemetry rather
-than bespoke assertions, every run exercises the Telemetry RFC's 98 fields as an *observation
+than bespoke assertions, every run exercises the Telemetry RFC's 101 fields as an *observation
 contract* at the same time as it exercises the control. A field the RFC marks MUST that cannot
-evidence its intended outcome is a finding against the RFC — a result the RFC cannot produce
+evidence its intended outcome is a finding against the RFC, a result the RFC cannot produce
 about itself, obtained here as a by-product of the same run.
 
 **3. Coverage becomes countable.** The report states which pairs have executed evidence, which do
@@ -146,7 +145,7 @@ harness; no other artifact in the coalition currently produces it.
 
 **4. The run records are an index into the Risk Map.** Every record is keyed by risk id, control id,
 attack id, component and telemetry field, so evidence joins back to the RM catalog and, through
-the same ids, to the sibling project's ontology, as a join rather than an integration. *Which controls have been tested, against what, when, and at what strength*
+the same ids, to bubo's ontology (ADR-WS2-001), as a join rather than an integration. *Which controls have been tested, against what, when, and at what strength*
 becomes a query. The ids must therefore be the Risk Map's own and never invented (D4); a record
 keyed to a non-existent id supports no claim.
 
@@ -162,6 +161,6 @@ maintenance, not rework (D11).
 
 ### Follow-up
 
-The range decision and the pair contract are the two decisions everything else rests on;
-each warrants its own ADR in the WS2 series once taken. Upstream, D3 and D4 generate issues
+The range decision and the pair contract are the two decisions everything else rests on:
+**ADR-WS2-006** (the target range) and **ADR-WS2-007** (the pair contract). Upstream, D3 and D4 generate issues
 against the RFC corpus and the Risk Map YAML rather than local workarounds.
