@@ -95,6 +95,14 @@ def test_a_path_on_a_branch_is_not_guessed(tmp_path, select):
     assert "ref other than main" in guide["suggested"]["note"]
 
 
+@pytest.mark.parametrize("host", ["evilgithub.com", "github.com.example.org"])
+def test_a_host_that_only_resembles_github_suggests_no_repository(select, host):
+    g = Graph()
+    post(g, 1, "A Post", f"https://{host}/cosai-oasis/cosai-tsc/blob/main/guides/a-guide.md")
+    [guide], _ = PC.candidates(select(website=g), {})
+    assert "repo" not in guide["suggested"]
+
+
 def test_files_sharing_a_name_get_their_repository_in_the_id(select):
     g = Graph()
     post(g, 1, "A", "https://github.com/cosai-oasis/cosai-tsc/blob/main/ONBOARDING.md")

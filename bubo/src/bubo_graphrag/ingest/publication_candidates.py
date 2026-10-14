@@ -116,7 +116,8 @@ def title_candidates(select: Select) -> dict[str, dict]:
 def _github_parts(url: str) -> dict:
     parts = urllib.parse.urlsplit(url)
     segments = [urllib.parse.unquote(s) for s in parts.path.strip("/").split("/")]
-    if parts.netloc.lower().endswith("github.com") and len(segments) >= 5 \
+    # The host must be GitHub itself: a suffix match would admit evilgithub.com.
+    if parts.hostname in ("github.com", "www.github.com") and len(segments) >= 5 \
             and segments[2] in ("blob", "raw"):
         return {"repo": f"{segments[0]}/{segments[1]}", "ref": segments[3],
                 "path": "/".join(segments[4:])}
