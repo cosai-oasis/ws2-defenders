@@ -1,0 +1,11 @@
+# Where every class in this ontology sits under BFO. Useful for checking the grounding
+# is what you expect, and for seeing the CCO layer between them.
+SELECT ?class ?parent ?parentLabel
+WHERE {
+  ?c rdfs:subClassOf ?p .
+  FILTER(STRSTARTS(STR(?c), "https://cosai-oasis.github.io/ontology/cosai-contrib#"))
+  BIND(REPLACE(STR(?c), "^.*#", "") AS ?class)
+  BIND(REPLACE(STR(?p), "^.*[#/]", "") AS ?parent)
+  OPTIONAL { ?p rdfs:label ?parentLabel }
+}
+ORDER BY ?class

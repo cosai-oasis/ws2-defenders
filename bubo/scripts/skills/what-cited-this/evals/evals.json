@@ -1,0 +1,69 @@
+{
+  "skill_name": "what-cited-this",
+  "grounding": {
+    "note": "The citation layer is ingested from the CoSAI TSC citation-impact dataset, which is refreshed weekly upstream. Citation counts therefore drift by design. Per ADR-033 D7a these cases are written so the graded assertion is the reporting behaviour -- which distinctions are preserved, which source is cited, whether a work is in document scope -- and never an exact total. Counts appear in expected_output as the value at the ingest recorded below, for orientation only; a changed count is not a failure. Each case records the work ids it depends on.",
+    "source_dataset": "cosai-oasis/cosai-tsc :: TSC Deliverables/citation-impact/sources.json",
+    "counts_at_ingest": {
+      "model-context-protocol-security": 28,
+      "cosai-risk-map": 14
+    }
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What has cited the CoSAI MCP Security paper?",
+      "expected_output": "Reports the citing publications (28 at the recorded ingest) and keeps two distinctions intact: formal reference versus substantive work citation, and directly inspected versus search-index excerpt verified. Cites the CoSAI TSC citation-impact dataset as the source.",
+      "expectations": [
+        "Reports citing publications for that work",
+        "Splits formal references from substantive work citations rather than giving one blended total",
+        "Splits directly inspected from search-index-excerpt-verified rather than presenting all as equally confirmed",
+        "Names the CoSAI TSC citation-impact dataset as the source"
+      ],
+      "depends_on": ["publication:model-context-protocol-security"]
+    },
+    {
+      "id": 2,
+      "prompt": "How widely is the CoSAI Risk Map cited?",
+      "expected_output": "Answers with the Risk Map's citation figures while stating that it is a stub work: it is tracked in the citation dataset but is outside the set of documents this graph holds credits for, so no contributor or section questions can be answered about it.",
+      "expectations": [
+        "Answers the citation question rather than refusing",
+        "Flags the work as outside the graph's document scope",
+        "Does not imply contribution or section data exists for it"
+      ],
+      "depends_on": ["publication:cosai-risk-map"]
+    },
+    {
+      "id": 3,
+      "prompt": "Which CoSAI publication has the most external uptake?",
+      "expected_output": "Ranks works by citing publications and keeps in-scope works distinguishable from out-of-scope stub works, so a stub topping the list is not silently presented as one of the graph's documents.",
+      "expectations": [
+        "Ranks by citing publications",
+        "Marks which works are in document scope and which are stubs",
+        "Does not conflate substantive citations with formal references when characterising uptake"
+      ],
+      "depends_on": ["publication:model-context-protocol-security", "publication:principles-secure-by-design-agentic-systems"]
+    },
+    {
+      "id": 4,
+      "prompt": "Has any government body cited CoSAI work? Search the web and tell me.",
+      "expected_output": "Answers from the hand-verified TSC dataset in preference to a web search, and says so. Reports the citing organisation with its verification state rather than presenting a search result as equivalent evidence.",
+      "expectations": [
+        "Prefers the curated dataset over a web search and states that it is authoritative",
+        "Reports the verification state of the citation it relies on",
+        "Does not present an unverified search hit as a confirmed citation"
+      ],
+      "depends_on": ["publication:model-context-protocol-security"]
+    },
+    {
+      "id": 5,
+      "prompt": "Give me the exact number of times CoSAI has been cited, as of today.",
+      "expected_output": "Gives the total from the ingested dataset and qualifies it: the dataset is refreshed weekly upstream and counts discovered citations, so it is a floor on real uptake at a known ingest, not a live or exhaustive figure.",
+      "expectations": [
+        "Qualifies the total rather than presenting it as exact and current",
+        "Explains that the figure reflects the ingested dataset, not a live count",
+        "Does not fabricate a more recent number"
+      ],
+      "depends_on": []
+    }
+  ]
+}

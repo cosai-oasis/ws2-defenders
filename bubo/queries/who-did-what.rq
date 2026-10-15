@@ -1,0 +1,15 @@
+# Every credit in the corpus: person, role, publication, and the date the credit is
+# evidence about. Note the date is the ORIGINAL publication date even for a document
+# revised later without refreshing its credits.
+SELECT ?person ?role ?publication ?date ?status
+WHERE {
+  ?credit obo:BFO_0000197 ?p ;          # inheres in
+          a ?roleClass ;
+          cosaic:onPublication ?pub .
+  ?p   rdfs:label ?person .
+  ?pub rdfs:label ?publication ; cosaic:approvalStatus ?status .
+  OPTIONAL { ?credit cosaic:assertedAt ?i . ?i cosaic:date ?date }
+  BIND(REPLACE(STR(?roleClass), "^.*#", "") AS ?role)
+  FILTER(?roleClass != cosaic:CreditedRole)
+}
+ORDER BY ?person ?date

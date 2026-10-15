@@ -1,0 +1,12 @@
+# Citations per CoSAI work. `inScope` false marks works the citation dataset references
+# that this server does not hold -- the Risk Map and Principles for Secure-by-Design
+# Agentic Systems are among the most cited, so excluding them would mislead.
+SELECT ?work ?inScope (COUNT(DISTINCT ?citing) AS ?citingPublications)
+WHERE {
+  ?e a cosaic:CitationEvent ; cosaic:citedWork ?w ; cosaic:citingPublication ?citing .
+  ?w rdfs:label ?work ; a ?type .
+  BIND(IF(?type = cosaic:Publication, true, false) AS ?inScope)
+  VALUES ?type { cosaic:Publication cosaic:CoSAIWorkStub }
+}
+GROUP BY ?work ?inScope
+ORDER BY DESC(?citingPublications)

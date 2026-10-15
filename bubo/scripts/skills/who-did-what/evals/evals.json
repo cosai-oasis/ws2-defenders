@@ -1,0 +1,98 @@
+{
+  "skill_name": "who-did-what",
+  "grounding": {
+    "note": "Every case below is presence-grounded (ADR-033 D7a): its expected verdict rests on named entries existing in registry/ and on documents pinned by commit sha in registry/publications.yaml. No case is absence-grounded against a growing corpus, so none requires a pinned fixture under evals/fixtures/. Each case records the ids it depends on, so a future failure is a one-line diagnosis -- the entry moved -- rather than an open question.",
+    "depends_on_registry": ["registry/people.yaml", "registry/organizations.yaml", "registry/publications.yaml"],
+    "pinned_documents": {
+      "zero-trust-for-ai-systems": "100d39093328",
+      "model-context-protocol-security": "62e75fd45c45",
+      "addendum-mcp-and-pqc": "62e75fd45c45",
+      "ai-shared-responsibility-framework": "456b709a5ef8",
+      "agent-containment": "2fb51e376f47"
+    }
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What has Josiah Hagen worked on in CoSAI?",
+      "expected_output": "Resolves the name to a canonical person id first, then reports the credited publications with the role held on each, and gives affiliation as attested ranges rather than a current employer.",
+      "expectations": [
+        "Resolves the name before answering rather than querying on the raw string",
+        "Reports credits per publication with the role held on each",
+        "Does not state a current employer anywhere in the answer",
+        "Notes that one person can hold several roles on one document"
+      ],
+      "depends_on": ["person:josiah-hagen"]
+    },
+    {
+      "id": 2,
+      "prompt": "Where does Josiah Hagen work now?",
+      "expected_output": "Declines to answer as a current fact. Reports that he was credited under Trend Micro in documents published between 2025-07-14 and 2026-01-08, and without a stated employer as of 2026-09-04, with bounds unknown; and reports the departure as an inferred window (after 2026-01-08, by 2026-09-04) rather than a date.",
+      "expectations": [
+        "States that the graph does not record a current employer",
+        "Gives the attested range, not a point-in-time employment claim",
+        "Surfaces bounds_known: false or equivalent wording",
+        "Reports the affiliation change as an inferred window with notBefore/notAfter, flagged as inferred",
+        "Does not interpolate an employer for dates between two attested spans"
+      ],
+      "depends_on": ["person:josiah-hagen", "org:trend-micro"]
+    },
+    {
+      "id": 3,
+      "prompt": "Was Bill Stout at ServiceNow in August 2026? The MCP Security paper was revised 12 August 2026 and lists him under ServiceNow.",
+      "expected_output": "Not asserted. That credit list was carried across the v2.0 revision without being refreshed, so the credit is dated to the original publication date of 2026-01-08, not to the revision date. The row is not evidence of an affiliation in August 2026.",
+      "expectations": [
+        "Answers not-asserted rather than yes",
+        "Explains that the credit is dated to the original publication, not the revision",
+        "Identifies the revision as not having refreshed the credit list",
+        "Does not read the row as a return to a previous employer"
+      ],
+      "depends_on": ["person:bill-stout", "org:servicenow", "publication:model-context-protocol-security"]
+    },
+    {
+      "id": 4,
+      "prompt": "Who were the editors of Zero Trust for AI Systems?",
+      "expected_output": "Four editors: Jason Garman (Amazon), Igor Pedan (Dell), Bill Stout (independent) and Josiah Hagen (independent). The source document spells one of the two independents 'indepedent'; the canonical organization is reported, and the verbatim spelling is mentioned only if the discrepancy is the point.",
+      "expectations": [
+        "Returns exactly four editors",
+        "Reports the canonical organization rather than the verbatim misspelling",
+        "Treats the two independents as having no employer rather than an organization named 'indepedent'",
+        "Attributes employers as stated on that publication, not as current facts"
+      ],
+      "depends_on": ["publication:zero-trust-for-ai-systems", "org:independent"]
+    },
+    {
+      "id": 5,
+      "prompt": "Which organization is Akila Srinivasan credited under on the CoSAI Shared Responsibility Framework?",
+      "expected_output": "Not David LaBianca, and not Jodi Middleton. Those are two other people named on the same line of the source document. A line naming several people must have its arity resolved before it is split, or the second name is read as the first person's employer.",
+      "expectations": [
+        "Does not report a person's name as an organization",
+        "Recognises that several people share one source line",
+        "Reports her roles on that document without collapsing them, as she holds two"
+      ],
+      "depends_on": ["person:akila-srinivasan", "publication:ai-shared-responsibility-framework"]
+    },
+    {
+      "id": 6,
+      "prompt": "Who contributed to the Addendum on Post-Quantum Cryptography for MCP?",
+      "expected_output": "Nobody is credited: at the pinned revision that document carries no acknowledgements section. Zero credits is the correct answer for it, not a retrieval gap or an error.",
+      "expectations": [
+        "Answers zero credits without reporting a failure or a gap",
+        "Explains that the document has no acknowledgements section",
+        "Does not fall back to naming contributors of the parent MCP Security paper"
+      ],
+      "depends_on": ["publication:addendum-mcp-and-pqc"]
+    },
+    {
+      "id": 7,
+      "prompt": "Who wrote the agent containment paper, and can I cite them as CoSAI authors?",
+      "expected_output": "Reports the credits and states that the document is a working draft, so credit on it is not approved CoSAI work and should not be cited as such.",
+      "expectations": [
+        "Surfaces the approval status alongside the credits",
+        "Warns that credit on an unapproved draft is not approved CoSAI work",
+        "Does not present draft credits as equivalent to credits on an approved publication"
+      ],
+      "depends_on": ["publication:agent-containment"]
+    }
+  ]
+}

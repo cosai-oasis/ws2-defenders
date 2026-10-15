@@ -1,0 +1,15 @@
+# Publication candidates reviewed and found not to be publications, each with the
+# reason. Read by `python -m bubo_graphrag.ingest.publication_candidates`, which
+# proposes every CoSAI work the graph has evidence of and the registry lacks, into
+# registry/publications.seed.yaml. A key here stops a candidate being proposed again.
+#
+# Key a candidate by the title its approval calls name, or by the URL of the file a
+# post links to, without scheme or query:
+#
+#   dismissed:
+#     github.com/cosai-oasis/cosai-tsc/blob/main/onboarding.md: an onboarding guide
+#
+# A key that no longer matches any candidate is reported, so a dismissal cannot
+# outlive the evidence it answered.
+
+dismissed: {}

@@ -1,0 +1,56 @@
+{
+  "skill_name": "technical-writing-style",
+  "grounding": {
+    "note": "Every case is self-contained: the text under test is inside the prompt, and the expectations rest only on rules P1 to P6 in this skill's SKILL.md. No case depends on a corpus, a registry, or a document outside the prompt, so none can drift as other data grows. The rules come from the binding editorial conventions of the CoSAI AI Telemetry RFC and the prose checks of its validator; a failure here means the skill's instructions changed or stopped being followed.",
+    "depends_on_rules": ["SKILL.md#p1-logos-only", "SKILL.md#p2-describe-the-document-as-it-stands", "SKILL.md#p3-no-work-notes-in-the-body", "SKILL.md#p4-rfc-2119-keywords-in-capitals-only", "SKILL.md#p5-never-a-subsection-x1-without-an-x2", "SKILL.md#p6-no-em-or-en-dashes"]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Tighten this paragraph for the spec: \"Frankly, the sampling rule was previously treated as optional, but this revision makes it mandatory — producers should now sample at 1 in 100.\"",
+      "expected_output": "A rewrite that states the sampling rule as it stands, with a capitalized requirement keyword, no ethos word, no reference to earlier treatment or to the revision, and no em dash. For example: \"Producers MUST sample at 1 in 100.\"",
+      "expectations": [
+        "Removes 'Frankly' without replacing it with another sincerity or concession marker",
+        "Removes every reference to the earlier treatment and to 'this revision'",
+        "States the requirement with a capitalized RFC 2119 keyword, and chooses MUST because the source calls the rule mandatory",
+        "Contains no em or en dash",
+        "Does not add a claim that the source paragraph does not make"
+      ],
+      "depends_on": ["P1", "P2", "P4", "P6"]
+    },
+    {
+      "id": 2,
+      "prompt": "Here is my outline for section 7. Fix anything that breaks the conventions:\n\n## 7. Retention\n### 7.1 Storage duration\n## 8. Export\n### 8.1 Formats\n### 8.2 Transport",
+      "expected_output": "Identifies that 7.1 is the only subsection of section 7, and either proposes a sibling 7.2 grounded in what the section covers or folds 7.1 into section 7. Leaves section 8 alone, because 8.1 has a sibling 8.2.",
+      "expectations": [
+        "Flags 7.1 as a lone subsection",
+        "Resolves it by adding a real 7.2 or by folding 7.1 into section 7, and does not invent filler content just to satisfy the rule",
+        "Does not flag 8.1 or 8.2"
+      ],
+      "depends_on": ["P5"]
+    },
+    {
+      "id": 3,
+      "prompt": "Clean up this appendix note before we circulate the draft:\n\n### Framework status\nTODO: verify before publication. NIST has not finalized the AI RMF profile for generative AI telemetry; the mapping in Appendix E uses the public draft.",
+      "expected_output": "Keeps the lasting fact (NIST has not finalized the profile; Appendix E uses the public draft), removes the TODO and the instruction to verify, and keeps a heading that describes what remains. Mentions that the verification task belongs in the issue tracker.",
+      "expectations": [
+        "Removes the TODO and the verification instruction from the body",
+        "Keeps the factual statements about NIST and Appendix E",
+        "Says that the removed verification task belongs in an issue rather than silently discarding it"
+      ],
+      "depends_on": ["P3"]
+    },
+    {
+      "id": 4,
+      "prompt": "Rewrite this sentence to follow the style guide, keeping the standard's name exactly as published: \"Controls map to ISO/IEC 42001:2023 — Information technology — Artificial intelligence — Management system, which honestly covers most of what operators need.\"",
+      "expected_output": "Keeps the ISO/IEC 42001 title verbatim, dashes included, removes 'honestly', and replaces the unsupported evaluative clause with a factual statement or removes it. States that the dashes left in place are part of the verbatim title.",
+      "expectations": [
+        "Keeps the official title exactly, including its em dashes",
+        "Removes 'honestly'",
+        "Does not keep an unsupported claim such as 'covers most of what operators need' without evidence",
+        "Tells the reader that the remaining dashes are an intentional exemption for a verbatim title"
+      ],
+      "depends_on": ["P1", "P6"]
+    }
+  ]
+}

@@ -1,0 +1,1039 @@
+threads:
+- key: please vote on the cosai governance
+  subject: Please vote on the CoSAI Governance
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-07-19'
+  closed: '2024-07-23'
+  deadline: null
+  states_tsc_approval: false
+  messages: 14
+  proposed_works: []
+- key: please vote on two updates to the cosai governance document
+  subject: Please vote on two updates to the CoSAI Governance document
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-07-25'
+  closed: '2024-07-30'
+  deadline: null
+  states_tsc_approval: false
+  messages: 14
+  proposed_works: []
+- key: please vote on the cosai workstream document
+  subject: Please vote on the CoSAI Workstream document
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-07-31'
+  closed: '2024-08-05'
+  deadline: null
+  states_tsc_approval: false
+  messages: 5
+  proposed_works: []
+- key: call for nominations for cosai marketing committee chairs
+  subject: Call for nominations for CoSAI Marketing Committee Chairs
+  stage: nomination
+  bodies: []
+  lists:
+  - cosai-marketing
+  opened: '2024-08-13'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: call for nominations for cosai marketing committee chairs
+  subject: Call for nominations for CoSAI Marketing Committee Chairs
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-08-14'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: ballot to approve the cosai tsc and ws governance
+  subject: Ballot to approve the CoSAI TSC and WS Governance
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-08-16'
+  closed: '2024-08-21'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to stand up marketing committee and guidelines for mc
+  subject: Ballot to stand up Marketing Committee and Guidelines for MC
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-08-16'
+  closed: '2024-08-21'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for nominations for cosai tsc co chairs
+  subject: Call for nominations for CoSAI TSC co-chairs
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-08-16'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: ballot to appoint co chairs for the cosai marketing committee
+  subject: Ballot to appoint Co-Chairs for the CoSAI Marketing Committee
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-08-21'
+  closed: '2024-08-26'
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: please vote for the co chairs for the cosai tsc
+  subject: Please vote for the Co-chairs for the CoSAI TSC
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2024-08-21'
+  closed: '2024-08-26'
+  deadline: null
+  states_tsc_approval: false
+  messages: 5
+  proposed_works: []
+- key: call for nominations for co chairs of the public sector committee
+  subject: Call for nominations for Co-Chairs of the Public Sector Committee
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-09-30'
+  closed: '2024-09-30'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to appoint co chairs for the cosai public sector committee
+  subject: Ballot to appoint Co-Chairs for the CoSAI Public Sector Committee
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-10-08'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: follow up ballot to select public sector committee co chairs
+  subject: Follow up Ballot to select Public Sector Committee Co-Chairs
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2024-10-15'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot on workstream 4 secure design patterns for agentic systems
+  subject: 'Ballot on Workstream 4: Secure Design Patterns for Agentic Systems'
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-01-15'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve updates to the cosai marketing committee guidelines
+  subject: Ballot to approve updates to the CoSAI Marketing Committee Guidelines
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-03-12'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 5
+  proposed_works: []
+- key: approve time sensitive cosai budget requests
+  subject: Approve time-sensitive CoSAI budget requests
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-03-18'
+  closed: '2025-03-24'
+  deadline: null
+  states_tsc_approval: false
+  messages: 5
+  proposed_works: []
+- key: please vote on meeting times
+  subject: Please vote on meeting times
+  stage: ballot
+  bodies: []
+  lists:
+  - cosai-supply-chain
+  opened: '2025-03-31'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve cosai tsc and marketing budget
+  subject: Ballot to approve CoSAI TSC and Marketing Budget
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-04-10'
+  closed: '2025-04-21'
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: review the proposed standing rule additions to cosai governance
+  subject: Review the proposed standing rule additions to CoSAI governance
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-04-22'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 6
+  proposed_works: []
+- key: vote on standing rules for cosai pgb
+  subject: Vote on Standing Rules for CoSAI PGB
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-05-12'
+  closed: '2025-05-21'
+  deadline: null
+  states_tsc_approval: false
+  messages: 5
+  proposed_works: []
+- key: ballot to approve ws1 landscape paper
+  subject: Ballot to approve WS1 landscape paper
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-05-20'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve ws2 landscape paper
+  subject: Ballot to approve WS2 Landscape Paper
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-06-25'
+  closed: '2025-07-01'
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: call for nominations for marketing committee co chair
+  subject: Call for nominations for Marketing Committee Co-Chair
+  stage: nomination
+  bodies: []
+  lists:
+  - cosai-marketing
+  opened: '2025-08-13'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for nominations for marketing committee co chair
+  subject: Call for nominations for Marketing Committee Co-Chair
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-08-13'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve budget for cosai presence at govware conference
+  subject: Ballot to approve budget for CoSAI Presence at GovWare Conference
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-09-04'
+  closed: '2025-09-10'
+  deadline: null
+  states_tsc_approval: false
+  messages: 11
+  proposed_works: []
+- key: ballot to approve new ws1 paper signing ml artifacts
+  subject: Ballot to approve new WS1 paper, Signing ML Artifacts
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-09-09'
+  closed: '2025-09-17'
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - signing-ml-artifacts
+- key: call for consensus to approve new co leads for ws3
+  subject: Call for Consensus to approve new co-leads for WS3
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-09-11'
+  closed: '2025-09-17'
+  deadline: '2025-09-16'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: review of proposed updates to cosai governance
+  subject: Review of proposed updates to CoSAI Governance
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-09-22'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for consensus to approve cosai ws1 signing ml artifacts paper
+  subject: Call for Consensus to Approve CoSAI WS1 "Signing ML Artifacts" Paper
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-09-23'
+  closed: '2025-09-29'
+  deadline: '2025-09-28'
+  states_tsc_approval: true
+  messages: 2
+  proposed_works:
+  - signing-ml-artifacts
+- key: ballot to approve ws2 ai incident response framework 1 0
+  subject: Ballot to approve WS2 AI Incident Response Framework 1.0
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-10-08'
+  closed: '2025-10-15'
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - ai-incident-response
+- key: ballot to approve updates to the cosai governance and tsc governance
+  subject: Ballot to approve updates to the CoSAI Governance and TSC Governance
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-10-15'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: call for consensus to approve cosai ws2 ai incident response framework
+  subject: Call for Consensus to Approve CoSAI WS2 "AI Incident Response Framework"
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2025-10-23'
+  closed: '2025-10-28'
+  deadline: '2025-10-27'
+  states_tsc_approval: true
+  messages: 2
+  proposed_works:
+  - ai-incident-response
+- key: ws2 ai incident response framework approved by tsc and pgb
+  subject: WS2 "AI Incident Response Framework" approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-defenders
+  opened: '2025-10-28'
+  closed: '2025-10-28'
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works:
+  - ai-incident-response
+- key: ws2 ai incident response framework approved by tsc and pgb
+  subject: WS2 "AI Incident Response Framework" approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-10-28'
+  closed: '2025-10-28'
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works:
+  - ai-incident-response
+- key: 5 day review period for mcp security paper starts now
+  subject: 5-Day Review Period for MCP Security Paper Starts Now
+  stage: review-period
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  - cosai-tsc
+  opened: '2025-12-02'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - model-context-protocol-security
+- key: 5 day review period for mcp security paper starts now
+  subject: 5 Day Review Period for MCP Security Paper Starts Now
+  stage: review-period
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-12-02'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works:
+  - model-context-protocol-security
+- key: ballot to approve the ws4 model context protocol mcp security paper
+  subject: Ballot to approve the WS4 Model Context Protocol (MCP) Security paper
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2025-12-09'
+  closed: '2025-12-16'
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - model-context-protocol-security
+- key: call for consensus to approve cosai ws4 mcp security paper
+  subject: Call for Consensus to Approve CoSAI WS4 MCP Security paper
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-01-05'
+  closed: '2026-01-09'
+  deadline: '2026-01-08'
+  states_tsc_approval: true
+  messages: 3
+  proposed_works:
+  - model-context-protocol-security
+- key: ws4 mcp security paper approved by tsc and pgb
+  subject: WS4 MCP Security Paper approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-agentic-systems
+  - cosai-tsc
+  opened: '2026-01-09'
+  closed: '2026-01-09'
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works:
+  - model-context-protocol-security
+- key: ws4 mcp security paper approved by tsc and pgb
+  subject: WS4 MCP Security Paper approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-agentic-systems
+  - cosai-tsc
+  opened: '2026-01-09'
+  closed: '2026-01-09'
+  deadline: null
+  states_tsc_approval: false
+  messages: 7
+  proposed_works:
+  - model-context-protocol-security
+- key: cosai 2026 budget prioritization poll
+  subject: CoSAI 2026 Budget Prioritization Poll
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-01-13'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: pgb call for objections regarding co sponsorship of a ai security roundtable at fic 2026
+  subject: PGB Call for Objections regarding co-sponsorship of a AI Security Roundtable at FIC 2026
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-02-24'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: 5 day review period for agentic identity and access management starts now
+  subject: 5-Day Review Period for "Agentic Identity and Access Management" starts now
+  stage: review-period
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-03-09'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works:
+  - agentic-identity-and-access-management
+- key: 5 day review period for agentic identity and access management starts now
+  subject: 5-Day Review Period for "Agentic Identity and Access Management" starts now
+  stage: review-period
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-03-09'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works:
+  - agentic-identity-and-access-management
+- key: ballot to approve the ws4 agentic identity and access management paper
+  subject: Ballot to approve the WS4 Agentic Identity and Access Management Paper
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-03-17'
+  closed: '2026-03-20'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works:
+  - agentic-identity-and-access-management
+- key: call for consensus to approve cosai ws4 paper on agentic identity and access control
+  subject: Call for Consensus to Approve CoSAI WS4 paper on Agentic Identity and Access Control
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-03-30'
+  closed: '2026-04-06'
+  deadline: '2026-04-03'
+  states_tsc_approval: true
+  messages: 2
+  proposed_works: []
+- key: cosai pgb follow up action required briefing materials
+  subject: 'CoSAI PGB Follow-Up: Action Required + Briefing Materials'
+  stage: other
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-04-10'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: review and call for consensus on two new blog posts
+  subject: Review and call for consensus on two new blog posts
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-04-14'
+  closed: '2026-04-17'
+  deadline: '2026-04-16'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for consensus to appoint new ws1 co lead co lead for adlc sig
+  subject: Call for Consensus to appoint new WS1 co-lead, co-lead for ADLC SIG
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-04-17'
+  closed: '2026-04-22'
+  deadline: '2026-04-21'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: review and call for consensus on new rsa session recap blog post
+  subject: Review and call for consensus on new RSA session recap blog post
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-04-24'
+  closed: '2026-04-28'
+  deadline: '2026-04-28'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: 5 day review period for cosai shared responsibility framework srf starts now
+  subject: 5-Day Review Period for "CoSAI Shared Responsibility Framework (SRF)" starts now
+  stage: review-period
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-04-29'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works:
+  - ai-shared-responsibility-framework
+- key: 5 day review period for cosai shared responsibility framework srf starts now
+  subject: 5-Day Review Period for "CoSAI Shared Responsibility Framework (SRF)" starts now
+  stage: review-period
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-04-29'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works:
+  - ai-shared-responsibility-framework
+- key: ballot to approve the cosai shared responsibility framework srf v1 0
+  subject: Ballot to approve the CoSAI Shared Responsibility Framework (SRF) V1.0.
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-05-05'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - ai-shared-responsibility-framework
+- key: call for consensus to approve cosai ws2 paper ai shared responsibility framework
+  subject: Call for Consensus to Approve CoSAI WS2 Paper "AI Shared Responsibility Framework"
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-05-20'
+  closed: '2026-05-26'
+  deadline: '2026-05-25'
+  states_tsc_approval: true
+  messages: 2
+  proposed_works:
+  - ai-shared-responsibility-framework
+- key: review and call for consensus on blog post to accompany the srf publication
+  subject: Review and call for consensus on Blog Post to accompany the SRF publication
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-05-21'
+  closed: null
+  deadline: '2026-05-26'
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: call for consensus to approve additional co lead for ws4 sig
+  subject: Call for Consensus to Approve Additional Co-Lead for WS4 SIG
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-06-04'
+  closed: '2026-06-10'
+  deadline: '2026-06-09'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve updates to pgb tsc governance and ai usage policy
+  subject: Ballot to approve updates to PGB, TSC governance, and AI Usage Policy
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-06-22'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 9
+  proposed_works: []
+- key: call for consensus to approve cosai contributor recognition program
+  subject: Call for Consensus to approve CoSAI Contributor Recognition Program
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-06-23'
+  closed: '2026-06-30'
+  deadline: '2026-06-29'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for consensus to approve version 2 of the mcp security paper from ws4
+  subject: Call for Consensus to approve version 2 of the MCP Security Paper from WS4
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-agentic-systems
+  - cosai-tsc
+  opened: '2026-07-29'
+  closed: '2026-08-03'
+  deadline: '2026-07-31'
+  states_tsc_approval: false
+  messages: 3
+  proposed_works:
+  - model-context-protocol-security
+- key: call for nominations to co chair the cosai mc
+  subject: Call for nominations to co-chair the CoSAI MC
+  stage: nomination
+  bodies: []
+  lists:
+  - cosai-marketing
+  opened: '2026-07-31'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: call for nominations to co chair the cosai pgb tsc and mc
+  subject: Call for nominations to co-chair the CoSAI PGB, TSC and MC
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-07-31'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for nominations to co chair the cosai tsc
+  subject: Call for nominations to co-chair the CoSAI TSC
+  stage: nomination
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-07-31'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 4
+  proposed_works: []
+- key: call for nominations to co chair the cosai pgb tsc and mc
+  subject: Call for nominations to co-chair the CoSAI PGB, TSC and MC
+  stage: nomination
+  bodies: []
+  lists:
+  - cosai-marketing
+  opened: '2026-08-14'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: call for nominations to co chair the cosai pgb tsc and mc
+  subject: Call for nominations to co-chair the CoSAI PGB, TSC and MC
+  stage: nomination
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-08-14'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: ballot to approve allocation of meta s premier funds to sponsor neurips workshop
+  subject: Ballot to Approve Allocation of Meta’s Premier Funds to Sponsor NeurIPS workshop
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-17'
+  closed: '2026-08-25'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: 5 day review period for ws1 aimm paper and ws2 zero trust paper
+  subject: 5-Day Review Period for WS1 AIMM paper and WS2 Zero Trust Paper
+  stage: review-period
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-08-18'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: 5 day review period for ws1 aimm paper and ws2 zero trust paper external
+  subject: 5-Day Review Period for WS1 AIMM paper and WS2 Zero Trust Paper External
+  stage: review-period
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-18'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: call for consensus to approve blog post on sandboxing and isolation
+  subject: Call for Consensus to Approve Blog Post on Sandboxing and Isolation
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-08-18'
+  closed: '2026-08-21'
+  deadline: '2026-08-20'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: call for nominations to co chair the cosai mc
+  subject: Call for nominations to co-chair the CoSAI MC open until August 20
+  stage: nomination
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-20'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: ballot to approve 2026 cosai budget
+  subject: Ballot to Approve 2026 CoSAI Budget
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-21'
+  closed: '2026-09-01'
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: please vote for the co chairs for the cosai pgb
+  subject: Please vote for the Co-chairs for the CoSAI PGB
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-21'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: ballot to approve aimm paper ws1 and zero trust paper ws2
+  subject: Ballot to approve AIMM Paper, WS1, and Zero Trust Paper, WS2
+  stage: ballot
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-08-25'
+  closed: '2026-09-01'
+  deadline: null
+  states_tsc_approval: true
+  messages: 3
+  proposed_works: []
+- key: please vote for the co chairs for the cosai marketing committee
+  subject: Please vote for the Co-chairs for the CoSAI Marketing Committee
+  stage: ballot
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-08-26'
+  closed: '2026-09-03'
+  deadline: null
+  states_tsc_approval: false
+  messages: 3
+  proposed_works: []
+- key: call for consensus to approve ws1 aimm paper and ws2 zero trust paper
+  subject: Call for Consensus to Approve WS1 AIMM paper and WS2 Zero Trust Paper
+  stage: call-for-consensus
+  bodies:
+  - PGB
+  lists:
+  - cosai-pgb
+  opened: '2026-09-01'
+  closed: '2026-09-07'
+  deadline: '2026-09-04'
+  states_tsc_approval: true
+  messages: 2
+  proposed_works: []
+- key: zero trust paper approved by tsc and pgb
+  subject: Zero Trust Paper approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-defenders
+  opened: '2026-09-07'
+  closed: '2026-09-07'
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: zero trust paper approved by tsc and pgb
+  subject: Zero Trust Paper approved by TSC and PGB
+  stage: approval-notice
+  bodies:
+  - PGB
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-09-07'
+  closed: '2026-09-07'
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []
+- key: call for consensus for new sig leads security of adlc sig
+  subject: Call for Consensus for new SIG leads, Security of ADLC SIG
+  stage: call-for-consensus
+  bodies:
+  - TSC
+  lists:
+  - cosai-tsc
+  opened: '2026-09-09'
+  closed: '2026-09-14'
+  deadline: '2026-09-11'
+  states_tsc_approval: false
+  messages: 2
+  proposed_works: []
+- key: new meeting time and meeting invite
+  subject: New meeting time and meeting invite
+  stage: other
+  bodies: []
+  lists:
+  - cosai-marketing
+  opened: '2026-09-24'
+  closed: null
+  deadline: null
+  states_tsc_approval: false
+  messages: 1
+  proposed_works: []

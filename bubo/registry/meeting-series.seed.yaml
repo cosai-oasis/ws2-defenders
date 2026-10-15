@@ -1,0 +1,325 @@
+meeting_series:
+- id: ws1-meeting
+  ics_uids: []
+  workstream: ws1
+  list: cosai-supply-chain
+  name_variants:
+  - WS1 Weekly Meeting
+  - CoSAI WS1 recurring weekly meeting
+  - CoSAI WS1 normal meeting - bi-weekly
+  - CoSAI WS1 Weekly Meeting
+  - WS1 meeting
+  - CoSAI WS1 Meeting (updated link)
+  - WS1 Meeting
+  cadence: FREQ=WEEKLY
+  occurrences: 97
+  cancellations: 28
+  kind: workstream-meeting
+- id: tsc-meeting
+  ics_uids: []
+  workstream: tsc
+  list: cosai-tsc
+  name_variants:
+  - CoSAI TSC Meeting
+  - TSC meeting
+  - CoSAI TSC meeting
+  cadence: null
+  occurrences: 94
+  cancellations: 22
+  kind: governance-meeting
+- id: ws3-meeting
+  ics_uids: []
+  workstream: ws3
+  list: cosai-risk-governance
+  name_variants:
+  - CoSAI WS3 recurring weekly meeting
+  - WS3 meeting
+  - WS3 Bi-weekly Meeting
+  - WS3 Meeting this Thursday - EOM
+  - WS3 Bi-weekly Meeting (updated)
+  cadence: FREQ=WEEKLY;INTERVAL=2;BYDAY=TH
+  occurrences: 84
+  cancellations: 25
+  kind: workstream-meeting
+- id: marketing-committee-meeting
+  ics_uids: []
+  workstream: marketing
+  list: cosai-marketing
+  name_variants:
+  - CoSAI Marketing Group meeting
+  - CoSAI Marketing Group Meeting
+  - CoSAI Marketing Committee Meeting
+  - CoSAI Marketing Group - Biweekly meeting
+  - CoSAI Marketing Committee meeting
+  - CoSAI Marketing Committee (updated meeting info)
+  cadence: FREQ=WEEKLY;INTERVAL=2
+  occurrences: 81
+  cancellations: 15
+  kind: committee-meeting
+- id: pgb-meeting
+  ics_uids: []
+  workstream: pgb
+  list: cosai-pgb
+  name_variants:
+  - CoSAI PGB Weekly Meeting
+  - CoSAI PGB Monthly Meeting
+  - CoSAI Monthly PGB Meeting
+  cadence: FREQ=MONTHLY
+  occurrences: 81
+  cancellations: 8
+  kind: governance-meeting
+- id: ws4-recurring-meeting
+  ics_uids: []
+  workstream: ws4
+  list: cosai-agentic-systems
+  name_variants:
+  - CoSAI WS4 recurring meeting
+  - WS4 meeting
+  - WS4 Meeting
+  - CoSAI WS4 weekly meeting (updated invite)
+  cadence: FREQ=WEEKLY;BYDAY=TH
+  occurrences: 81
+  cancellations: 14
+  kind: workstream-meeting
+- id: ws2-zero-trust-sig
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - CoSAI WS2 - Zero Trust SIG
+  - WS2 Zero Trust SIG
+  cadence: null
+  occurrences: 56
+  cancellations: 4
+  kind: sig
+  status: inactive
+  status_as_of: 2026-09-24
+- id: ws2-defenders-meeting
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - CoSAI WS2 regular meeting, bi-weekly
+  cadence: FREQ=WEEKLY;INTERVAL=2
+  occurrences: 40
+  cancellations: 2
+  kind: workstream-meeting
+- id: ws3-cosai-rm-sig
+  ics_uids: []
+  workstream: ws3
+  list: cosai-risk-governance
+  name_variants:
+  - CoSAI-RM SIG weekly meeting
+  - CoSAI-RM meeting
+  cadence: FREQ=WEEKLY
+  occurrences: 38
+  cancellations: 6
+  kind: sig
+- id: ws2-shared-responsibility-model-sig
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - WS2 Shared Responsibility Model SIG
+  - CoSAI WS2 - Shared Responsibility Model SIG
+  cadence: null
+  occurrences: 29
+  cancellations: 1
+  kind: sig
+  succeeded_by: ws3-srf-grc-sig
+- id: ws4-sig-agent-development-lifecycle
+  ics_uids: []
+  workstream: ws4
+  list: cosai-agentic-systems
+  name_variants:
+  - WS4 SIG Security of Agent Development Lifecycle
+  cadence: null
+  occurrences: 26
+  cancellations: 2
+  kind: sig
+- id: ws3-sig-ai-assisted-code-development
+  ics_uids: []
+  workstream: ws3
+  list: cosai-risk-governance
+  name_variants:
+  - 'WS3 SIG: Security of AI-Assisted Code Development'
+  - Security of AI-Assisted Code Development
+  cadence: FREQ=WEEKLY;INTERVAL=1;BYDAY=TU
+  occurrences: 20
+  cancellations: 4
+  kind: sig
+- id: ws2-defenders-telemetry
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - WS2 Defenders – Telemetry
+  - WS2 Telemetry SIG Working Session
+  cadence: FREQ=WEEKLY;BYDAY=TH
+  occurrences: 19
+  cancellations: 3
+  kind: sig
+- id: ws2-ai-incident-response-wg
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - CoSAI WS2 AI Incident Response WG
+  - CoSAI WS2 - AI Incident Response WG
+  cadence: null
+  occurrences: 17
+  cancellations: 1
+  kind: sig
+- id: ws3-srf-grc-sig
+  ics_uids: []
+  workstream: ws3
+  list: cosai-risk-governance
+  name_variants:
+  - CoSAI WS3 SRF & GRC SIG
+  cadence: FREQ=WEEKLY;INTERVAL=2;BYDAY=MO
+  occurrences: 16
+  cancellations: 5
+  kind: sig
+- id: marketing-content-subcommittee
+  ics_uids: []
+  workstream: marketing
+  list: cosai-marketing
+  name_variants:
+  - CoSAI Content Subcommittee Meeting
+  - Content Subcommittee Meeting
+  cadence: FREQ=WEEKLY;INTERVAL=2
+  occurrences: 14
+  cancellations: 5
+  kind: committee-meeting
+- id: marketing-events-subcommittee
+  ics_uids: []
+  workstream: marketing
+  list: cosai-marketing
+  name_variants:
+  - CoSAI Events Subcommittee Bi-Meeting
+  cadence: null
+  occurrences: 13
+  cancellations: 5
+  kind: committee-meeting
+- id: pgb-working-meeting
+  ics_uids: []
+  workstream: pgb
+  list: cosai-pgb
+  name_variants:
+  - CoSAI PGB Working Meeting
+  - Omar Santos
+  cadence: null
+  occurrences: 11
+  cancellations: 0
+  kind: one-off
+- id: ws1-model-signing-sig
+  ics_uids: []
+  workstream: ws1
+  list: cosai-supply-chain
+  name_variants:
+  - CoSAI WS1 WS1 Model Signing SIG meeting
+  cadence: null
+  occurrences: 8
+  cancellations: 1
+  kind: sig
+- id: rsac-2026-breakfast-panel
+  ics_uids: []
+  workstream: general
+  list: cosai-agentic-systems
+  name_variants:
+  - Coalition for Secure AI (CoSAI) Breakfast Panel at Anthropic RSAC 2026 - RSVP
+  cadence: null
+  occurrences: 7
+  cancellations: 0
+  kind: one-off
+- id: ws1-model-cards-sig
+  ics_uids: []
+  workstream: ws1
+  list: cosai-supply-chain
+  name_variants:
+  - CoSAI WS1 Model Cards SIG
+  cadence: null
+  occurrences: 7
+  cancellations: 1
+  kind: sig
+- id: agentic-identity-working-session
+  ics_uids: []
+  workstream: ws4
+  list: cosai-agentic-systems
+  name_variants:
+  - Coalition for Secure AI (CoSAI) Agentic Identity Standard Working Session at NVIDIA
+    & Online - RSVP
+  cadence: null
+  occurrences: 5
+  cancellations: 0
+  kind: one-off
+- id: pgb-first-meeting
+  ics_uids: []
+  workstream: pgb
+  list: cosai-pgb
+  name_variants:
+  - First CoSAI Project Governing Board Meeting
+  cadence: null
+  occurrences: 3
+  cancellations: 0
+  kind: one-off
+- id: ws1-kick-off
+  ics_uids: []
+  workstream: ws1
+  list: cosai-supply-chain
+  name_variants:
+  - CoSAI WS1 Kick-off meeting
+  cadence: null
+  occurrences: 1
+  cancellations: 0
+  kind: one-off
+- id: ws2-kick-off
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - COSAI WS2 kick-off meeting
+  cadence: null
+  occurrences: 1
+  cancellations: 0
+  kind: one-off
+- id: ws2-shared-responsibility-model-workshop
+  ics_uids: []
+  workstream: ws2
+  list: cosai-defenders
+  name_variants:
+  - Shared Responsibility Model Workshop
+  cadence: null
+  occurrences: 1
+  cancellations: 0
+  kind: one-off
+- id: ws3-kick-off
+  ics_uids: []
+  workstream: ws3
+  list: cosai-risk-governance
+  name_variants:
+  - CoSAI WS3 kick-off meeting
+  cadence: null
+  occurrences: 1
+  cancellations: 0
+  kind: one-off
+- id: ws4-agent-credentials
+  ics_uids: []
+  workstream: ws4
+  list: cosai-agentic-systems
+  name_variants:
+  - 'CoSAI WS4: Agent Credentials RFC Meeting'
+  cadence: null
+  occurrences: 1
+  cancellations: 1
+  kind: sig
+- id: ws4-multimodal-agentic-security
+  ics_uids: []
+  workstream: ws4
+  list: cosai-agentic-systems
+  name_variants:
+  - WS4 Multimodal Agentic Security Weekly Meeting
+  cadence: FREQ=WEEKLY
+  occurrences: 1
+  cancellations: 1
+  kind: sig

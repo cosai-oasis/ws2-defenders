@@ -1,0 +1,107 @@
+# Maps CoSAI work titles as they appear in the TSC citation-impact dataset
+# (cosai-oasis/cosai-tsc, TSC Deliverables/citation-impact/sources.json) to publication
+# ids in publications.yaml.
+#
+# The dataset joins on TITLE, not path, and its titles are short forms rather than the
+# documents' own front-matter titles ("AI Incident Response Framework" vs "AI Incident
+# Response Framework, V1.0"). An unmapped title is a BUILD FAILURE: silently dropping
+# one would understate citation counts, which is the specific thing this layer exists
+# to get right.
+#
+# Counts are citation relationships as of the 2026-08-09 dataset refresh, recorded so a
+# later refresh that changes them is visible in the diff.
+
+works:
+  "Model Context Protocol (MCP) Security":
+    publication: model-context-protocol-security
+    citations_at_last_refresh: 28
+  "Agentic Identity and Access Management":
+    publication: agentic-identity-and-access-management
+    citations_at_last_refresh: 21
+  "AI Incident Response Framework":
+    publication: ai-incident-response
+    citations_at_last_refresh: 20
+  "Signing ML Artifacts":
+    publication: signing-ml-artifacts
+    citations_at_last_refresh: 14
+  "AI Shared Responsibility Framework":
+    publication: ai-shared-responsibility-framework
+    citations_at_last_refresh: 7
+  "Preparing Defenders of AI Systems":
+    publication: preparing-defenders-of-ai-systems
+    citations_at_last_refresh: 4
+  "Establish Risks and Controls for the AI Supply Chain":
+    publication: risks-and-controls-ai-supply-chain-v1
+    citations_at_last_refresh: 2
+
+# CoSAI works the citation dataset references that are outside this project's document
+# scope. Held as stubs rather than dropped so totals reconcile with the TSC report, and
+# so "what has CoSAI's most-cited output been" has a truthful answer even though this
+# server does not hold those documents.
+stubs:
+  "Principles for Secure-by-Design Agentic Systems":
+    id: principles-secure-by-design-agentic-systems
+    title: CoSAI Principles for Secure-by-Design Agentic Systems
+    workstream: ws4
+    citations_at_last_refresh: 26
+    published: 2025-07-16
+    announcement_url: https://www.coalitionforsecureai.org/announcing-the-cosai-principles-for-secure-by-design-agentic-systems/
+    document_url: https://github.com/cosai-oasis/cosai-tsc/blob/main/security-principles-for-agentic-systems.md
+    # Corporately authored: attributed to CoSAI as an organization with no named
+    # contributors. Recorded explicitly so the work is not reported as uncredited.
+    # Emitted as a cosaic:OrganizationalAuthorRole borne by the CoSAI organization.
+    authored_by_organization: CoSAI
+    note: >
+      Second most cited CoSAI output in the TSC dataset (26 citing publications
+      against MCP Security's 28). Its full text lives in cosai-tsc and is not in
+      this project's document scope, so no credit rows are derived from it.
+  "CoSAI Risk Map":
+    id: cosai-risk-map
+    workstream: tsc
+    citations_at_last_refresh: 14
+    note: >
+      The Risk Map itself, target of the step 5 layer and of
+      secure-ai-tooling#388. A framework rather than a paper.
+  "Project CodeGuard":
+    id: project-codeguard
+    workstream: ws1
+    citations_at_last_refresh: 5
+    note: Tooling repository, not a whitepaper.
+  "The Future of Agentic Security: From Chatbots to Autonomous Swarms":
+    id: future-of-agentic-security
+    workstream: ws4
+    citations_at_last_refresh: 4
+    # The markdown is in cosai-tsc; the website and the mail link these copies.
+    document_url: https://github.com/cosai-oasis/cosai-tsc/blob/main/the-future-of-agentic-security.md
+    other_urls:
+      - https://github.com/cosai-oasis/cosai-tsc/blob/main/the-future-of-agentic-security.pdf
+      - https://www.coalitionforsecureai.org/wp-content/uploads/2026/03/the-future-of-agentic-security.pdf
+  "Addressing What’s Next in Securing Enterprise AI":
+    id: addressing-whats-next-enterprise-ai
+    workstream: tsc
+    citations_at_last_refresh: 1
+    note: Title uses a typographic apostrophe in the source dataset.
+
+# Citation categories in the dataset, and what each means for reporting. A tool must
+# not flatten these into one number: a formal bibliography entry and an applied threat
+# model are different kinds of impact, and an organizational mention names CoSAI
+# without citing any specific work.
+categories:
+  "Formal reference":
+    weight: cites-specific-work
+    description: A numbered or linked bibliography-style reference to the work.
+  "Substantive work citation":
+    weight: cites-specific-work
+    description: The citing publication discusses or applies the work's content.
+  "Organizational mention":
+    weight: mentions-cosai-only
+    description: >
+      Names CoSAI without citing a specific work. Counted separately; these
+      contribute no work-level citation relationships.
+
+# How the dataset establishes each citation. Reported alongside counts rather than
+# hidden, because the two are not equally strong evidence.
+verification_levels:
+  "Directly inspected": Source retrieved and the citation read in place.
+  "Search-index excerpt verified": >
+    Established from a search-index excerpt; full text was not retrievable.

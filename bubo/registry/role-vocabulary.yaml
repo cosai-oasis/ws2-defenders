@@ -1,0 +1,60 @@
+# Source credit labels observed verbatim in the corpus, mapped to role classes.
+#
+# `cosaic:sourceLabel` retains the verbatim string on every credit so that this
+# normalization is auditable -- if a mapping here is wrong, the evidence is still
+# in the graph. Counts are from the 2026-09-11 corpus survey.
+#
+# An unmapped label is a BUILD FAILURE, not a warning: a new role label means CoSAI
+# changed how it attributes credit, and that deserves a human decision.
+
+roles:
+  "Workstream Leads":
+    class: WorkstreamLeadRole
+    count: 26
+  "Workstream Lead":
+    class: WorkstreamLeadRole
+    count: 0          # singular form not yet observed; accepted defensively
+  "Editors":
+    class: EditorRole
+    count: 32
+  "Editor":
+    class: EditorRole
+    count: 1          # agent-containment
+  "Contributors":
+    class: ContributorRole
+    count: 86
+  "Contributor":
+    class: ContributorRole
+    count: 0
+  "Reviewers":
+    class: ReviewerRole
+    count: 24
+  "Reviewer":
+    class: ReviewerRole
+    count: 0
+  "Technical Steering Committee Co-Chairs":
+    class: TSCCoChairRole
+    count: 32
+  "TSC Co-Chairs":
+    class: TSCCoChairRole
+    count: 0
+  "TSC reviewers":
+    class: TSCReviewerRole
+    count: 13         # agent-containment; a review role, NOT a co-chair role
+  "TSC Reviewers":
+    class: TSCReviewerRole
+    count: 0
+  "Authors":
+    class: AuthorRole
+    count: 0          # ODIS names authors in front matter rather than a credit section
+
+# Headings that look like credit sections but are boilerplate appended after them.
+# Parsing stops at the first of these.
+stop_headings:
+  - Disclosure
+  - Disclosures
+  - CoSAI Focus
+  - Appendix
+  - Appendices
+  - Copyright Notice
+  - Guidelines on usage

@@ -1,0 +1,9 @@
+# Credit volume split by approval status. A working draft's credits are not approved
+# CoSAI work and must never be reported as though they were.
+SELECT ?status (COUNT(DISTINCT ?pub) AS ?publications) (COUNT(?credit) AS ?credits)
+WHERE {
+  ?pub a cosaic:Publication ; cosaic:approvalStatus ?status .
+  OPTIONAL { ?credit cosaic:onPublication ?pub }
+}
+GROUP BY ?status
+ORDER BY DESC(?credits)
