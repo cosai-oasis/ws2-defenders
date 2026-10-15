@@ -1,0 +1,145 @@
+# Reviewed organization registry. Promoted from organizations.seed.yaml with the
+# judgment calls made by hand -- see the notes on individual entries.
+#
+# `variants` are credit-line spellings that name this organization. `email_domains`
+# are domains whose addresses imply affiliation with it. Both are used as merge
+# evidence; neither is inferred at build time.
+
+# Domains belonging to an individual rather than an employer. An address at one of
+# these is NOT affiliation evidence: Anton Chuvakin writes from his own domain while
+# employed elsewhere, so treating chuvakin.org as his employer would be wrong. Listed
+# separately from the generic free-mail providers in resolve/identity.py because these
+# are specific to this corpus.
+personal_domains:
+  - chuvakin.org
+
+organizations:
+  - id: adversa-ai
+    canonical_name: Adversa AI
+    email_domains: [adversa.ai]
+
+  - id: ai-identity
+    canonical_name: AI Identity
+
+  - id: amazon
+    canonical_name: Amazon
+    email_domains: [amazon.com]
+
+  - id: anthropic
+    canonical_name: Anthropic
+    email_domains: [anthropic.com]
+
+  - id: cisco
+    canonical_name: Cisco
+    email_domains: [cisco.com]
+
+  - id: cohere
+    canonical_name: Cohere
+    email_domains: [cohere.com]
+
+  - id: dell-technologies
+    canonical_name: Dell Technologies
+    variants: [Dell, Dell Technologies]      # confirmed: one company
+    email_domains: [dell.com]
+
+  - id: eqty-lab
+    canonical_name: EQTY Lab
+    email_domains: [eqtylab.io]
+
+  - id: evinova
+    canonical_name: Evinova
+    email_domains: [evinova.com]
+
+  - id: fragilistic
+    canonical_name: Fragilistic              # seed lower-cased it from the domain label
+    email_domains: [fragilistic.ai]
+
+  - id: genlab
+    canonical_name: GenLab
+    email_domains: [genlab.studio]
+
+  - id: google
+    canonical_name: Google
+    email_domains: [google.com]
+
+  - id: hiddenlayer
+    canonical_name: HiddenLayer
+    email_domains: [hiddenlayer.com]
+
+  - id: ibm
+    canonical_name: IBM
+    email_domains: [ibm.com, us.ibm.com]
+
+  - id: intel
+    canonical_name: Intel
+    email_domains: [intel.com]
+
+  - id: lawson-software
+    canonical_name: Lawson Software          # from lawsonsoft.com; Christopher Lawson
+    email_domains: [lawsonsoft.com]
+
+  - id: lenovo
+    canonical_name: Lenovo
+
+  - id: meta
+    canonical_name: Meta
+    email_domains: [meta.com]
+
+  - id: microsoft
+    canonical_name: Microsoft
+    email_domains: [microsoft.com]
+
+  - id: nvidia
+    canonical_name: NVIDIA
+    email_domains: [nvidia.com]
+
+  - id: palo-alto-networks
+    canonical_name: Palo Alto Networks
+    email_domains: [paloaltonetworks.com]
+
+  - id: paypal
+    canonical_name: PayPal
+    variants: [PayPal, Paypal]               # confirmed: casing variant
+    email_domains: [paypal.com]
+
+  - id: procap360
+    canonical_name: ProCap360
+    email_domains: [procap360.com]
+
+  - id: red-hat
+    canonical_name: Red Hat
+    email_domains: [redhat.com]
+
+  - id: servicenow
+    canonical_name: ServiceNow
+    email_domains: [servicenow.com]
+
+  - id: thomson-reuters
+    canonical_name: Thomson Reuters
+    email_domains: [thomsonreuters.com]
+
+  # "Trend AI" is a recent rebranding and a subcompany of the parent that owns Trend
+  # Micro: one organization for attribution. Confirmed by the maintainer 2026-09-11 --
+  # no evidence in the corpus establishes this, since "Trend AI" appears exactly once
+  # (Parthy Chandransekakan in zero-trust-for-ai-systems) with no address, so the
+  # string comparison correctly refused to merge it and a human supplied the fact.
+  #
+  # If the subsidiary structure ever needs to be distinguished rather than collapsed,
+  # CCO has the predicate for it: cco:ont00001992 "has organizational context" relates
+  # a subcompany to its parent without asserting they are the same organization.
+  - id: trend-micro
+    canonical_name: Trend Micro
+    variants: [Trend Micro, TrendMicro, Trend AI]
+    email_domains: [trendmicro.com]
+    merge_provenance:
+      - variant: Trend AI
+        basis: maintainer-confirmed
+        date: 2026-09-11
+        note: recent rebranding; subcompany of the Trend Micro parent
+
+  - id: wiz
+    canonical_name: Wiz
+    email_domains: [wiz.io]
+
+  - id: zscaler
+    canonical_name: Zscaler

@@ -1,0 +1,13 @@
+# Which organizations contributed to which publications, via attested affiliation. A
+# person who changed employer contributes to each organization only for work credited
+# while that affiliation was attested.
+SELECT ?organization (COUNT(DISTINCT ?p) AS ?people) (COUNT(DISTINCT ?pub) AS ?publications)
+WHERE {
+  ?role a cosaic:AffiliationRole ;
+        obo:BFO_0000197 ?p ;
+        cosaic:withOrganization ?org .
+  ?org rdfs:label ?organization .
+  ?credit obo:BFO_0000197 ?p ; cosaic:onPublication ?pub .
+}
+GROUP BY ?organization
+ORDER BY DESC(?people) ?organization

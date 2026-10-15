@@ -1,0 +1,187 @@
+# CoSAI publications in scope. Markdown is authoritative; PDF is derived by automated
+# conversion. Curated, not generated -- three facts here cannot be derived from the files:
+#
+#   1. workstream: the repo is authoritative, NOT front-matter `author`. The WS3 Shared
+#      Responsibility Framework declares `author: "Workstream 2: ..."` but is a WS3 document.
+#   2. pdf_path: not derivable from the md basename. The WS3 PDF is named
+#      AI-Shared-Responsibility-Framework.pdf against CoSAI Shared Responsibility Framework.md,
+#      and three documents have no PDF at all.
+#   3. original_date vs revised_date: model-context-protocol-security.md was revised to v2.0
+#      on 2026-08-12 WITHOUT refreshing its credit list, so its credits are evidence about
+#      2026-01-08, not about 2026-08-12. See ADR-WS2-001 D4.
+#
+# To add a document (e.g. the Telemetry RFC once reviewed), append an entry and re-run
+# `python -m bubo_graphrag.ingest.fetch && python -m bubo_graphrag.ingest.seed`.
+
+publications:
+  - id: risks-and-controls-ai-supply-chain-v1
+    title: "Establish Risks and Controls for the AI Supply Chain, V 1.0"
+    workstream: ws1
+    repo: cosai-oasis/ws1-supply-chain
+    md_path: risks-and-controls-for-the-ai-supply-chain-v1.md
+    pdf_path: risks-and-controls-for-the-ai-supply-chain-v1.pdf
+    commit_sha: 244c6a7fca256664b3ab680ca6a53e19c0f65f98
+    original_date: 2025-06-12
+    approval_status: approved
+
+  - id: signing-ml-artifacts
+    title: "Signing ML Artifacts: Building towards tamper-proof ML metadata records"
+    workstream: ws1
+    repo: cosai-oasis/ws1-supply-chain
+    md_path: signing-ml-artifacts.md
+    pdf_path: signing-ml-artifacts.pdf
+    commit_sha: 244c6a7fca256664b3ab680ca6a53e19c0f65f98
+    original_date: 2025-09-29
+    approval_status: approved
+
+  - id: preparing-defenders-of-ai-systems
+    title: "Preparing Defenders of AI Systems, V 1.0"
+    workstream: ws2
+    repo: cosai-oasis/ws2-defenders
+    md_path: preparing-defenders-of-ai-systems.md
+    pdf_path: preparing-defenders-of-ai-systems.pdf
+    commit_sha: 5f82bf40a432c07d5d9c85d861227d0ba8b7139c
+    original_date: 2025-07-14
+    approval_status: approved
+
+  - id: ai-incident-response
+    title: "AI Incident Response Framework, V1.0"
+    workstream: ws2
+    repo: cosai-oasis/ws2-defenders
+    md_path: incident-response/AI-Incident-Response.md
+    pdf_path: incident-response/AI-Incident-Response.pdf
+    commit_sha: a849136555f3498fbbf2a543fdb1d6a84577b459
+    original_date: 2025-10-27
+    approval_status: approved
+
+  - id: zero-trust-for-ai-systems
+    title: "Zero Trust for AI Systems"
+    workstream: ws2
+    repo: cosai-oasis/ws2-defenders
+    md_path: zero-trust/Zero-Trust-for-AI-Systems.md
+    pdf_path: zero-trust/Zero-Trust-for-AI-Systems.pdf
+    commit_sha: a733bdbae24a7a9d0931e1537578d4bdfab7019a
+    original_date: 2026-09-04
+    approval_status: approved
+
+  - id: ai-shared-responsibility-framework
+    title: "AI Shared Responsibility Framework, V1.0"
+    workstream: ws3            # repo is authoritative; front matter wrongly says Workstream 2
+    repo: cosai-oasis/ws3-ai-risk-governance
+    md_path: shared-responsibility-framework/CoSAI Shared Responsibility Framework.md
+    pdf_path: shared-responsibility-framework/AI-Shared-Responsibility-Framework.pdf
+    commit_sha: 456b709a5ef8c049596b9e1a19d8154da01f8b5c
+    original_date: 2026-05-26
+    approval_status: approved
+
+  - id: model-context-protocol-security
+    title: "Model Context Protocol (MCP) Security"
+    workstream: ws4
+    repo: cosai-oasis/ws4-secure-design-agentic-systems
+    md_path: whitepapers/model-context-protocol-security.md
+    pdf_path: whitepapers/model-context-protocol-security.pdf
+    commit_sha: 62e75fd45c45c473db3b00b8d71615e04bb28cab
+    original_date: 2026-01-08
+    revised_date: 2026-08-12
+    version: "2.0"
+    credits_refreshed_at_revision: false   # THE trap: credits are evidence about 2026-01-08
+    approval_status: approved
+
+  - id: agentic-identity-and-access-management
+    title: "Agentic Identity and Access Management"
+    workstream: ws4
+    repo: cosai-oasis/ws4-secure-design-agentic-systems
+    md_path: whitepapers/agentic-identity-and-access-control.md
+    pdf_path: whitepapers/agentic-identity-and-access-control.pdf
+    commit_sha: 592627ed0d56e3dc20fdb0f6081cbc86855fc565
+    original_date: 2026-03-20
+    approval_status: approved
+
+  - id: addendum-mcp-and-pqc
+    title: "Addendum: Post-Quantum Cryptography Considerations for MCP"
+    workstream: ws4
+    repo: cosai-oasis/ws4-secure-design-agentic-systems
+    md_path: whitepapers/Addendum-MCP-and-PQC.md
+    pdf_path: whitepapers/Addendum-MCP-and-PQC.pdf
+    commit_sha: 62e75fd45c45c473db3b00b8d71615e04bb28cab
+    original_date: 2026-07-15
+    approval_status: approved
+    has_credit_section: false   # no acknowledgements section; expect zero credits
+
+  - id: agent-containment
+    title: "Agent Containment: From Sandboxing to Bounded Authority"
+    workstream: ws4
+    repo: cosai-oasis/ws4-secure-design-agentic-systems
+    md_path: whitepapers/agent-containment.md
+    pdf_path: null
+    commit_sha: 2fb51e376f47de89d7125aac9b93d6d151f41d1a
+    original_date: 2026-09-05
+    version: "0.2-skeleton"
+    approval_status: working-draft
+
+  - id: cosai-ai-telemetry-rfc
+    title: "Telemetry for AI Security"
+    subtitle: "Secure by Design: Telemetry Field Selection for AI Systems"
+    workstream: ws2
+    repo: cosai-oasis/ws2-defenders
+    md_path: telemetry/CoSAI-AI-Telemetry-RFC.md
+    pdf_path: null
+    commit_sha: 0b0ebefe67e43419e1140791aeaccce8a7652dd7
+    original_date: 2026-09-10       # no date in the document; last commit to the RFC
+    version: "0.5"
+    approval_status: working-draft
+    # Three things make this document structurally unlike the other twelve:
+    #   1. No YAML front matter. Metadata is a bold-label header block
+    #      (`**Status:**`, `**Origin:**`, `**Disclosure:**`) under an h1 carrying
+    #      the version inline: `# Telemetry for AI Security {**Working Draft v0.5**}`.
+    #   2. No acknowledgements section and no role labels anywhere, so it yields
+    #      ZERO credited contributors. Attribution for this document can only come
+    #      from step 6 (GitHub commit/PR history).
+    #   3. It carries 109 distinct Risk Map ids in 188 references -- by far the
+    #      richest Risk Map (step 5) seam in the corpus, and the reason it was worth adding.
+    has_credit_section: false
+    metadata_style: bold-header-block
+    references_risk_map_ids: true
+
+  - id: odis
+    title: "ODIS - Open Delegation & Identity Standard"
+    workstream: ws4
+    repo: cosai-oasis/ws4-odis
+    md_path: RFCs/ODIS.md
+    pdf_path: RFCs/ODIS.pdf
+    commit_sha: 5ccbee6f8f13ee88474cc908ddb23b82d2a59a02
+    original_date: 2026-07-30      # no date in front matter; last commit to the RFC
+    approval_status: unapproved-draft
+    credits_in_frontmatter: true   # authors named in front matter, no acknowledgements section
+
+workstreams:
+  ws1:
+    title: "Workstream 1: Software Supply Chain Security for AI Systems"
+    repo: cosai-oasis/ws1-supply-chain
+  ws2:
+    title: "Workstream 2: Preparing Defenders for a Changing Cybersecurity Landscape"
+    repo: cosai-oasis/ws2-defenders
+  ws3:
+    title: "Workstream 3: AI Risk Governance"
+    repo: cosai-oasis/ws3-ai-risk-governance
+  ws4:
+    title: "Workstream 4: Secure Design Patterns for Agentic Systems"
+    repo: cosai-oasis/ws4-secure-design-agentic-systems
+
+# Bodies that govern the project rather than produce publications. They convene
+# meetings and approve work, so they are groups the meetings graph attaches to, but no
+# publication names one as its producer.
+governing_bodies:
+  tsc:
+    title: "CoSAI Technical Steering Committee"
+    repo: cosai-oasis/cosai-tsc
+  pgb:
+    title: "CoSAI Project Governing Board"
+
+# Standing groups that do project work which is neither technical nor governance. They
+# convene meetings, so the meetings graph attaches to them, but they neither approve
+# work nor produce publications. The Marketing Committee's subcommittees (content,
+# events) are its series, not separate groups: none has a list of its own.
+committees:
+  marketing:
+    title: "CoSAI Marketing Committee"

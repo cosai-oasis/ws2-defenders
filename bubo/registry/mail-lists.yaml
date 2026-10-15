@@ -1,0 +1,120 @@
+# CoSAI's mailing lists, and which of them the archive fetcher pulls.
+#
+# CoSAI is an OASIS *Open Project*, so its lists live on the OASIS groups.io instance
+# at lists.oasis-open-projects.org -- not the lists.oasis-open.org TC archive. Every
+# list below is a subgroup of `open-projects`: the web UI shows the short name
+# (`/g/cosai-tsc`), but the API only resolves the full `open-projects+cosai-tsc` and
+# answers the short one with group_not_found (verified via getsubs, 2026-09-22). So
+# `group` stays the short name used in URLs and filenames, and the fetcher prefixes
+# `api_parent`. There is no SIG-specific list. SIGs announce on their parent workstream's list, which is why
+# `build/meetings.py` recognizes a SIG by the meeting name rather than by the list.
+#
+# This file is the single source for two things that used to be one hardcoded dict:
+#
+#   * `spellings` is the **privacy allowlist**. A message is parsed only if its
+#     `List-Id` or `[bracket]` subject tag resolves here. Replies and forwards lose
+#     `List-Id` but keep the tag, and the tag drops the `-ws` suffix -- so both forms
+#     are listed, and both map to one `canonical` name. Split them and the coverage
+#     window halves and every per-list count is wrong.
+#   * `fetch` selects what `ingest/groupsio.py` downloads. Flip one to true and the
+#     next fetch includes it; nothing else changes.
+#
+# `archives_public: true` records that the group's own page states "Archives are
+# publicly visible", verified 2026-09-22. It does not mean an anonymous HTTP client
+# can read them: every /messages, /topic and /message URL is behind a browser
+# fingerprint probe, and robots.txt states that AI crawlers need a license. The
+# supported route is the API, with your own key. See ingest/groupsio.py.
+
+site: https://lists.oasis-open-projects.org
+api_parent: open-projects
+
+lists:
+  # --- the four workstreams --------------------------------------------------------
+  - group: cosai-supply-chain-ws
+    canonical: cosai-supply-chain
+    spellings: [cosai-supply-chain-ws, cosai-supply-chain]
+    workstream: ws1-supply-chain
+    title: Software Supply Chain Security for AI Systems Workstream
+    fetch: true
+    archives_public: true
+
+  - group: cosai-defenders-ws
+    canonical: cosai-defenders
+    spellings: [cosai-defenders-ws, cosai-defenders]
+    workstream: ws2-defenders
+    title: Preparing Defenders for a Changing Cybersecurity Landscape Workstream
+    fetch: true
+    archives_public: true
+
+  - group: cosai-risk-governance-ws
+    canonical: cosai-risk-governance
+    spellings: [cosai-risk-governance-ws, cosai-risk-governance]
+    workstream: ws3-ai-risk-governance
+    title: AI Security Risk Governance Workstream
+    fetch: true
+    archives_public: true
+
+  - group: cosai-agentic-systems-ws
+    canonical: cosai-agentic-systems
+    spellings: [cosai-agentic-systems-ws, cosai-agentic-systems]
+    workstream: ws4-secure-design-agentic-systems
+    title: Secure Design Patterns for Agentic Systems Workstream
+    fetch: true
+    archives_public: true
+
+  # --- governance ------------------------------------------------------------------
+  - group: cosai-tsc
+    canonical: cosai-tsc
+    spellings: [cosai-tsc]
+    workstream: tsc
+    title: Technical Steering Committee
+    fetch: true
+    archives_public: true
+
+  - group: cosai-pgb
+    canonical: cosai-pgb
+    spellings: [cosai-pgb]
+    workstream: pgb
+    title: Project Governing Board
+    fetch: true
+    archives_public: true
+
+  # --- project-wide ----------------------------------------------------------------
+  # The "CoSAI General Announcement mailing list" the group pages link to. Official
+  # notifications for the Open Project as a whole, so it is not a workstream and
+  # `build/meetings.py` attaches no convener to what it carries.
+  - group: cosai-op
+    canonical: cosai-op
+    spellings: [cosai-op]
+    workstream: general
+    title: CoSAI General Announcements
+    fetch: true
+    archives_public: true
+
+  - group: cosai-marketing
+    canonical: cosai-marketing
+    spellings: [cosai-marketing]
+    workstream: marketing
+    title: Marketing Committee
+    fetch: true
+    archives_public: true
+
+  # --- known, not fetched ----------------------------------------------------------
+  # Both are real groups with publicly visible archives. They are off by default
+  # because nothing in the meetings graph asks about them yet, not because they are
+  # restricted -- set `fetch: true` to include them.
+  - group: cosai-psc
+    canonical: cosai-psc
+    spellings: [cosai-psc]
+    workstream: psc
+    title: Public Sector Committee
+    fetch: false
+    archives_public: true
+
+  - group: cosai-exec-steering-committee
+    canonical: cosai-exec-steering-committee
+    spellings: [cosai-exec-steering-committee]
+    workstream: esc
+    title: Executive Steering Committee of the Project Governing Board
+    fetch: false
+    archives_public: true

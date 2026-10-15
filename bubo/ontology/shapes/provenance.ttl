@@ -1,0 +1,363 @@
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix obo:    <http://purl.obolibrary.org/obo/> .
+@prefix cosaic: <https://cosai-oasis.github.io/ontology/cosai-contrib#> .
+
+# =================================================================================
+# Provenance shapes: each named graph asserts only what its own source establishes.
+#
+# ## Why this is stated positively, per graph
+#
+# The rule that motivated these shapes is "no triple appears in two named graphs" --
+# because the union default graph is a multiset union, so a duplicated triple silently
+# doubles every joined row. That rule is *not* expressible in portable SHACL: it
+# quantifies across graphs, while SHACL validates a data graph. A `sh:sparql`
+# constraint with a GRAPH clause would depend on how a given engine exposes the
+# dataset, so it would not be a portable shape. That check therefore stays a dataset
+# query (tests/test_backend_portability.py).
+#
+# What SHACL expresses well is the same rule in its positive, per-graph form: validate
+# each graph *alone* against an allowlist of the classes that graph is entitled to
+# assert. That is a stronger statement than uniqueness, and it catches the defect that
+# prompted this: `cosaic:ws-ws2 a cosaic:Workstream` asserted inside the meetings
+# graph fails MaillistGraphShape, because Workstream is not a class list mail may
+# introduce -- and it fails whether or not the publications graph happens to contain
+# the same triple, so it catches the mistake before duplication makes it visible.
+#
+# ## Vocabularies overlap on purpose
+#
+# The allowlists are not disjoint. `citations` legitimately types 82 Organizations
+# (citing publishers) and `publications` types 29 (member employers); those are
+# different entities, not duplicated triples. The constraint is per-graph
+# appropriateness, not vocabulary partitioning.
+#
+# Run:  python -m pytest tests/test_shapes.py
+# =================================================================================
+
+<https://cosai-oasis.github.io/shapes/provenance>
+    a owl:Ontology ;
+    rdfs:label "CoSAI GraphRAG provenance shapes"@en ;
+    rdfs:comment """Validated per named graph, not against the union. Each shape names
+the classes one provenance partition may introduce."""@en .
+
+
+# --- publications ----------------------------------------------------------------
+
+cosaic:PublicationsGraphShape
+    a sh:NodeShape ;
+    rdfs:label "publications graph"@en ;
+    rdfs:comment """Derived deterministically from registry/*.yaml and documents pinned
+by commit sha."""@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( cosaic:Person cosaic:Organization cosaic:Workstream cosaic:GoverningBody
+                cosaic:Committee cosaic:Publication cosaic:Manifestation
+                cosaic:PersonName cosaic:ProperName cosaic:AbbreviatedName
+                cosaic:EmailAddress
+                cosaic:AffiliationRole cosaic:CreditedRole
+                cosaic:ContributorRole cosaic:EditorRole cosaic:ReviewerRole
+                cosaic:WorkstreamLeadRole cosaic:TSCCoChairRole
+                cosaic:TSCReviewerRole cosaic:AuthorRole
+                cosaic:PublicationEvent cosaic:RevisionEvent
+                cosaic:AffiliationGain cosaic:AffiliationLoss
+                cosaic:Instant cosaic:EvidenceInterval cosaic:UncertaintyWindow ) ;
+        sh:message "not a class the publication catalog may introduce" ;
+    ] .
+
+
+# --- citations --------------------------------------------------------------------
+
+cosaic:CitationsGraphShape
+    a sh:NodeShape ;
+    rdfs:label "citations graph"@en ;
+    rdfs:comment """Ingested from the CoSAI TSC citation-impact dataset, refreshed
+weekly upstream."""@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( cosaic:CitationEvent cosaic:ExternalPublication cosaic:CoSAIWorkStub
+                cosaic:Organization cosaic:OrganizationalAuthorRole
+                cosaic:PublicationEvent cosaic:Instant ) ;
+        sh:message "not a class the citation dataset may introduce" ;
+    ] .
+
+
+# --- maillist ---------------------------------------------------------------------
+
+cosaic:MaillistGraphShape
+    a sh:NodeShape ;
+    rdfs:label "maillist graph"@en ;
+    rdfs:comment """Derived from list mail: meetings, governance calls, and the curated
+links from each call to the works it seeks approval of. Notably absent: Person,
+Organization and any role class. This source names no attendees, so it may not introduce people at
+all -- which is what stops "attended" from ever being written as contribution."""@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( cosaic:MeetingSeries cosaic:Meeting cosaic:MeetingSummary
+                cosaic:MeetingCancellation cosaic:GovernanceEvent cosaic:GovernanceCall
+                cosaic:SpecialInterestGroup cosaic:CoverageWindow cosaic:Instant ) ;
+        sh:message "not a class list mail may introduce (it names no attendees, so no Person or role class belongs here)" ;
+    ] .
+
+
+# --- website ----------------------------------------------------------------------
+
+cosaic:WebsiteGraphShape
+    a sh:NodeShape ;
+    rdfs:label "website graph"@en ;
+    rdfs:comment """Derived from the coalitionforsecureai.org RSS feed. Notably absent, as
+in the maillist graph: Person, Organization and every role class. The feed names only
+the account that posted each item, and no rule yet says how a post's authorship is
+established, so this source may not introduce people or credit at all."""@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( cosaic:WebsitePost cosaic:BlogPost cosaic:PressRelease
+                cosaic:PublicationEvent cosaic:CoverageWindow cosaic:FeedCoverageWindow
+                cosaic:Instant ) ;
+        sh:message "not a class the website feed may introduce (it credits no author, so no Person or role class belongs here)" ;
+    ] .
+
+
+# --- calendar ---------------------------------------------------------------------
+
+cosaic:CalendarGraphShape
+    a sh:NodeShape ;
+    rdfs:label "calendar graph"@en ;
+    rdfs:comment """Derived from the groups.io calendar of cosai-op. Entries only, never
+meetings: a Meeting is a process, and an entry for next week is not one. Notably absent
+as well: Person and every role class. The calendar names an organizer for each entry,
+and that field is never kept."""@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( cosaic:ScheduledMeeting cosaic:PlannedMeeting
+                cosaic:CoverageWindow cosaic:CalendarCoverageWindow ) ;
+        sh:message "not a class the calendar may introduce (entries are not meetings, and organizers are never kept)" ;
+    ] .
+
+
+# --- the TBox ---------------------------------------------------------------------
+
+cosaic:OntologyGraphShape
+    a sh:NodeShape ;
+    rdfs:label "ontology graph"@en ;
+    rdfs:comment "Terminology only: no instance data may live here."@en ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:in ( owl:Class owl:ObjectProperty owl:DatatypeProperty
+                owl:AnnotationProperty owl:Ontology sh:NodeShape ) ;
+        sh:message "instance data in the terminology graph" ;
+    ] .
+
+
+# =================================================================================
+# Domain invariants. These are the claims the tools promise callers, expressed where a
+# validator can check them rather than only in prose.
+# =================================================================================
+
+# ADR-WS2-001 D3: no fabricated bounds. An affiliation interval
+# records the evidence it rests on and says its bounds are unknown; a bare start or
+# end date would be false precision about when someone joined or left.
+cosaic:EvidenceIntervalShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:EvidenceInterval ;
+    sh:property [
+        sh:path cosaic:boundsKnown ;
+        sh:hasValue false ;
+        sh:minCount 1 ;
+        sh:message "an evidence interval must declare boundsKnown false" ;
+    ] ;
+    sh:property [
+        sh:path cosaic:earliestEvidence ;
+        sh:minCount 1 ; sh:datatype xsd:date ;
+        sh:message "an evidence interval must carry the earliest date it rests on" ;
+    ] .
+
+cosaic:UncertaintyWindowShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:UncertaintyWindow ;
+    sh:property [
+        sh:path cosaic:notBefore ; sh:minCount 1 ; sh:datatype xsd:date ;
+        sh:message "an inferred change must bound the window below" ;
+    ] ;
+    sh:property [
+        sh:path cosaic:notAfter ; sh:minCount 1 ; sh:datatype xsd:date ;
+        sh:message "an inferred change must bound the window above" ;
+    ] .
+
+# A coverage window may never claim its bounds are known: a list archive omits
+# whatever was deleted, a feed shows only what survives, and nothing after the fetch is
+# in either.
+cosaic:CoverageWindowShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:CoverageWindow ;
+    sh:property [
+        sh:path cosaic:boundsKnown ; sh:hasValue false ; sh:minCount 1 ;
+        sh:message "coverage bounds are never known" ;
+    ] .
+
+# A mail window is the one naming its list, and is bounded by messages. Stated as "a
+# window with a list has message bounds": governance events name a list too, so
+# targeting every subject of cosaic:sourceList would catch them.
+cosaic:MailCoverageWindowShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:CoverageWindow ;
+    sh:or (
+        [ sh:path cosaic:sourceList ; sh:maxCount 0 ]
+        [ sh:and (
+            [ sh:path cosaic:earliestMessage ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path cosaic:latestMessage ; sh:minCount 1 ; sh:maxCount 1 ]
+        ) ]
+    ) ;
+    sh:message "a mail coverage window must carry its earliest and latest message" .
+
+# A feed window is bounded by its items and by the day it was fetched, and names the
+# feed. It is typed CoverageWindow as well, so the rule above applies without inference.
+cosaic:FeedCoverageWindowShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:FeedCoverageWindow ;
+    sh:property [ sh:path rdf:type ; sh:hasValue cosaic:CoverageWindow ;
+                  sh:message "a feed window must also be typed CoverageWindow" ] ;
+    sh:property [ sh:path cosaic:earliestItem ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:latestItem ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:fetchedOn ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ;
+                  sh:message "a feed window must say when the feed was fetched" ] ;
+    sh:property [ sh:path cosaic:sourceFeed ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+# Every post carries its own provenance: the site's post ID, its URL, the feed, and the
+# exact publication time. Subclass instances are typed WebsitePost too, so this applies
+# to them without inference.
+cosaic:WebsitePostShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:WebsitePost ;
+    sh:property [ sh:path cosaic:sourcePostId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "a post must carry the site's post ID" ] ;
+    sh:property [ sh:path cosaic:sourceUrl ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path cosaic:sourceFeed ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path cosaic:publishedAt ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:dateTime ] .
+
+# How a meeting's date was established must travel with it, and must be one of the
+# four known strengths -- "subject-sent-date" is weaker and must stay distinguishable.
+cosaic:MeetingShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:Meeting ;
+    sh:property [
+        sh:path cosaic:dateEvidence ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "ics" "body-when" "subject" "subject-sent-date" ) ;
+        sh:message "a meeting must record how its date was established" ;
+    ] ;
+    sh:property [
+        sh:path cosaic:sourceMessageId ; sh:minCount 1 ;
+        sh:message "every meeting assertion must name the message that announced it" ;
+    ] ;
+    sh:property [
+        sh:path cosaic:canceled ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:boolean ;
+        sh:message "a meeting is canceled or not: a cancellation is its own event, and the flag says whether one cancels it" ;
+    ] ;
+    sh:property [
+        sh:path obo:BFO_0000199 ; sh:minCount 1 ;
+        sh:message "a meeting is a process and must occupy a temporal region" ;
+    ] .
+# Deliberately no `sh:class cosaic:Instant` above. Per-graph validation and provenance
+# partitioning are in tension here: a meeting may reference an instant the publication
+# catalog already owns, and re-declaring its type to satisfy a local shape is exactly
+# the duplication that doubles query rows. So the *reference* is checked here and the
+# *type* is checked at the union level -- see the referential-integrity test, which is
+# a dataset query for the same reason the uniqueness rule is.
+
+# A meeting record we cannot read must say so. Verified by fetch, not assumed: three
+# summary documents from three workstream lists all returned HTTP 401 anonymously.
+cosaic:MeetingSummaryShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:MeetingSummary ;
+    sh:property [
+        sh:path cosaic:accessRestricted ; sh:minCount 1 ; sh:datatype xsd:boolean ;
+        sh:message "a summary pointer must declare whether it is readable" ;
+    ] .
+
+# The invariant that keeps this source honest. No attendee data exists anywhere in
+# list mail, so an AttendanceRole instance would be fabricated -- and attendance must
+# never become contribution credit.
+cosaic:NoFabricatedAttendanceShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:AttendanceRole ;
+    sh:property [
+        sh:path rdf:type ; sh:maxCount 0 ;
+        sh:message "attendance is unknown, not empty: no AttendanceRole may be asserted from a source that names no attendees" ;
+    ] .
+
+
+# An entry carries its own provenance and its prescribed start. Planned entries are
+# typed ScheduledMeeting too, so this applies to them without inference.
+cosaic:ScheduledMeetingShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:ScheduledMeeting ;
+    sh:property [ sh:path cosaic:sourceEventId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:message "a scheduled meeting must carry its calendar event ID" ] ;
+    sh:property [ sh:path cosaic:sourceCalendar ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path cosaic:scheduledStart ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path cosaic:scheduledEnd ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path cosaic:scheduledTimeZone ; sh:maxCount 1 ] .
+
+cosaic:PlannedMeetingShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:PlannedMeeting ;
+    sh:property [ sh:path rdf:type ; sh:hasValue cosaic:ScheduledMeeting ;
+                  sh:message "a planned meeting must also be typed ScheduledMeeting" ] .
+
+# A calendar window records the range asked for and the day of the read. Item bounds are
+# optional: a range can hold no entries, and that is itself the finding.
+cosaic:CalendarCoverageWindowShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:CalendarCoverageWindow ;
+    sh:property [ sh:path rdf:type ; sh:hasValue cosaic:CoverageWindow ;
+                  sh:message "a calendar window must also be typed CoverageWindow" ] ;
+    sh:property [ sh:path cosaic:rangeStart ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:rangeEnd ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:fetchedOn ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ;
+                  sh:message "a calendar window must say when the calendar was read" ] ;
+    sh:property [ sh:path cosaic:sourceCalendar ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path cosaic:earliestItem ; sh:maxCount 1 ; sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:latestItem ; sh:maxCount 1 ; sh:datatype xsd:date ] .
+
+
+# A call records how far it got, from the mail, in a fixed vocabulary; what it decides
+# is curated, in another. A closing date is optional: no close in the archive is not a
+# failed call.
+cosaic:GovernanceCallShape
+    a sh:NodeShape ;
+    sh:targetClass cosaic:GovernanceCall ;
+    sh:property [ sh:path cosaic:callStage ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:in ( "call-for-consensus" "ballot" "review-period" "approval-notice"
+                          "nomination" "other" ) ;
+                  sh:message "a call must state its stage, from the known stages" ] ;
+    sh:property [ sh:path cosaic:subjectMatter ; sh:maxCount 1 ;
+                  sh:in ( "publication" "blog" "people" "governance" "other" ) ] ;
+    sh:property [ sh:path cosaic:openedOn ; sh:maxCount 1 ; sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:closedOn ; sh:maxCount 1 ; sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:objectionDeadline ; sh:maxCount 1 ;
+                  sh:datatype xsd:date ] ;
+    sh:property [ sh:path cosaic:decidedBy ; sh:maxCount 2 ] .
+
+# A message belongs to at most one call.
+cosaic:GovernanceMessageShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf cosaic:partOfCall ;
+    sh:property [ sh:path cosaic:partOfCall ; sh:maxCount 1 ;
+                  sh:message "a message is part of one call" ] .

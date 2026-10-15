@@ -1,0 +1,230 @@
+# Governance mail threads, curated: what each call decides, and for publications, which
+# works it approves and in what role. Read by `python -m bubo_graphrag.ingest.approvals`,
+# which writes reports/approvals.md. Its proposals are in approvals.seed.yaml, which it
+# regenerates on every run; this file it only reads.
+#
+# Keys are thread keys: a call's subject lowercased, with list tags, reply prefixes,
+# "Action Required", reminders, deadlines and punctuation removed. A key no longer found
+# in the archive is reported, so a subject change cannot silently drop a link.
+#
+# subject_matter: publication | blog | people | governance | other
+#
+# For a publication thread, each entry under `works` gives the work and its role:
+#   as: new       the call approves the work itself, first time
+#   as: revision  the call approves a revision of an already approved work. Per the
+#                 MCP v2 call, a revision "is not a new work item" and needs only TSC
+#                 consensus, so it never stands in for the original approval.
+#   as: addition  the call approves the work as an addition to another approved work,
+#                 named by `to:`. Like a revision it needs only TSC consensus, and the
+#                 work takes its standing from the one it is added to.
+# The thread's stage (review period, ballot, call for consensus, notice) comes from the
+# subject, so a review period links its works without counting as an approval.
+#
+# `unregistered` names a work the calls approve that publications.yaml does not hold
+# yet, by title, so the report can say so.
+#
+# Where a link needed more than the subject, the basis is given. Bodies were read to
+# curate but are never copied here.
+
+threads:
+
+  # --- Publications ---------------------------------------------------------------
+
+  # "Workstream 1's landscape paper" in the 2025-06-25 marketing mail announcing the
+  # supply chain blog, and the WS1 Landscape Paper review mail of the same period.
+  "ballot to approve ws1 landscape paper":
+    subject_matter: publication
+    works:
+      - {id: risks-and-controls-ai-supply-chain-v1, as: new}
+
+  # "the blog for the WS2 landscape paper" in the 2025-07-03 marketing minutes, whose
+  # blog is the Preparing Defenders one.
+  "ballot to approve ws2 landscape paper":
+    subject_matter: publication
+    works:
+      - {id: preparing-defenders-of-ai-systems, as: new}
+
+  "ballot to approve new ws1 paper signing ml artifacts":
+    subject_matter: publication
+    works:
+      - {id: signing-ml-artifacts, as: new}
+  "call for consensus to approve cosai ws1 signing ml artifacts paper":
+    subject_matter: publication
+    works:
+      - {id: signing-ml-artifacts, as: new}
+
+  "ballot to approve ws2 ai incident response framework 1 0":
+    subject_matter: publication
+    works:
+      - {id: ai-incident-response, as: new}
+  "call for consensus to approve cosai ws2 ai incident response framework":
+    subject_matter: publication
+    works:
+      - {id: ai-incident-response, as: new}
+  "ws2 ai incident response framework approved by tsc and pgb":
+    subject_matter: publication
+    works:
+      - {id: ai-incident-response, as: new}
+
+  "5 day review period for mcp security paper starts now":
+    subject_matter: publication
+    works:
+      - {id: model-context-protocol-security, as: new}
+  "ballot to approve the ws4 model context protocol mcp security paper":
+    subject_matter: publication
+    works:
+      - {id: model-context-protocol-security, as: new}
+  "call for consensus to approve cosai ws4 mcp security paper":
+    subject_matter: publication
+    works:
+      - {id: model-context-protocol-security, as: new}
+  "ws4 mcp security paper approved by tsc and pgb":
+    subject_matter: publication
+    works:
+      - {id: model-context-protocol-security, as: new}
+
+  "5 day review period for agentic identity and access management starts now":
+    subject_matter: publication
+    works:
+      - {id: agentic-identity-and-access-management, as: new}
+  "ballot to approve the ws4 agentic identity and access management paper":
+    subject_matter: publication
+    works:
+      - {id: agentic-identity-and-access-management, as: new}
+  # The PGB call titles the paper by its PDF's name, "agentic identity and access
+  # control"; the TSC ballot and review period use the registry title.
+  "call for consensus to approve cosai ws4 paper on agentic identity and access control":
+    subject_matter: publication
+    works:
+      - {id: agentic-identity-and-access-management, as: new}
+
+  "5 day review period for cosai shared responsibility framework srf starts now":
+    subject_matter: publication
+    works:
+      - {id: ai-shared-responsibility-framework, as: new}
+  "ballot to approve the cosai shared responsibility framework srf v1 0":
+    subject_matter: publication
+    works:
+      - {id: ai-shared-responsibility-framework, as: new}
+  # Titled a WS2 paper by the call; the registry holds it as WS3 work, per its repo.
+  "call for consensus to approve cosai ws2 paper ai shared responsibility framework":
+    subject_matter: publication
+    works:
+      - {id: ai-shared-responsibility-framework, as: new}
+
+  # The call links ws4 PR #141, which revised model-context-protocol-security.md and
+  # added whitepapers/Addendum-MCP-and-PQC.md and its PDF. One call, two roles: the
+  # Addendum is adjunct to the MCP paper, a revision by addition rather than a new work
+  # item, so like the revision it needs only this TSC call.
+  "call for consensus to approve version 2 of the mcp security paper from ws4":
+    subject_matter: publication
+    works:
+      - {id: model-context-protocol-security, as: revision}
+      - {id: addendum-mcp-and-pqc, as: addition, to: model-context-protocol-security}
+
+  "5 day review period for ws1 aimm paper and ws2 zero trust paper":
+    subject_matter: publication
+    works:
+      - {id: zero-trust-for-ai-systems, as: new}
+    unregistered:
+      - {title: "AIMM: Artifact Integrity Maturity Model for AI/ML Supply Chain Trust and Provenance", as: new}
+  "5 day review period for ws1 aimm paper and ws2 zero trust paper external":
+    subject_matter: publication
+    works:
+      - {id: zero-trust-for-ai-systems, as: new}
+    unregistered:
+      - {title: "AIMM: Artifact Integrity Maturity Model for AI/ML Supply Chain Trust and Provenance", as: new}
+  "ballot to approve aimm paper ws1 and zero trust paper ws2":
+    subject_matter: publication
+    works:
+      - {id: zero-trust-for-ai-systems, as: new}
+    unregistered:
+      - {title: "AIMM: Artifact Integrity Maturity Model for AI/ML Supply Chain Trust and Provenance", as: new}
+  "call for consensus to approve ws1 aimm paper and ws2 zero trust paper":
+    subject_matter: publication
+    works:
+      - {id: zero-trust-for-ai-systems, as: new}
+    unregistered:
+      - {title: "AIMM: Artifact Integrity Maturity Model for AI/ML Supply Chain Trust and Provenance", as: new}
+  "zero trust paper approved by tsc and pgb":
+    subject_matter: publication
+    works:
+      - {id: zero-trust-for-ai-systems, as: new}
+
+  # --- Blog posts: TSC calls for consensus. Titles from the call bodies and the feed.
+
+  "review and call for consensus on two new blog posts":
+    subject_matter: blog
+    blogs:
+      - "Addressing what's next in securing enterprise AI (the TSC RSAC presentation post, by J.R. Rao and Akila Srinivasan)"
+      - "Who's Minding the Agent? A New Framework for AI Identity and Access Control (the Agentic Identity release post)"
+  "review and call for consensus on new rsa session recap blog post":
+    subject_matter: blog
+    blogs:
+      - "After RSAC 2026: The MCP Security Question Everyone Kept Asking (by Sarah Novotny)"
+  "review and call for consensus on blog post to accompany the srf publication":
+    subject_matter: blog
+    blogs:
+      - "Who's Responsible When AI Goes Wrong? A New Framework Aims to Answer That Question"
+  # ws4 PR #167, merged 2026-08-25 as blogs/sandbox-now.md, live on the site that day.
+  "call for consensus to approve blog post on sandboxing and isolation":
+    subject_matter: blog
+    blogs:
+      - "Treat Your Agent Like an Insider Threat: Why AI Sandboxing Can't Wait"
+
+  # --- People: chairs, co-leads, nominations ---------------------------------------
+
+  "call for nominations for cosai marketing committee chairs": {subject_matter: people}
+  "call for nominations for cosai tsc co chairs": {subject_matter: people}
+  "ballot to appoint co chairs for the cosai marketing committee": {subject_matter: people}
+  "please vote for the co chairs for the cosai tsc": {subject_matter: people}
+  "call for nominations for co chairs of the public sector committee": {subject_matter: people}
+  "ballot to appoint co chairs for the cosai public sector committee": {subject_matter: people}
+  "follow up ballot to select public sector committee co chairs": {subject_matter: people}
+  "call for nominations for marketing committee co chair": {subject_matter: people}
+  "call for consensus to approve new co leads for ws3": {subject_matter: people}
+  "call for consensus to appoint new ws1 co lead co lead for adlc sig": {subject_matter: people}
+  "call for consensus to approve additional co lead for ws4 sig": {subject_matter: people}
+  "call for nominations to co chair the cosai mc": {subject_matter: people}
+  "call for nominations to co chair the cosai pgb tsc and mc": {subject_matter: people}
+  "call for nominations to co chair the cosai tsc": {subject_matter: people}
+  "please vote for the co chairs for the cosai pgb": {subject_matter: people}
+  "please vote for the co chairs for the cosai marketing committee": {subject_matter: people}
+  "call for consensus for new sig leads security of adlc sig": {subject_matter: people}
+
+  # --- Governance documents, charters and programs ---------------------------------
+
+  "please vote on the cosai governance": {subject_matter: governance}
+  "please vote on two updates to the cosai governance document": {subject_matter: governance}
+  "please vote on the cosai workstream document": {subject_matter: governance}
+  "ballot to approve the cosai tsc and ws governance": {subject_matter: governance}
+  "ballot to stand up marketing committee and guidelines for mc": {subject_matter: governance}
+  # The workstream's charter, a year before its first paper.
+  "ballot on workstream 4 secure design patterns for agentic systems": {subject_matter: governance}
+  "ballot to approve updates to the cosai marketing committee guidelines": {subject_matter: governance}
+  "review the proposed standing rule additions to cosai governance": {subject_matter: governance}
+  "vote on standing rules for cosai pgb": {subject_matter: governance}
+  "review of proposed updates to cosai governance": {subject_matter: governance}
+  "ballot to approve updates to the cosai governance and tsc governance": {subject_matter: governance}
+  "ballot to approve updates to pgb tsc governance and ai usage policy": {subject_matter: governance}
+  "call for consensus to approve cosai contributor recognition program": {subject_matter: governance}
+
+  # --- Budgets, sponsorships, scheduling -------------------------------------------
+
+  "approve time sensitive cosai budget requests": {subject_matter: other}
+  "please vote on meeting times": {subject_matter: other}
+  "ballot to approve cosai tsc and marketing budget": {subject_matter: other}
+  "ballot to approve budget for cosai presence at govware conference": {subject_matter: other}
+  "cosai 2026 budget prioritization poll": {subject_matter: other}
+  "pgb call for objections regarding co sponsorship of a ai security roundtable at fic 2026": {subject_matter: other}
+  "cosai pgb follow up action required briefing materials": {subject_matter: other}
+  "ballot to approve allocation of meta s premier funds to sponsor neurips workshop": {subject_matter: other}
+  "ballot to approve 2026 cosai budget": {subject_matter: other}
+  "new meeting time and meeting invite": {subject_matter: other}
+
+# Approved works whose approval the archive does not show, each with the reason it is
+# accepted anyway. Only a person adds one; the report flags any that the archive later
+# contradicts, so an exception cannot outlive the gap it explains.
+no_archive_evidence:
+  risks-and-controls-ai-supply-chain-v1: PGB approval not found in mail.
+  preparing-defenders-of-ai-systems: PGB approval not found in mail.

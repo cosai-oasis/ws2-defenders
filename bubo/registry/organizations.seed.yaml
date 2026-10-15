@@ -1,0 +1,119 @@
+# SEED -- generated. Review, then promote to organizations.yaml.
+#
+# Grouping uses stated names AND email domains as joining evidence, so
+# `Trend Micro`/`TrendMicro`/`trendmicro.com` collapse automatically.
+# What it cannot decide for you: whether `Dell` and `Dell Technologies` are one
+# organization (they are), or whether `Trend Micro` and `Trend AI` are (unclear).
+# Merge those by hand. `email_domains` is the evidence to judge by.
+organizations:
+- id: adversa-ai
+  canonical_name: Adversa AI
+  email_domains:
+  - adversa.ai
+- id: ai-identity
+  canonical_name: AI Identity
+- id: amazon
+  canonical_name: Amazon
+  email_domains:
+  - amazon.com
+- id: anthropic
+  canonical_name: Anthropic
+  email_domains:
+  - anthropic.com
+- id: cisco
+  canonical_name: Cisco
+  email_domains:
+  - cisco.com
+- id: cohere
+  canonical_name: Cohere
+  email_domains:
+  - cohere.com
+- id: dell-technologies
+  canonical_name: Dell Technologies
+  email_domains:
+  - dell.com
+- id: eqty-lab
+  canonical_name: EQTY Lab
+  email_domains:
+  - eqtylab.io
+- id: evinova
+  canonical_name: Evinova
+  email_domains:
+  - evinova.com
+- id: fragilistic
+  canonical_name: fragilistic
+  email_domains:
+  - fragilistic.ai
+- id: genlab
+  canonical_name: GenLab
+  email_domains:
+  - genlab.studio
+- id: google
+  canonical_name: Google
+  email_domains:
+  - google.com
+- id: hiddenlayer
+  canonical_name: HiddenLayer
+  email_domains:
+  - hiddenlayer.com
+- id: ibm
+  canonical_name: IBM
+  email_domains:
+  - ibm.com
+  - us.ibm.com
+- id: intel
+  canonical_name: Intel
+  email_domains:
+  - intel.com
+- id: lawsonsoft
+  canonical_name: lawsonsoft
+  email_domains:
+  - lawsonsoft.com
+- id: lenovo
+  canonical_name: Lenovo
+- id: meta
+  canonical_name: Meta
+  email_domains:
+  - meta.com
+- id: microsoft
+  canonical_name: Microsoft
+  email_domains:
+  - microsoft.com
+- id: nvidia
+  canonical_name: NVIDIA
+  email_domains:
+  - nvidia.com
+- id: palo-alto-networks
+  canonical_name: Palo Alto Networks
+  email_domains:
+  - paloaltonetworks.com
+- id: paypal
+  canonical_name: PayPal
+  email_domains:
+  - paypal.com
+- id: procap360
+  canonical_name: ProCap360
+  email_domains:
+  - procap360.com
+- id: red-hat
+  canonical_name: Red Hat
+  email_domains:
+  - redhat.com
+- id: servicenow
+  canonical_name: ServiceNow
+  email_domains:
+  - servicenow.com
+- id: thomson-reuters
+  canonical_name: Thomson Reuters
+  email_domains:
+  - thomsonreuters.com
+- id: trend-micro
+  canonical_name: Trend Micro
+  email_domains:
+  - trendmicro.com
+- id: wiz
+  canonical_name: Wiz
+  email_domains:
+  - wiz.io
+- id: zscaler
+  canonical_name: Zscaler

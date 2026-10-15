@@ -1,0 +1,112 @@
+@prefix cosaic: <https://cosai-oasis.github.io/ontology/cosai-contrib#> .
+@prefix spdx:   <https://spdx.org/rdf/3.1/terms/Core/> .
+@prefix prov:   <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <https://schema.org/> .
+
+<https://cosai-oasis.github.io/ontology/cosai-contrib/alignments/bridges>
+    a owl:Ontology ;
+    dcterms:title "CoSAI Contribution Ontology -- external bridges"@en ;
+    dcterms:source <https://spdx.github.io/spdx-spec/v3.1-RC1/rdf/spdx-model.ttl> ;
+    dcterms:source <http://www.w3.org/ns/prov-o> ;
+    dcterms:source <https://schema.org/> ;
+    rdfs:comment """SKOS matches to SPDX 3.1 Core and PROV-O, for consumers that speak
+those vocabularies.
+
+SKOS rather than owl:equivalentClass or owl:sameAs, deliberately. Equivalence axioms
+are expensive under reasoning and, more importantly, would be false here: neither SPDX
+3.1 nor PROV-O is BFO-grounded, so their classes do not carry the continuant/occurrent
+commitments these do. SPDX 3.1 Core has a single flat root, spdx:Element, from which
+every domain class derives, and contains no BFO references at all; PROV-O's
+Agent/Activity/Entity trichotomy cross-cuts BFO's categories.
+
+Neither vocabulary is owl:imports-ed. External IRIs appear here by reference only.
+
+Note on scope: SPDX 3.1 Core does have a real agent and provenance model -- Agent,
+Person, Organization, createdBy, CreationInfo -- which is why it is worth bridging to.
+What it lacks is any role apparatus, so it cannot express the difference between an
+Editor, a Contributor and a Workstream Lead. That is the reason it is a bridge target
+and not the grounding."""@en .
+
+
+#################################################################
+#  Agents
+#################################################################
+
+cosaic:Person
+    skos:closeMatch spdx:Person , prov:Agent , prov:Person .
+
+cosaic:Organization
+    skos:closeMatch spdx:Organization , prov:Organization .
+
+cosaic:Workstream
+    skos:relatedMatch prov:Organization ;
+    skos:note """Only a related match: a workstream is a group of agents drawn from many
+employers, which neither vocabulary distinguishes from a company."""@en .
+
+
+#################################################################
+#  Works and files
+#################################################################
+
+cosaic:Publication
+    skos:closeMatch prov:Entity ;
+    skos:relatedMatch spdx:Element .
+
+cosaic:Manifestation
+    skos:closeMatch spdx:Artifact ;
+    skos:note """SPDX collapses the work and the file carrying it into spdx:Element,
+so the content/bearer distinction this ontology draws from CCO has no SPDX
+counterpart."""@en .
+
+
+#################################################################
+#  Events and provenance
+#################################################################
+
+cosaic:PublicationEvent
+    skos:closeMatch prov:Activity .
+
+cosaic:RevisionEvent
+    skos:closeMatch prov:Activity ;
+    skos:relatedMatch prov:Revision .
+
+cosaic:CitationEvent
+    skos:relatedMatch prov:Activity ;
+    skos:note "PROV-O has no citation relation; prov:wasInfluencedBy is the closest and is weaker."@en .
+
+
+#################################################################
+#  Properties
+#################################################################
+
+cosaic:assertedIn
+    skos:closeMatch prov:wasDerivedFrom .
+
+cosaic:derivedFrom
+    skos:closeMatch prov:wasDerivedFrom .
+
+cosaic:onPublication
+    skos:relatedMatch prov:wasAttributedTo ;
+    skos:note """Direction and arity differ: a credited role is an entity relating one
+person to one publication, where prov:wasAttributedTo edges an entity to an agent and
+cannot carry which role was held."""@en .
+
+cosaic:producedBy
+    skos:relatedMatch prov:wasAttributedTo .
+
+# --- website ----------------------------------------------------------------------
+
+cosaic:WebsitePost
+    skos:closeMatch schema:WebPage .
+
+cosaic:BlogPost
+    skos:closeMatch schema:BlogPosting ;
+    skos:note """schema:BlogPosting implies an author and publisher of the posting; this
+class asserts neither, only the site category the item was published under."""@en .
+
+cosaic:publishedAt
+    skos:closeMatch schema:datePublished .
