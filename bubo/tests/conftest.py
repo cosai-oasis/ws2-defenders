@@ -25,8 +25,8 @@ def store():
         pytest.skip(
             "data/graph.db not built. Run: python -m bubo_graphrag.ingest.fetch && "
             "python -m bubo_graphrag.ingest.seed --promote && "
-            "python -m bubo_graphrag.build.graph && "
-            "python -m bubo_graphrag.ingest.citations")
+            "python -m bubo_graphrag.ingest.citations && "
+            "python -m bubo_graphrag.build.graph")
     from bubo_graphrag.store import get_store
     return get_store()
 
