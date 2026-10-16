@@ -85,15 +85,22 @@ python -m pytest -q
 ```
 
 With only the core graph and the website layer, about 56 tests fail, all of them in the
-layers that need a groups.io key.
+layers that need a groups.io key. One ontology test also skips until the CCO modules are
+cached:
+
+```bash
+python -m bubo_graphrag.build.mireot     # cache CCO and regenerate ontology/alignments/cco.ttl
+```
 
 **Meetings and governance**, from the groups.io archives of CoSAI's eight mailing lists.
 The groups.io API authenticates every call, even for a publicly visible archive, so this
 needs a personal key from
-[lists.oasis-open-projects.org/settings/apikeys](https://lists.oasis-open-projects.org/settings/apikeys):
+[lists.oasis-open-projects.org/settings/apikeys](https://lists.oasis-open-projects.org/settings/apikeys).
+Export it directly, or save it to a file and `source set-keys.sh`, which reads it along
+with the notebook's keys (see [Running it](#running-it)):
 
 ```bash
-export GROUPSIO_API_KEY=...
+export GROUPSIO_API_KEY=...              # or: source set-keys.sh
 python -m bubo_graphrag.ingest.groupsio  # one mbox per list into data/mail/
 python -m bubo_graphrag.ingest.maillist  # candidate series and reports/meetings.md
 python -m bubo_graphrag.build.meetings   # meetings and governance calls
