@@ -66,12 +66,26 @@ pip install -e ".[dev,notebooks]"      # or ".[dev]" for the server and tests on
 The core graph needs only `gh`:
 
 ```bash
-python -m bubo_graphrag.ingest.fetch     # cache the corpus at pinned shas
-python -m bubo_graphrag.build.graph      # build data/graph.db
+python -m bubo_graphrag.ingest.fetch      # cache the corpus at pinned shas
+python -m bubo_graphrag.ingest.citations  # TSC citation dataset -> ontology/citations.ttl
+python -m bubo_graphrag.build.graph       # build data/graph.db
+```
+
+Run the citations ingest before the graph build: `build.graph` loads
+`ontology/citations.ttl` into the store and fails if the file is missing.
+
+Each further layer builds its own named graph and is optional for the server, but not
+for the test suite or the demo. The meeting, governance, calendar and approval tests
+assert against those layers and fail rather than skip when they are absent, and the
+notebook's golden questions reach every tool. Build the meetings, website and calendar
+layers below before running either:
+
+```bash
 python -m pytest -q
 ```
 
-Each further layer builds its own named graph and is optional.
+With only the core graph and the website layer, about 56 tests fail, all of them in the
+layers that need a groups.io key.
 
 **Meetings and governance**, from the groups.io archives of CoSAI's eight mailing lists.
 The groups.io API authenticates every call, even for a publicly visible archive, so this
