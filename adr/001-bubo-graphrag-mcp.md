@@ -24,30 +24,23 @@ as which groups are meeting and what they are doing, which delivers value immedi
 Two problems stand in the way. Contribution credit sits in prose "Contributors and
 Acknowledgements" sections at the end of eleven whitepapers across five repositories, in
 three structural formats, with inconsistent role labels, inconsistent organization names,
-two email addresses for one person, and no stable identifiers — so "what has this person
+two email addresses for one person, and no stable identifiers, so "what has this person
 worked on?" means reading eleven documents by hand. And the Risk Map is YAML that cannot
 express the relationships #388 asks of it. Neither surface is queryable, and neither can
 state what it does not know.
 
-**Already built:** the contribution graph, the citation layer and the meetings layer
-(`plan.md` §10.0). The meetings layer reads the archives of all eight CoSAI mailing lists,
+**Already built:** the contribution graph, the citation layer and the meetings layer.
+The meetings layer reads the archives of all eight CoSAI mailing lists,
 which `ingest/groupsio.py` pages through with the groups.io `getmessages` API. That needs only the archive visibility an
 open list grants, so any member's own key works. Each list is pulled with its full
 history: 2,886 messages, back to June 2024 for the oldest list. The TSC and PGB are
 modeled as governing bodies, distinct from the four workstreams that produce
-publications. Steps 1 to 7 of `NEXT-STEPS.md` are designed and not built. Step 3
-extracts what the archives hold and the graph does not yet emit: agendas,
-schedule-change notices, the meeting date of each summary, and one governance action per
-decision.
+publications.
 
-**Boundaries.** `plan.md` is the design record; `NEXT-STEPS.md` is canonical for the content
-and ordering of steps 1 to 7; `TSC-QUESTIONS.md` holds what is not one person's to decide. This
-ADR is canonical for the decisions below.
-
-Those three, and the `registry/` and `reports/` paths cited throughout, live in the
-`cosai-graphrag-mcp` working repository, which is private. The findings this ADR relies on
-are restated here rather than left behind a link, so reviewing the decisions does not
-require reading the repository.
+**Boundaries.** This ADR is canonical for the decisions below. The `registry/` and
+`reports/` paths cited throughout are relative to bubo's source tree. The findings this
+ADR relies on are restated here rather than left behind a link, so reviewing the
+decisions does not require reading the source.
 
 **Data classification.** CoSAI is an open OASIS project. Its GitHub repositories,
 including the contributor email addresses published in them, and its open groups.io
@@ -119,7 +112,7 @@ revocable; none is shared, and none reaches a request.
 
 ### D10. `SERVICE` and `LOAD` are refused at the `sparql` boundary
 
-A `SELECT` carrying `SERVICE` is an arbitrary egress primitive — verified against this store,
+A `SELECT` carrying `SERVICE` is an arbitrary egress primitive, verified against this store,
 where a probe at the cloud metadata address hung for two minutes. The query text is composed
 by a model that has just read untrusted document prose. Read-only enforcement is not
 sufficient.
@@ -137,9 +130,9 @@ the hosted profile because of what it can reach, not because of the data it read
 
 ### D12. The tool surface is decided before the store
 
-The critical user journeys and the MCP tool surface land as **ADR-WS2-003**, ahead of the
-graph-store choice in **ADR-WS2-004**, because "which reasoning profile do we need" is a
-question about which queries must work. Hosting, if it happens, is **ADR-WS2-005**.
+bubo's critical user journeys and MCP tool surface land as **ADR-WS2-003**, ahead of
+its graph-store choice in **ADR-WS2-004**, because "which reasoning profile do we need" is a
+question about which queries must work. Hosting bubo, if it happens, is **ADR-WS2-005**.
 
 ### D13. bubo is maintained, not only built
 
@@ -172,7 +165,7 @@ standard `secure-ai-tooling#534` proposes for the Risk Map and CoSAI's other art
 MAJOR is a change that invalidates data written against the previous version, or
 changes what a term means, and a new schema is one. MINOR adds terms and leaves
 existing data valid, as a new risk, control, component or persona does. PATCH changes
-no entailment. `plan.md` §4.4 gives the rules in full.
+no entailment.
 
 - **Term IRIs carry no version.** The ontology header does: `owl:versionInfo`,
   `owl:versionIRI` as `<namespace>/<X.Y.Z>`, and `owl:priorVersion`, with each release
@@ -185,7 +178,7 @@ no entailment. `plan.md` §4.4 gives the rules in full.
   `1.y.z` from its first tagged release; the OWL/RDF Risk Map is its major bump to
   **`2.0.0`**. From `2.0.0` on, the YAML and the OWL carry the same number, and the
   generator refuses to emit when they differ.
-- **`cosaic:`, this project's contribution ontology, keeps its own line**, at `0.2.0`
+- **`cosaic:`, this project's contribution ontology, keeps its own line**, at `0.6.1`
   now and `1.0.0` from its first tagged release. It moves only when its own terms change.
 - **What depends on a version names it.** The Risk Map catalog pins the YAML version it
   was generated from, each framework bridge pins a framework release, and the
@@ -194,32 +187,32 @@ no entailment. `plan.md` §4.4 gives the rules in full.
 
 ## Alternatives Considered
 
-- **D3FEND 1.6.0 as the grounding ontology** — rejected. Not BFO-derived: no `owl:imports` at
+- **D3FEND 1.6.0 as the grounding ontology**: rejected. Not BFO-derived: no `owl:imports` at
   all, and BFO appears four times, as annotations on four of D3FEND's own properties. Its
   `Person`/`Organization` model the defended enterprise, not authorship.
-- **SPDX 3.1 Core as the grounding ontology** — rejected. Zero BFO references, a single flat
+- **SPDX 3.1 Core as the grounding ontology**: rejected. Zero BFO references, a single flat
   `spdx:Element` root, and no role apparatus, so it cannot distinguish Editor from Contributor
   from Workstream Lead. Kept as a SKOS bridge target.
-- **OpenCRE** — rejected. Not an ontology; a Python application over `Document → CRE | Node`,
+- **OpenCRE**: rejected. Not an ontology; a Python application over `Document → CRE | Node`,
   with no agent terms.
-- **A flat PROV-O or FOAF edge model** — rejected. It cannot record an affiliation whose
+- **A flat PROV-O or FOAF edge model**: rejected. It cannot record an affiliation whose
   bounds are unknown without inventing a start date or discarding the dates.
-- **A labelled-property graph (Neo4j + n10s)** — rejected as the store. SPARQL 1.1 and native
+- **A labelled-property graph (Neo4j + n10s)**: rejected as the store. SPARQL 1.1 and native
   named graphs are lost, and the provenance partitioning depends on both. Re-testable with
   evidence in ADR-WS2-004.
-- **Depending on `billbrietstout/ws2_ontology`** — rejected. v0.1.0 is neither authoritative
+- **Depending on `billbrietstout/ws2_ontology`**: rejected. v0.1.0 is neither authoritative
   nor a target. Three of its constraints are adopted independently because they are correct.
-- **Fully automatic extraction without registries** — rejected. Given the observed variance,
+- **Fully automatic extraction without registries**: rejected. Given the observed variance,
   an automatic parser merges two people or splits one into three.
 
 ## Consequences
 
 ### Positive
 
-Four effects follow from D2. `plan.md` §4.3 gives the model with worked Turtle.
+Four effects follow from D2.
 
-**1. It lets the graph say what is known, and nothing more.** A flat edge — *person
-`affiliatedWith` org* — asserts a present-tense fact. The corpus contains no present-tense
+**1. It lets the graph say what is known, and nothing more.** A flat edge (*person
+`affiliatedWith` org*) asserts a present-tense fact. The corpus contains no present-tense
 facts. It records that a person was credited under an employer in a document published on
 a date.
 Modeling affiliation as a **role borne over a temporal region**, gained and lost by events,
@@ -251,7 +244,7 @@ same occurrents, so each layer extends the queries the others support.
 
 **4. Roles are reified, so effort is distinguishable from credit.** One person can bear
 several roles at once: Akila Srinivasan is both Reviewer and TSC Co-Chair on a single
-document. Keeping `GitHubContributorRole` a separate class from the credited roles (step 6)
+document. Keeping `GitHubContributorRole` a separate class from the credited roles
 keeps "committed" distinct from "credited", so a typo fix is not counted as authorship.
 
 ### Negative
@@ -262,8 +255,7 @@ addresses the IRIs.
 
 ### Follow-up
 
-This decision implies three others that it does not make: **ADR-WS2-003** (critical user journeys
-and tool surface), **ADR-WS2-004** (graph store) and **ADR-WS2-005** (hosting, taken only if
-the server is hosted). No item in `TSC-QUESTIONS.md` gates this work. The
-orientation and contribution skills stay in this project, owned by this group, until a
+This decision implies three others for bubo that it does not make: **ADR-WS2-003** (critical
+user journeys and tool surface), **ADR-WS2-004** (graph store) and **ADR-WS2-005** (hosting,
+taken only if the server is hosted). The orientation and contribution skills stay in this project, owned by this group, until a
 need to move them arises.
