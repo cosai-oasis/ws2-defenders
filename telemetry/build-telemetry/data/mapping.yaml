@@ -5,7 +5,7 @@
 asks:
 - id: ocsf_ai_delegation_activity
   publication: ocsf
-  summary: Ratify an AI Delegation Activity class (9002) for the delegation lifecycle.
+  summary: Ratify an AI Delegation Activity class (proposed as 9002) for the delegation lifecycle.
   proposes: ['class:9002']
   tracking: [ocsf-schema#1640]
   status: open
@@ -47,7 +47,7 @@ asks:
   status: proposed
 - id: ocsf_ai_memory
   publication: ocsf
-  summary: Add an ai_memory object (operation, provenance, footprint, poisoning score, isolation verified).
+  summary: Add an ai_memory object (operation, provenance, footprint, poisoning score, isolation verified), carrying each item's provenance and last write time on a read.
   proposes: ['object:ai_memory']
   tracking: []
   status: proposed
@@ -85,7 +85,7 @@ asks:
   rationale: The evaluation event already carries name, score, label and explanation, the right shape for a classifier verdict; reusing it avoids a parallel namespace. This is what makes classifier *bypass* detectable (`TA-01`).
 - id: otel_memory_provenance_footprint
   publication: otel_genai
-  summary: Add provenance and footprint attributes to gen_ai.memory.*.
+  summary: Add provenance and footprint attributes to gen_ai.memory.*, and each item's provenance and last write time on a memory read.
   proposes: []
   tracking: []
   status: proposed
@@ -350,7 +350,7 @@ asks:
   status: proposed
 - id: ocsf_ai_agent_activity
   publication: ocsf
-  summary: 'Ratify an AI Agent Activity class (9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
+  summary: 'Ratify an AI Agent Activity class (proposed as 9001) for agent-originated control-plane events: inter-agent messages, background tasks, loop and resource aggregates, capability changes.'
   proposes: ['class:9001']
   tracking: [ocsf-schema#1640]
   status: open
@@ -1185,11 +1185,12 @@ fields:
     otel:
       coverage: partial
       constructs: [mcp.method.name, mcp.protocol.version, mcp.session.id]
-      gap: No primitive discriminator; mcp.method.name partly serves
+      gap: No primitive discriminator, mcp.method.name partly serving; no upstream server behind a gateway
       asks: [otel_tool_digest_mcp_primitive]
     aitf:
       coverage: covered
       constructs: [mcp.primitive, mcp.server.name, mcp.server.version]
+      note: Behind a gateway, the gateway's own record of the forwarded call carries the executing server in `mcp.server.*`; no attribute names an upstream server on the agent-side record.
     odis:
       coverage: out_of_scope
     controls: [controlToolServerVetting, controlToolServerSupplyChainIntegrity, controlAgentPluginPermissions]
@@ -1415,11 +1416,14 @@ fields:
       gap: Datastore Activity fits loosely; no memory-operation object
       asks: [ocsf_ai_memory]
     otel:
-      coverage: covered
+      coverage: partial
       constructs: [gen_ai.memory.query.text, gen_ai.memory.records]
+      gap: No per-item provenance or write time on a read
+      asks: [otel_memory_provenance_footprint]
     aitf:
-      coverage: covered
-      constructs: [memory.*]
+      coverage: partial
+      constructs: [memory.key, memory.provenance, memory.security.content_hash]
+      gap: No last write time for the item a read returns
     odis:
       coverage: out_of_scope
     controls:
@@ -1599,7 +1603,6 @@ fields:
     aitf:
       coverage: covered
       constructs: [gen_ai.agent.*]
-      note: '`gen_ai.agent.*`, delegation activity (OCSF 9002)'
     odis:
       coverage: covered
       constructs: [delegation_chain]
@@ -1831,7 +1834,7 @@ fields:
       note: An identity-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6).
     aitf:
       coverage: covered
-      note: delegation activity (OCSF 9002)
+      constructs: [identity.delegation.chain, identity.delegation.chain_depth]
     odis:
       coverage: covered
       constructs: [delegation_chain, delegation_id, parent_delegation_ref]

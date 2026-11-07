@@ -6,7 +6,7 @@
   stage: entry
   join: [mcp_server_identity_primitive]
   conditions:
-  - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name.'
+  - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name; for a call through a gateway, for the gateway and for the executing server.'
   requires: [mcp_server_identity_primitive]
   enriches: [tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, output_egress_destination]
   baseline: Approved name and version per server.
@@ -393,7 +393,7 @@
   stage: persistence
   join: []
   conditions:
-  - A **Memory Write Event** has a **Memory Provenance / Source** that is a non-owner or external source.
+  - A memory item has a **Memory Provenance / Source** that is a non-owner or external source, recorded on its **Memory Write Event** or carried on the read.
   - The item is read back (**Memory Read / Injection Event**) in a later session.
   - Behavior in that session departs from the request.
   requires: [memory_write_event, memory_provenance_source, memory_read_injection_event]

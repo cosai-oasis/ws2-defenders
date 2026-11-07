@@ -58,7 +58,7 @@
   origin: observed
   records: W3C trace context carried across every agent and tool hop.
   emitted_by_text: every hop
-  capture: W3C `traceparent` / `trace_id` + `span_id` **propagated across every agent→tool→agent hop**, including MCP [[39]](#standards--frameworks) and A2A [[40]](#standards--frameworks) calls. Without propagation, multi-agent activity cannot be reassembled into one trace. Records the baggage members received with the context, by key. A member that names a telemetry destination or credential is attacker-controllable input, not configuration.
+  capture: W3C `traceparent` / `trace_id` + `span_id` **propagated across every agent→tool→agent hop**, including MCP [[39]](#standards--frameworks) and A2A [[40]](#standards--frameworks) calls. Without propagation, multi-agent activity cannot be reassembled into one trace. Records the baggage members received with the context, by key. A member that names a telemetry destination or credential is attacker-controllable input, not configuration, and [RFC §5.4](CoSAI-AI-Telemetry-RFC.md#54-propagated-context) forbids acting on it.
 - id: organization_tenant_id
   name: Organization / Tenant ID
   tags: [AOS]
@@ -427,7 +427,7 @@
   records: Unique tool-implementation ID across MCP servers.
   emitted_by: [componentTools]
   capture: Unique tool-implementation ID for unambiguous attribution across many MCP servers.
-  rationale: Tool Name together with **MCP Server Identity & Primitive** (both MUST) already identifies the implementation across servers; a unique ID makes the join cheaper, not possible.
+  rationale: Tool Name and **MCP Server Identity & Primitive** (both MUST) already identify the implementation across servers. Behind a gateway, the executing server and its tool name do the same when the gateway discloses them. A unique ID makes the join cheaper, not possible.
 - id: tool_execution_id
   name: Tool Execution ID
   tags: [AOS]
@@ -472,9 +472,9 @@
   record: event
   origin: asserted
   compound: asserted server identity plus observed primitive (label)
-  records: MCP server name, version, transport and endpoint, and the primitive exercised.
+  records: Name, version, transport and endpoint of the MCP server, and the primitive exercised. Behind a gateway, also the executing server and its tool name, where disclosed. Name and version are self-asserted.
   emitted_by: [componentToolServer]
-  capture: 'For MCP calls: server name, version, transport, and endpoint; **and which MCP primitive was exercised**: `tool`, `resource`, `prompt`, `sampling`, `elicitation`, or `roots`.'
+  capture: 'Server name, version, transport and endpoint for each MCP call, and **which MCP primitive was exercised** (`tool`, `resource`, `prompt`, `sampling`, `elicitation` or `roots`). The record names the immediate counterparty. Where that is a gateway or broker, the **executing server**''s name and version and the tool''s name at that server are also recorded, either on this record if the gateway discloses them or on the gateway''s own record of the forwarded call, joined on **Trace Context (propagated)**. If the gateway discloses neither, **Attribute Source / Trusted-Provenance Marking** records the executing server as opaque ([RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals)).'
   rationale: The corpus's MCP incidents (`TA-11` to `TA-16`, `TA-29`) clear the evidence gate several times over; `TA-16` is the sharpest, because the server's declared contract never changed and only its published **version** did, so name alone would not have distinguished the safe release from the malicious one. What held the field at SHOULD was the modality gate, and that gate turns on MCP being at the **edge of current agentic practice** ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)). It is not. The corpus's MCP-mediated entries all date from 2025 onward, and their share understates the point, because the remaining agentic entries are incidents of other kinds rather than counter-examples to MCP's prevalence; CoSAI's Workstream 4 devoted a paper to MCP security [[24]](#standards--frameworks); OWASP publishes an MCP Top 10 [[76]](#standards--frameworks); and MITRE ATLAS has added `AML.T0109` AI Supply Chain Rug Pull and `AML.T0110` AI Agent Tool Poisoning, the latter with three sub-techniques (`.000` Definition and Instructions, `.001` Implementation, `.002` Runtime Response). A protocol acquires a dedicated top-ten list and a dedicated technique family once it is typical. **Server name and version are as cheap as Tool Name and should be adopted first.**
 - id: tool_error_exception
   name: Tool Error / Exception
@@ -539,9 +539,9 @@
   role: content
   record: event
   origin: observed
-  records: Which memory items were pulled into context for a call.
+  records: Which memory items were pulled into context for a call, each with its provenance and last write time.
   emitted_by: [componentMemory]
-  capture: Which memory items were pulled into context for a call.
+  capture: 'Which memory items were pulled into context for a call. For each item: its identifier and content digest (the digest alone where the store has no item identifier), its **Memory Provenance / Source**, and when it was last written; where the store does not keep provenance or write time with the item, the value is `unknown`. A read then carries what a detection needs from the write, so a poisoned item read months later is detectable whether or not the write record is still held. For an externally editable item, the digest at read time, against the digest on its write, shows whether the content changed after it was stored.'
   rationale_see: memory_write_event
 - id: memory_provenance_source
   name: Memory Provenance / Source
@@ -674,7 +674,7 @@
   record: state
   origin: asserted
   compound: asserted descriptor plus verification outcome
-  records: A counterparty agent's descriptor at contact, with change and verification outcome.
+  records: A counterparty agent's descriptor at contact, with change and verification outcome. The descriptor is self-asserted unless verified.
   modality: A2A
   emitted_by: [componentReasoningCore]
   capture: 'The counterparty agent''s declared descriptor as presented at contact: name, URL, version, provider, and advertised skills/capabilities, with change detection against prior contacts **and the outcome of any verification attempted against it** (signature checked, inspection request answered or refused, or unverified).'
@@ -859,7 +859,7 @@
   modality: dynamic third-party capability composition
   emitted_by: [componentToolRegistry, componentModelRegistry]
   capture: Version of each tool/agent/framework; instant CVE blast-radius answer; downgrade detection.
-  rationale: 'A supply-chain response primitive, with Repository / Code Path / Software Ref. The closest call among the inventory fields: documented instances and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM fields. The WG may reasonably promote it.'
+  rationale: 'A supply-chain response primitive, with Repository / Code Path / Software Ref. The closest call among the inventory fields: documented instances and genuine R value (CVE blast radius), held below MUST because that value is realized through a fleet-inventory process rather than per-event detection, and because it is inseparable in practice from the AgBOM fields. For an invoked MCP server, **MCP Server Identity & Primitive** already records the version on each call at MUST, including the executing server behind a gateway that discloses it; this field adds the inventory view across tools, agents and frameworks that answers CVE blast radius.'
 - id: repository_code_path_software_ref
   name: Repository / Code Path / Software Ref
   tier: SHOULD
@@ -970,6 +970,7 @@
   rationale: Each count is an aggregate over per-event MUST fields (Agent (Runtime) Instance ID, Session / Turn / Step IDs, Identities Used, Tool Call I/O), so it can be computed where it is needed.
 - id: enforcement_point_availability_failure_mode
   name: Enforcement-Point Availability & Failure Mode
+  tags: [AOS]
   tier: MUST
   role: outcome
   record: event
@@ -1005,6 +1006,7 @@
   rationale: 'The minimum defense against selective suppression by a compromised agent: sequence numbers make omission visible as a gap rather than invisible as silence. Grounded analogically ([§4.2](#42-the-telemetry-plane)).'
 - id: policy_reason_code
   name: Policy Reason Code
+  tags: [AOS]
   tier: MAY
   role: label
   record: event

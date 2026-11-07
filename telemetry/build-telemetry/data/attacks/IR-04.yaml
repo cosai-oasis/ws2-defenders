@@ -5,7 +5,7 @@ label: Capital One Data Breach *(non-AI incident)*
 ref: 72
 cites: 3
 locator: CoSAI IR §5.4
-what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **does not alone ground a MUST field**.
+what_happened: Cloud misconfiguration/SSRF-class breach → large-scale data exfiltration. Carried for field overlap with AI incident response; **counts toward no MUST field** (RFC §4.7).
 fields:
 - field: source_host_ip_request_metadata
   grounding: analogical
