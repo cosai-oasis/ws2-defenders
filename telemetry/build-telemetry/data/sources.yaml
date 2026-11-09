@@ -22,16 +22,25 @@ riskmap:
     committed: '2026-09-30'
     note: The near-future target, used in place of main.
   layers:
+    - branch: feature/controls-risks-layer45
+      repository: https://github.com/cosai-oasis/secure-ai-tooling
+      commit: c84fccbd8a4b658c0403cd8e26d5eef3e1d996e5
+      committed: '2026-10-15'
+      pull_request: 507
+      state: draft, open against develop
+      note: >-
+        The controls and risks layer, in the description and guidance form. It carries
+        the audit-trail controls and most other control IDs the documents use.
     - branch: feature/jo5iah-524-527
       repository: https://github.com/davidlabianca/secure-ai-tooling
-      commit: 0e9601d7d7780df7726b94d46270edc8f0c86493
-      committed: '2026-09-23'
-      stacked_on: {pull_request: 507, branch: feature/controls-risks-layer45, commit: 1a0b5d4e11eac1ce733918c8779c83d1646fcad7}
+      commit: d34066467d07eaa4f95bff64d3276bc449666191
+      committed: '2026-10-22'
+      stacked_on: {pull_request: 507, branch: feature/controls-risks-layer45, commit: c84fccbd8a4b658c0403cd8e26d5eef3e1d996e5}
       state: no pull request yet; opens against feature/controls-risks-layer45 after review
       issues: [524, 525, 526, 527]
       note: >-
-        Carries PR #507 plus the reworked telemetry proposals. Retires two IDs the
-        documents still use: riskUnsafeInterAgentPropagation (split into an extension of
+        Carries PR #507 plus the reworked telemetry proposals. Retires two IDs that
+        earlier drafts used: riskUnsafeInterAgentPropagation (split into an extension of
         riskImplicitCrossBoundaryTrust and the new riskCrossAgentReputationPoisoning) and
         controlAgentMemoryIntegrity (narrowed to controlMemoryReferentRevalidation, with
         controlRetrievalAndVectorSystemIntegrity extended to componentMemory).

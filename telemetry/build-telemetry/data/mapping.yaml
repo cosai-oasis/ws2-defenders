@@ -421,11 +421,18 @@ asks:
   proposes: []
   tracking: []
   status: proposed
+- id: otel_agent_instance_id
+  publication: otel_genai
+  summary: Add an agent instance identifier distinct from gen_ai.agent.id, which identifies the agent across runs.
+  proposes: []
+  tracking: []
+  status: proposed
+  rationale: '`gen_ai.agent.id` is defined as the stable identifier of the agent, so it cannot also identify one running instance of it. `service.instance.id` identifies the service instance, which is the agent instance only where one service hosts one agent. Per-instance quarantine needs the instance itself (AD §1.1).'
 fields:
   agent_name:
     ocsf:
       coverage: covered
-      constructs: ['profile:ai_operation', 'object:ai_agent']
+      constructs: ['object:ai_agent', 'attribute:name']
     otel:
       coverage: covered
       constructs: [gen_ai.agent.name]
@@ -433,21 +440,43 @@ fields:
       coverage: covered
       constructs: [gen_ai.agent.name, asset.*]
     odis:
-      coverage: covered
-      constructs: [agent_id, owner_ref]
-      note: ODIS §6.1.
+      coverage: partial
+      constructs: [owner_ref]
+      note: ODIS §6.1. The Agent Registration Record has no display name; `agent_id` maps to Agent Registration Identity.
       sections: ['6.1']
     controls: [controlAgentInventoryManagement, controlAgentObservability]
+  agent_registration_identity:
+    ocsf:
+      coverage: covered
+      constructs: ['object:ai_agent', 'attribute:uid']
+      note: OCSF 1.9.0 describes ai_agent as having "a stable logical identity across runs and a restart-sensitive instance identity"; uid is the first, instance_uid the second.
+    otel:
+      coverage: covered
+      constructs: [gen_ai.agent.id]
+      note: The GenAI conventions define gen_ai.agent.id as the stable unique identifier of the agent.
+    aitf:
+      coverage: partial
+      constructs: [gen_ai.agent.id]
+      gap: AITF uses gen_ai.agent.id for the runtime instance, which OpenTelemetry defines as the stable agent identifier
+    odis:
+      coverage: covered
+      constructs: [agent_id]
+      note: ODIS §6.1. ODIS-CC-02 requires every logged action to identify the logical agent, the runtime instance and the originating principal.
+      sections: ['6.1']
+    controls: [controlComponentIdentityRegistration, controlAgentInventoryManagement]
   agent_runtime_instance_id:
     ocsf:
       coverage: covered
       constructs: ['object:ai_agent', 'attribute:instance_uid']
     otel:
-      coverage: covered
-      constructs: [gen_ai.agent.id]
+      coverage: partial
+      constructs: [service.instance.id]
+      gap: No per-agent instance attribute where one service hosts several agents; gen_ai.agent.id is the stable agent identifier
+      asks: [otel_agent_instance_id]
     aitf:
-      coverage: covered
+      coverage: partial
       constructs: [gen_ai.agent.id]
+      gap: Carried on gen_ai.agent.id, which OpenTelemetry defines as the stable agent identifier
     odis:
       coverage: covered
       constructs: [runtime_instance_id]
@@ -1185,7 +1214,7 @@ fields:
     otel:
       coverage: partial
       constructs: [mcp.method.name, mcp.protocol.version, mcp.session.id]
-      gap: No primitive discriminator, mcp.method.name partly serving; no upstream server behind a gateway
+      gap: No primitive discriminator (mcp.method.name partly serves); no attribute for the executing server behind a gateway
       asks: [otel_tool_digest_mcp_primitive]
     aitf:
       coverage: covered

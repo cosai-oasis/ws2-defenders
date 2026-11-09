@@ -7,10 +7,22 @@
   origin: declared
   basis:
     evidence: [TA-05, TA-31]
-  records: Logical name or type of the agent; exposes off-inventory agents.
+  records: Display name or type of the agent; resolves to Agent Registration Identity and exposes off-inventory agents.
   emitted_by: [componentReasoningCore]
-  capture: Logical name/type of the agent (e.g. "Deep Research agent"). Detects off-inventory / "shadow" agents.
+  capture: Human-readable name or type of the agent (e.g. "Deep Research agent"), as displayed; not an identifier. Detects off-inventory / "shadow" agents, whose name resolves to no **Agent Registration Identity**.
   rationale: Rests on `TA-05` (an agent nobody inventoried) and `TA-31` (one name bound to two peers, so requests reach the wrong one); both are found by comparing a name against what it should resolve to.
+- id: agent_registration_identity
+  name: Agent Registration Identity
+  tier: MUST
+  role: identifier
+  record: event
+  origin: declared
+  basis:
+    required_to_read: [agent_name, verified_vs_displayed_identity]
+  records: The stable identifier the agent is registered under, to which Agent Name resolves.
+  emitted_by: [componentIdentityProvider]
+  capture: The agent's stable registered identifier within its trust domain, as issued by the identity provider or agent registry (ODIS `agent_id`). It persists across runs, restarts and versions. **Agent (Runtime) Instance ID** identifies one running instance, and **Agent Name** is a display label that resolves to this identifier.
+  rationale: A name is checked only by resolving it to something that cannot be reused. **Agent Name** rests on `TA-05` and `TA-31`, both found by comparing a name against what it should resolve to, and in `TA-31` an admitted peer took a trusted peer's name without forging anything. For an agent, the verified identifier that **Verified vs Displayed Identity** sets against the display name is this one. Without it, both fields are ambiguous between the registered agent and any agent using its name.
 - id: agent_runtime_instance_id
   name: Agent (Runtime) Instance ID
   tier: MUST
@@ -427,7 +439,7 @@
   records: Unique tool-implementation ID across MCP servers.
   emitted_by: [componentTools]
   capture: Unique tool-implementation ID for unambiguous attribution across many MCP servers.
-  rationale: Tool Name and **MCP Server Identity & Primitive** (both MUST) already identify the implementation across servers. Behind a gateway, the executing server and its tool name do the same when the gateway discloses them. A unique ID makes the join cheaper, not possible.
+  rationale: Tool Name and **MCP Server Identity & Primitive** (both MUST) already identify the implementation across servers. Behind a gateway, the executing server and the tool's name at that server do the same when the gateway discloses them. A unique ID makes the join cheaper, not possible.
 - id: tool_execution_id
   name: Tool Execution ID
   tags: [AOS]
@@ -472,7 +484,7 @@
   record: event
   origin: asserted
   compound: asserted server identity plus observed primitive (label)
-  records: Name, version, transport and endpoint of the MCP server, and the primitive exercised. Behind a gateway, also the executing server and its tool name, where disclosed. Name and version are self-asserted.
+  records: Name, version, transport and endpoint of the MCP server, and the primitive exercised. Behind a gateway, also the executing server and the tool's name at that server, where disclosed. Name and version are self-asserted.
   emitted_by: [componentToolServer]
   capture: 'Server name, version, transport and endpoint for each MCP call, and **which MCP primitive was exercised** (`tool`, `resource`, `prompt`, `sampling`, `elicitation` or `roots`). The record names the immediate counterparty. Where that is a gateway or broker, the **executing server**''s name and version and the tool''s name at that server are also recorded, either on this record if the gateway discloses them or on the gateway''s own record of the forwarded call, joined on **Trace Context (propagated)**. If the gateway discloses neither, **Attribute Source / Trusted-Provenance Marking** records the executing server as opaque ([RFC §4.6](CoSAI-AI-Telemetry-RFC.md#46-record-your-boundary-not-their-internals)).'
   rationale: The corpus's MCP incidents (`TA-11` to `TA-16`, `TA-29`) clear the evidence gate several times over; `TA-16` is the sharpest, because the server's declared contract never changed and only its published **version** did, so name alone would not have distinguished the safe release from the malicious one. What held the field at SHOULD was the modality gate, and that gate turns on MCP being at the **edge of current agentic practice** ([RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers)). It is not. The corpus's MCP-mediated entries all date from 2025 onward, and their share understates the point, because the remaining agentic entries are incidents of other kinds rather than counter-examples to MCP's prevalence; CoSAI's Workstream 4 devoted a paper to MCP security [[24]](#standards--frameworks); OWASP publishes an MCP Top 10 [[76]](#standards--frameworks); and MITRE ATLAS has added `AML.T0109` AI Supply Chain Rug Pull and `AML.T0110` AI Agent Tool Poisoning, the latter with three sub-techniques (`.000` Definition and Instructions, `.001` Implementation, `.002` Runtime Response). A protocol acquires a dedicated top-ten list and a dedicated technique family once it is typical. **Server name and version are as cheap as Tool Name and should be adopted first.**

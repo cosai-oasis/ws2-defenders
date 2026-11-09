@@ -1,0 +1,238 @@
+# Curation registry batch. Edit status only through tools/curate.py, or by hand
+# keeping decided_by and decided_on filled in. See curate.py for the schema.
+- id: F:agent_registration_identity
+  type: field
+  subject:
+    field: agent_registration_identity
+  source: teryl-review-4
+  proposal:
+    record:
+      id: agent_registration_identity
+      name: Agent Registration Identity
+      tier: MUST
+      role: identifier
+      record: event
+      origin: declared
+      basis:
+        required_to_read: [agent_name, verified_vs_displayed_identity]
+      records: The stable identifier the agent is registered under, to which Agent Name resolves.
+      emitted_by: [componentIdentityProvider]
+      capture: The agent's stable registered identifier within its trust domain, as issued by the identity provider or agent registry (ODIS `agent_id`). It persists across runs, restarts and versions. **Agent (Runtime) Instance ID** identifies one running instance, and **Agent Name** is a display label that resolves to this identifier.
+      rationale: A name is checked only by resolving it to something that cannot be reused. **Agent Name** rests on `TA-05` and `TA-31`, both found by comparing a name against what it should resolve to, and in `TA-31` an admitted peer took a trusted peer's name without forging anything. For an agent, the verified identifier that **Verified vs Displayed Identity** sets against the display name is this one. Without it, both fields are ambiguous between the registered agent and any agent using its name.
+    step: '6.1'
+  reason: Teryl's review on issue 154, comment 4. Tiered through the RFC §4.7 dependency clause on two MUST fields, not on new instances.
+  critical: true
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: E:TA-31:agent_registration_identity
+  type: edge
+  subject:
+    attack: TA-31
+    field: agent_registration_identity
+  source: teryl-review-4
+  proposal:
+    grounding: instance
+  reason: the instance is a name that resolved to the wrong registered peer; dispatch keyed on the display name rather than the identity it should resolve to
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: R:agent_name:display-label
+  type: facets
+  subject:
+    field: agent_name
+  source: teryl-review-4
+  proposal:
+    records: Display name or type of the agent; resolves to Agent Registration Identity and exposes off-inventory agents.
+    capture: Human-readable name or type of the agent (e.g. "Deep Research agent"), as displayed; not an identifier. Detects off-inventory / "shadow" agents, whose name resolves to no **Agent Registration Identity**.
+  reason: Agent Name stays a display label that resolves to the registered identity.
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: P:agent_name_collision:registration
+  type: pattern
+  subject:
+    pattern: agent_name_collision
+  source: teryl-review-4
+  proposal:
+    id: agent_name_collision
+    former_id: CP-33
+    name: One agent name bound to two peers
+    indicates: Agent name collision; wrong-peer dispatch
+    stage: action
+    join: [agent_name]
+    conditions:
+    - Within one host, an **Agent Name** resolves to more than one **Agent Registration Identity**, **Peer Agent Card / Descriptor** or endpoint.
+    - '**Verified vs Displayed Identity** shows the requests addressed to the name reach a different peer.'
+    requires: [agent_registration_identity, peer_agent_card_descriptor, verified_vs_displayed_identity]
+    enriches: [identities_used_per_hop, inter_agent_message]
+    catches: [TA-31]
+  reason: The collision is the name resolving to more than one registered identity; the pattern reads the field it resolves to.
+  requires: E:TA-31:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_registration_identity:ocsf
+  type: mapping
+  subject:
+    field: agent_registration_identity
+    publication: ocsf
+  source: teryl-review-4
+  proposal:
+    coverage: covered
+    constructs: ['object:ai_agent', 'attribute:uid']
+    note: OCSF 1.9.0 describes ai_agent as having "a stable logical identity across runs and a restart-sensitive instance identity"; uid is the first, instance_uid the second.
+  reason: verified against ocsf-schema objects/ai_agent.json at tag 1.9.0 (extends _entity, which supplies uid and name)
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_registration_identity:otel
+  type: mapping
+  subject:
+    field: agent_registration_identity
+    publication: otel
+  source: teryl-review-4
+  proposal:
+    coverage: covered
+    constructs: [gen_ai.agent.id]
+    note: The GenAI conventions define gen_ai.agent.id as the stable unique identifier of the agent.
+  reason: model/gen-ai/spans.yaml at the pinned commit e07f4eb
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_registration_identity:aitf
+  type: mapping
+  subject:
+    field: agent_registration_identity
+    publication: aitf
+  source: teryl-review-4
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.agent.id]
+    gap: AITF uses gen_ai.agent.id for the runtime instance, which OpenTelemetry defines as the stable agent identifier
+  reason: AITF at e17c514 maps the runtime instance to gen_ai.agent.id
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_registration_identity:odis
+  type: mapping
+  subject:
+    field: agent_registration_identity
+    publication: odis
+  source: teryl-review-4
+  proposal:
+    coverage: covered
+    constructs: [agent_id]
+    note: ODIS §6.1. ODIS-CC-02 requires every logged action to identify the logical agent, the runtime instance and the originating principal.
+    sections: ['6.1']
+  reason: ODIS §6.1 defines agent_id as the stable logical agent identifier of the Agent Registration Record
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: C:agent_registration_identity
+  type: controls
+  subject:
+    field: agent_registration_identity
+  source: teryl-review-4
+  proposal:
+    controls: [controlComponentIdentityRegistration, controlAgentInventoryManagement]
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_name:ocsf:name
+  type: mapping
+  subject:
+    field: agent_name
+    publication: ocsf
+  source: teryl-review-4
+  proposal:
+    coverage: covered
+    constructs: ['object:ai_agent', 'attribute:name']
+  reason: the display name is ai_agent.name; the stable identifier is uid, mapped to Agent Registration Identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_name:odis:no-display-name
+  type: mapping
+  subject:
+    field: agent_name
+    publication: odis
+  source: teryl-review-4
+  proposal:
+    coverage: partial
+    constructs: [owner_ref]
+    note: ODIS §6.1. The Agent Registration Record has no display name; `agent_id` maps to Agent Registration Identity.
+    sections: ['6.1']
+  reason: agent_id moves to Agent Registration Identity
+  requires: F:agent_registration_identity
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: A:otel_agent_instance_id
+  type: ask
+  subject:
+    ask: otel_agent_instance_id
+  source: teryl-review-4
+  proposal:
+    id: otel_agent_instance_id
+    publication: otel_genai
+    summary: Add an agent instance identifier distinct from gen_ai.agent.id, which identifies the agent across runs.
+    proposes: []
+    tracking: []
+    status: proposed
+    rationale: '`gen_ai.agent.id` is defined as the stable identifier of the agent, so it cannot also identify one running instance of it. `service.instance.id` identifies the service instance, which is the agent instance only where one service hosts one agent. Per-instance quarantine needs the instance itself (AD §1.1).'
+  reason: found while mapping Agent Registration Identity; the instance ID was mapped to gen_ai.agent.id
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_runtime_instance_id:otel:instance
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: otel
+  source: teryl-review-4
+  proposal:
+    coverage: partial
+    constructs: [service.instance.id]
+    gap: No per-agent instance attribute where one service hosts several agents; gen_ai.agent.id is the stable agent identifier
+    asks: [otel_agent_instance_id]
+  reason: gen_ai.agent.id is the stable agent identifier at the pinned commit, so it maps to Agent Registration Identity
+  requires: A:otel_agent_instance_id
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
+- id: M:agent_runtime_instance_id:aitf:instance
+  type: mapping
+  subject:
+    field: agent_runtime_instance_id
+    publication: aitf
+  source: teryl-review-4
+  proposal:
+    coverage: partial
+    constructs: [gen_ai.agent.id]
+    gap: Carried on gen_ai.agent.id, which OpenTelemetry defines as the stable agent identifier
+  reason: AITF at e17c514 maps the runtime instance to gen_ai.agent.id
+  status: accepted
+  decided_by: jo5iah
+  decided_on: '2026-11-09'
+  applied: '2026-11-09'
