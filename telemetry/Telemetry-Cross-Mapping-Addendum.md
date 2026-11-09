@@ -43,10 +43,10 @@ For OCSF, OpenTelemetry, AITF and ODIS the correspondence and the asks are gener
 <!-- BEGIN GENERATED: xm summary -->
 | Publication | Covered | Partial | None | Out of scope | Asks |
 | :------------------ | ---: | ---: | ---: | ---: | :------------------ |
-| OCSF | 9 | 32 | 60 | 0 | 36: 8 open, 28 proposed |
-| OpenTelemetry | 21 | 20 | 41 | 19 | 30: 1 open, 29 proposed |
-| AITF | 91 | 9 | 1 | 0 | none |
-| ODIS | 44 | 3 | 0 | 54 | none |
+| OCSF | 10 | 32 | 60 | 0 | 36: 8 open, 28 proposed |
+| OpenTelemetry | 21 | 21 | 41 | 19 | 31: 1 open, 30 proposed |
+| AITF | 90 | 11 | 1 | 0 | none |
+| ODIS | 44 | 4 | 0 | 54 | none |
 <!-- END GENERATED: xm summary -->
 
 - **The proposals follow the tiers of [RFC §4.7](CoSAI-AI-Telemetry-RFC.md#47-tiers).** Every MUST field a publication cannot carry has an ask. A SHOULD field gets one where a deployment running its modality would need the publication to carry it. MAY fields appear only inside an ask that a MUST or SHOULD field already needs.
@@ -71,7 +71,8 @@ OCSF 1.9.0 already carries an `ai_operation` profile on API Activity (6003): `ai
 
 | Field | Tier | Coverage | Carried by | Gap or note | Asks |
 | :------------------ | :---- | :------- | :------------------ | :------------------ | :---------- |
-| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `profile:ai_operation`, `object:ai_agent` |  |  |
+| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `object:ai_agent`, `attribute:name` |  |  |
+| [Agent Registration Identity](Telemetry-Attack-Detection-Addendum.md#f-agent-registration-identity) | MUST | covered | `object:ai_agent`, `attribute:uid` | OCSF 1.9.0 describes ai_agent as having "a stable logical identity across runs and a restart-sensitive instance identity"; uid is the first, instance_uid the second. |  |
 | [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `object:ai_agent`, `attribute:instance_uid` |  |  |
 | [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | none |  | No workflow or run identifier. | [ocsf_ai_operation_identifiers](#ask-ocsf-ai-operation-identifiers) |
 | [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | partial | `object:message_context` | A session identifier only; no turn or step. | [ocsf_ai_operation_identifiers](#ask-ocsf-ai-operation-identifiers) |
@@ -299,7 +300,7 @@ The table states each gap. Two need more than a cell.
 
 **ATLAS technique tagging needs no OCSF change.** Detection Finding's `attacks[]` is already documented as compatible with MITRE ATLAS [[1]](#primary-sources-attack-corpus--taxonomy) tactics, techniques and sub-techniques, and `attack.version` carries the matrix version. The [ATLAS Technique Tag](Telemetry-Attack-Detection-Addendum.md#36-attack-inventory--mitre-atlas-technique-mapping) is portable today; this document supplies the producer guidance (populate `attacks[].technique.uid` with `AML.Txxxx`) rather than an ask.
 
-For **Event Sequence Continuity**, `metadata.sequence` counts records and the `attestation` object of the `record_integrity` profile links them (`prev_event`, `chain_uid`); only an end-of-chain marker is missing ([`ocsf_chain_end`](#ask-ocsf-chain-end)). `ai_agent` already separates a stable agent identifier from a restart-sensitive instance identifier.
+For **Event Sequence Continuity**, `metadata.sequence` counts records and the `attestation` object of the `record_integrity` profile links them (`prev_event`, `chain_uid`); only an end-of-chain marker is missing ([`ocsf_chain_end`](#ask-ocsf-chain-end)). `ai_agent` already separates a stable agent identifier (`uid`, which carries **Agent Registration Identity**) from an instance identifier (`instance_uid`). OCSF defines an instance as a conversation, session or run that may persist across restarts, which is coarser than the running instance **Agent (Runtime) Instance ID** identifies for quarantine. An emitter puts the finer-grained identifier in `instance_uid`.
 
 ### 1.6 Divergences and open items
 
@@ -336,7 +337,8 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | Field | Tier | Coverage | Carried by | Gap or note | Asks |
 | :------------------ | :---- | :------- | :------------------ | :------------------ | :---------- |
 | [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `gen_ai.agent.name` |  |  |
-| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `gen_ai.agent.id` |  |  |
+| [Agent Registration Identity](Telemetry-Attack-Detection-Addendum.md#f-agent-registration-identity) | MUST | covered | `gen_ai.agent.id` | The GenAI conventions define gen_ai.agent.id as the stable unique identifier of the agent. |  |
+| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | partial | `service.instance.id` | No per-agent instance attribute where one service hosts several agents; gen_ai.agent.id is the stable agent identifier. | [otel_agent_instance_id](#ask-otel-agent-instance-id) |
 | [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | partial | `gen_ai.workflow.name` | A workflow name, not a run identifier; the run maps to the trace ID. | [otel_run_id](#ask-otel-run-id) |
 | [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | partial | `gen_ai.conversation.id` | No turn or step identifier. | [otel_turn_step_ids](#ask-otel-turn-step-ids) |
 | [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | none |  | No trigger type or source event. | [otel_trigger](#ask-otel-trigger) |
@@ -390,7 +392,7 @@ The conventions are richer than is commonly assumed, and several fields in fact 
 | [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) | MUST | partial | `gen_ai.tool.type` | function, extension or datastore; no MCP, direct-storage or code-execution boundary. | [otel_tool_trust_boundary](#ask-otel-tool-trust-boundary) |
 | [Tool Execution ID](Telemetry-Attack-Detection-Addendum.md#f-tool-execution-id) | MUST | covered | `gen_ai.tool.call.id` |  |  |
 | [Tool Definition Digest](Telemetry-Attack-Detection-Addendum.md#f-tool-definition-digest) | MUST | partial | `gen_ai.tool.definitions` | The definitions, not a stable digest of them. | [otel_tool_digest_mcp_primitive](#ask-otel-tool-digest-mcp-primitive) |
-| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | partial | `mcp.method.name`, `mcp.protocol.version`, `mcp.session.id` | No primitive discriminator, mcp.method.name partly serving; no upstream server behind a gateway. | [otel_tool_digest_mcp_primitive](#ask-otel-tool-digest-mcp-primitive) |
+| [MCP Server Identity & Primitive](Telemetry-Attack-Detection-Addendum.md#f-mcp-server-identity-primitive) | MUST | partial | `mcp.method.name`, `mcp.protocol.version`, `mcp.session.id` | No primitive discriminator (mcp.method.name partly serves); no attribute for the executing server behind a gateway. | [otel_tool_digest_mcp_primitive](#ask-otel-tool-digest-mcp-primitive) |
 | [Authorization Decision Record](Telemetry-Attack-Detection-Addendum.md#f-authorization-decision-record) | MUST | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6). | [otel_authorization_reference](#ask-otel-authorization-reference) |
 | [Tool Selection Rationale](Telemetry-Attack-Detection-Addendum.md#f-tool-selection-rationale) | SHOULD | none |  | No self-asserted rationale. No ask proposed. |  |
 | [Human Approval / Elicitation Event](Telemetry-Attack-Detection-Addendum.md#f-human-approval-elicitation-event) | SHOULD | out of scope |  | An authorization-domain concern; carried by OCSF rather than pushed into OpenTelemetry (§2.6). |  |
@@ -523,6 +525,8 @@ Ordered by status, then by the strongest tier each ask closes, then by the docum
 
 <a id="ask-otel-tool-trust-boundary"></a>**`otel_tool_trust_boundary`** (proposed). Extend gen_ai.tool.type, or add a trust-boundary attribute, to distinguish MCP, internal, direct-storage and code-execution tools. *Closes:* [Tool Type / Trust Boundary](Telemetry-Attack-Detection-Addendum.md#f-tool-type-trust-boundary) (MUST, 2 instances).
 
+<a id="ask-otel-agent-instance-id"></a>**`otel_agent_instance_id`** (proposed). Add an agent instance identifier distinct from gen_ai.agent.id, which identifies the agent across runs. *Closes:* [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) (MUST, on a dependency). `gen_ai.agent.id` is defined as the stable identifier of the agent, so it cannot also identify one running instance of it. `service.instance.id` identifies the service instance, which is the agent instance only where one service hosts one agent. Per-instance quarantine needs the instance itself (AD §1.1).
+
 <a id="ask-otel-run-id"></a>**`otel_run_id`** (proposed). Add gen_ai.run.id, as AITF defines it; gen_ai.workflow.name names the workflow, not the run. *Closes:* [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) (MUST, on a dependency).
 
 <a id="ask-otel-task-intent"></a>**`otel_task_intent`** (proposed). Add the purpose declared for an invoke_agent or invoke_workflow run. *Closes:* [Task / Intent Declaration](Telemetry-Attack-Detection-Addendum.md#f-task-intent-declaration) (SHOULD, 4 instances).
@@ -568,7 +572,7 @@ Signal choice matters. The following rules correct mistakes that show up often w
 ### 2.8 Context propagation, sampling, privacy and canonicalization
 
 
-**Propagation is solved for MCP, and the mechanism should be adopted deliberately.** The MCP conventions specify that instrumentations SHOULD inject context into the MCP request **`params._meta`** property bag, with `traceparent`, `tracestate`, and `baggage` written unprefixed per **SEP-414** [[36]](#standards--frameworks), and that the receiver uses the extracted context as the remote parent. That is exactly the mechanism **Trace Context (propagated)** (AD §1.1) requires, and it means cross-hop correlation over MCP is a matter of configuration rather than invention. Two cautions. First, HTTP-level propagation covers the HTTP request but **not** individual messages within a streaming request/response, a gap that matters for long-lived agent sessions. Second, and more important for security: **`baggage` crosses the trust boundary.** It is attacker-influenceable in exactly the way [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#f-attribute-source-trusted-provenance-marking) (AD §1.2) describes, so a receiver treats baggage as the sender's claim and uses it for correlation only. [RFC §5.4](CoSAI-AI-Telemetry-RFC.md#54-propagated-context) forbids trust levels, authorization decisions, taint labels and identity assertions in propagated context, and forbids an emitter to send telemetry to a destination, or authenticate with a credential, that arrives with a request it records: those come from the enforcement point and the deployment's configuration, not from the wire.
+**Propagation is solved for MCP, and the mechanism should be adopted deliberately.** The MCP conventions specify that instrumentations SHOULD inject context into the MCP request **`params._meta`** property bag, with `traceparent`, `tracestate`, and `baggage` written unprefixed per **SEP-414** [[36]](#standards--frameworks), and that the receiver uses the extracted context as the remote parent. That is exactly the mechanism **Trace Context (propagated)** (AD §1.1) requires, and it means cross-hop correlation over MCP is a matter of configuration rather than invention. Two cautions. First, HTTP-level propagation covers the HTTP request but **not** individual messages within a streaming request/response, a gap that matters for long-lived agent sessions. Second, and more important for security: **`baggage` crosses the trust boundary.** It is attacker-influenceable in exactly the way [Attribute Source / Trusted-Provenance Marking](Telemetry-Attack-Detection-Addendum.md#f-attribute-source-trusted-provenance-marking) (AD §1.2) describes, so a receiver treats baggage as the sender's claim and uses it for correlation only. [RFC §5.4](CoSAI-AI-Telemetry-RFC.md#54-propagated-context) forbids trust levels, authorization decisions, taint labels and identity assertions in propagated context. It also forbids an emitter to send telemetry to a destination, or authenticate with a credential, that arrives with a request it records. Trust decisions come from the enforcement point, and destinations from the deployment's configuration, not from the wire.
 
 **Sampling is the trap most likely to silently defeat this entire field set.** OTel's default is head-based sampling at some fraction of traces. Applied to security telemetry, that means *most attacks are simply not recorded*. Worse, the sample is drawn without regard to whether an event is security-relevant, so a guardrail block has the same chance of being discarded as a routine completion. The three requirements that follow (100% retention of security-relevant events, security relevance as a tail-sampling predicate, and recording the sampling configuration itself) are **normative** and stated in [RFC §5.2](CoSAI-AI-Telemetry-RFC.md#52-sampling). The rationale is that discarding a block or a denial is the same failure mode as fail-open enforcement ([AD §1.2](Telemetry-Attack-Detection-Addendum.md#12-content-trust-verdicts-and-their-availability)), and deserves the same treatment.
 
@@ -584,7 +588,7 @@ Signal choice matters. The following rules correct mistakes that show up often w
 
 AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to CoSAI Workstream 2. It emits OpenTelemetry attributes and OCSF events on existing OCSF classes, so adopters are not blocked on either standards body while the schema changes staged in [§3.4](#34-path-to-ocsf-and-opentelemetry) are pending. This section maps AITF version 0.4 at commit `e17c514` (7 September 2026). Coverage in [§3.2](#32-correspondence) holds at that commit; AITF's own repository records what it has added since.
 
-> **Note on the identifier mapping.** AD §1.1 distinguishes five levels (instance → run → session → turn → step). AITF carries each: `gen_ai.agent.id`, `gen_ai.run.id`, `gen_ai.conversation.id`, `gen_ai.turn.id` and `gen_ai.step.id`, with `gen_ai.turn.index` and `gen_ai.agent.step.index` recording order. OpenTelemetry lacks the run, turn and step identifiers; the asks are in [§2.4](#24-asks).
+> **Note on the identifier mapping.** AD §1.1 distinguishes five levels (instance → run → session → turn → step). AITF carries each: `gen_ai.agent.id`, `gen_ai.run.id`, `gen_ai.conversation.id`, `gen_ai.turn.id` and `gen_ai.step.id`, with `gen_ai.turn.index` and `gen_ai.agent.step.index` recording order. OpenTelemetry defines `gen_ai.agent.id` as the stable agent identifier (**Agent Registration Identity**), so the instance needs an attribute of its own ([`otel_agent_instance_id`](#ask-otel-agent-instance-id)). OpenTelemetry lacks the run, turn and step identifiers; the asks are in [§2.4](#24-asks).
 
 ### 3.2 Correspondence
 
@@ -594,7 +598,8 @@ AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
 | [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `gen_ai.agent.name`, `asset.*` |  |
-| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `gen_ai.agent.id` |  |
+| [Agent Registration Identity](Telemetry-Attack-Detection-Addendum.md#f-agent-registration-identity) | MUST | partial | `gen_ai.agent.id` | AITF uses gen_ai.agent.id for the runtime instance, which OpenTelemetry defines as the stable agent identifier. |
+| [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | partial | `gen_ai.agent.id` | Carried on gen_ai.agent.id, which OpenTelemetry defines as the stable agent identifier. |
 | [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered | `gen_ai.run.id` |  |
 | [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | covered | `gen_ai.conversation.id`, `gen_ai.turn.id`, `gen_ai.step.id`, `gen_ai.agent.step.index` |  |
 | [Trigger Type & Source Event](Telemetry-Attack-Detection-Addendum.md#f-trigger-type-source-event) | MUST | covered | `gen_ai.trigger.*`, `gen_ai.agent.*` |  |
@@ -728,13 +733,13 @@ AITF, the AI Telemetry Framework [[25]](#standards--frameworks), was donated to 
 
 ### 3.3 Gaps
 
-The table in [§3.2](#32-correspondence) marks each field AITF does not carry in full, at the pinned commit, as *partial* or *none*, with the gap.
+At the pinned commit, [§3.2](#32-correspondence) marks each field AITF does not fully carry as *partial* or *none* and states the gap.
 
 ### 3.4 Path to OCSF and OpenTelemetry
 
 AITF lets adopters emit this telemetry **before** OCSF ratifies it, and stages the upstream proposals so each is backward-compatible:
 
-- **Phase 0, today.** AITF emits the fields [§3.2](#32-correspondence) marks as carried as OTel attributes. It also emits OCSF events on existing classes, with the `ai_operation` profile and the `ai_agent` and `delegation` objects; which fields reach those events is not mapped here, and [§1.2](#12-correspondence) gives what OCSF itself carries; the ATLAS tag rides on `compliance.control_id` (framework `mitre_atlas`).
+- **Phase 0, today.** AITF emits the fields [§3.2](#32-correspondence) marks as carried as OTel attributes. It also emits OCSF events on existing classes, with the `ai_operation` profile and the `ai_agent` and `delegation` objects. Which fields reach those events is not mapped here; [§1.2](#12-correspondence) gives what OCSF itself carries. The ATLAS tag rides on `compliance.control_id` (framework `mitre_atlas`).
 - **Phase 1, profile extension (backward-compatible).** Contribute the MUST attribute set plus the `ai_guardrail` and `ai_capability` objects to the OCSF `ai_operation` profile, and the `message_context` extensions (content hashes with their canonicalization declaration, redaction flags, system prompt, attachment identity); no new classes required, and `ai_content` only if content must attach to classes other than 6003 ([§1.2](#12-correspondence)).
 - **Phase 2, agentic classes.** Ratify an **AI Agent Activity** class ([`ocsf_ai_agent_activity`](#ask-ocsf-ai-agent-activity)) plus the [`ai_memory`](#ask-ocsf-ai-memory) and [`ai_retrieval`](#ask-ocsf-ai-retrieval) objects (memory & RAG are absent from OCSF today and are MUST here). The class number is not settled: ocsf-schema#1640 proposes 9001 in a category OCSF has not ratified, and draft ocsf-schema#1754 numbers it 6009. Until a class is ratified, AITF emits these events on existing classes.
 - **Phase 3, delegated authority.** Ratify an **AI Delegation Activity** class ([`ocsf_ai_delegation_activity`](#ask-ocsf-ai-delegation-activity), proposed as 9002 in ocsf-schema#1640) and the [`runtime_attestation`](#ask-ocsf-runtime-attestation) object (ODIS-aligned), and land the [lineage asks](#ask-ocsf-delegation-lineage) of [ocsf-schema#1739](https://github.com/ocsf/ocsf-schema/issues/1739) on `delegation`. Until then, AITF emits these events on existing classes.
@@ -793,7 +798,8 @@ Maps each conceptual field to the relevant ODIS [[26]](#standards--frameworks) d
 
 | Field | Tier | Coverage | Carried by | Gap or note |
 | :------------------ | :---- | :------- | :------------------ | :------------------ |
-| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | covered | `agent_id`, `owner_ref` | ODIS §6.1. |
+| [Agent Name](Telemetry-Attack-Detection-Addendum.md#f-agent-name) | MUST | partial | `owner_ref` | ODIS §6.1. The Agent Registration Record has no display name; `agent_id` maps to Agent Registration Identity. |
+| [Agent Registration Identity](Telemetry-Attack-Detection-Addendum.md#f-agent-registration-identity) | MUST | covered | `agent_id` | ODIS §6.1. ODIS-CC-02 requires every logged action to identify the logical agent, the runtime instance and the originating principal. |
 | [Agent (Runtime) Instance ID](Telemetry-Attack-Detection-Addendum.md#f-agent-runtime-instance-id) | MUST | covered | `runtime_instance_id` | ODIS §6.2. |
 | [Workflow / Run ID](Telemetry-Attack-Detection-Addendum.md#f-workflow-run-id) | MUST | covered | `request_trace_id` | ODIS §6.4. |
 | [Session / Turn / Step IDs](Telemetry-Attack-Detection-Addendum.md#f-session-turn-step-ids) | MUST | out of scope |  |  |

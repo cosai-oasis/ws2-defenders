@@ -6,7 +6,7 @@
   stage: entry
   join: [mcp_server_identity_primitive]
   conditions:
-  - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name; for a call through a gateway, for the gateway and for the executing server.'
+  - '**MCP Server Identity & Primitive** reports a version, package or publisher not in the approved inventory, under an approved name. For a call through a gateway, the condition applies to the gateway and to the executing server.'
   requires: [mcp_server_identity_primitive]
   enriches: [tool_agent_version, repository_code_path_software_ref, agbom_inventory_snapshot, output_egress_destination]
   baseline: Approved name and version per server.
@@ -345,9 +345,9 @@
   stage: action
   join: [agent_name]
   conditions:
-  - Within one host, an **Agent Name** resolves to more than one **Peer Agent Card / Descriptor**, endpoint or enrolled identity.
+  - Within one host, an **Agent Name** resolves to more than one **Agent Registration Identity**, **Peer Agent Card / Descriptor** or endpoint.
   - '**Verified vs Displayed Identity** shows the requests addressed to the name reach a different peer.'
-  requires: [peer_agent_card_descriptor, verified_vs_displayed_identity]
+  requires: [agent_registration_identity, peer_agent_card_descriptor, verified_vs_displayed_identity]
   enriches: [identities_used_per_hop, inter_agent_message]
   catches: [TA-31]
 - id: background_task_without_end
