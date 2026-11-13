@@ -1,83 +1,103 @@
 # Bubo Evals
 
-The Evals workstream is responsible for validating that Bubo's parsers, MCP tools, and skills produce accurate, evidence-backed answers that can be traced to their original sources.
+Bubo evaluations validate the accuracy, consistency,
+and source traceability of Bubo's outputs.
 
 Evaluations should detect incorrect, incomplete, or unsupported answers, including responses that appear correct but lack sufficient evidence. When the graph does not contain enough information, tools should clearly communicate that limitation rather than invent an answer.
 
-## Initial Priorities
+## Existing Tests
 
-### 1. Establish a Testing Baseline
+Credits and Identity
 
-- Follow the Bubo setup instructions.
-- Run `python -m pytest -q` from the repository root.
-- Validate the notebook workflow.
-- Stop the notebook server before running tests against the same graph store to avoid database locking conflicts.
-- Document baseline failures and reproducible issues.
+test_credits.py — Checks contributor credits.
 
-### 2. AIMM Parser Validation
+test_frontmatter.py — Checks document metadata.
 
-- Coordinate with Ontology and Pipeline to confirm the meaning of the AIMM release notice.
-- Create fixtures covering both observed email subject lines before parser modifications.
-- Validate the release notice date and agreed approval stage.
-- Ensure discussions that merely mention a release are not incorrectly classified as official announcements.
+test_identity.py — Makes sure people are identified correctly.
 
-### 3. Source and Evidence Verification
+test_temporal.py — Checks dates and timelines.
 
-- Review the original AIMM paper and release email.
-- Establish expected contributor credits, approval records, and announcement details.
-- Compare MCP tool responses against verified source material.
-- Detect identity resolution regressions, including duplicate contributor identities.
-- Document test results and evidence gaps in pull requests.
+Emails and Meetings
 
-### 4. Graph Store Evaluation
+test_groupsio.py — Tests Groups.io messages.
 
-Support Ontology's ADR-WS2-004 decision by comparing candidate graph stores using:
+test_maillist.py — Checks mailing-list data.
 
-- Representative queries
-- Expected answers
-- Validation checks
-- Backend consistency tests
-- Documented differences in query behavior
+test_meetings_graph.py — Checks meeting records.
 
-## Future Evaluation Coverage
+test_approvals.py — Tests approval records.
 
-### Meeting Minutes
+test_calendar.py — Checks calendar events.
 
-- Support historical meeting formats.
-- Test lines containing organizations, governance roles, and attendance information.
-- Ensure attendance rates identify their denominators.
+Documents and Sources
 
-### Document Search
+test_citations.py — Checks document citations.
 
-- Establish an agreed evaluation threshold for BM25 retrieval.
-- Build a manually verified question-and-answer test set.
-- Verify that results reference relevant document sections rather than tables of contents.
-- Check cross-document retrieval accuracy.
-- Ensure stable heading links when headings remain unchanged.
+test_website.py — Tests website data.
 
-### Risk Map
+test_publication_candidates.py — Checks possible publications.
 
-- Verify that each upstream YAML identifier maps to exactly one OWL entry and vice versa.
-- Ensure unknown identifiers fail validation.
-- Verify that framework mappings contain required review evidence.
-- Validate explanations for `noMatch` relationships.
+Graph and Queries
 
-### Demo and Security Validation
+test_ontology.py — Checks ontology relationships.
 
-- Convert the Winter demo question into an end-to-end regression test.
-- Verify that answers cite supporting source passages.
-- Ensure insufficient evidence produces a clear refusal or uncertainty statement.
-- Confirm existing local Level 1 / DP1 security checks continue to pass.
+test_shapes.py — Checks graph validation rules.
 
-## Collaboration
+test_queries.py — Tests graph queries.
 
-Evals coordinates with:
+test_backend_portability.py — Checks that different graph backends return consistent results.
 
-- Ingest: Define representative fixtures and parser expectations.
-- Ontology: Agree on graph rules, entity relationships, and expected meanings.
-- Pipeline: Validate MCP tools, queries, and notebook behavior from the user's perspective.
+Tools and Skills
 
-Each evaluation should preserve its expected answer, supporting source material, and reproducible test results so that other contributors can independently verify the outcome.
+test_orientation.py — Tests orientation features.
+
+test_skills.py — Checks skill functionality.
+
+test_writing_skills.py — Tests writing skills.
+
+Shared Test Setup
+
+conftest.py — Contains shared test setup and fixtures.
+
+## Running the Tests
+
+From the bubo/ folder, run all tests:
+
+python -m pytest -q
+
+To run one test file:
+
+python -m pytest tests/test_backend_portability.py -v
+
+To run a test by name:
+
+python -m pytest -k "test_name" -v
+
+## What We Check
+
+Bubo evaluations focus on:
+
+Accuracy: Answers should match the original sources.
+
+Identity: People should not be mixed up or duplicated.
+
+Dates: Dates and timelines should be correct.
+
+Approvals: Drafts and discussions should not be treated as approved decisions.
+
+Missing information: Tools should say when there is not enough evidence.
+
+Security: Tests should follow the project's local MCP Security Level 1 / DP1 requirements.
+
+## Understanding Test Results
+
+A passing test means the specific feature worked as expected for that test.
+
+A failing test means something needs to be checked. Review the test, expected result, and source data to find the issue.
+
+When fixing bugs or adding features, include tests to make sure the same problem does not happen again.
+
+The goal is to keep Bubo accurate, reliable, and easy to test.
 
 ## Maintainer
 
