@@ -42,15 +42,15 @@ with one change.
 | --- | --- | --- | --- |
 | [ADR-WS2-001](001-bubo-graphrag-mcp.md) | bubo-graphrag-mcp (Backed Up By Ontology): every answerable question about CoSAI, grounded in its own publications and data, served over MCP | Draft - Pending Review | 2026-09-21 |
 | [ADR-WS2-002](002-testable-riskmap-arcade.md) | ARCADE (Assessing Risks and Control through Attack Detection Evaluations): executed evidence that a CoSAI control mitigates a CoSAI risk | Draft - Pending Review | 2026-09-21 |
+| [ADR-WS2-003](003-bubo-user-journeys-and-tool-surface.md) | bubo: critical user journeys and the MCP tool surface | Draft | 2026-11-20 |
 
 ### Reserved
 
-Claimed by ADR-WS2-001 D12 (003 to 005) and the ADR-WS2-002 Follow-up (006 and 007);
+Claimed by ADR-WS2-001 D12 (004 and 005) and the ADR-WS2-002 Follow-up (006 and 007);
 listed here so the numbers are not reused.
 
 | # | Expected title |
 | --- | --- |
-| ADR-WS2-003 | bubo: critical user journeys and the MCP tool surface |
 | ADR-WS2-004 | bubo: graph store and reasoning profile |
 | ADR-WS2-005 | bubo: hosting the MCP server, taken only if the server is hosted |
 | ADR-WS2-006 | arcade: the target range |
